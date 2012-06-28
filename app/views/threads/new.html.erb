@@ -16,8 +16,12 @@
 	<hr>
 	<h2>Newspapers info</h2><br>
 	
-	<% #f.label :media %>
-	<% #f.select :media, options_from_collection_for_select(@media, "id", "name")%>
+	<%= label_tag :media, nil, :id => "media_label" %>
+	<br>
+	<%= select_tag :media, options_from_collection_for_select(@media, "id", "name")%>
+	<br>
+	<a id="add_media" class="btn">Add Another Newspaper</a>
+
 
 	<hr>
 	<h2>Coding info</h2><br>
@@ -29,7 +33,8 @@
 	<%= text_field_tag "topic2" %>	
 	
 	<div class="form-actions">
-		<%= f.submit "Start Coding >>", :class => "btn btn-primary" %>
+		<%= f.submit "Start Coding »", :class => "btn btn-primary" %>
 		<a class="btn" href="/">Cancel</a>
 	</div>
 <% end %>
+
