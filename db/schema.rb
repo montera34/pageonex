@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120627163234) do
+ActiveRecord::Schema.define(:version => 20120628160725) do
 
   create_table "areas", :force => true do |t|
     t.integer  "x1"
@@ -52,8 +52,9 @@ ActiveRecord::Schema.define(:version => 20120627163234) do
     t.string   "country"
     t.string   "city"
     t.string   "url"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+    t.string   "display_name"
   end
 
   create_table "media_threadxes", :force => true do |t|

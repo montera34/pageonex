@@ -19,11 +19,12 @@
       }
     </style>
 
-    <!-- Le fav and touch icons -->
+    <!-- Le fav and touch icons 
     <link href="images/favicon.ico" rel="shortcut icon">
     <link href="images/apple-touch-icon.png" rel="apple-touch-icon">
     <link href="images/apple-touch-icon-72x72.png" rel="apple-touch-icon" sizes="72x72">
     <link href="images/apple-touch-icon-114x114.png" rel="apple-touch-icon" sizes="114x114">
+    -->
   </head>
   <body>
 
@@ -99,6 +100,14 @@
     <!-- Placed at the end of the document so the pages load faster -->
     <link href='http://fonts.googleapis.com/css?family=Cabin:400,500,600,700,400italic' rel='stylesheet' type='text/css'>
     <%= javascript_include_tag "application" %>
-
+    <script type="text/javascript">
+      $(function () {
+        media_count=1
+        $("#add_media").on("click",function () {
+          $('<br/><select id="media'+ media_count++ +'"name="media'+ media_count +'"><option value="1">The New York Times - USA</option><option value="2">Deia - Spain</option></select>').insertAfter('#media_label');
+        });
+        
+      });
+    </script>
   </body>
 </html>
