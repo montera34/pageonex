@@ -1,0 +1,16 @@
+<div class="hero-unit">
+  <h1>PageOneX</h1>
+  <p>An online and easy the coding process of front page newspapers. Make this visualization process available for researchers, advocacy groups and anyone interested. I’ll will give some background about this process.</p>
+  <p>
+    <a href="http://montera34.org/pageonex/about/" class="btn btn-primary btn-large">
+      Learn more
+    </a><br><br>
+
+    <% if !user_signed_in? %>
+      <a class="btn btn-info btn-large" href="<%= new_user_session_path %>">Sign in</a>
+      <a class="btn btn-success btn-large" href="<%= new_user_registration_path %>">Sign up</a>
+    <% else %>
+      <a class="btn btn-info btn-small" href="/threads/new">New a Thread</a>
+    <% end %>
+  </p>
+</div>
