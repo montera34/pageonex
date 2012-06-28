@@ -6,15 +6,19 @@ class ThreadsController < ApplicationController
 	end
 
 	def create
-		#render :json => params.to_json
 		@thread = Threadx.new
 		@thread.update_attributes!(params[:threadx])
 		redirect_to "/"
 	end
 
 	def new
+		@media = []
 		@thread = Threadx.new
-		@media = Media.all
+		Media.all.each do |newspaper|
+			newspaper.name = "#{newspaper.display_name} - #{newspaper.country}"
+			@media << newspaper
+		end
+
 	end
 
 	def edit
