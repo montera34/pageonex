@@ -1,0 +1,35 @@
+<%= form_for @thread, :url => { :controller => :threads, :action => :create}, :class => "form-horizontal" do |f| %>
+
+	<h2>Basic info</h2><br>
+	<%= f.label :thread_name %>
+	<%= f.text_field :thread_name %>
+
+	<%= f.label :start_date %>
+	<%= f.text_field :start_date %>
+
+	<%= f.label :end_date %>
+	<%= f.text_field :end_date %>
+
+	<%= f.label :description %>
+	<%= f.text_area :description, :rows => "10"%>
+
+	<hr>
+	<h2>Newspapers info</h2><br>
+	
+	<% #f.label :media %>
+	<% #f.select :media, options_from_collection_for_select(@media, "id", "name")%>
+
+	<hr>
+	<h2>Coding info</h2><br>
+
+	<%= label_tag "topic1" %>
+	<%= text_field_tag "topic1" %>	
+
+	<%= label_tag "topic2" %>
+	<%= text_field_tag "topic2" %>	
+	
+	<div class="form-actions">
+		<%= f.submit "Start Coding >>", :class => "btn btn-primary" %>
+		<a class="btn" href="/">Cancel</a>
+	</div>
+<% end %>
