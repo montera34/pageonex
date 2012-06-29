@@ -104,7 +104,7 @@
       $(function () {
         media_count=1
         $("#add_media").on("click",function () {
-          $('<br/><select id="media'+ media_count++ +'"name="media'+ media_count +'"><option value="1">The New York Times - USA</option><option value="2">Deia - Spain</option></select>').insertAfter('#media_label');
+          $('<select id="media'+ media_count++ +'"name="media'+ media_count +'"><option value="1">The New York Times - USA</option><option value="2">Deia - Spain</option></select><br/>').insertBefore('#add_media');
         });
         
       });
