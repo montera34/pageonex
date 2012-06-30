@@ -103,8 +103,44 @@
     <script type="text/javascript">
       $(function () {
         media_count=1
+        media_element = $("#media1");
+        media_label_element = $("#media_label1");
         $("#add_media").on("click",function () {
-          $('<select id="media'+ media_count++ +'"name="media'+ media_count +'"><option value="1">The New York Times - USA</option><option value="2">Deia - Spain</option></select><br/>').insertBefore('#add_media');
+          cloned_m_e = media_element.clone();
+          cloned_m_l_e = media_label_element.clone();
+
+          cloned_m_l_e.attr("id", "media_label" + ++media_count);
+          cloned_m_l_e.attr("for", "media" + media_count);
+          cloned_m_l_e.text("Media"+media_count);
+
+          cloned_m_e.attr("id", "media" + media_count);
+          cloned_m_e.attr("name", "media" + media_count);
+
+          $(cloned_m_l_e).insertBefore('#add_media');
+          $(cloned_m_e).insertBefore('#add_media');
+          $("<br/>").insertBefore('#add_media');
+          $("#media_count").attr("value", media_count);
+        });
+
+        topic_count=1
+        topic_element = $("#topic1");
+        topic_label_element = $("#topic_label1");
+        $("#add_topic").on("click",function () {
+          cloned_t_e = topic_element.clone();
+          cloned_t_l_e = topic_label_element.clone();
+
+          cloned_t_e.attr("text","");
+          cloned_t_l_e.attr("id", "topic_label" + ++topic_count);
+          cloned_t_l_e.attr("for", "topic" + topic_count);
+          cloned_t_l_e.text("Topic"+topic_count);
+
+          cloned_t_e.attr("id", "topic" + topic_count);
+          cloned_t_e.attr("name", "topic" + topic_count);
+
+          $(cloned_t_l_e).insertBefore('#add_topic');
+          $(cloned_t_e).insertBefore('#add_topic');
+          $("<br/>").insertBefore('#add_topic');
+          $("#topic_count").attr("value", topic_count);
         });
         
       });

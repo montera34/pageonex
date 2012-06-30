@@ -16,21 +16,20 @@
 	<hr>
 	<h2>Newspapers info</h2><br>
 	
-	<%= label_tag :media, nil, :id => "media_label" %>
-	<br>
-	<%= select_tag :media, options_from_collection_for_select(@media, "id", "name")%>
+	<%= label_tag :media1, nil, :id => "media_label1" %>
+	<%= select_tag :media1, options_from_collection_for_select(@media, "id", "name")%>
 	<br>
 	<a id="add_media" class="btn">Add Another Newspaper</a>
-
+	<%= hidden_field_tag :media_count, 1 %>
 
 	<hr>
 	<h2>Coding info</h2><br>
 
-	<%= label_tag "topic1" %>
+	<%= label_tag "topic1", nil, :id => "topic_label1" %>
 	<%= text_field_tag "topic1" %>	
-
-	<%= label_tag "topic2" %>
-	<%= text_field_tag "topic2" %>	
+	<br>
+	<a id="add_topic" class="btn">Add Another Topic</a>
+	<%= hidden_field_tag :topic_count, 1 %>
 	
 	<div class="form-actions">
 		<%= f.submit "Start Coding »", :class => "btn btn-primary" %>
