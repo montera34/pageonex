@@ -6,16 +6,32 @@ class ThreadsController < ApplicationController
 	end
 
 	def create
+		# render :json => params.to_json
+		
 		@thread = Threadx.new
 		@thread.update_attributes!(params[:threadx])
-		redirect_to "/"
+		
+		number_of_newspapers = params[:media_count].to_i
+		number_of_newspapers.downto(1) do |n|
+			@thread.media << Media.find(params["media#{n}"])
+		end
+
+		number_of_topics = params[:topic_count].to_i
+		number_of_topics.downto(1) do |n|
+			Code.create!({:code_text => params["topic#{n}"], :threadx_id => @thread.id})
+		end
+
+		@thread.save!
+
+		thread_name = params[:threadx][:thread_name]
+		redirect_to "/threads/#{thread_name}/coding"
 	end
 
 	def new
 		@media = []
 		@thread = Threadx.new
 		Media.all.each do |newspaper|
-			newspaper.name = "#{newspaper.display_name} - #{newspaper.country}"
+			newspaper.name = "#{newspaper.country} - #{newspaper.display_name}"
 			@media << newspaper
 		end
 
