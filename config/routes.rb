@@ -3,7 +3,11 @@ Pageonex::Application.routes.draw do
 
   resources :threads
 
+  match 'threads/:id/coding' => 'coding#process_images', :as => :purchase
+
   root :to => "home#index"
+
+
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
