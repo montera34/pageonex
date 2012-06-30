@@ -1,0 +1,378 @@
+country,city,display_name,name
+Argentina,ar,Clarín,ar_clarin
+Argentina,ar,La Nación,nacion
+Argentina,ar,El Día de la Plata,ar_eldia
+Argentina,ar,La Razón,ar_razon
+Argentina,ar,La Voz del Interior,ar_voz_interior
+Argentina,ar,Los Andes – Mendoza,ar_losandes
+Argentina,ar,Diario Norte,ar_diario_norte
+Argentina,ar,Diario Uno,ar_uno
+Argentina,ar,Página/12,ar_pagina12
+Argentina,ar,Buenos Aires Herald,buenos_aires_herald
+Argentina,ar,Diario de Cuyo,ar_diario_cuyo
+Argentina,ar,El Diario de Paraná,diario_parana
+Argentina,ar,Diario Hoy,ar_hoy
+Argentina,ar,Diario Jornada,jornada_mendoza
+Argentina,ar,Diario Jornada en la Patagonia,ar_jornada
+Argentina,ar,Diario La Capital – Mar del Plata,la_capital
+Argentina,ar,El Territorio,ar_territorio_posadas
+Argentina,ar,La República de Corrientes,ar_republica_corrientes
+Argentina,ar,Mañana de Córdoba,ar_manana_cordoba
+Argentina,ar,Diario de La Pampa,ar_diario_pampa
+Argentina,ar,Rosario 12,ar_rosario12
+Argentina,ar,Diario El Sureño,ar_sureno
+Argentina,ar,Diario La Arena,ar_arena
+Argentina,ar,Tiempo Argentino,tiempo_argentino
+Argentina,ar,Diario Pregón,pregon
+Argentina,ar,La Capital – Rosario,ar_capital_rosario
+Argentina,ar,La Nueva Provincia,ar_nueva_provincia
+Argentina,ar,Uno de Santa Fe,ar_uno_sfe
+Asia-Pacific,asi,Gulf News,gulf_news
+Asia-Pacific,asi,Manila Standard Today,manila_standard_today
+Australia,au,The Australian,au_australian
+Australia,au,The Daily Telegraph,au_daily_telegraph
+Australia,au,Northern Territory News,northern_territory
+Australia,au,The Sydney Morning Herald,sydney_morning_herald
+Australia,au,Herald Sun,herald_sun
+Australia,au,The Courier-Mail,courier_mail
+Australia,au,The West Australian,west_australian
+Belgium,be,Gazet van Antwerpen,gva
+Belgium,be,Le Soir,lesoir
+Belgium,be,De Tijd,de_tijd
+Belgium,be,L’Echo,l_echo
+Belgium,be,De Morgen,morgen
+Belgium,be,De Standaard,standaard
+Belgium,be,Het Nieuwsblad,nieuwsblad
+Bolivia,bo,Los Tiempos,bo_tiempos
+Bolivia,bo,Diario de Potosí,potosi
+Bolivia,bo,El Nacional,elnacional
+Bolivia,bo,La Patria,patria
+Bolivia,bo,Correo Sur,correo_sur
+Bolivia,bo,El Chaqueño,chaqueno
+Brasil,br,Folha de São Paulo,br_folha_spaulo
+Brasil,br,O Correio Brazilense,correio_braziliense
+Brasil,br,Diário de Cuiabá,diario_cuiaba
+Brasil,br,Jornal Agora,br_agora
+Brasil,br,O Sul,o_sul
+Brasil,br,O Globo,br_oglobo
+Brasil,br,Extra,br_extra
+Brasil,br,O Estado de São Paulo,br_estado_spaulo
+Brasil,br,Diário A Tarde,br_atarde
+Brasil,br,Jornal Estado de Minas,jornal_estado_minas
+Brasil,br,O Liberal,o_liberal
+Canada,ca,The Globe and Mail,ca_globe_mail
+Canada,ca,The National Post,ca_national_post
+Canada,ca,Ottawa Citizen,ca_ottawa_citizen
+Canada,ca,The Province,ca_province
+Canada,ca,The Toronto Star,ca_toronto_star
+Canada,ca,Le Journal de Montréal,ca_journal_montreal
+Canada,ca,The Toronto Sun,ca_toronto_sun
+Canada,ca,The Vancouver Sun,ca_vancouver_sun
+Canada,ca,Winnipeg Free Press,winnipeg_free_press
+Canada,ca,La Presse,ca_la_presse
+Canada,ca,The Gazette,ca_montreal_gazette
+Switzerland,ch,Tages-Anzeiger,tages_anzeiger
+Switzerland,ch,Basler Zeitung,basler_zeitung
+Chile,cl,La Tercera,cl_tercera
+Chile,cl,Diario 21,cl_diario21
+Chile,cl,Diario Chañarcillo,cl_chanarcillo
+Chile,cl,Diario El Divisadero,cl_divisadero
+Chile,cl,Diario el Centro,cl_centro
+Chile,cl,El Tipógrafo,cl_tipografo
+Chile,cl,El Diario de Aysén,diario_aysen
+Chile,cl,El Mercurio,cl_mercurio
+Chile,cl,El Día,cl_eldia
+Chile,cl,Diario de Concepción,diario_concepcion
+Chile,cl,El Pingüino,pinguino
+Chile,cl,Diario El Andino,andino
+China,cn,解放军报 – Jiefangjun Bao,cn_jiefangjun_bao
+China,cn,The Global Times,cn_global_times
+China,cn,人民网 – Renmin Ribao,cn_renmin_ribao
+China,cn,China Daily,china_daily
+Colombia,co,El Espectador,co_espectador
+Colombia,co,El Heraldo,co_heraldo
+Colombia,co,Diario La Opinion,co_opinion
+Colombia,co,El Universal,co_universal
+Colombia,co,La Tarde,co_tarde
+Colombia,co,Diario de Otún,co_diario_otun
+Colombia,co,La Libertad,co_libertad
+Colombia,co,La Crónica del Quindío,co_cronica_quindio
+Colombia,co,El Tiempo,co_eltiempo
+Colombia,co,El Colombiano,co_elcolombiano
+Colombia,co,El Mundo,co_elmundo
+Colombia,co,El País – Cali,co_elpais
+Colombia,co,El Observador,co_observador
+Costa Rica,cr,Diario Extra,cr_extra
+Costa Rica,cr,La Nación – Costa Rica,cr_nacion
+Cuba,cu,Granma,cu_granma
+Germany,de,Frankfurter Allgemeine,faz
+Germany,de,Die Tageszeitung,tageszeitung
+Germany,de,Frankfurter Rundschau,fr
+Germany,de,Bild,bild
+Germany,de,Sueddeutsche,sueddeutsche
+Germany,de,Der Tagesspiegel,tagesspiegel
+Germany,de,Die Welt,die_welt
+Denmark,dk,B.T.,bt
+Denmark,dk,Ekstra Bladet,ekstrabladet
+Denmark,dk,Politiken,politiken
+Dominican Rep.,do,Diario Libre,do_diario_libre
+Dominican Rep.,do,El Caribe,el_caribe
+Dominican Rep.,do,Listín Diario,do_listin
+Dominican Rep.,do,El Nacional,do_nacional
+Dominican Rep.,do,El Día,do_eldia
+Ecuador,ec,Diario El Mercurio,ec_mercurio
+Ecuador,ec,Diario Hoy,ec_diario_hoy
+Ecuador,ec,El Comercio,ec_comercio
+Spain,es,El País,elpais
+Spain,es,ABC,abc
+Spain,es,El Mundo,elmundo
+Spain,es,La Razón,larazon
+Spain,es,La Vanguardia,lavanguardia
+Spain,es,El Correo,elcorreo
+Spain,es,El Periódico,elperiodico
+Spain,es,Heraldo de Aragón,heraldo_aragon
+Spain,es,La Gaceta,la_gaceta
+Spain,es,La Voz de Galicia,vozgalicia
+Spain,es,Levante,levante
+Spain,es,Alerta – El Diario de Cantabria,alerta
+Spain,es,Canarias 7,canarias7
+Spain,es,Diario Vasco,diario_vasco
+Spain,es,Diario de Sevilla,diario_sevilla
+Spain,es,El Comercio,elcomercio
+Spain,es,El Diario Montañés,diario_montanes
+Spain,es,El Periódico Mediterraneo,elperiodico_mediterraneo
+Spain,es,El Periódico de Aragón,elperiodico_aragon
+Spain,es,Faro de Vigo,farovigo
+Spain,es,La Nueva España,lanuevaespana
+Spain,es,La Región de Ourense,laregion
+Spain,es,Atlántico Diario,atlantico_diario
+Spain,es,Deia,deia
+Spain,es,Diario del AltoAragón,altoaragon
+Spain,es,El Periódico de Catalunya,elperiodico_cat
+Spain,es,El Periódico de Estremadura,elperiodico_extremadura
+Spain,es,El Punt Avui,elpunt_avui
+Europe,eur,International Herald Tribune,int_herald_tribune
+France,fr,Le Monde,lemonde
+France,fr,La Croix,lacroix
+France,fr,Le Figaro,lefigaro
+France,fr,Libération,liberation
+France,fr,Aujourd’hui en France,aujourd_hui
+France,fr,La Dépêche du Midi,depeche
+France,fr,Le Dauphiné Libéré,dauphine
+France,fr,Le Parisien,parisien
+France,fr,Le Progrès,progres
+France,fr,Ouest France,ouestfrance
+France,fr,Sud Ouest,sudouest
+France,fr,Courrier Picard,courrierpicard
+France,fr,L’Yonne-Républicaine,lyonnerepublicaine
+France,fr,La République des Pyrénées,republiquepyrenees
+France,fr,Le Maine Libre,mainelibre
+France,fr,Les Dernières Nouvelles d’Alsace,dna
+France,fr,Midi Libre,midilibre
+France,fr,Nord Éclair,nordeclair
+France,fr,Paris Normandie,parisnormandie
+France,fr,Presse Ocean,presseocean
+France,fr,Télégramme,telegramme
+France,fr,Berry Republicain,berryrepublicain
+France,fr,Charente Libre,charentelibre
+France,fr,Corse-Matin,corsematin
+France,fr,Journal L’Alsace,alsace
+France,fr,Journal de Saône-et-Loire,journalsaoneloire
+France,fr,L’Ardenais,ardennais
+France,fr,L’Echo de la Haute-Vienne,echo
+Greece,gr,Η ΚΑΘΗΜΕΡΙΝΗ,kathimerini
+Greece,gr,Αδέσμευτος Τύπος,adesmeftos_typos
+Greece,gr,ειδησεις – Ethnos,ethnos
+Greece,gr,Taxydromos – ΤΑΧΥΔΡΟΜΟΣ,taxydromos
+Guatemala,gt,Prensa Libre,gt_prensa_libre
+Honduras,hn,La Tribuna,latribuna
+Honduras,hn,Tiempo,tiempo
+Ireland,ie,Irish Times,irish_times
+Ireland,ie,The Irish News,irish_news
+Ireland,ie,Irish Independent,irish_independent
+Ireland,ie,Irish Examiner,irish_examiner
+Israel,il,Haaretz,il_haaretz
+Israel,il,The Jerusalem Post,jerusalem_post
+Israel,il,maariv,il_maariv
+India,in,The Hindu,hindu
+India,in,The Times of India,times_india
+India,in,Ananda Bazar Patrika – আনন্দবাজার পত্রিকা,in_anandbazar_patrika
+India,in,Eenadu – ఈనాడు,in_eenadu
+India,in,The Telegraph India,telegraph_india
+India,in,DNA,in_dna
+Italy,it,Corriere della Sera,corriere_della_sera
+Italy,it,Il Messaggero,ilmessaggero
+Italy,it,L’Osservatore Romano,osservatore_romano
+Italy,it,La Repubblica,repubblica
+Italy,it,La Stampa,stampa
+Italy,it,il Giornale,ilgiornale
+Italy,it,Avvenire,avvenire
+Italy,it,Il Gazzettino,gazzettino
+Italy,it,Il Mattino,mattino
+Italy,it,Il Tirreno,tirreno
+Italy,it,Il Tempo,tempo
+Italy,it,La Sicilia,la_sicilia
+Italy,it,Libero,libero
+Italy,it,l’Unità,unita
+Italy,it,Giornale di Sicilia,giornale_sicilia
+Japan,jp,Mainichi Shimbun – 毎日新聞,mainichi_shimbun
+Japan,jp,Mainichi RT,mainichi_rt
+Japan,jp,The Asahi Shimbun,asahi_shimbun
+Japan,jp,The Japan Times,japan_times
+Morocco,ma,Au Fait,au_fait
+Morocco,ma,جريدة المساء المغربية – Al Massae,almassae
+Morocco,ma,Le Soir Echos,le_soir_echos
+Mexico,mx,La Jornada,mx_jornada
+Mexico,mx,Excelsior,mx_excelsior
+Mexico,mx,La Prensa,mx_laprensa
+Mexico,mx,Milenio,mx_milenio
+Mexico,mx,Diario del Istmo – Voz en Libertad,mx_diario_istmo
+Mexico,mx,El Informador,mx_informador
+Mexico,mx,Diario de Xalapa,mx_diario_xalapa
+Mexico,mx,El Diario de Chihuahua,mx_diario_chihuahua
+Mexico,mx,El Independiente de Hidalgo,mx_independiente_hidalgo
+Mexico,mx,El Porvenir de Monterrey,mx_porvenir
+Mexico,mx,El Sol de Mazatlán,mx_sol_mazatlan
+Mexico,mx,El Sol de México,mx_sol_mexico
+Mexico,mx,El Sol de Sinaloa,mx_sol_sinaloa
+Mexico,mx,Expreso,mx_expreso
+Mexico,mx,La Jornada de Michoacán,mx_jornada_michoacan
+Mexico,mx,Milenio de Estado de México,mx_milenio_edomex
+Mexico,mx,Opinión,mx_opinion_torreon
+Mexico,mx,Diario Censura,mx_censura
+Mexico,mx,Diario de Morelos,mx_diario_morelos
+Mexico,mx,Diario de Querétaro,mx_diario_queretaro
+Mexico,mx,El Mexicano,mx_el_mexicano
+Mexico,mx,El Occidental,mx_occidental
+Mexico,mx,El Periódico de Quintana Roo,periodico_quintana_roo
+Mexico,mx,El Sol de León,mx_sol_leon
+Mexico,mx,El Sol de Parral,mx_sol_parral
+Mexico,mx,El Sol de Tampico,mx_sol_tampico
+Mexico,mx,El Sol de Tlaxcala,mx_sol_tlaxcala
+Mexico,mx,El Sudcaliforniano,mx_sudcaliforniano
+Nigeria,ng,NEXT,next
+Nicaragua,ni,El Nuevo Diario,ni_nuevo_diario
+Nicaragua,ni,La Prensa,ni_prensa
+Netherlands,nl,AD,ad
+Netherlands,nl,Het Parool,het_parool
+Norway,no,Aftenposten,aftenposten
+New Zealand,nz,The New Zealand Herald,new_zealand_herald
+New Zealand,nz,The Dominion Post,dominion_post
+New Zealand,nz,The Press,press
+Panama,pa,El Siglo,el_siglo
+Panama,pa,La Estrella de Panamá,estrella_panama
+Peru,pe,Expreso,pe_expreso
+Peru,pe,El Mercurio de Cajamarca,mercurio_cajamarca
+Peru,pe,La Primera de Perú,pe_primera
+Peru,pe,Perú 21,pe_peru21
+Peru,pe,Diario Correo,pe_correo
+Peru,pe,Del País,del_pais
+Peru,pe,Diario16,diario16
+Peru,pe,El Peruano,pe_elperuano
+Peru,pe,Diario Correo – Cusco,pe_correo_cusco
+Peru,pe,El Diario del Cusco,pe_diario_cusco
+Poland,pl,Fakt,fakt
+Poland,pl,Gazeta Wyborcza,gazeta_wyborcza
+Puerto Rico,pr,El Nuevo Día,nuevo_dia
+Puerto Rico,pr,Daily Sun,pr_daily_sun
+Portugal,pt,Diário de Noticias,diario_noticias
+Portugal,pt,Correio da Manhã,correiodamanha
+Portugal,pt,Jornal de Notícias,jornal_noticias
+Portugal,pt,Público,publico
+Portugal,pt,Diário de Coimbra,diario_coimbra
+Paraguay,py,ABC Color,abccolor
+Paraguay,py,La Nación,nacion
+Paraguay,py,Última Hora,py_ultimahora
+Paraguay,py,5 Días,py_5dias
+Russia,ru,Izvestia,izvestia
+Russia,ru,Kommersant,kommersant
+Russia,ru,Moskovsky Komsomolets,komsomolets
+Russia,ru,Moskovskaya Pravda,moskovskaya_pravda
+Russia,ru,Delovoy Peterburg,delovoy_peterburg
+Sweden,se,Dagens Nyheter,dagens_nyheter
+Sweden,se,Helsingborgs Dagblad,helsingborgs_dagblad
+Sweden,se,Sundsvalls Tidning,sundsvalls_tidning
+Sweden,se,Flamman,flamman
+El Salvador,sv,La Prensa Gráfica,prensa_grafica
+Turkey,tr,Hürriyet,hurriyet
+Turkey,tr,Zaman,zaman
+Turkey,tr,Habertürk,haberturk
+Turkey,tr,Milliyet,milliyet
+Turkey,tr,Vatan,vatan
+Turkey,tr,Posta Gazetesi,posta_gazetesi
+Turkey,tr,Takvim,takvim
+Turkey,tr,Sabah,sabah
+United Kingdom,uk,The Times,the_times
+United Kingdom,uk,The Guardian,guardian
+United Kingdom,uk,Daily Telegraph,daily_telegraph
+United Kingdom,uk,The Independent,the_independent
+United Kingdom,uk,The Herald,herald
+United Kingdom,uk,The Scotsman,scotsman
+United Kingdom,uk,Belfast Telegraph,belfast_telegraph
+United Kingdom,uk,Irish News,irish_news
+United Kingdom,uk,The Journal,the_journal
+United Kingdom,uk,Evening Standard,evening_standard
+USA,us,New York Times,newyork_times
+USA,us,Washington Post,washington_post
+USA,us,Boston Globe,boston_globe
+USA,us,Los Angeles Times,latimes
+USA,us,El Nuevo Herald,nuevo_herald
+USA,us,Miami Herald,miami_herald
+USA,us,San Jose Mercury News,mercure_news
+USA,us,Seattle Times,seattle_times
+USA,us,St. Petersburg Times,st_petersburg_times
+USA,us,La Opinión,laopinion
+USA,us,USA Today,usa_today
+USA,us,Dallas Morning News,dallas_morning_news
+USA,us,Chicago Tribune,chicago_tribune
+USA,us,New York Post,newyork_post
+USA,us,San Francisco Chronicle,sf_chronicle
+USA,us,Detroit Free Press,detroit_free_press
+USA,us,Philadelphia Inquirer,philadelphia_inquirer
+USA,us,Star Tribune,star_tribune
+USA,us,Star-Ledger,starledger
+USA,us,The Atlanta Journal-Constitution,atlanta_journal_conts
+USA,us,The Baltimore Sun,baltimore_sun
+USA,us,The Sacramento Bee,sacramento_bee
+USA,us,Arizona Republic News,arizona_republic
+USA,us,Chicago Sun-Times,chicago_sun_times
+USA,us,Newsday,newsday
+USA,us,The Denver Post,denver_post
+USA,us,The Plain Dealer,plain_dealer
+USA,us,Arizona Daily Star,arizona_daily_star
+Uruguay,uy,El Observador,uy_observador
+Uruguay,uy,El País,uy_elpais
+Uruguay,uy,La Diaria,uy_ladiaria
+Uruguay,uy,La República,uy_republica
+Uruguay,uy,Últimas Noticias,uy_ultimas_noticias
+Uruguay,uy,Diario La Juventud,uy_juventud
+Uruguay,uy,El Telégrafo,uy_telegrafo
+Venezuela,ve,El Nacional,ve_nacional
+Venezuela,ve,2001 – Dosmiluno,ve_2001
+Venezuela,ve,Últimas Noticias,ve_ultimasnoticias
+Venezuela,ve,Correo del Caroní,ve_correo_caroni
+Venezuela,ve,Diario Voz,ve_diario_voz
+Venezuela,ve,La Prensa de Lara,ve_prensa_lara
+Venezuela,ve,Versión Final,ve_version_final
+Venezuela,ve,El Clarín de la Victoria para Aragua,ve_clarin_aragua
+Venezuela,ve,El Diario de Guayana,ve_diario_guayana
+Venezuela,ve,El Informador,ve_informador
+Venezuela,ve,El Tiempo – El periódico del pueblo oriental,tiempo_puerto_cruz
+Venezuela,ve,Nueva Prensa Guayana,ve_nueva_prensa
+Venezuela,ve,Primicia,primicia
+Venezuela,ve,Diario Impacto,ve_impacto
+Venezuela,ve,Notitarde,ve_notitarde
+Venezuela,ve,El Regional,el_regional
+Venezuela,ve,La Hora,la_hora
+Venezuela,ve,Mundo Oriental,mundo_oriental
+Venezuela,ve,El Luchador,el_luchador
+Venezuela,ve,Periodiquito de Aragua,periodiquito
+Venezuela,ve,Periodiquito de Guárico,periodiquito_guarico
+Venezuela,ve,Universal,ve_universal
+Venezuela,ve,El Aragüeño,ve_aragueno
+Venezuela,ve,Nueva Prensa de Oriente,nueva_prensa_oriente
+Venezuela,ve,Visión Apureña,vision_apurena
+Venezuela,ve,Diario La Costa,ve_diario_costa
+South Africa,za,Beeld,beeld
+South Africa,za,The Star,star
+South Africa,za,The Times,the_times
