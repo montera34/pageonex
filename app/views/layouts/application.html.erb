@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PageOneX</title>
     <%= csrf_meta_tags %>
+    <%= javascript_include_tag "application" %>
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
     <!--[if lt IE 9]>
@@ -15,7 +16,7 @@
     <%= stylesheet_link_tag "application", :media => "all" %>
     <style type="text/css">
       body, p{
-        font-family: 'Cabin', sans-serif;
+        font-family: 'Signika Negative', sans-serif;
       }
     </style>
 
@@ -62,7 +63,17 @@
                 <p><%= alert %></p>
               </div>
             <% end %>
-
+            <% if params[:controller] == "threads" || params[:controller] == "coding"%>
+            <ul class="breadcrumb">
+              <li id="initiate">
+                <a href="#">Initiate</a> <span class="divider">>></span>
+              </li>
+              <li id="code" class="active">
+                <a href="#">Code</a> <span class="divider">>></span>
+              </li>
+              <li id="visualize"><a href="#">Visualize</a></li>
+            </ul>
+            <% end %>
             <%= yield %>
             </div>
             <div class="span3">
@@ -98,8 +109,11 @@
     <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <link href='http://fonts.googleapis.com/css?family=Cabin:400,500,600,700,400italic' rel='stylesheet' type='text/css'>
-    <%= javascript_include_tag "application" %>
+    <!-- <link href='http://fonts.googleapis.com/css?family=Cabin:400,500,600,700,400italic' rel='stylesheet' type='text/css'> -->
+
+    <link href='http://fonts.googleapis.com/css?family=Signika+Negative:300,400,600,700' rel='stylesheet' type='text/css'>
+    
+    
     <script type="text/javascript">
       $(function () {
         media_count=1

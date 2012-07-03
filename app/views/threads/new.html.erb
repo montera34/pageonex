@@ -1,3 +1,5 @@
+<h1>New Thread</h1>
+<hr>
 <%= form_for @thread, :url => { :controller => :threads, :action => :create}, :class => "form-horizontal" do |f| %>
 
 	<h2>Basic info</h2><br>
@@ -37,3 +39,10 @@
 	</div>
 <% end %>
 
+<script type="text/javascript">
+$(function (argument) {
+	$(".breadcrumb li").filter("li.active").attr("class"," ");
+	$("#initiate").attr("class", "active");
+
+})
+</script>

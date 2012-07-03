@@ -1,11 +1,11 @@
 class CodingController < ApplicationController
 	before_filter :authenticate_user!
 
-	def get_images
-		
+	def process_images
+		@thread = Threadx.find_by_thread_name params[:thread_name]		
 	end
 
-	def process_images
+	def visualize
 		
 	end
 end

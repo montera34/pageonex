@@ -1,1 +1,105 @@
-<h2>coding</h2>
+<h1>Coding</h1>
+<hr>
+
+
+
+
+<div class="row">
+    <div class="span2" >
+        <% @thread.codes.each do |code| %>
+        <div class="alert alert-info">
+            <p><%= code.code_text %></p>
+        </div>
+        <span></span>
+        <% end %>
+
+        <hr>
+        <h3>Name of Newspaper</h3>
+        <a href="#">New York Times, US </a>
+
+        <hr>
+        <h3>Source of image</h3>
+        <a href="#">Kiosko.com</a>
+    </div>
+    <div class="span7">
+        <div id="myCarousel" class="carousel slide">
+          <!-- Carousel items -->
+          <div class="carousel-inner">
+            <div class="active item"><%= image_tag "1.jpg", id: "photo", style: "height:951px"%></div>
+            <div class="item"><%= image_tag "2.jpg", id: "photo", style: "height:951px"%></div>
+            <div class="item"><%= image_tag "3.jpg", id: "photo", style: "height:951px"%></div>
+          </div>
+          <!-- Carousel nav -->
+        <a class="carousel-control left"  style="z-index: 200;" href="#myCarousel" data-slide="prev">&lsaquo;</a>
+        <a class="carousel-control right" style="z-index: 200;" href="#myCarousel" data-slide="next">&rsaquo;</a>
+        </div>
+
+        <div id="high_area1" style="position: absolute; overflow: hidden; z-index: 0; left: 0px; top: 0px; width: 0px; height: 0px; display: block; " class="imgareaselect-outer"></div>
+
+        <div id="high_area2" style="position: absolute; overflow: hidden; z-index: 0; left: 0px; top: 0px; width: 0px; height: 0px; display: block; " class="imgareaselect-outer"></div>
+        <a id="high" class="btn">Okay</a>
+        <%= link_to "Done", "/threads/#{@thread.thread_name}/visualize", class: "btn" %>
+        <br>
+        x1<input id="x1"type="text"><br>
+        y1<input id="y1"type="text"><br>
+        x2<input id="x2"type="text"><br>
+        y2<input id="y2"type="text"><br>
+        width<input id="width"type="text"><br>
+        height<input id="height"type="text"><br>
+    </div>
+</div>
+
+
+
+
+
+<script type="text/javascript">
+$(document).ready(function () {
+    $('.carousel').carousel({interval: 999999,pause:"hover"});
+
+
+    hi_img = $('img#photo').imgAreaSelect({instance: true, handles: true,onSelectEnd: highlightingArea, onSelectStart:clearHighlightedArea});
+    $("#high").click(function () {
+    	hi_img.cancelSelection()
+    	img_pos = $("#myCarousel").position();
+        _top= img_pos.top + parseInt($("#y1").attr("value"));
+        _left= img_pos.left + parseInt($("#x1").attr("value"));
+
+        if ( $("#high_area1").css("top") =="0px") {
+            $("#high_area1").css("top",_top);
+            $("#high_area1").css("left",_left);
+            $("#high_area1").css("height",$("#height").attr("value"));
+            $("#high_area1").css("width",$("#width").attr("value"));    
+        } else {
+            $("#high_area2").css("top",_top);
+            $("#high_area2").css("left",_left);
+            $("#high_area2").css("height",$("#height").attr("value"));
+            $("#high_area2").css("width",$("#width").attr("value"));
+        };
+    	
+    });
+});
+function highlightingArea (img, selection) {
+
+	$("#x1").attr("value",selection.x1)
+	$("#y1").attr("value",selection.y1)
+	$("#x2").attr("value",selection.x2)
+	$("#y2").attr("value",selection.y2)
+    $("#height").attr("value",selection.height)
+    $("#width").attr("value",selection.width)
+	img.hide = true
+    
+}
+
+function clearHighlightedArea () {
+    //$("#high_area").css("width",0);
+}
+</script>
+
+<script type="text/javascript">
+$(function (argument) {
+    $(".breadcrumb li").filter("li.active").attr("class"," ");
+    $("#code").attr("class", "active");
+
+})
+</script>
