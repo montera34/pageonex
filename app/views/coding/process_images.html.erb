@@ -1,9 +1,5 @@
 <h1>Coding</h1>
 <hr>
-
-
-
-
 <div class="row">
     <div class="span2" >
         <% @thread.codes.each do |code| %>
@@ -18,6 +14,10 @@
         <a href="#">New York Times, US </a>
 
         <hr>
+        <h3>Current image details</h3>
+        <a id="current_img_details" href="#"> </a>
+
+        <hr>
         <h3>Source of image</h3>
         <a href="#">Kiosko.com</a>
     </div>
@@ -25,9 +25,9 @@
         <div id="myCarousel" class="carousel slide">
           <!-- Carousel items -->
           <div class="carousel-inner">
-            <div class="active item"><%= image_tag "1.jpg", id: "photo", style: "height:951px"%></div>
-            <div class="item"><%= image_tag "2.jpg", id: "photo", style: "height:951px"%></div>
-            <div class="item"><%= image_tag "3.jpg", id: "photo", style: "height:951px"%></div>
+            <div class="active item"><%= image_tag "1.jpg", id: "image1", style: "height:949px"%></div>
+            <div class="item"><%= image_tag "2.jpg", id: "image2", style: "height:949px"%></div>
+            <div class="item"><%= image_tag "3.jpg", id: "image3", style: "height:949px"%></div>
           </div>
           <!-- Carousel nav -->
         <a class="carousel-control left"  style="z-index: 200;" href="#myCarousel" data-slide="prev">&lsaquo;</a>
@@ -37,15 +37,69 @@
         <div id="high_area1" style="position: absolute; overflow: hidden; z-index: 0; left: 0px; top: 0px; width: 0px; height: 0px; display: block; " class="imgareaselect-outer"></div>
 
         <div id="high_area2" style="position: absolute; overflow: hidden; z-index: 0; left: 0px; top: 0px; width: 0px; height: 0px; display: block; " class="imgareaselect-outer"></div>
-        <a id="high" class="btn">Okay</a>
-        <%= link_to "Done", "/threads/#{@thread.thread_name}/visualize", class: "btn" %>
+        <hr>
+
+        <%= form_tag "/threads/#{@thread.thread_name}/display" do %> 
+        <div id="image1">
+            <%= hidden_field_tag "image1_ha1","0" %>
+            <%= hidden_field_tag "image1_ha1_x1" %>
+            <%= hidden_field_tag "image1_ha1_y1" %>
+            <%= hidden_field_tag "image1_ha1_x2" %>
+            <%= hidden_field_tag "image1_ha1_y2" %>
+            <%= hidden_field_tag "image1_ha1_width" %>
+            <%= hidden_field_tag "image1_ha1_height" %>
+
+            <%= hidden_field_tag "image1_ha2","0" %>
+            <%= hidden_field_tag "image1_ha2_x1" %>
+            <%= hidden_field_tag "image1_ha2_y1" %>
+            <%= hidden_field_tag "image1_ha2_x2" %>
+            <%= hidden_field_tag "image1_ha2_y2" %>
+            <%= hidden_field_tag "image1_ha2_width" %>
+            <%= hidden_field_tag "image1_ha2_height" %>
+            
+        </div>
+        <div id="image2">
+            <%= hidden_field_tag "image2_ha1","0" %>
+            <%= hidden_field_tag "image2_ha1_x1" %>
+            <%= hidden_field_tag "image2_ha1_y1" %>
+            <%= hidden_field_tag "image2_ha1_x2" %>
+            <%= hidden_field_tag "image2_ha1_y2" %>
+            <%= hidden_field_tag "image2_ha1_width" %>
+            <%= hidden_field_tag "image2_ha1_height" %>
+
+            <%= hidden_field_tag "image2_ha2","0" %>
+            <%= hidden_field_tag "image2_ha2_x1" %>
+            <%= hidden_field_tag "image2_ha2_y1" %>
+            <%= hidden_field_tag "image2_ha2_x2" %>
+            <%= hidden_field_tag "image2_ha2_y2" %>
+            <%= hidden_field_tag "image2_ha2_width" %>
+            <%= hidden_field_tag "image2_ha2_height" %>
+        </div>
+        <div id="image3">
+            <%= hidden_field_tag "image3_ha1","0" %>
+            <%= hidden_field_tag "image3_ha1_x1" %>
+            <%= hidden_field_tag "image3_ha1_y1" %>
+            <%= hidden_field_tag "image3_ha1_x2" %>
+            <%= hidden_field_tag "image3_ha1_y2" %>
+            <%= hidden_field_tag "image3_ha1_width" %>
+            <%= hidden_field_tag "image3_ha1_height" %>
+
+            <%= hidden_field_tag "image3_ha2","0" %>
+            <%= hidden_field_tag "image3_ha2_x1" %>
+            <%= hidden_field_tag "image3_ha2_y1" %>
+            <%= hidden_field_tag "image3_ha2_x2" %>
+            <%= hidden_field_tag "image3_ha2_y2" %>
+            <%= hidden_field_tag "image3_ha2_width" %>
+            <%= hidden_field_tag "image3_ha2_height" %>
+        </div>
+
+        <%= submit_tag "Done",  class: "btn btn-primary"%>
+        <a href"/" class="btn">Cancel</a>
+        
+
         <br>
-        x1<input id="x1"type="text"><br>
-        y1<input id="y1"type="text"><br>
-        x2<input id="x2"type="text"><br>
-        y2<input id="y2"type="text"><br>
-        width<input id="width"type="text"><br>
-        height<input id="height"type="text"><br>
+        <% end %>
+        
     </div>
 </div>
 
@@ -55,45 +109,160 @@
 
 <script type="text/javascript">
 $(document).ready(function () {
-    $('.carousel').carousel({interval: 999999,pause:"hover"});
+    carousel = $('.carousel').carousel({interval: 999999,pause:"hover"});
+    
+    // get the object of image selection plugin
+    currrent_img_area_select = $('div.active img').imgAreaSelect({instance: true, handles: true,onSelectEnd: highlightingArea});
 
+    // current display image 
+    currrent_img = $("div.active img")
+    $("#current_img_details").text(currrent_img.attr("src"));
+    
+    // change the currrent_img_area_select, currrent_img variable when user slide to another image, and also clean the highlighted areas
+    carousel.on('slid',function(){
 
-    hi_img = $('img#photo').imgAreaSelect({instance: true, handles: true,onSelectEnd: highlightingArea, onSelectStart:clearHighlightedArea});
-    $("#high").click(function () {
-    	hi_img.cancelSelection()
-    	img_pos = $("#myCarousel").position();
-        _top= img_pos.top + parseInt($("#y1").attr("value"));
-        _left= img_pos.left + parseInt($("#x1").attr("value"));
+        currrent_img_area_select = $('div.active img').imgAreaSelect({instance: true, handles: true,onSelectEnd: highlightingArea});
 
-        if ( $("#high_area1").css("top") =="0px") {
-            $("#high_area1").css("top",_top);
-            $("#high_area1").css("left",_left);
-            $("#high_area1").css("height",$("#height").attr("value"));
-            $("#high_area1").css("width",$("#width").attr("value"));    
-        } else {
-            $("#high_area2").css("top",_top);
-            $("#high_area2").css("left",_left);
-            $("#high_area2").css("height",$("#height").attr("value"));
-            $("#high_area2").css("width",$("#width").attr("value"));
+        currrent_img = $("div.active img");
+
+        // reset the highlighted areas values
+        clearHighlightedArea();
+
+        if ( $("#high_area1").css("top") == "0px") {
+            loadhighlightingAreas();
         };
-    	
+
+        $("#current_img_details").text(currrent_img.attr("src"));
+        
+        
+        
     });
+
+    
+    if ( $("#high_area1").css("top") == "0px") {
+        loadhighlightingAreas();
+    };
+
 });
 function highlightingArea (img, selection) {
+    image_hidden_fields = $("div#" + currrent_img.attr("id"));
 
-	$("#x1").attr("value",selection.x1)
-	$("#y1").attr("value",selection.y1)
-	$("#x2").attr("value",selection.x2)
-	$("#y2").attr("value",selection.y2)
-    $("#height").attr("value",selection.height)
-    $("#width").attr("value",selection.width)
+    if ( $("#"+image_hidden_fields.attr("id") +"_ha1").attr("value") == 0){
+        image_hidden_fields.find("#"+image_hidden_fields.attr("id")+"_ha1_x1").attr("value",selection.x1);
+        image_hidden_fields.find("#"+image_hidden_fields.attr("id")+"_ha1_y1").attr("value",selection.y1);
+        image_hidden_fields.find("#"+image_hidden_fields.attr("id")+"_ha1_x2").attr("value",selection.x2);
+        image_hidden_fields.find("#"+image_hidden_fields.attr("id")+"_ha1_y2").attr("value",selection.y2);
+        image_hidden_fields.find("#"+image_hidden_fields.attr("id")+"_ha1_width").attr("value",selection.width);
+        image_hidden_fields.find("#"+image_hidden_fields.attr("id")+"_ha1_height").attr("value",selection.height);
+        $("#"+image_hidden_fields.attr("id") +"_ha1").attr("value","1")
+    }
+
+    if ( $("#"+image_hidden_fields.attr("id") +"_ha2").attr("value") == 0){
+        image_hidden_fields.find("#"+image_hidden_fields.attr("id")+"_ha2_x1").attr("value",selection.x1);
+        image_hidden_fields.find("#"+image_hidden_fields.attr("id")+"_ha2_y1").attr("value",selection.y1);
+        image_hidden_fields.find("#"+image_hidden_fields.attr("id")+"_ha2_x2").attr("value",selection.x2);
+        image_hidden_fields.find("#"+image_hidden_fields.attr("id")+"_ha2_y2").attr("value",selection.y2);
+        image_hidden_fields.find("#"+image_hidden_fields.attr("id")+"_ha2_width").attr("value",selection.width);
+        image_hidden_fields.find("#"+image_hidden_fields.attr("id")+"_ha2_height").attr("value",selection.height);
+        $("#"+image_hidden_fields.attr("id") +"_ha2").attr("value","1")
+    }
 	img.hide = true
+    currrent_img_area_select.cancelSelection()
+    highdone();
+
+}
+
+function highdone() {
+    
+    currrent_img_area_select.cancelSelection()
+
+    // get the position of the image in the page
+    img_pos = $("#myCarousel").position();
+
+    // get the div which contains the hidden field that holds the highlighted area values
+    image_hidden_fields = $("div#" + currrent_img.attr("id"));
+
+
+    if( $("#"+image_hidden_fields.attr("id") +"_ha1").attr("value") == "1") {
+        _top = img_pos.top + parseInt(image_hidden_fields.find("#"+image_hidden_fields.attr("id")+"_ha1_y1").attr("value"));
+
+        _left= img_pos.left + parseInt(image_hidden_fields.find("#"+image_hidden_fields.attr("id")+"_ha1_x1").attr("value"));
+
+        $("#high_area1").css("top",_top);
+
+        $("#high_area1").css("left",_left);
+
+        $("#high_area1").css("height",image_hidden_fields.find("#"+image_hidden_fields.attr("id")+"_ha1_height").attr("value"));
+
+        $("#high_area1").css("width",image_hidden_fields.find("#"+image_hidden_fields.attr("id")+"_ha1_width").attr("value")); 
+        
+    }
+
+    if ($("#"+image_hidden_fields.attr("id") +"_ha2").attr("value") == "1") {
+
+        _top = img_pos.top + parseInt(image_hidden_fields.find("#"+image_hidden_fields.attr("id")+"_ha2_y1").attr("value"));
+
+        _left= img_pos.left + parseInt(image_hidden_fields.find("#"+image_hidden_fields.attr("id")+"_ha2_x1").attr("value"));
+
+        $("#high_area2").css("top",_top);
+
+        $("#high_area2").css("left",_left);
+
+        $("#high_area2").css("height",image_hidden_fields.find("#"+image_hidden_fields.attr("id")+"_ha2_height").attr("value"));
+
+        $("#high_area2").css("width",image_hidden_fields.find("#"+image_hidden_fields.attr("id")+"_ha2_width").attr("value")); 
+        $("#"+image_hidden_fields.attr("id") +"_ha2").attr("value","0")
+    }
+
+    
+};
+
+function loadhighlightingAreas () {
+    
+    // get the position of the image in the page
+        img_pos = $("#myCarousel").position();
+
+        // get the div which contains the hidden field that holds the highlighted area values
+        image_hidden_fields = $("div#" + currrent_img.attr("id"));
+
+
+            _top = img_pos.top + parseInt(image_hidden_fields.find("#"+image_hidden_fields.attr("id")+"_ha1_y1").attr("value"));
+
+            _left= img_pos.left + parseInt(image_hidden_fields.find("#"+image_hidden_fields.attr("id")+"_ha1_x1").attr("value"));
+
+            $("#high_area1").css("top",_top);
+
+            $("#high_area1").css("left",_left);
+
+            $("#high_area1").css("height",image_hidden_fields.find("#"+image_hidden_fields.attr("id")+"_ha1_height").attr("value"));
+
+            $("#high_area1").css("width",image_hidden_fields.find("#"+image_hidden_fields.attr("id")+"_ha1_width").attr("value")); 
+
+            
+ 
+            _top = img_pos.top + parseInt(image_hidden_fields.find("#"+image_hidden_fields.attr("id")+"_ha2_y1").attr("value"));
+
+            _left= img_pos.left + parseInt(image_hidden_fields.find("#"+image_hidden_fields.attr("id")+"_ha2_x1").attr("value"));
+
+            $("#high_area2").css("top",_top);
+
+            $("#high_area2").css("left",_left);
+
+            $("#high_area2").css("height",image_hidden_fields.find("#"+image_hidden_fields.attr("id")+"_ha2_height").attr("value"));
+
+            $("#high_area2").css("width",image_hidden_fields.find("#"+image_hidden_fields.attr("id")+"_ha2_width").attr("value")); 
+
     
 }
 
 function clearHighlightedArea () {
-    //$("#high_area").css("width",0);
+    $("#high_area1").css("top","0px");
+    $("#high_area1").css("width","0px");
+    
+    $("#high_area2").css("top","0px");
+    $("#high_area2").css("width","0px");
 }
+
 </script>
 
 <script type="text/javascript">

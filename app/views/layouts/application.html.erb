@@ -64,14 +64,14 @@
               </div>
             <% end %>
             <% if params[:controller] == "threads" || params[:controller] == "coding"%>
-            <ul class="breadcrumb">
+            <ul style="text-align:center" class="breadcrumb">
               <li id="initiate">
-                <a href="#">Initiate</a> <span class="divider">>></span>
+                <a href="#">Initiate</a> <span style="margin: 0 80px 0 80px" class="divider">»</span>
               </li>
               <li id="code" class="active">
-                <a href="#">Code</a> <span class="divider">>></span>
+                <a href="<%= "/threads/#{@thread.thread_name}/coding"%>">Code</a> <span style="margin: 0 80px 0 80px" class="divider">»</span>
               </li>
-              <li id="visualize"><a href="#">Visualize</a></li>
+              <li id="display"><a href="<%= "/threads/#{@thread.thread_name}/display"%>">Display</a></li>
             </ul>
             <% end %>
             <%= yield %>
@@ -114,50 +114,6 @@
     <link href='http://fonts.googleapis.com/css?family=Signika+Negative:300,400,600,700' rel='stylesheet' type='text/css'>
     
     
-    <script type="text/javascript">
-      $(function () {
-        media_count=1
-        media_element = $("#media1");
-        media_label_element = $("#media_label1");
-        $("#add_media").on("click",function () {
-          cloned_m_e = media_element.clone();
-          cloned_m_l_e = media_label_element.clone();
 
-          cloned_m_l_e.attr("id", "media_label" + ++media_count);
-          cloned_m_l_e.attr("for", "media" + media_count);
-          cloned_m_l_e.text("Media"+media_count);
-
-          cloned_m_e.attr("id", "media" + media_count);
-          cloned_m_e.attr("name", "media" + media_count);
-
-          $(cloned_m_l_e).insertBefore('#add_media');
-          $(cloned_m_e).insertBefore('#add_media');
-          $("<br/>").insertBefore('#add_media');
-          $("#media_count").attr("value", media_count);
-        });
-
-        topic_count=1
-        topic_element = $("#topic1");
-        topic_label_element = $("#topic_label1");
-        $("#add_topic").on("click",function () {
-          cloned_t_e = topic_element.clone();
-          cloned_t_l_e = topic_label_element.clone();
-
-          cloned_t_e.attr("text","");
-          cloned_t_l_e.attr("id", "topic_label" + ++topic_count);
-          cloned_t_l_e.attr("for", "topic" + topic_count);
-          cloned_t_l_e.text("Topic"+topic_count);
-
-          cloned_t_e.attr("id", "topic" + topic_count);
-          cloned_t_e.attr("name", "topic" + topic_count);
-
-          $(cloned_t_l_e).insertBefore('#add_topic');
-          $(cloned_t_e).insertBefore('#add_topic');
-          $("<br/>").insertBefore('#add_topic');
-          $("#topic_count").attr("value", topic_count);
-        });
-        
-      });
-    </script>
   </body>
 </html>
