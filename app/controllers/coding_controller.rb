@@ -5,7 +5,8 @@ class CodingController < ApplicationController
 		@thread = Threadx.find_by_thread_name params[:thread_name]		
 	end
 
-	def visualize
-		
+	def display
+		@thread = Threadx.find_by_thread_name params[:thread_name]	
+		#render :json => params.to_json
 	end
 end

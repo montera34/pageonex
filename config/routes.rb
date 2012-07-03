@@ -5,7 +5,7 @@ Pageonex::Application.routes.draw do
 
   match 'threads/:thread_name/coding' => 'coding#process_images'
 
-  match 'threads/:thread_name/visualize' => 'coding#visualize'
+  match 'threads/:thread_name/display' => 'coding#display'
 
   root :to => "home#index"
 
