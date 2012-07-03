@@ -23,7 +23,7 @@ class ThreadsController < ApplicationController
 
 		@thread.save!
 
-		thread_name = params[:threadx][:thread_name]
+		thread_name = params[:threadx][:thread_name].sub(' ', '_')
 		redirect_to "/threads/#{thread_name}/coding"
 	end
 
@@ -34,7 +34,7 @@ class ThreadsController < ApplicationController
 			newspaper.name = "#{newspaper.country} - #{newspaper.display_name}"
 			@media << newspaper
 		end
-
+		
 	end
 
 	def edit
