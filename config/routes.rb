@@ -3,7 +3,9 @@ Pageonex::Application.routes.draw do
 
   resources :threads
 
-  match 'threads/:id/coding' => 'coding#process_images', :as => :purchase
+  match 'threads/:thread_name/coding' => 'coding#process_images'
+
+  match 'threads/:thread_name/visualize' => 'coding#visualize'
 
   root :to => "home#index"
 
