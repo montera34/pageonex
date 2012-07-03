@@ -32,6 +32,8 @@ group :test do
   gem 'launchy'
 end
 
+gem "rmagick"
+
 gem 'jquery-rails'
 
 gem 'devise'
