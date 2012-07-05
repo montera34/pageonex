@@ -1,17 +1,23 @@
-<h1>Display</h1>
+<h1>Display [<%= @thread.thread_name %>]</h1>
 <hr>
 
 <div class="row">
 	<div class="span4">
 		<h3>Name</h3>
-		<p>Occupy project From 17.09.201a to 31.12.2011</p>
+		<p>Occupy project From 17.09.201a </p>
 	</div>
 	<div class="span5">
 		<h3>Type of coding</h3>
-		<p>Code1</p>
-		<p>Code2</p>
+			<% @thread.codes.each do |code| %>
+        <div style="background-color:<%= code.color %>; margin-left: 7px; float: left;color:black" class="alert alert-info">
+            <p  id="<%= code.code_text %>"><h4><%= code.code_text %></h4>
+                <br>
+                <%= code.code_description %>
+            </p>
+        </div>
+       <% end %>
 	</div>
-</div>
+</div> 
 <hr>
 <div class="row"></div>
 	<h3>Percentage of surface</h3>

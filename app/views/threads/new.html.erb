@@ -27,15 +27,25 @@
 	<hr>
 	<h2>Coding info</h2><br>
 
-	<%= label_tag "topic1", nil, :id => "topic_label1" %>
-	<%= text_field_tag "topic1",nil,placeholder: "Topic name" %>	
+  <div class="well">
+    <div id="topic_1" class="well">
+      <%= label_tag "topic_name_1", nil, :id => "topic_label_1" %>
+      <%= text_field_tag "topic_name_1",nil,placeholder: "Code/Topic name" %> 
 
-	<%= label_tag "topic", nil, :id => "topic_label", style: "display:none" %>
-	<%= text_field_tag "topic",nil,placeholder: "Topic name", style: "display:none"%>
+      <%= label_tag "topic_color_1", nil, :id => "topic_color_label_1" %>
+      <%= text_field_tag "topic_color_1",nil,placeholder: "#FFFFFF" %> 
 
-	<br>
-	<a id="add_topic" class="btn">Add Another Topic</a>
-	<%= hidden_field_tag :topic_count, 1 %>
+      <%= label_tag "topic_description_1", nil, :id => "topic_description_label_1" %>
+      <%= text_area_tag "topic_description_1",nil,:rows => "5",placeholder: "Some Info about that topic" %> 
+    </div>
+    
+    
+    <br>
+    <a id="add_topic" class="btn">Add Another Code/Topic</a>
+    <%= hidden_field_tag :topic_count, 1 %>
+  </div>
+
+
 	
 	<div class="form-actions">
 		<%= f.submit "Start Coding »", :class => "btn btn-primary" %>
@@ -43,6 +53,16 @@
 	</div>
 <% end %>
 
+<div id="topic" class="well"  style="display:none">
+      <%= label_tag "topic_name", nil, :id => "topic_name_label" %>
+      <%= text_field_tag "topic_name",nil,placeholder: "Code/Topic name" %> 
+
+      <%= label_tag "topic_color", nil, :id => "topic_color_label" %>
+      <%= text_field_tag "topic_color",nil,placeholder: "#FFFFFF" %> 
+
+      <%= label_tag "topic_description", nil, :id => "topic_description_label" %>
+      <%= text_area_tag "topic_description",nil,:rows => "5",placeholder: "Some Info about that topic" %> 
+</div>
 
 <script type="text/javascript">
   $(function () {
@@ -67,27 +87,46 @@
     });
 
     topic_count=1
-    topic_element = $("#topic");
-    topic_label_element = $("#topic_label");
     $("#add_topic").on("click",function () {
-      cloned_t_e = topic_element.clone();
-      cloned_t_l_e = topic_label_element.clone();
+      
+      topic_element = $("#topic").clone();
+      topic_name_element = topic_element.find("#topic_name");
+      topic_name_label_element = topic_element.find("#topic_name_label");
 
-      cloned_t_e.attr("text","");
-      cloned_t_l_e.attr("id", "topic_label" + ++topic_count);
-      cloned_t_l_e.attr("for", "topic" + topic_count);
-      cloned_t_l_e.attr("style","display:block");
-      cloned_t_l_e.text("Topic"+topic_count);
+      topic_color_element = topic_element.find("#topic_color");
+      topic_color_label_element = topic_element.find("#topic_color_label");
 
-      cloned_t_e.attr("id", "topic" + topic_count);
-      cloned_t_e.attr("name", "topic" + topic_count);
-      cloned_t_e.attr("style","display:inline-block");
+      topic_description_element = topic_element.find("#topic_description");
+      topic_description_label_element = topic_element.find("#topic_description_label");
 
-      $(cloned_t_l_e).insertBefore('#add_topic');
-      $(cloned_t_e).insertBefore('#add_topic');
+      topic_element.attr("style","display:block");
+      topic_element.attr("id","topic"+ ++topic_count);
+
+      topic_name_element.attr("id","topic_name_"+topic_count);
+      topic_name_element.attr("name","topic_name_"+topic_count);
+      topic_name_label_element.attr("id","topic_name_label_"+topic_count)
+      topic_name_label_element.attr("for","topic_name_"+topic_count)
+      topic_name_label_element.text("topic_name_"+topic_count)
+
+      topic_color_element.attr("id","topic_color_"+topic_count)
+      topic_color_element.attr("name","topic_color_"+topic_count)
+      topic_color_label_element.attr("id","topic_color_label_"+topic_count)
+      topic_color_label_element.attr("for","topic_color_"+topic_count)
+      topic_color_label_element.text("topic_color_"+topic_count)
+
+      topic_description_element.attr("id","topic_description_"+topic_count)
+      topic_description_element.attr("name","topic_description_"+topic_count)
+      topic_description_label_element.attr("id","topic_description_label_"+topic_count)
+      topic_description_label_element.attr("for","topic_description_"+topic_count)
+      topic_description_label_element.text("topic_description_"+topic_count)
+
+      $(topic_element).insertBefore("#add_topic");
       $("<br/>").insertBefore('#add_topic');
       $("#topic_count").attr("value", topic_count);
     });
+
+
+
     
   });
 </script>
