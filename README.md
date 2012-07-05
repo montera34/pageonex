@@ -13,7 +13,7 @@ A semi-automated version of the tool has been tested, and we have produced sever
 
 This summer, we are building a prototype web-based version with the support of the Google Summer of Code programm (GSOC).
 
-This is a project by Pablo Rey Mazón. Ahmd Refat is coding, thanks to GSOC; Sasha Costanza-Chock and Nathan Mathias are giving advice and supporting from the Center for Civic Media at MIT Media Lab. 
+This is a project by Pablo Rey Mazón, https://github.com/numeroteca. Ahmd Refat, https://github.com/ahmdrefat, is coding, thanks to GSOC; Sasha Costanza-Chock and Nathan Mathias are giving advice and supporting from the Center for Civic Media at MIT Media Lab. 
 
 Check for updates about the project at http://montera34.org/pageonex/ and in Twitter @pageonex
 
