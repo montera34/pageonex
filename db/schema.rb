@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120628160725) do
+ActiveRecord::Schema.define(:version => 20120704184911) do
 
   create_table "areas", :force => true do |t|
     t.integer  "x1"
@@ -26,8 +26,10 @@ ActiveRecord::Schema.define(:version => 20120628160725) do
   create_table "codes", :force => true do |t|
     t.string   "code_text"
     t.integer  "threadx_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+    t.text     "code_description"
+    t.string   "color"
   end
 
   create_table "highlighted_areas", :force => true do |t|

@@ -18,7 +18,7 @@ class ThreadsController < ApplicationController
 
 		number_of_topics = params[:topic_count].to_i
 		number_of_topics.downto(1) do |n|
-			Code.create!({:code_text => params["topic#{n}"], :threadx_id => @thread.id})
+			Code.create!({:code_text => params["topic_name_#{n}"], :code_description => params["topic_description_#{n}"],:color => params["topic_color_#{n}"],:threadx_id => @thread.id})
 		end
 
 		@thread.save!
