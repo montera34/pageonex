@@ -1,16 +1,20 @@
-<h1>Display [<%= @thread.thread_name %>]</h1>
+<h1>Display: <%= @thread.thread_name %></h1>
 <hr>
 
 <div class="row">
 	<div class="span4">
-		<h3>Name</h3>
-		<p>Occupy project From 17.09.201a </p>
+		<h3>Name: <%= @thread.thread_name %></h3>
+		<p>
+			From: 17.09.2011 <br/>
+			To: 17.12.2011
+		</p>
+		
 	</div>
 	<div class="span5">
-		<h3>Type of coding</h3>
+		<h3>Topics coded</h3>
 			<% @thread.codes.each do |code| %>
         <div style="background-color:<%= code.color %>; margin-left: 7px; float: left;color:black" class="alert alert-info">
-            <p  id="<%= code.code_text %>"><h4><%= code.code_text %></h4>
+            <p id="<%= code.code_text %>"><h4><%= code.code_text %></h4>
                 <br>
                 <%= code.code_description %>
             </p>
@@ -20,7 +24,9 @@
 </div> 
 <hr>
 <div class="row"></div>
-	<h3>Percentage of surface</h3>
+	<!--<h3>Percentage of surface</h3> That will be when we have the bar chart-->
+	<h3>Surface in Newspapers front pages</h3>
+	<p>Export to svg, csv, ods, png, pdf</p>
 <hr>
 <div class="row">
 	<div class="span1">
