@@ -6,8 +6,6 @@ class ThreadsController < ApplicationController
 	end
 
 	def create
-		# render :json => params.to_json
-		
 		@thread = Threadx.new
 		@thread.update_attributes!(params[:threadx])
 		
@@ -24,6 +22,9 @@ class ThreadsController < ApplicationController
 		@thread.save!
 
 		thread_name = params[:threadx][:thread_name].sub(' ', '_')
+		
+		Scraper.get_issues
+		
 		redirect_to "/threads/#{thread_name}/coding"
 	end
 
