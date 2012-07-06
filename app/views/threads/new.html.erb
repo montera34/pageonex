@@ -48,10 +48,12 @@
 
 	
 	<div class="form-actions">
-		<%= f.submit "Start Coding »", :class => "btn btn-primary" %>
+		<%= f.submit "Start Coding »", :class => "btn btn-primary", id: "strat_coding" %>
 		<a class="btn" href="/">Cancel</a>
 	</div>
 <% end %>
+
+
 
 <div id="topic" class="well"  style="display:none">
       <%= label_tag "topic_name", nil, :id => "topic_name_label" %>
@@ -62,6 +64,19 @@
 
       <%= label_tag "topic_description", nil, :id => "topic_description_label" %>
       <%= text_area_tag "topic_description",nil,:rows => "5",placeholder: "Some Info about that topic" %> 
+</div>
+
+<div class="modal hide" id="scraping">
+  <div class="modal-header">
+    <!-- <button type="button" class="close" data-dismiss="modal">×</button> -->
+    <h3>Scraping</h3>
+  </div>
+  <div class="modal-body" style="padding: 54px 0 56px 279px;">
+  </div>
+  <div class="modal-footer">
+    
+    <!-- <a href="#" data-dismiss="modal" class="btn btn-primary">Okay</a> -->
+  </div>
 </div>
 
 <script type="text/javascript">
@@ -110,6 +125,12 @@
 
       topic_color_element.attr("id","topic_color_"+topic_count)
       topic_color_element.attr("name","topic_color_"+topic_count)
+      
+      random_color = getRandomColor();
+      topic_color_element.attr("value","#FEE"+random_color)
+
+
+      
       topic_color_label_element.attr("id","topic_color_label_"+topic_count)
       topic_color_label_element.attr("for","topic_color_"+topic_count)
       topic_color_label_element.text("topic_color_"+topic_count)
@@ -125,8 +146,37 @@
       $("#topic_count").attr("value", topic_count);
     });
 
+  function getRandomColor () {
+    random_color = Math.ceil(Math.random(topic_count)*1000)
+    if (random_color >= 100) {
+      return random_color;
+    }else{
+      getRandomColor();
+    }
+  }
 
-
+  $("#strat_coding").on("click",function () {
+    $('#scraping').modal('show')
+    wait_box = $(".modal-body")
+    var opts = {
+      lines: 13, // The number of lines to draw
+      length: 11, // The length of each line
+      width: 4, // The line thickness
+      radius: 16, // The radius of the inner circle
+      rotate: 0, // The rotation offset
+      color: '#000', // #rgb or #rrggbb
+      speed: 1.2, // Rounds per second
+      trail: 56, // Afterglow percentage
+      shadow: true, // Whether to render a shadow
+      hwaccel: true, // Whether to use hardware acceleration
+      className: 'spinner', // The CSS class to assign to the spinner
+      zIndex: 2e9, // The z-index (defaults to 2000000000)
+      top: '297', // Top position relative to parent in px
+      left: '-67' // Left position relative to parent in px
+    };
+    var spinner = new Spinner(opts).spin();
+    wait_box.append(spinner.el);
+  })
     
   });
 </script>
