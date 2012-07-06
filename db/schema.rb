@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120704184911) do
+ActiveRecord::Schema.define(:version => 20120706030926) do
 
   create_table "areas", :force => true do |t|
     t.integer  "x1"
@@ -21,6 +21,8 @@ ActiveRecord::Schema.define(:version => 20120704184911) do
     t.integer  "highlighted_area_id"
     t.datetime "created_at",          :null => false
     t.datetime "updated_at",          :null => false
+    t.integer  "width"
+    t.integer  "height"
   end
 
   create_table "codes", :force => true do |t|

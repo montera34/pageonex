@@ -5,13 +5,8 @@ require "RMagick"
 
 class Scraper
 
-	def self.get_issues
+	def self.get_issues(year=2012, month=5, start_day=3, end_day=4)
 
-		# the dates the issues to scrape 
-		year = 2010
-		month = 5
-		start_day = 3
-		end_day = 4
 
 		# URIs of the issues 
 		newspapers_issues_paths = Scraper.build_kiosko_issues(year, month, start_day, end_day)
