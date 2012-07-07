@@ -1,16 +1,22 @@
 <h1>New Thread</h1>
 <hr>
 <%= form_for @thread, :url => { :controller => :threads, :action => :create}, :class => "form-horizontal" do |f| %>
-
+  
 	<h2>Basic info</h2><br>
-	<%= f.label :thread_name %>
-	<%= f.text_field :thread_name, placeholder: "For example Occupy,Arab Spring" %>
+	<%= f.label :thread_display_name, "Thread Name" %>
+	<%= f.text_field :thread_display_name, placeholder: "For example Occupy, Arab Spring" %>
 
 	<%= f.label :start_date %>
 	<%= f.text_field :start_date, placeholder: "DD/MM/YYYY" %>
 
 	<%= f.label :end_date %>
 	<%= f.text_field :end_date, placeholder: "DD/MM/YYYY" %>
+
+  <%= f.label :status %>
+  <%= f.text_field :status, placeholder: "Open, Closed" %>
+
+  <%= f.label :category %>
+  <%= f.text_field :category, placeholder: "International, national, Occupy" %>
 
 	<%= f.label :description %>
 	<%= f.text_area :description, :rows => "10", placeholder: "Few words to describe what going on this thread"%>
@@ -33,7 +39,7 @@
       <%= text_field_tag "topic_name_1",nil,placeholder: "Code/Topic name" %> 
 
       <%= label_tag "topic_color_1", nil, :id => "topic_color_label_1" %>
-      <%= text_field_tag "topic_color_1",nil,placeholder: "#FFFFFF" %> 
+      <%= text_field_tag "topic_color_1","#FFFFFF",placeholder: "#FFFFFF" %> 
 
       <%= label_tag "topic_description_1", nil, :id => "topic_description_label_1" %>
       <%= text_area_tag "topic_description_1",nil,:rows => "5",placeholder: "Some Info about that topic" %> 

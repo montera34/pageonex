@@ -5,18 +5,22 @@ require "RMagick"
 
 class Scraper
 
-	def self.get_issues(year=2012, month=5, start_day=3, end_day=4)
+	def self.get_issues(year=2012, month=5, start_day=3, end_day=4, newspapers_names)
 
-
+		@@newspapers_images = {}
 		# URIs of the issues 
-		newspapers_issues_paths = Scraper.build_kiosko_issues(year, month, start_day, end_day)
+		newspapers_issues_paths = Scraper.build_kiosko_issues(year, month, start_day, end_day, newspapers_names)
 		#newspapers_issues_paths = Scraper.build_newyork_times_issues(year, month, start_day, end_day)
 		#newspapers_issues_paths = Scraper.build_elpais_issues(year, month, start_day, end_day)
 
 
 		Scraper.scrape newspapers_issues_paths
 
-		puts "Scraping is done"
+		# puts "Scraping is done"
+
+		newspapers_issues_paths
+
+		@@newspapers_images
 	end
 
 	# scrape method take the URIs of the issues and scrape them
@@ -35,6 +39,9 @@ class Scraper
 					#Scraper.save_elpais_issues path, source
 				end	
 			rescue => e
+				newspaper_name = path.split('/').last
+				pub_date = "#{path.split('/')[-3]}-#{path.split('/')[-4]}-#{path.split('/')[-5]}"
+				@@newspapers_images[newspaper_name.split(".")[0] +"-"+ pub_date] = {publication_date: pub_date, media: newspaper_name.split(".")[0], local_path: "404.jpg"}
 				puts e.message + " => " + path
 			end
 		end
@@ -69,9 +76,9 @@ class Scraper
 
 	# building the URIs of the issues based on the passed dates
 	# this script able to scrape back to 2008, 2009, and 2010 but most of the newspaper dosen't exsit in this years, and it also covers 2011, 2012 
-	def self.build_kiosko_issues(year, month, start_day, end_day)
+	def self.build_kiosko_issues(year, month, start_day, end_day, newspapers_names)
 
-		FileUtils.mkdir "public/pics/kiosko" unless File.directory? "public/pics/kiosko" 
+		FileUtils.mkdir "app/assets/images/kiosko" unless File.directory? "app/assets/images/kiosko" 
 
 		# sample of the countries and their newspapers form http://kiosko.net/
 =begin
@@ -83,8 +90,9 @@ class Scraper
 	us => USA
 	. . . . . .
 =end
-		kiosko_newspapers = {"es" => ["elpais", "abc"], "de" => ["faz", "bild"], "fr" => ["lemonde", "lacroix"], "it" => ["corriere_della_sera", "ilmessaggero"], "uk" => ["the_times", ],"us" => ["wsj", "newyork_times", "usa_today"]}
 
+		#kiosko_newspapers = {"es" => ["elpais", "abc"], "de" => ["faz", "bild"], "fr" => ["lemonde", "lacroix"], "it" => ["corriere_della_sera", "ilmessaggero"], "uk" => ["the_times", ],"us" => ["wsj", "newyork_times", "usa_today"]}
+		kiosko_newspapers = newspapers_names
 
 
 		domain = "http://img.kiosko.net/"
@@ -98,7 +106,7 @@ class Scraper
 		kiosko_newspapers.each do |country, newspaper|
 			newspaper.each do |_newspaper| 
 				newspapers_issues << "/#{country}/#{_newspaper}.750.jpg" 
-				FileUtils.mkdir "public/pics/kiosko/#{_newspaper}" unless File.directory? "public/pics/kiosko/#{_newspaper}" 
+				FileUtils.mkdir "app/assets/images/kiosko/#{_newspaper}" unless File.directory? "app/assets/images/kiosko/#{_newspaper}" 
 			end
 		end
 
@@ -118,8 +126,13 @@ class Scraper
 		newspaper_name = path.split('/').last
 
 		# resolution of the produced image  is [750x1072]
-		open("public/pics/kiosko/#{path.split("/")[-1].split(".")[0]}/" + "#{path.split('/')[-3]}-#{path.split('/')[-4]}-#{path.split('/')[-5]}-" + newspaper_name ,"wb") do |file|
+		open("app/assets/images/kiosko/#{path.split("/")[-1].split(".")[0]}/" + "#{path.split('/')[-3]}-#{path.split('/')[-4]}-#{path.split('/')[-5]}-" + newspaper_name ,"wb") do |file|
 			file.write(source.read())
+
+			pub_date = "#{path.split('/')[-3]}-#{path.split('/')[-4]}-#{path.split('/')[-5]}"
+			
+			@@newspapers_images[newspaper_name.split(".")[0] +"-"+ pub_date] = {publication_date: pub_date, media: newspaper_name.split(".")[0], local_path: "/kiosko/#{path.split("/")[-1].split(".")[0]}/" + "#{pub_date}-" + newspaper_name}
+
 			puts "done => #{path.split('/')[-3]}-#{path.split('/')[-4]}-#{path.split('/')[-5]}-" + newspaper_name
 		end
 
@@ -128,7 +141,7 @@ class Scraper
 	# building the URIs of the issues based on the passed dates
 	def self.build_newyork_times_issues(year, month, start_day, end_day)
 
-		FileUtils.mkdir "public/pics/newyork_times" unless File.directory? "public/pics/newyork_times" 
+		FileUtils.mkdir "app/assets/images/newyork_times" unless File.directory? "app/assets/images/newyork_times" 
 
 		domain = "http://www.nytimes.com/images/"
 
@@ -137,7 +150,7 @@ class Scraper
 		issues = Scraper.issues_dates year, month, start_day, end_day
 
 		issues.each do |issue| 
-			newspapers_issues_paths << domain + issue + "public/nytfrontpage/scan.jpg"
+			newspapers_issues_paths << domain + issue + "app/assets/images/nytfrontpage/scan.jpg"
 		end
 
 		newspapers_issues_paths
@@ -147,7 +160,7 @@ class Scraper
 	def self.save_newyork_times_issues(path, source)
 
 		# resolution of the produced image  is [348x640]
-		open("public/pics/newyork_times/" + "#{path.split('/')[-3]}-#{path.split('/')[-4]}-#{path.split('/')[-5]}" ,"wb") do |file|
+		open("app/assets/images/newyork_times/" + "#{path.split('/')[-3]}-#{path.split('/')[-4]}-#{path.split('/')[-5]}" ,"wb") do |file|
 			file.write(source.read())
 			puts "done => #{path.split('/')[-3]}-#{path.split('/')[-4]}-#{path.split('/')[-5]}"
 		end
@@ -158,7 +171,7 @@ class Scraper
 	def self.build_elpais_issues(year, month, start_day, end_day)
 
 		# scrape a pdf from http://elpais.com/ and convert it to png 
-		FileUtils.mkdir "public/pics/elpais" unless File.directory? "public/pics/elpais" 
+		FileUtils.mkdir "app/assets/images/elpais" unless File.directory? "app/assets/images/elpais" 
 
 		# first issue available date is 2012/03/01
 		issues = Scraper.issues_dates year, month, start_day, end_day
@@ -177,12 +190,12 @@ class Scraper
 
 		file_name = "#{path.split('/')[-3]}-#{path.split('/')[-2]}-#{path.split('/')[-1][9..10]}"
 
-		open("public/pics/elpais/" + file_name ,"w+b") do |file|
+		open("app/assets/images/elpais/" + file_name ,"w+b") do |file|
 			file.write(source.read())
-			issue_pdf = Magick::ImageList.new("public/pics/elpais/#{file_name}")
+			issue_pdf = Magick::ImageList.new("app/assets/images/elpais/#{file_name}")
 			# resolution of the produced image  is [765x1133]
-			issue_pdf.write "public/pics/elpais/#{file_name}.jpg"
-			File.delete "public/pics/elpais/#{file_name}"
+			issue_pdf.write "app/assets/images/elpais/#{file_name}.jpg"
+			File.delete "app/assets/images/elpais/#{file_name}"
 			puts "done => #{file_name}"
 		end
 
@@ -190,7 +203,7 @@ class Scraper
 
 end
 
-FileUtils.mkdir "public/pics" unless File.directory? "public/pics"
+#FileUtils.mkdir "public/pics" unless File.directory? "public/pics"
 #Scraper.get_issues	
 
 
