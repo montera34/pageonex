@@ -1,13 +1,16 @@
-<h1>Display: <%= @thread.thread_name %></h1>
+<h1>Display: <%= @thread.thread_display_name %></h1>
 <hr>
 
 <div class="row">
 	<div class="span4">
-		<h3>Name: <%= @thread.thread_name %></h3>
-		<p>
-			From: 17.09.2011 <br/>
-			To: 17.12.2011
-		</p>
+		<h3>Name:</h3> <p><%= @thread.thread_display_name %></p>
+		<h3>Description:</h3><p> <%= @thread.description %></p>
+		<h3>Category:</h3> <p><%= @thread.category %></p>
+		<h3>Status:</h3> <p><%= @thread.status %></p>
+		
+		<p><h4>From:</h4> <%= @thread.start_date.inspect %></p>
+		<p><h4>To:</h4> <%= @thread.end_date.inspect %></p>
+		
 		
 	</div>
 	<div class="span5">
@@ -28,85 +31,25 @@
 	<h3>Surface in Newspapers front pages</h3>
 	<p>Export to svg, csv, ods, png, pdf</p>
 <hr>
+
 <div class="row">
-	<div class="span1">
-			<h4>ABC</h4>
+	<div class="span3">
+		<h2>Newspapers:</h2>
 	</div>
-	<div id="newspaper1" class="row">
-		<div class="span1">
-			<%= image_tag "1.jpg", id: "photo", style: "height:120px"%>
-		</div>
-		<div class="span1">
-			<%= image_tag "2.jpg", id: "photo", style: "height:120px"%>
-		</div>
-		<div class="span1">
-			<%= image_tag "3.jpg", id: "photo", style: "height:120px"%>
-		</div>
-	</div>	
-
-	<hr>
-	<div class="span1">
-		<h4>ABC</h4>
+	
+	<div class="span2">
+		<% @thread.media.each do |m| %>
+				<h3><%= m.name.capitalize %></h3>
+		<% end %>
 	</div>
-	<div id="newspaper2" class="row">
+</div>
+<hr>
+<div class="row">
+	<% @image_counter.times do |ic| %>
 		<div class="span1">
-			<%= image_tag "2.jpg", id: "photo", style: "height:120px"%>
+			<%= image_tag "/assets#{@images[ic].local_path}", id: "image#{ic}", style: "height:120px"%>
 		</div>
-		<div class="span1">
-			<%= image_tag "3.jpg", id: "photo", style: "height:120px"%>
-		</div>
-
-		<div class="span1">
-			<%= image_tag "1.jpg", id: "photo", style: "height:120px"%>
-		</div>
-
-		<div class="span1">
-			<%= image_tag "2.jpg", id: "photo", style: "height:120px"%>
-		</div>
-	</div>
-
-	<hr>
-	<div class="span1">
-		<h4>ABC</h4>
-	</div>
-	<div id="newspaper3" class="row">
-		<div class="span1">
-			<%= image_tag "3.jpg", id: "photo", style: "height:120px"%>
-		</div>
-
-		<div class="span1">
-			<%= image_tag "1.jpg", id: "photo", style: "height:120px"%>
-		</div>
-
-		<div class="span1">
-			<%= image_tag "2.jpg", id: "photo", style: "height:120px"%>
-		</div>
-
-		<div class="span1">
-			<%= image_tag "1.jpg", id: "photo", style: "height:120px"%>
-		</div>
-	</div>
-	<hr>
-	<div class="span1">
-		<h4>ABC</h4>
-	</div>
-	<div id="newspaper4" class="row">
-		<div class="span">
-			<%= image_tag "2.jpg", id: "photo", style: "height:120px"%>
-		</div>
-
-		<div class="span1">
-			<%= image_tag "1.jpg", id: "photo", style: "height:120px"%>
-		</div>
-
-		<div class="span1">
-			<%= image_tag "3.jpg", id: "photo", style: "height:120px"%>
-		</div>
-
-		<div class="span1">
-			<%= image_tag "1.jpg", id: "photo", style: "height:120px"%>
-		</div>
-	</div>
+	<% end %>
 </div>
 
 

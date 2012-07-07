@@ -5,7 +5,7 @@
     <div class="span2" >
         <% @thread.codes.each do |code| %>
             <div style="background-color:<%= code.color %>;color:black" class="alert alert-info">
-                <p  id="<%= code.code_text %>"><h4><%= code.code_text %></h4>
+                <p id="<%= code.code_text %>"><h4><%= code.code_text %></h4>
                     <br>
                     <%= code.code_description %>
                 </p>
@@ -13,12 +13,12 @@
         <% end %>
 
         <hr>
-        <h3>Name of Newspaper</h3>
-        <a href="#">New York Times, US </a>
+        <h3>Newspaper info</h3>
+        <a id="newspaper_name" href="#"> </a>
 
         <hr>
-        <h3>Current image details</h3>
-        <a id="current_img_details" href="#"> </a>
+        <h3>Publication Date:</h3>
+        <a id="publication_date" href=""></a>
 
         <hr>
         <h3>Source of image</h3>
@@ -28,9 +28,11 @@
         <div id="myCarousel" class="carousel slide">
           <!-- Carousel items -->
           <div class="carousel-inner">
-            <div class="active item"><%= image_tag "1.jpg", id: "image1", style: "height:949px"%></div>
-            <div class="item"><%= image_tag "2.jpg", id: "image2", style: "height:949px"%></div>
-            <div class="item"><%= image_tag "3.jpg", id: "image3", style: "height:949px"%></div>
+            <div class="active item"><%= image_tag "/assets#{@images[0].local_path}", :id => "image1", :style => "height: 949px;" %></div>
+
+            <% 1.upto(@image_counter-1) do |ic| %>
+                <div class="item"><%= image_tag "/assets#{@images[ic].local_path}", :id => "image#{ic+1}", :style => "height: 949px;" %></div>
+            <%end%>
           </div>
           <!-- Carousel nav -->
         <a class="carousel-control left"  style="z-index: 200;" href="#myCarousel" data-slide="prev">&lsaquo;</a>
@@ -50,9 +52,9 @@
           <div class="modal-body">
             <p>Please select a topic:</p>
             <% @thread.codes.each do |code| %>
-                <%= radio_button_tag "codes", code.code_text, false,color: code.color %> <%= code.code_text %><br>
+                <%= radio_button_tag "codes", code.code_text, false, color: code.color, code_id: code.id %> <%= code.code_text %><br>
             <% end %>
-            <input  id="current_high_area" type="hidden" value=""/>
+            <input  id="current_high_area" type="hidden" value="1"/>
           </div>
           <div class="modal-footer">
             
@@ -61,65 +63,28 @@
         </div>
 
         <%= form_tag "/threads/#{@thread.thread_name}/display" do %> 
-        <div id="image1">
-            <%= hidden_field_tag "image1_ha1","0" %>
-            <%= hidden_field_tag "image1_ha1_code_id","0" %>
-            <%= hidden_field_tag "image1_ha1_x1" %>
-            <%= hidden_field_tag "image1_ha1_y1" %>
-            <%= hidden_field_tag "image1_ha1_x2" %>
-            <%= hidden_field_tag "image1_ha1_y2" %>
-            <%= hidden_field_tag "image1_ha1_width" %>
-            <%= hidden_field_tag "image1_ha1_height" %>
+        <% 1.upto(@image_counter) do |ic| %>
+            <div id="image<%= ic %>">
+                <%= hidden_field_tag "image#{ic}_ha1","0" %>
+                <%= hidden_field_tag "image#{ic}_ha1_code_id","0" %>
+                <%= hidden_field_tag "image#{ic}_ha1_x1" %>
+                <%= hidden_field_tag "image#{ic}_ha1_y1" %>
+                <%= hidden_field_tag "image#{ic}_ha1_x2" %>
+                <%= hidden_field_tag "image#{ic}_ha1_y2" %>
+                <%= hidden_field_tag "image#{ic}_ha1_width" %>
+                <%= hidden_field_tag "image#{ic}_ha1_height" %>
 
-            <%= hidden_field_tag "image1_ha2","0" %>
-            <%= hidden_field_tag "image1_ha2_code_id","0" %>
-            <%= hidden_field_tag "image1_ha2_x1" %>
-            <%= hidden_field_tag "image1_ha2_y1" %>
-            <%= hidden_field_tag "image1_ha2_x2" %>
-            <%= hidden_field_tag "image1_ha2_y2" %>
-            <%= hidden_field_tag "image1_ha2_width" %>
-            <%= hidden_field_tag "image1_ha2_height" %>
-            
-        </div>
-        <div id="image2">
-            <%= hidden_field_tag "image2_ha1","0" %>
-            <%= hidden_field_tag "image1_ha1_code_id","0" %>
-            <%= hidden_field_tag "image2_ha1_x1" %>
-            <%= hidden_field_tag "image2_ha1_y1" %>
-            <%= hidden_field_tag "image2_ha1_x2" %>
-            <%= hidden_field_tag "image2_ha1_y2" %>
-            <%= hidden_field_tag "image2_ha1_width" %>
-            <%= hidden_field_tag "image2_ha1_height" %>
-
-            <%= hidden_field_tag "image2_ha2","0" %>
-            <%= hidden_field_tag "image1_ha2_code_id","0" %>
-            <%= hidden_field_tag "image2_ha2_x1" %>
-            <%= hidden_field_tag "image2_ha2_y1" %>
-            <%= hidden_field_tag "image2_ha2_x2" %>
-            <%= hidden_field_tag "image2_ha2_y2" %>
-            <%= hidden_field_tag "image2_ha2_width" %>
-            <%= hidden_field_tag "image2_ha2_height" %>
-        </div>
-        <div id="image3">
-            <%= hidden_field_tag "image3_ha1","0" %>
-            <%= hidden_field_tag "image1_ha1_code_id","0" %>
-            <%= hidden_field_tag "image3_ha1_x1" %>
-            <%= hidden_field_tag "image3_ha1_y1" %>
-            <%= hidden_field_tag "image3_ha1_x2" %>
-            <%= hidden_field_tag "image3_ha1_y2" %>
-            <%= hidden_field_tag "image3_ha1_width" %>
-            <%= hidden_field_tag "image3_ha1_height" %>
-
-            <%= hidden_field_tag "image3_ha2","0" %>
-            <%= hidden_field_tag "image1_ha2_code_id","0" %>
-            <%= hidden_field_tag "image3_ha2_x1" %>
-            <%= hidden_field_tag "image3_ha2_y1" %>
-            <%= hidden_field_tag "image3_ha2_x2" %>
-            <%= hidden_field_tag "image3_ha2_y2" %>
-            <%= hidden_field_tag "image3_ha2_width" %>
-            <%= hidden_field_tag "image3_ha2_height" %>
-        </div>
-
+                <%= hidden_field_tag "image#{ic}_ha2","0" %>
+                <%= hidden_field_tag "image#{ic}_ha2_code_id","0" %>
+                <%= hidden_field_tag "image#{ic}_ha2_x1" %>
+                <%= hidden_field_tag "image#{ic}_ha2_y1" %>
+                <%= hidden_field_tag "image#{ic}_ha2_x2" %>
+                <%= hidden_field_tag "image#{ic}_ha2_y2" %>
+                <%= hidden_field_tag "image#{ic}_ha2_width" %>
+                <%= hidden_field_tag "image#{ic}_ha2_height" %>
+            </div>    
+        <%end%>
+        
         <div class="form-actions" style="text-align:center">
             
             <%= submit_tag "Display Now »",  class: "btn btn-primary"%>
