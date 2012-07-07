@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120706030926) do
+ActiveRecord::Schema.define(:version => 20120707072849) do
 
   create_table "areas", :force => true do |t|
     t.integer  "x1"
@@ -37,9 +37,16 @@ ActiveRecord::Schema.define(:version => 20120706030926) do
   create_table "highlighted_areas", :force => true do |t|
     t.integer  "image_id"
     t.integer  "user_id"
-    t.integer  "threadx_image_id"
-    t.datetime "created_at",       :null => false
-    t.datetime "updated_at",       :null => false
+    t.integer  "code_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "image_codes", :force => true do |t|
+    t.integer  "image_id"
+    t.integer  "code_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "images", :force => true do |t|
@@ -49,6 +56,7 @@ ActiveRecord::Schema.define(:version => 20120706030926) do
     t.integer  "media_id"
     t.datetime "created_at",       :null => false
     t.datetime "updated_at",       :null => false
+    t.string   "image_name"
   end
 
   create_table "media", :force => true do |t|

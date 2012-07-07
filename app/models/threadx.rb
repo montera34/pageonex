@@ -9,6 +9,8 @@ class Threadx < ActiveRecord::Base
 	has_many :users, :through => :threadx_collaborators
 
 	has_many :codes
+
 	has_many :threadx_images
+	has_many :images, :through => :threadx_images
 	
 end
