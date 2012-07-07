@@ -1,19 +1,16 @@
 $(document).ready(function () {
     carousel = $('#myCarousel').carousel({interval: 999999,pause:"hover"});
 
-    $('input[name="codes"]').on("change",function(){
-        image_hidden_fields.find("#"+image_hidden_fields.attr("id")+"_ha2_code_id").attr("value",this.value)
-        ha = $("#current_high_area").attr("value")
-        
-        $("#"+ha).css("background-color",$(this).attr("color"));    
-    });
+
     
     // get the object of image selection plugin
     currrent_img_area_select = $('#images_section div.active img').imgAreaSelect({instance: true, handles: true,onSelectEnd: highlightingArea});
 
     // current display image 
-    currrent_img = $("#images_section div.active img")
-    $("#current_img_details").text(currrent_img.attr("src"));
+    
+    // currrent_img = $("#images_section div.active img")
+    // $("#publication_date").text(currrent_img.attr("alt").slice(0,10));
+    // $("#newspaper_name").text(currrent_img.attr("alt").slice(11).split(".")[0]);
     
     // change the currrent_img_area_select, currrent_img variable when user slide to another image, and also clean the highlighted areas
     carousel.on('slid',function(){
@@ -29,8 +26,19 @@ $(document).ready(function () {
             loadhighlightingAreas();
         };
 
-        $("#current_img_details").text(currrent_img.attr("src"));
+        $("#publication_date").text(currrent_img.attr("alt").slice(0,10));
+        $("#newspaper_name").text(currrent_img.attr("alt").slice(11).split(".")[0]);
+    });
+
+    $('input[name="codes"]').on("click",function(){
         
+        image_hidden_fields = $("div#" + currrent_img.attr("id"));
+        
+        ha = $("#current_high_area").attr("value")
+
+        image_hidden_fields.find("#"+image_hidden_fields.attr("id")+"_ha"+ha.substring(9)+"_code_id").attr("value",$(this).attr("code_id"))
+        
+        $("#"+ha).css("background-color",$(this).attr("color"));    
     });
 
     $("#clear_highlighting").click(function function_name () {
