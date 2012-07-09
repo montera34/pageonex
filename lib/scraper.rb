@@ -1,6 +1,6 @@
 require "fileutils"
 require "open-uri"
-require "RMagick"
+#require "RMagick"
 
 
 class Scraper
