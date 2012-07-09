@@ -7,4 +7,5 @@ class Image < ActiveRecord::Base
 	has_many :image_codes
 	has_many :codes, :through => :image_codes
 
+	has_many :highlighted_areas
 end
