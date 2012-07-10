@@ -53,24 +53,26 @@
 		<div class="row images">
 			<%= hidden_field_tag "images_counter", @thread.images.length %>
 			<%- m.images.each do |i| %>
-			<div class="span3 <%= "thum_image#{i.id}" %>">
-				<%= image_tag "/assets#{i.local_path}", id: "image#{i.id}", style: "height:320px"%>
+				<div class="span3 <%= "thum_image#{i.id}" %>">
+					<% if @thread.images.include? i %>
+						<%= image_tag "/assets#{i.local_path}", id: "image#{i.id}", style: "height:320px"%>
 
-				<div id="<%= "high_area#{i.id}" %>" style="position: absolute; overflow: hidden; z-index: 0; left: 0px; top: 0px; width: 0px; height: 0px; display: block; " class="imgareaselect-outer"></div>
+						<div id="<%= "high_area#{i.id}" %>" style="position: absolute; overflow: hidden; z-index: 0; left: 0px; top: 0px; width: 0px; height: 0px; display: block; " class="imgareaselect-outer"></div>
 
-				<% highlighed_area = HighlightedArea.find_by_image_id(i) %>
-				<% if(highlighed_area != nil) %>
-					<% area = highlighed_area.areas[0] %>
-					<%= hidden_field_tag "image#{i.id}_ha#{i.id}","0" %>
-	        <%= hidden_field_tag "image#{i.id}_ha#{i.id}_code_id","0" %>
-	        <%= hidden_field_tag "image#{i.id}_ha#{i.id}_x1", area.x1 %>
-	        <%= hidden_field_tag "image#{i.id}_ha#{i.id}_y1", area.y1 %>
-	        <%= hidden_field_tag "image#{i.id}_ha#{i.id}_x2", area.x2 %>
-	        <%= hidden_field_tag "image#{i.id}_ha#{i.id}_y2", area.y2 %>
-	        <%= hidden_field_tag "image#{i.id}_ha#{i.id}_width", area.width %>
-	        <%= hidden_field_tag "image#{i.id}_ha#{i.id}_height", area.height %>
-        <% end %>
-			</div>
+						<% highlighed_area = HighlightedArea.find_by_image_id(i) %>
+						<% if(highlighed_area != nil) %>
+							<% area = highlighed_area.areas[0] %>
+							<%= hidden_field_tag "image#{i.id}_ha#{i.id}","0" %>
+			        <%= hidden_field_tag "image#{i.id}_ha#{i.id}_code_id","0" %>
+			        <%= hidden_field_tag "image#{i.id}_ha#{i.id}_x1", area.x1 %>
+			        <%= hidden_field_tag "image#{i.id}_ha#{i.id}_y1", area.y1 %>
+			        <%= hidden_field_tag "image#{i.id}_ha#{i.id}_x2", area.x2 %>
+			        <%= hidden_field_tag "image#{i.id}_ha#{i.id}_y2", area.y2 %>
+			        <%= hidden_field_tag "image#{i.id}_ha#{i.id}_width", area.width %>
+			        <%= hidden_field_tag "image#{i.id}_ha#{i.id}_height", area.height %>
+		        <% end %>
+					<% end %>
+				</div>
 			<% end -%>
 		</div>
 			<hr>
