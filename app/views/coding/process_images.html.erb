@@ -1,4 +1,4 @@
-<h1>Coding: <%= @thread.thread_name %></h1>
+<h1>Coding: <%= @thread.thread_display_name.capitalize %></h1>
 
 <hr>
 <div class="row">
@@ -28,10 +28,10 @@
         <div id="myCarousel" class="carousel slide">
           <!-- Carousel items -->
           <div class="carousel-inner">
-            <div class="active item"><%= image_tag "/assets#{@images[0].local_path}", :id => "image1", :style => "height: 949px;" %></div>
+            <div class="active item"><%= image_tag "/assets#{@images[0].local_path}", :id => "image1", :style => "height: 949px;" , :media=>@images[0].media.display_name%></div>
 
             <% 1.upto(@image_counter-1) do |ic| %>
-                <div class="item"><%= image_tag "/assets#{@images[ic].local_path}", :id => "image#{ic+1}", :style => "height: 949px;" %></div>
+                <div class="item"><%= image_tag "/assets#{@images[ic].local_path}", :id => "image#{ic+1}", :style => "height: 949px;", :media=>@images[ic].media.display_name %></div>
             <%end%>
           </div>
           <!-- Carousel nav -->
@@ -63,17 +63,28 @@
         </div>
 
         <%= form_tag "/threads/#{@thread.thread_name}/display" do %> 
-        <% 1.upto(@image_counter) do |ic| %>
+        <% @image_counter.downto(1) do |ic| %>
+            
             <div id="image<%= ic %>">
-                <%= hidden_field_tag "image#{ic}_ha1","0" %>
-                <%= hidden_field_tag "image#{ic}_ha1_code_id","0" %>
-                <%= hidden_field_tag "image#{ic}_ha1_x1" %>
-                <%= hidden_field_tag "image#{ic}_ha1_y1" %>
-                <%= hidden_field_tag "image#{ic}_ha1_x2" %>
-                <%= hidden_field_tag "image#{ic}_ha1_y2" %>
-                <%= hidden_field_tag "image#{ic}_ha1_width" %>
-                <%= hidden_field_tag "image#{ic}_ha1_height" %>
-
+                <% if false #@highlighted_areas != [] %>
+                    <%= hidden_field_tag "image#{ic}_ha1","0" %>
+                    <%= hidden_field_tag "image#{ic}_ha1_code_id",@highlighted_areas[ic].code.id  %>
+                    <%= hidden_field_tag "image#{ic}_ha1_x1",@highlighted_areas[ic].areas[0].x1 %>
+                    <%= hidden_field_tag "image#{ic}_ha1_y1",@highlighted_areas[ic].areas[0].y1 %>
+                    <%= hidden_field_tag "image#{ic}_ha1_x2" ,@highlighted_areas[ic].areas[0].x2 %>
+                    <%= hidden_field_tag "image#{ic}_ha1_y2" ,@highlighted_areas[ic].areas[0].y2 %>
+                    <%= hidden_field_tag "image#{ic}_ha1_width" ,@highlighted_areas[ic].areas[0].width %>
+                    <%= hidden_field_tag "image#{ic}_ha1_height" ,@highlighted_areas[ic].areas[0].height %>
+                <% else %>
+                    <%= hidden_field_tag "image#{ic}_ha1","0" %>
+                    <%= hidden_field_tag "image#{ic}_ha1_code_id","0" %>
+                    <%= hidden_field_tag "image#{ic}_ha1_x1" %>
+                    <%= hidden_field_tag "image#{ic}_ha1_y1" %>
+                    <%= hidden_field_tag "image#{ic}_ha1_x2" %>
+                    <%= hidden_field_tag "image#{ic}_ha1_y2" %>
+                    <%= hidden_field_tag "image#{ic}_ha1_width" %>
+                    <%= hidden_field_tag "image#{ic}_ha1_height" %>
+                <% end %>
                 <%= hidden_field_tag "image#{ic}_ha2","0" %>
                 <%= hidden_field_tag "image#{ic}_ha2_code_id","0" %>
                 <%= hidden_field_tag "image#{ic}_ha2_x1" %>
@@ -82,7 +93,8 @@
                 <%= hidden_field_tag "image#{ic}_ha2_y2" %>
                 <%= hidden_field_tag "image#{ic}_ha2_width" %>
                 <%= hidden_field_tag "image#{ic}_ha2_height" %>
-            </div>    
+            </div>   
+       
         <%end%>
         
         <div class="form-actions" style="text-align:center">
@@ -108,3 +120,5 @@ $(function (argument) {
 
 })
 </script>
+
+<%= javascript_include_tag "coding" %>
