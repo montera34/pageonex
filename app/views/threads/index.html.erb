@@ -1,1 +1,33 @@
-All threads here
+<% @threads.each do |thread| %>
+	<div class="thumbnail">
+	  <img src="<%= "/assets#{thread.images[0].local_path}"%>" style="height: 130px;" alt="">
+	  <div class="caption">
+	    <h5 style="text-align:center"><%= thread.thread_display_name.capitalize %></h5>
+	    <hr>
+	    <p><%= thread.description %></p>
+	    <div class="row">
+	    	<div class="span2">
+	    		<h5>Start Date</h5>
+	    		<p><%= thread.start_date %></p>
+	    	</div>
+	    	<div class="span2">
+	    		<h5>End Date</h5>
+	    		<p><%= thread.end_date %></p>
+	    	</div>
+	    	<div class="span2">
+	    		<h5>Category</h5>
+	    		<p><%= thread.category %></p>
+	    	</div>
+	    	<div class="span2">
+	    		<h5>Status</h5>
+	    		<p><%= thread.status %></p>
+	    	</div>
+	    </div>
+	    <p><a href="<%= "/threads/#{thread.thread_name}/display" %>" class="btn btn-primary">Show</a> <a href="<%= "/threads/#{thread.thread_name}/edit" %>" class="btn">Edit</a></p>
+
+	  </div>
+	</div>
+	<br>
+	
+<% end %>
+

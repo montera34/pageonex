@@ -66,7 +66,7 @@
                 <p><%= alert %></p>
               </div>
             <% end %>
-            <% if params[:controller] == "threads" || params[:controller] == "coding"%>
+            <% if (params[:controller] == "threads" || params[:controller] == "coding")&&(params[:action] != "index" && params[:action] != "edit")%>
             <ul style="text-align:center" class="breadcrumb">
               <li id="initiate">
                 <a href="#">Initiate</a> <span style="margin: 0 80px 0 80px" class="divider">»</span>
@@ -77,6 +77,7 @@
               <li id="display"><a href="<%= "/threads/#{@thread.thread_name}/display"%>">Display</a></li>
             </ul>
             <% end %>
+
             <%= yield %>
             </div>
             <div class="span3">
@@ -91,11 +92,11 @@
                 <h3>Opened Threads</h3>
                 <ul class="nav nav-list">
                   <li class="nav-header">International</li>
-                    <li><%= link_to "Occupy", "threads/Occupy"  %></li>
-                    <li><%= link_to "NBA Finals", "threads/NBA Finals"  %></li>
-                    <li><%= link_to "Arab Spring", "threads/Arab Spring"  %></li>
-                    <li><%= link_to "15M", "threads/15M"  %></li>
-                    <li><%= link_to "Japanese Tsunami", "threads/Japanese Tsunami"  %></li>
+                    <li><%= link_to "Occupy", "/threads/Occupy"  %></li>
+                    <li><%= link_to "NBA Finals", "/threads/NBA Finals"  %></li>
+                    <li><%= link_to "Arab Spring", "/threads/Arab Spring"  %></li>
+                    <li><%= link_to "15M", "/threads/15M"  %></li>
+                    <li><%= link_to "Japanese Tsunami", "/threads/Japanese Tsunami"  %></li>
                 </ul>
               </div><!--/.well -->
 
