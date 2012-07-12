@@ -13,4 +13,7 @@
 //= require jquery
 //= require jquery_ujs
 //= require twitter/bootstrap
-//= require_tree .
+//= require jquery.imgareaselect
+//= require spin.min
+
+//require_tree .

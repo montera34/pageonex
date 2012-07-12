@@ -7,10 +7,11 @@ $(document).ready(function () {
     currrent_img_area_select = $('#images_section div.active img').imgAreaSelect({instance: true, handles: true,onSelectEnd: highlightingArea});
 
     // current display image 
-    
-    // currrent_img = $("#images_section div.active img")
-    // $("#publication_date").text(currrent_img.attr("alt").slice(0,10));
-    // $("#newspaper_name").text(currrent_img.attr("alt").slice(11).split(".")[0]);
+    currrent_img = $("#images_section div.active img") 
+    if (currrent_img.attr("alt")){
+        $("#publication_date").text(currrent_img.attr("alt").slice(0,10));
+        $("#newspaper_name").text(currrent_img.attr("media"));
+    };
     
     // change the currrent_img_area_select, currrent_img variable when user slide to another image, and also clean the highlighted areas
     carousel.on('slid',function(){
@@ -27,7 +28,7 @@ $(document).ready(function () {
         };
 
         $("#publication_date").text(currrent_img.attr("alt").slice(0,10));
-        $("#newspaper_name").text(currrent_img.attr("alt").slice(11).split(".")[0]);
+        $("#newspaper_name").text(currrent_img.attr("media"));
     });
 
     $('input[name="codes"]').on("click",function(){
