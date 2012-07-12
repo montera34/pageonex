@@ -1,0 +1,23 @@
+<%= form_for @thread, :url=> "/threads/#{@thread.thread_name}", method: "PUT" do |f| %>
+  <%= f.label :thread_display_name, "Thread Name" %>
+  <%= f.text_field :thread_display_name %><br />
+
+  <%= f.label :start_date %>
+	<%= f.text_field :start_date, disabled: "disabled"%>
+
+	<%= f.label :end_date %>
+	<%= f.text_field :end_date, disabled: "disabled" %>
+
+  <%= f.label :status %>
+  <%= f.text_field :status %><br>
+
+  <%= f.label :category %>
+  <%= f.text_field :category %><br>
+
+  <%= f.label :description %>
+	<%= f.text_area :description, :rows => "10"%><br>
+
+  
+  <%= f.submit "Update Thread", :class => "btn" %>
+  <a class="btn btn-primary" href="/threads">Cancel</a>
+<% end %>

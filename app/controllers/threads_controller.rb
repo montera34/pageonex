@@ -2,7 +2,7 @@ class ThreadsController < ApplicationController
 	before_filter :authenticate_user!, :except => :show
 
 	def index
-		
+		@threads = current_user.owned_threads
 	end
 
 	def create
@@ -67,11 +67,16 @@ class ThreadsController < ApplicationController
 	end
 
 	def edit
-		
+		@thread = Threadx.find_by_thread_name params[:id]
 	end
 
 	def update
 		
+		@thread = Threadx.find_by_thread_name params[:id]
+		@thread.update_attributes(params[:threadx])
+		@thread.thread_name = params[:threadx]["thread_display_name"].sub(' ', '_')
+		@thread.save!
+		redirect_to "/threads/#{@thread.thread_name}/display"
 	end
 
 	def show
