@@ -66,8 +66,13 @@ class Scraper
 				f_day = day.to_s
 			end
 
-			# formating the dates part of the images name 
-			days << "#{year}/" + "0#{month}/" + f_day
+			if month < 10
+				# formating the dates part of the images name 
+				days << "#{year}/" + "0#{month}/" + f_day	
+			else
+				days << "#{year}/" + "#{month}/" + f_day
+			end
+			
 
 			day += 1
 		end
