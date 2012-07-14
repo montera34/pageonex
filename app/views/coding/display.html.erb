@@ -1,4 +1,16 @@
 <h1>Display: <%= @thread.thread_display_name.capitalize %></h1>
+<div class="btn-group pull-right" style="margin-top: -36px;">
+    <button class="btn btn-large">Export to image</button>
+    <button class="btn btn-large dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
+    <ul class="dropdown-menu">
+      <li><a href="#">Download as [.svg]</a></li>
+      <li><a href="#">Download as [.csv]</a></li>
+      <li><a href="#">Download as [.ods]</a></li>
+      <li><a href="#">Download as [.png]</a></li>
+      <li class="divider"></li>
+      <li><a href="#">Download as [.pdf]</a></li>
+    </ul>
+</div>
 <hr>
 
 <div class="row">
@@ -26,38 +38,56 @@
 	</div>
 </div> 
 <hr>
-<div class="row"></div>
-	<!--<h3>Percentage of surface</h3> That will be when we have the bar chart-->
-	<h3>Surface in Newspapers front pages</h3>
-	<p>Export to svg, csv, ods, png, pdf</p>
-<hr>
 
 <div class="row">
-	<div class="span3">
-		<h2>Newspapers:</h2>
+	<div class="span3" style="width: 195px; ">
+		<h2>Surfaces percentage:</h2>
+	</div>
+	<div class="span6" style="width: 644px;">
+		<div id="chart" style="margin-left:-56px"></div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="span3" style="width: 195px;">
+		<h2>Dates:</h2>
 	</div>
 	
 </div>
 
 <hr>
+	
+	<%= hidden_field_tag "v1", @ratios[0][:y] %>
+	<%= hidden_field_tag "v2", @ratios[1][:y] %>
+	<%= hidden_field_tag "v3", @ratios[2][:y] %>
+	<%= hidden_field_tag "v4", @ratios[3][:y] %>
 
+	<%= hidden_field_tag "number_of_rows", @thread.media.length %>
+	<div class="row">
+		<div class="span3" style="width: 195px; ">
+			<h2>Newspapers:</h2>
+		</div>
 
+	</div>
+	<hr>
 	<% @thread.media.each do |m| %>
-		<div class="row">
-			<div class="span3">
-				<div class="alert alert-info">
-  				<h2><%= m.display_name %></h2>
+		<div class="row images">
+			<div class="span3" style="width: 195px;">
+				<div class="alert alert-info" style="overflow: overlay; margin-right: 35px;font-size: 14px;">
+  				<h2 style="font-size: 14px;"><%= m.display_name %></h2>
 				</div>
 			</div>
-		</div>
-		<div class="row images">
 			<% images_counter = @thread.images.length %>
 			<% 0.upto(images_counter-1) do |ic| %>
 				<% if @thread.images[ic].media == m  %>
-					<div class="span3 <%= "thum_image#{ic+1}" %>">
+					<div id="<%= "image_box#{ic+1}" %>" class="span1 <%= "thum_image#{ic+1}" %>">
+	          
 	          <%= image_tag "/assets#{@thread.images[ic].local_path}", id: "image#{ic+1}", style: "height:320px;opacity: 0.8;"%>
+	          
+	          <div id="high_area1" style="position: absolute; overflow: hidden; z-index: 0; left: 0px; top: 0px; width: 0px; height: 0px; display: block; opacity: 0.7;" class="imgareaselect-outer"></div>
 
-	          <div id="<%= "high_area#{ic+1}" %>" style="position: absolute; overflow: hidden; z-index: 0; left: 0px; top: 0px; width: 0px; height: 0px; display: block; opacity: 0.7;" class="imgareaselect-outer"></div>
+	          <div id="high_area2" style="position: absolute; overflow: hidden; z-index: 0; left: 0px; top: 0px; width: 0px; height: 0px; display: block; opacity: 0.7;" class="imgareaselect-outer"></div>
+
 					</div>
 				<% end %>
 			
@@ -68,7 +98,8 @@
 
 	<div id="high_areas">
 		<% @highlighted_areas.each do |ha| %>
-	    <div id="image<%= ha.name[5] %>">
+		<% image_number = ha.name.split('_')[0].slice(5,ha.name.split('_')[0].length) %>
+	    <div id="image<%= image_number %>">
 	        <%= hidden_field_tag ha.name,"1" %>
 	        <%= hidden_field_tag "#{ha.name}_code_id", "#{ha.code.id}" %>
 	        <%= hidden_field_tag "#{ha.name}_x1", ha.areas[0].x1 %>
@@ -85,72 +116,128 @@
 <script type="text/javascript">
 $(document).ready(function () {
 	
-	high_areas = $("#high_areas div")
+	function loadImagesHighlightedAreas (argument) {
+		images = $(".images img")
+		image_box = $(".images .span1")
+		number_of_images = images.length/parseInt($("#number_of_rows").attr("value"))
+		row_width = $("div.images").width() - 225;	
 
-	for (var i = high_areas.length -1; i >= 0; i--) {
-			c_high_area_id = $(high_areas[i]).attr("id").substr(5)
-			high_area = $("div.images").find("div#high_area"+c_high_area_id)
+		for (var i = 0; i < images.length; i++) {
+			curr_img = $(images[i])
+			curr_img_box = $(image_box[i])
 
-			c_image = $("img#image"+c_high_area_id)
-
-			ratio = 949/320
-
-			// assume it render only one highlighted area
-			curr_high_area_code = $("#image"+c_high_area_id+"_ha1"+"_code_id").attr("value")
-			high_area.css("background-color", $("#code-"+curr_high_area_code).css("background-color"))
-
-			_top = parseFloat($("#image"+c_high_area_id+"_ha"+"1"+"_y1").attr("value")) / ratio
-			_top = _top + c_image.position().top
-			high_area.css("top", _top + "px" )
-
-			_left = parseFloat($("#image"+c_high_area_id+"_ha"+"1"+"_x1").attr("value")) / ratio
-			_left = _left + c_image.position().left
-			high_area.css("left", _left + "px")
-
-			_width = parseFloat($("#image"+c_high_area_id+"_ha"+"1"+"_width").attr("value")) / ratio
-			high_area.css("width", _width + "px")
-
-			_height = parseFloat($("#image"+c_high_area_id+"_ha"+"1"+"_height").attr("value")) / ratio
-			high_area.css("height", _height + "px")
-
-	};
-
-
-// images = $(".images img")
-
-// 	for (var i = images.length -1; i >= 0; i--) {
-// 		if ( $(images[i]) != undefined ){
-// 			c_image = $(images[i])
-
-// 			ratio = 949/320
-
-// 			c_img_id = c_image.attr("id").substr(5)
 			
-// 			high_area = $('#high_area' + c_img_id);
-// 			curr_high_area_code = $("#image"+c_img_id+"_ha"+c_img_id+"_code_id").attr("value")
-// 			high_area.css("background-color", $("#code-"+curr_high_area_code).css("background-color"))
+			//row_width = row_width - (number_of_images * 30);
+			
+			curr_img.height(row_width/number_of_images)
+			curr_img_box.css("width",row_width/number_of_images)
 
-// 			_top = parseFloat($("#image"+c_img_id+"_ha"+c_img_id+"_y1").attr("value")) / ratio
-// 			_top = _top + c_image.position().top
-// 			high_area.css("top", _top + "px" )
+		};
 
-// 			_left = parseFloat($("#image"+c_img_id+"_ha"+c_img_id+"_x1").attr("value")) / ratio
-// 			_left = _left + c_image.position().left
-// 			high_area.css("left", _left + "px")
+		high_areas = $("#high_areas div")
+		for (var i = high_areas.length -1; i >= 0; i--) {
+				c_high_area_id = $(high_areas[i]).attr("id").substr(5)
+				high_area1 = $("div.images").find("div.thum_image"+c_high_area_id).find("div#high_area"+1)
+				high_area2 = $("div.images").find("div.thum_image"+c_high_area_id).find("div#high_area"+2)
+				c_image = $("img#image"+c_high_area_id)
 
-// 			_width = parseFloat($("#image"+c_img_id+"_ha"+c_img_id+"_width").attr("value")) / ratio
-// 			high_area.css("width", _width + "px")
+				// row_width = $("div.images").width();
+				// number_of_images = $($("div.images")[0]).children().length - 1;
+				//row_width = row_width - (number_of_images * 30);
+				
+				// c_image.height(row_width/number_of_images)
+				original_img_size = 949
+				ratio = original_img_size/c_image.height()
 
-// 			_height = parseFloat($("#image"+c_img_id+"_ha"+c_img_id+"_height").attr("value")) / ratio
-// 			high_area.css("height", _height + "px")
-// 		};
+				// higlighted area 1
 
-// 	};
+				curr_high_area_code = $("#image"+c_high_area_id+"_ha1"+"_code_id").attr("value")
+				high_area1.css("background-color", $("#code-"+curr_high_area_code).css("background-color"))
+
+				_top = parseFloat($("#image"+c_high_area_id+"_ha"+"1"+"_y1").attr("value")) / ratio
+				_top = _top + c_image.position().top
+				high_area1.css("top", _top + "px" )
+
+				_left = parseFloat($("#image"+c_high_area_id+"_ha"+"1"+"_x1").attr("value")) / ratio
+				_left = _left + c_image.position().left
+				high_area1.css("left", _left + "px")
+
+				_width = parseFloat($("#image"+c_high_area_id+"_ha"+"1"+"_width").attr("value")) / ratio
+				high_area1.css("width", _width + "px")
+
+				_height = parseFloat($("#image"+c_high_area_id+"_ha"+"1"+"_height").attr("value")) / ratio
+				high_area1.css("height", _height + "px")
+
+
+				// higlighted area 2
+				
+				curr_high_area_code = $("#image"+c_high_area_id+"_ha2"+"_code_id").attr("value")
+				high_area2.css("background-color", $("#code-"+curr_high_area_code).css("background-color"))	
+
+				_top = parseFloat($("#image"+c_high_area_id+"_ha"+"2"+"_y1").attr("value")) / ratio
+				_top = _top + c_image.position().top
+				high_area2.css("top", _top + "px" )
+
+				_left = parseFloat($("#image"+c_high_area_id+"_ha"+"2"+"_x1").attr("value")) / ratio
+				_left = _left + c_image.position().left
+				high_area2.css("left", _left + "px")
+
+				_width = parseFloat($("#image"+c_high_area_id+"_ha"+"2"+"_width").attr("value")) / ratio
+				high_area2.css("width", _width + "px")
+
+				_height = parseFloat($("#image"+c_high_area_id+"_ha"+"2"+"_height").attr("value")) / ratio
+				high_area2.css("height", _height + "px")
+
+		};
+
+	}
+
+	loadImagesHighlightedAreas();
+	
+	$(window).resize(function() {
+	 	loadImagesHighlightedAreas();
+	});
 
 	
 
 })
 
+
+</script>
+
+<%= javascript_include_tag "d3.min.js", "d3.layout.min.js", "rickshaw.min.js" %>
+<link rel="alternate" href="https://github.com/douglascrockford/JSON-js/blob/master/json2.js">
+<script>
+
+// var data = [ { x: 0, y: 40 }, { x: 1, y: 49 }, { x: 2, y: 17 }, { x: 3, y: 42 } ];
+// var data = [ { x: 0, y: parseInt($("#v1").attr("value")) }, { x: 1, y: parseInt($("#v2").attr("value")) }, { x: 2, y: parseInt($("#v3").attr("value")) }, { x: 3, y: parseInt($("#v4").attr("value")) }, { x: 4, y: 17 }, { x:5, y: 42 } ];
+images = $(".images img")
+
+number_of_images = images.length/parseInt($("#number_of_rows").attr("value"))
+var data = []
+
+for (var i = 0; i < number_of_images; i++) {
+	data.push({
+		x: i,
+		y: i*10+10
+	})
+};
+
+row_width = $("div.images").width() - 225;	
+
+var graph = new Rickshaw.Graph( {
+    element: document.querySelector("#chart"),
+		renderer: 'bar',
+    //width: 640,
+    width: row_width,
+    height: 460,
+    series: [ {
+            color: '#ddd',
+            data: data
+    } ]
+} );
+
+graph.render();
 
 </script>
 
@@ -162,4 +249,12 @@ $(function (argument) {
 
 })
 </script>
+
+<style type="text/css">
+.span1{
+	/*margin-right: 20px;*/
+	/*margin-left:  0;*/
+	margin-left: 0;
+}
+</style>
 

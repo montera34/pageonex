@@ -75,8 +75,9 @@
 
                 <% if @highlighted_areas != [] %>
                     <% @highlighted_areas.each do |ha| %>
-                        <% un_high_ares_counter.delete(ha.name[0..5]) %>
-                        <div id="image<%= ha.name[5] %>">
+                        <% image_number = ha.name.split('_')[0].slice(5,ha.name.split('_')[0].length) %>
+                        <% un_high_ares_counter.delete("image#{image_number}") %>
+                        <div id="image<%= image_number %>">
                             <%= hidden_field_tag ha.name,"1" %>
                             <%= hidden_field_tag "#{ha.name}_code_id", "#{ha.code.id}" %>
                             <%= hidden_field_tag "#{ha.name}_x1", ha.areas[0].x1 %>

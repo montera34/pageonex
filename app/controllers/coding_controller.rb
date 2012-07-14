@@ -73,5 +73,7 @@ class CodingController < ApplicationController
 			end
 		end
 
+		@ratios =  [ { x: 0, y: 60 }, { x: 1, y: 49 }, { x: 2, y: 100 }, { x: 3, y: 42 } ]
+		# render json: @ratios
 	end
 end
