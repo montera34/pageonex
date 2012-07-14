@@ -41,7 +41,7 @@ class Scraper
 			rescue => e
 				newspaper_name = path.split('/').last
 				pub_date = "#{path.split('/')[-3]}-#{path.split('/')[-4]}-#{path.split('/')[-5]}"
-				@@newspapers_images[newspaper_name.split(".")[0] +"-"+ pub_date] = {publication_date: pub_date, media: newspaper_name.split(".")[0], local_path: "404.jpg"}
+				@@newspapers_images[newspaper_name.split(".")[0] +"-"+ pub_date] = { publication_date: pub_date, media: newspaper_name.split(".")[0], local_path: "404.jpg"}
 				puts e.message + " => " + path
 			end
 		end

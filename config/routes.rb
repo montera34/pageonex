@@ -4,6 +4,8 @@ Pageonex::Application.routes.draw do
   resources :threads
 
   match 'threads/:thread_name/coding' => 'coding#process_images'
+  
+  match 'threads/:thread_name/process_highlighted_areas' => 'coding#process_highlighted_areas'
 
   match 'threads/:thread_name/display' => 'coding#display'
 
