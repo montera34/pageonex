@@ -1,10 +1,16 @@
-<h1>Coding: <%= @thread.thread_display_name.capitalize %></h1>
-
+<% if @thread.status == "opened" %>
+    <div class="alert alert-info" style="height: 37px;">
+<% else %>
+    <div class="alert alert-error" style="height: 37px;">
+<% end %>
+<h1 class="pull-left">Coding: <%= @thread.thread_display_name.capitalize %></h1>
+<h1 class="pull-right"><%= @thread.status.capitalize %></h1>
+</div>
 <hr>
 <div class="row">
     <div class="span2" >
         <% @thread.codes.each do |code| %>
-            <div style="background-color:<%= code.color %>;color:black" class="alert alert-info">
+            <div style="background-color:<%= code.color %>;color:black" id="code<%= code.id %>" class="alert alert-info">
                 <p id="<%= code.code_text %>"><h4><%= code.code_text %></h4>
                     <br>
                     <%= code.code_description %>
@@ -17,7 +23,7 @@
         <a id="newspaper_name" href="#"> </a>
 
         <hr>
-        <h3>Publication Date</h3>
+        <h3>Publication Dat</h3>
         <a id="publication_date" href=""></a>
 
         <hr>
@@ -62,41 +68,49 @@
           </div>
         </div>
 
-        <%= form_tag "/threads/#{@thread.thread_name}/display" do %> 
-        <% @image_counter.downto(1) do |ic| %>
-            
-            <div id="image<%= ic %>">
-                <% if false #@highlighted_areas != [] %>
-                    <%= hidden_field_tag "image#{ic}_ha1","0" %>
-                    <%= hidden_field_tag "image#{ic}_ha1_code_id",@highlighted_areas[ic].code.id  %>
-                    <%= hidden_field_tag "image#{ic}_ha1_x1",@highlighted_areas[ic].areas[0].x1 %>
-                    <%= hidden_field_tag "image#{ic}_ha1_y1",@highlighted_areas[ic].areas[0].y1 %>
-                    <%= hidden_field_tag "image#{ic}_ha1_x2" ,@highlighted_areas[ic].areas[0].x2 %>
-                    <%= hidden_field_tag "image#{ic}_ha1_y2" ,@highlighted_areas[ic].areas[0].y2 %>
-                    <%= hidden_field_tag "image#{ic}_ha1_width" ,@highlighted_areas[ic].areas[0].width %>
-                    <%= hidden_field_tag "image#{ic}_ha1_height" ,@highlighted_areas[ic].areas[0].height %>
-                <% else %>
-                    <%= hidden_field_tag "image#{ic}_ha1","0" %>
-                    <%= hidden_field_tag "image#{ic}_ha1_code_id","0" %>
-                    <%= hidden_field_tag "image#{ic}_ha1_x1" %>
-                    <%= hidden_field_tag "image#{ic}_ha1_y1" %>
-                    <%= hidden_field_tag "image#{ic}_ha1_x2" %>
-                    <%= hidden_field_tag "image#{ic}_ha1_y2" %>
-                    <%= hidden_field_tag "image#{ic}_ha1_width" %>
-                    <%= hidden_field_tag "image#{ic}_ha1_height" %>
+        <%= form_tag "/threads/#{@thread.thread_name}/process_highlighted_areas" do %> 
+            <div id="high_images">
+                <% un_high_ares_counter = []  %>
+                <% 1.upto(@image_counter) {|ic| un_high_ares_counter << "image#{ic}"} %>
+
+                <% if @highlighted_areas != [] %>
+                    <% @highlighted_areas.each do |ha| %>
+                        <% un_high_ares_counter.delete(ha.name[0..5]) %>
+                        <div id="image<%= ha.name[5] %>">
+                            <%= hidden_field_tag ha.name,"1" %>
+                            <%= hidden_field_tag "#{ha.name}_code_id", "#{ha.code.id}" %>
+                            <%= hidden_field_tag "#{ha.name}_x1", ha.areas[0].x1 %>
+                            <%= hidden_field_tag "#{ha.name}_y1",ha.areas[0].y1 %>
+                            <%= hidden_field_tag "#{ha.name}_x2",ha.areas[0].x2 %>
+                            <%= hidden_field_tag "#{ha.name}_y2",ha.areas[0].y2 %>
+                            <%= hidden_field_tag "#{ha.name}_width", ha.areas[0].width%>
+                            <%= hidden_field_tag "#{ha.name}_height", ha.areas[0].height%>
+                        </div>
+                    <% end %>
                 <% end %>
-                <%= hidden_field_tag "image#{ic}_ha2","0" %>
-                <%= hidden_field_tag "image#{ic}_ha2_code_id","0" %>
-                <%= hidden_field_tag "image#{ic}_ha2_x1" %>
-                <%= hidden_field_tag "image#{ic}_ha2_y1" %>
-                <%= hidden_field_tag "image#{ic}_ha2_x2" %>
-                <%= hidden_field_tag "image#{ic}_ha2_y2" %>
-                <%= hidden_field_tag "image#{ic}_ha2_width" %>
-                <%= hidden_field_tag "image#{ic}_ha2_height" %>
-            </div>   
-       
-        <%end%>
-        
+                <% un_high_ares_counter.each do |ha| %>
+                    <div id="<%= ha %>">
+                        <%= hidden_field_tag "#{ha}_ha1","0" %>
+                        <%= hidden_field_tag "#{ha}_ha1_code_id", "0" %>
+                        <%= hidden_field_tag "#{ha}_ha1_x1" %>
+                        <%= hidden_field_tag "#{ha}_ha1_y1" %>
+                        <%= hidden_field_tag "#{ha}_ha1_x2" %>
+                        <%= hidden_field_tag "#{ha}_ha1_y2" %>
+                        <%= hidden_field_tag "#{ha}_ha1_width"%>
+                        <%= hidden_field_tag "#{ha}_ha1_height"%>
+
+                        <%= hidden_field_tag "#{ha}_ha2","0" %>
+                        <%= hidden_field_tag "#{ha}_ha2_code_id", "0" %>
+                        <%= hidden_field_tag "#{ha}_ha2_x1" %>
+                        <%= hidden_field_tag "#{ha}_ha2_y1" %>
+                        <%= hidden_field_tag "#{ha}_ha2_x2" %>
+                        <%= hidden_field_tag "#{ha}_ha2_y2" %>
+                        <%= hidden_field_tag "#{ha}_ha2_width"%>
+                        <%= hidden_field_tag "#{ha}_ha2_height"%>
+                    </div>
+                <% end %>
+            </div>
+
         <div class="form-actions" style="text-align:center">
             
             <%= submit_tag "Display Now »",  class: "btn btn-primary"%>
@@ -121,4 +135,6 @@ $(function (argument) {
 })
 </script>
 
-<%= javascript_include_tag "coding" %>
+<% if @thread.status == "opened" %>
+    <%= javascript_include_tag "coding" %>
+<% end %>

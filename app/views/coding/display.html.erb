@@ -51,72 +51,101 @@
 			</div>
 		</div>
 		<div class="row images">
-			<%= hidden_field_tag "images_counter", @thread.images.length %>
-			<% m.images.each do |i| %>
-				
-					<% if @thread.images.include? i %>
+			<% images_counter = @thread.images.length %>
+			<% 0.upto(images_counter-1) do |ic| %>
+				<% if @thread.images[ic].media == m  %>
+					<div class="span3 <%= "thum_image#{ic+1}" %>">
+	          <%= image_tag "/assets#{@thread.images[ic].local_path}", id: "image#{ic+1}", style: "height:320px;opacity: 0.8;"%>
 
-						<% highlighed_area = HighlightedArea.find_by_image_id(i) #@highlighted_areas.include? HighlightedArea.find_by_image_id(i) %>
-						
-						<% if(highlighed_area != nil) %>
-							<div class="span3 <%= "thum_image#{i.id}" %>">
-								<%= image_tag "/assets#{i.local_path}", id: "image#{i.id}", style: "height:320px;opacity: 0.8;"%>
-								<div id="<%= "high_area#{i.id}" %>" style="position: absolute; overflow: hidden; z-index: 0; left: 0px; top: 0px; width: 0px; height: 0px; display: block; opacity: 0.7;" class="imgareaselect-outer"></div>
-								<% area = highlighed_area.areas[0] %>
-								<%= hidden_field_tag "image#{i.id}_ha#{i.id}","0" %>
-				        <%= hidden_field_tag "image#{i.id}_ha#{i.id}_code_id", highlighed_area.code.id%>
-				        <%= hidden_field_tag "image#{i.id}_ha#{i.id}_x1", area.x1 %>
-				        <%= hidden_field_tag "image#{i.id}_ha#{i.id}_y1", area.y1 %>
-				        <%= hidden_field_tag "image#{i.id}_ha#{i.id}_x2", area.x2 %>
-				        <%= hidden_field_tag "image#{i.id}_ha#{i.id}_y2", area.y2 %>
-				        <%= hidden_field_tag "image#{i.id}_ha#{i.id}_width", area.width %>
-				        <%= hidden_field_tag "image#{i.id}_ha#{i.id}_height", area.height %>
-							</div>
-		        <% else %>
-		        	<div class="span3 <%= "thum_image#{i.id}" %>">
-								<%= image_tag "/assets#{i.local_path}", id: "image#{i.id}", style: "height:320px"%>
-							</div>
-						<% end %>					
-					<% end %>
+	          <div id="<%= "high_area#{ic+1}" %>" style="position: absolute; overflow: hidden; z-index: 0; left: 0px; top: 0px; width: 0px; height: 0px; display: block; opacity: 0.7;" class="imgareaselect-outer"></div>
+					</div>
+				<% end %>
+			
 			<% end %>
 		</div>
 			<hr>
 	<% end %>
 
+	<div id="high_areas">
+		<% @highlighted_areas.each do |ha| %>
+	    <div id="image<%= ha.name[5] %>">
+	        <%= hidden_field_tag ha.name,"1" %>
+	        <%= hidden_field_tag "#{ha.name}_code_id", "#{ha.code.id}" %>
+	        <%= hidden_field_tag "#{ha.name}_x1", ha.areas[0].x1 %>
+	        <%= hidden_field_tag "#{ha.name}_y1",ha.areas[0].y1 %>
+	        <%= hidden_field_tag "#{ha.name}_x2",ha.areas[0].x2 %>
+	        <%= hidden_field_tag "#{ha.name}_y2",ha.areas[0].y2 %>
+	        <%= hidden_field_tag "#{ha.name}_width", ha.areas[0].width%>
+	        <%= hidden_field_tag "#{ha.name}_height", ha.areas[0].height%>
+	    </div>
+	  <% end %>
+  </div>
+
 	
 <script type="text/javascript">
 $(document).ready(function () {
 	
-	images = $(".images img")
+	high_areas = $("#high_areas div")
 
-	for (var i = images.length -1; i >= 0; i--) {
-		if ( $(images[i]) != undefined ){
-			c_image = $(images[i])
+	for (var i = high_areas.length -1; i >= 0; i--) {
+			c_high_area_id = $(high_areas[i]).attr("id").substr(5)
+			high_area = $("div.images").find("div#high_area"+c_high_area_id)
+
+			c_image = $("img#image"+c_high_area_id)
 
 			ratio = 949/320
 
-			c_img_id = c_image.attr("id").substr(5)
-			
-			high_area = $('#high_area' + c_img_id);
-			curr_high_area_code = $("#image"+c_img_id+"_ha"+c_img_id+"_code_id").attr("value")
+			// assume it render only one highlighted area
+			curr_high_area_code = $("#image"+c_high_area_id+"_ha1"+"_code_id").attr("value")
 			high_area.css("background-color", $("#code-"+curr_high_area_code).css("background-color"))
 
-			_top = parseFloat($("#image"+c_img_id+"_ha"+c_img_id+"_y1").attr("value")) / ratio
+			_top = parseFloat($("#image"+c_high_area_id+"_ha"+"1"+"_y1").attr("value")) / ratio
 			_top = _top + c_image.position().top
 			high_area.css("top", _top + "px" )
 
-			_left = parseFloat($("#image"+c_img_id+"_ha"+c_img_id+"_x1").attr("value")) / ratio
+			_left = parseFloat($("#image"+c_high_area_id+"_ha"+"1"+"_x1").attr("value")) / ratio
 			_left = _left + c_image.position().left
 			high_area.css("left", _left + "px")
 
-			_width = parseFloat($("#image"+c_img_id+"_ha"+c_img_id+"_width").attr("value")) / ratio
+			_width = parseFloat($("#image"+c_high_area_id+"_ha"+"1"+"_width").attr("value")) / ratio
 			high_area.css("width", _width + "px")
 
-			_height = parseFloat($("#image"+c_img_id+"_ha"+c_img_id+"_height").attr("value")) / ratio
+			_height = parseFloat($("#image"+c_high_area_id+"_ha"+"1"+"_height").attr("value")) / ratio
 			high_area.css("height", _height + "px")
-		};
 
 	};
+
+
+// images = $(".images img")
+
+// 	for (var i = images.length -1; i >= 0; i--) {
+// 		if ( $(images[i]) != undefined ){
+// 			c_image = $(images[i])
+
+// 			ratio = 949/320
+
+// 			c_img_id = c_image.attr("id").substr(5)
+			
+// 			high_area = $('#high_area' + c_img_id);
+// 			curr_high_area_code = $("#image"+c_img_id+"_ha"+c_img_id+"_code_id").attr("value")
+// 			high_area.css("background-color", $("#code-"+curr_high_area_code).css("background-color"))
+
+// 			_top = parseFloat($("#image"+c_img_id+"_ha"+c_img_id+"_y1").attr("value")) / ratio
+// 			_top = _top + c_image.position().top
+// 			high_area.css("top", _top + "px" )
+
+// 			_left = parseFloat($("#image"+c_img_id+"_ha"+c_img_id+"_x1").attr("value")) / ratio
+// 			_left = _left + c_image.position().left
+// 			high_area.css("left", _left + "px")
+
+// 			_width = parseFloat($("#image"+c_img_id+"_ha"+c_img_id+"_width").attr("value")) / ratio
+// 			high_area.css("width", _width + "px")
+
+// 			_height = parseFloat($("#image"+c_img_id+"_ha"+c_img_id+"_height").attr("value")) / ratio
+// 			high_area.css("height", _height + "px")
+// 		};
+
+// 	};
 
 	
 

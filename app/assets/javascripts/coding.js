@@ -24,7 +24,7 @@ $(document).ready(function () {
         clearHighlightedArea();
 
         if ( $("#high_area1").css("top") == "0px") {
-            loadhighlightingAreas();
+            loadHighlightingAreas();
         };
 
         $("#publication_date").text(currrent_img.attr("alt").slice(0,10));
@@ -52,7 +52,7 @@ $(document).ready(function () {
 
     
     if ( $("#high_area1").css("top") == "0px") {
-        loadhighlightingAreas();
+        loadHighlightingAreas();
     };
 
 });
@@ -124,6 +124,7 @@ function highlightingArea (img, selection) {
 }
 
 function setHighlightingAreaValues (ha, x1, y1, x2, y2, width, height) {
+    image_hidden_fields.find("#"+image_hidden_fields.attr("id")+ha+"_code_id").attr("value",0);
     image_hidden_fields.find("#"+image_hidden_fields.attr("id")+ha+"_x1").attr("value",x1);
     image_hidden_fields.find("#"+image_hidden_fields.attr("id")+ha+"_y1").attr("value",y1);
     image_hidden_fields.find("#"+image_hidden_fields.attr("id")+ha+"_x2").attr("value",x2);
@@ -137,7 +138,7 @@ function highlighting_done() {
     currrent_img_area_select.cancelSelection()
 };
 
-function loadhighlightingAreas () {
+function loadHighlightingAreas () {
     
     // get the position of the image in the page
     img_pos = $("#myCarousel").position();
@@ -158,7 +159,8 @@ function loadhighlightingAreas () {
 
     $("#high_area1").css("width",image_hidden_fields.find("#"+image_hidden_fields.attr("id")+"_ha1_width").attr("value")); 
 
-    
+    code_id = image_hidden_fields.find("#"+image_hidden_fields.attr("id")+"_ha1_code_id").attr("value")
+    $("#high_area1").css("background-color", $("div#code"+code_id).css("background-color"))  
 
     _top = img_pos.top + parseInt(image_hidden_fields.find("#"+image_hidden_fields.attr("id")+"_ha2_y1").attr("value"));
 
@@ -172,8 +174,11 @@ function loadhighlightingAreas () {
 
     $("#high_area2").css("width",image_hidden_fields.find("#"+image_hidden_fields.attr("id")+"_ha2_width").attr("value")); 
 
+    code_id = image_hidden_fields.find("#"+image_hidden_fields.attr("id")+"_ha2_code_id").attr("value")
+    $("#high_area2").css("background-color", $("div#code"+code_id).css("background-color"))  
     
 }
+
 
 
 function clearHighlightedArea () {
