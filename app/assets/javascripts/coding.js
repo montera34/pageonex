@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    carousel = $('#myCarousel').carousel({interval: 999999,pause:"hover"});
+    carousel = $('#myCarousel').carousel({interval: 5000000,pause:"hover"});
 
 
     
