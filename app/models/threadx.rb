@@ -13,4 +13,5 @@ class Threadx < ActiveRecord::Base
 	has_many :threadx_images
 	has_many :images, :through => :threadx_images
 	
+	has_many :highlighted_areas
 end

@@ -3,4 +3,5 @@ class HighlightedArea < ActiveRecord::Base
 	belongs_to :code
 	belongs_to :user
 	belongs_to :image
+	belongs_to :threadx
 end
