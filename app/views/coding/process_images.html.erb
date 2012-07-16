@@ -79,7 +79,11 @@
                         <% un_high_ares_counter.delete("image#{image_number}") %>
                         <div id="image<%= image_number %>">
                             <%= hidden_field_tag ha.name,"1" %>
-                            <%= hidden_field_tag "#{ha.name}_code_id", "#{ha.code.id}" %>
+                            <% if ha.code != nil %>
+                                <%= hidden_field_tag "#{ha.name}_code_id", "#{ha.code.id}" %>
+                            <% else %>
+                                <%= hidden_field_tag "#{ha.name}_code_id", "#{ha.code}" %>
+                            <% end %>
                             <%= hidden_field_tag "#{ha.name}_x1", ha.areas[0].x1 %>
                             <%= hidden_field_tag "#{ha.name}_y1",ha.areas[0].y1 %>
                             <%= hidden_field_tag "#{ha.name}_x2",ha.areas[0].x2 %>

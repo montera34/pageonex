@@ -7,6 +7,7 @@ class CodingController < ApplicationController
 		@image_counter = @thread.images.length
 		@highlighted_areas = []
 		
+		# get the highlighted areas from the thread object directly
 		@thread.codes.each do |code|
 			code.highlighted_areas.each do |high_area|
 				@highlighted_areas << high_area
@@ -30,6 +31,7 @@ class CodingController < ApplicationController
 			end
 		end
 
+		# get the highlighted areas from the thread object directly
 		if (no_highlighted_area != 0)
 			@highlighted_areas = []
 			@thread.codes.each do |code|
@@ -46,6 +48,7 @@ class CodingController < ApplicationController
 					2.downto(1) do |hc|
 						if params["image#{c}_ha#{hc}"] == "1"
 							
+							# add the thread objcet
 							highlighted_area = HighlightedArea.create!({:name => "image#{c}_ha#{hc}" ,:image => @images[c-1], user: current_user, code_id: params["image#{c}_ha#{hc}_code_id"].to_i})
 
 							Area.create!({x1: params["image#{c}_ha#{hc}_x1"].to_i, y1: params["image#{c}_ha#{hc}_y1"].to_i, x2: params["image#{c}_ha#{hc}_x2"].to_i, y2: params["image#{c}_ha#{hc}_y2"].to_i, width: params["image#{c}_ha#{hc}_width"].to_i, height: params["image#{c}_ha#{hc}_height"].to_i, highlighted_area: highlighted_area})
@@ -67,13 +70,43 @@ class CodingController < ApplicationController
 		@highlighted_areas = []
 
 		@highlighted_areas = []
+		# get the highlighted areas from the thread object directly
 		@thread.codes.each do |code|
 			code.highlighted_areas.each do |high_area|
 				@highlighted_areas << high_area
 			end
 		end
 
+
 		@ratios =  [ { x: 0, y: 60 }, { x: 1, y: 49 }, { x: 2, y: 100 }, { x: 3, y: 42 } ]
-		# render json: @ratios
+		
+		# @highlighted_areas.sort! do |ha1,ha2|
+		# 	ha1.name.split('_')[0][5..100].to_i <=> ha2.name.split('_')[0][5..100].to_i
+		# end		
+
+		# @c_ratios = {}
+
+		# images_per_row = @thread.images.length / @thread.media.length
+
+		# total_counter = @thread.images.length * @thread.media.length
+
+		# 1.upto(images_per_row) do |c|
+		# 	@c_ratios["c#{c}"] = []
+		# end
+
+		# current_c = 0
+		# @c_ratios.each do |c,c_ha|
+		# 	1.upto(4) do |ha|
+		# 		c_ha << @highlighted_areas[ha+current_c-1]
+		# 		current_c += 3
+		# 	end
+		# end
+
+		# render text: @thread.images.length / @thread.media.length
+	
+		# render json: @highlighted_areas.to_json
+
+		# render json: @c_ratios.to_json
+
 	end
 end
