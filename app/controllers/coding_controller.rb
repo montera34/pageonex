@@ -42,7 +42,7 @@ class CodingController < ApplicationController
       end
     end
 
-    if (@thread.status == "opened")
+    # if (@thread.status == "opened")
 
       @image_counter.downto(1) do |c|
         2.downto(1) do |hc|
@@ -55,9 +55,9 @@ class CodingController < ApplicationController
         end	# ends of [2.downto(1)]
 
       end # ends of [@image_counter.downto(1)] block
-    else
+    # else
       # notifiy the user that he cannot modifiy highlighted areas
-    end
+    # end
 
     redirect_to "/threads/#{@thread.thread_name}/display"
   end
