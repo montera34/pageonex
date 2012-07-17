@@ -130,6 +130,9 @@
     </div>
 </div>
 
+<% if params[:i] != nil %>
+    <%= hidden_field_tag "target_image", params[:i]  %>
+<% end %>
 
 
 <script type="text/javascript">

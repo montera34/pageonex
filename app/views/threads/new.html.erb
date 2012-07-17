@@ -7,10 +7,10 @@
 	<%= f.text_field :thread_display_name, placeholder: "For example Occupy, Arab Spring" %>
 
 	<%= f.label :start_date %>
-	<%= f.text_field :start_date, placeholder: "DD/MM/YYYY" %>
+	<%= f.text_field :start_date, placeholder: "DD/MM/YYYY", :class => "dates","rel" => "popover", "data-content"  => "Scraping is done from Kiosko.com, so there is some dates limitations which: available years is [2008, 2009, 2010, 2011, 2012], and most of newspaper issues exist starting from 2010", "data-original-title" => "Limitations of Sources" %>
 
 	<%= f.label :end_date %>
-	<%= f.text_field :end_date, placeholder: "DD/MM/YYYY" %>
+	<%= f.text_field :end_date, placeholder: "DD/MM/YYYY", :class => "dates","rel" => "popover", "data-content"  => "There is limit on the end data in this beta version, which is: the year and the month of end date must be the same as in starting date", "data-original-title" => "End date limitation"  %>
 
   <%= f.label :status %>
   <%= f.text_field :status, placeholder: "Open, Closed" %>
@@ -87,6 +87,9 @@
 
 <script type="text/javascript">
   $(function () {
+
+    $('.dates').popover()
+
     media_count=1
     media_element = $("#media1");
     media_label_element = $("#media_label1");

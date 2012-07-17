@@ -81,12 +81,12 @@
 			<% 0.upto(images_counter-1) do |ic| %>
 				<% if @thread.images[ic].media == m  %>
 					<div id="<%= "image_box#{ic+1}" %>" class="span1 <%= "thum_image#{ic+1}" %>">
-	          
+	          <a href=<%= "/threads/#{@thread.thread_name}/coding/?i=image#{ic+1}" %> title="">
 	          <%= image_tag "/assets#{@thread.images[ic].local_path}", id: "image#{ic+1}", style: "height:320px;opacity: 0.8;"%>
-	          
 	          <div id="high_area1" style="position: absolute; overflow: hidden; z-index: 0; left: 0px; top: 0px; width: 0px; height: 0px; display: block; opacity: 0.7;" class="imgareaselect-outer"></div>
 
 	          <div id="high_area2" style="position: absolute; overflow: hidden; z-index: 0; left: 0px; top: 0px; width: 0px; height: 0px; display: block; opacity: 0.7;" class="imgareaselect-outer"></div>
+	          </a>
 
 					</div>
 				<% end %>
