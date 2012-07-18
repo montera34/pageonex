@@ -7,12 +7,6 @@ class CodingController < ApplicationController
     @image_counter = @thread.images.length
     @highlighted_areas = []
 
-    # get the highlighted areas from the thread object directly
-    # @thread.codes.each do |code|
-    #   code.highlighted_areas.each do |high_area|
-    #     @highlighted_areas << high_area
-    #   end
-    # end
     @highlighted_areas = @thread.highlighted_areas
   end
 
@@ -31,33 +25,24 @@ class CodingController < ApplicationController
       end
     end
 
-    # get the highlighted areas from the thread object directly
     if (no_highlighted_area != 0)
-      @highlighted_areas = []
-      @thread.codes.each do |code|
-        code.highlighted_areas.each do |high_area|
-          high_area.areas[0].destroy
-          high_area.destroy
-        end
+      @thread.highlighted_areas.each do |high_area|
+        high_area.areas[0].destroy
+        high_area.destroy
       end
     end
+    @image_counter.downto(1) do |c|
+      2.downto(1) do |hc|
+        if params["image#{c}_ha#{hc}"] == "1"
 
-    # if (@thread.status == "opened")
+          highlighted_area = HighlightedArea.create!({:name => "image#{c}_ha#{hc}" ,:image => @images[c-1], user: current_user, code_id: params["image#{c}_ha#{hc}_code_id"].to_i, threadx: @thread })
 
-      @image_counter.downto(1) do |c|
-        2.downto(1) do |hc|
-          if params["image#{c}_ha#{hc}"] == "1"
+          Area.create!({x1: params["image#{c}_ha#{hc}_x1"].to_i, y1: params["image#{c}_ha#{hc}_y1"].to_i, x2: params["image#{c}_ha#{hc}_x2"].to_i, y2: params["image#{c}_ha#{hc}_y2"].to_i, width: params["image#{c}_ha#{hc}_width"].to_i, height: params["image#{c}_ha#{hc}_height"].to_i, highlighted_area: highlighted_area})
+        end
+      end	# ends of [2.downto(1)]
 
-            highlighted_area = HighlightedArea.create!({:name => "image#{c}_ha#{hc}" ,:image => @images[c-1], user: current_user, code_id: params["image#{c}_ha#{hc}_code_id"].to_i, threadx: @thread })
+    end # ends of [@image_counter.downto(1)] block
 
-            Area.create!({x1: params["image#{c}_ha#{hc}_x1"].to_i, y1: params["image#{c}_ha#{hc}_y1"].to_i, x2: params["image#{c}_ha#{hc}_x2"].to_i, y2: params["image#{c}_ha#{hc}_y2"].to_i, width: params["image#{c}_ha#{hc}_width"].to_i, height: params["image#{c}_ha#{hc}_height"].to_i, highlighted_area: highlighted_area})
-          end
-        end	# ends of [2.downto(1)]
-
-      end # ends of [@image_counter.downto(1)] block
-    # else
-      # notifiy the user that he cannot modifiy highlighted areas
-    # end
 
     redirect_to "/threads/#{@thread.thread_name}/display"
   end
@@ -69,12 +54,7 @@ class CodingController < ApplicationController
     @highlighted_areas = []
 
     @highlighted_areas = []
-    # get the highlighted areas from the thread object directly
-    # @thread.codes.each do |code|
-    #   code.highlighted_areas.each do |high_area|
-    #     @highlighted_areas << high_area
-    #   end
-    # end
+
 
     @highlighted_areas = @thread.highlighted_areas
 

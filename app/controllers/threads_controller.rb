@@ -48,7 +48,10 @@ class ThreadsController < ApplicationController
 				image_info["image_name"] = image_name
 				media = Media.find_by_name(image_info[:media])
 
-				image = Image.create!({ image_name: image_info["image_name"],publication_date: image_info[:publication_date], local_path: image_info[:local_path], media_id: media.id})
+				image_size = Magick::ImageList.new("app/assets/images" + image_info[:local_path])[0]
+				image_size = "#{image_size.columns}x#{image_size.rows}"
+
+				image = Image.create!({ image_name: image_info["image_name"],publication_date: image_info[:publication_date], local_path: image_info[:local_path], media_id: media.id, size: image_size})
 				
 				images << image
 			# otherwise it find the image, and add to the array
