@@ -34,6 +34,8 @@ end
 
 # gem "rmagick"
 
+# gem "image_science"
+
 gem 'jquery-rails'
 
 gem 'awesome_print'
