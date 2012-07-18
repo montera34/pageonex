@@ -80,9 +80,9 @@
 			<% images_counter = @thread.images.length %>
 			<% 0.upto(images_counter-1) do |ic| %>
 				<% if @thread.images[ic].media == m  %>
-					<div id="<%= "image_box#{ic+1}" %>" style="margin-bottom: 4px" class="span1 <%= "thum_image#{ic+1}" %>">
+					<div id="<%= "image_box#{ic+1}" %>" style="margin-bottom: 9px" class="span1 <%= "thum_image#{ic+1}" %>">
 	          <a href=<%= "/threads/#{@thread.thread_name}/coding/?i=image#{ic+1}" %> title="">
-	          <%= image_tag "/assets#{@thread.images[ic].local_path}", id: "image#{ic+1}", style: "height:320px;opacity: 0.8;"%>
+	          <%= image_tag "/assets#{@thread.images[ic].local_path}", id: "image#{ic+1}", style: " opacity: 0.8;"%>
 	          <div id="high_area1" style="position: absolute; overflow: hidden; z-index: 0; left: 0px; top: 0px; width: 0px; height: 0px; display: block; opacity: 0.7;" class="imgareaselect-outer"></div>
 
 	          <div id="high_area2" style="position: absolute; overflow: hidden; z-index: 0; left: 0px; top: 0px; width: 0px; height: 0px; display: block; opacity: 0.7;" class="imgareaselect-outer"></div>
@@ -116,98 +116,6 @@
 	  <% end %>
   </div>
 
-	
-<script type="text/javascript">
-$(document).ready(function () {
-	
-	function loadImagesHighlightedAreas (argument) {
-		images = $(".images img")
-		image_box = $(".images .span1")
-		number_of_images = images.length/parseInt($("#number_of_rows").attr("value"))
-		row_width = $("div.images").width() - 225;	
-
-		for (var i = 0; i < images.length; i++) {
-			curr_img = $(images[i])
-			curr_img_box = $(image_box[i])
-
-			
-			//row_width = row_width - (number_of_images * 30);
-			
-			curr_img.height(row_width/number_of_images)
-			curr_img_box.css("width",row_width/number_of_images)
-
-		};
-
-		high_areas = $("#high_areas div")
-		for (var i = high_areas.length -1; i >= 0; i--) {
-				c_high_area_id = $(high_areas[i]).attr("id").substr(5)
-				high_area1 = $("div.images").find("div.thum_image"+c_high_area_id).find("div#high_area"+1)
-				high_area2 = $("div.images").find("div.thum_image"+c_high_area_id).find("div#high_area"+2)
-				c_image = $("img#image"+c_high_area_id)
-
-				// row_width = $("div.images").width();
-				// number_of_images = $($("div.images")[0]).children().length - 1;
-				//row_width = row_width - (number_of_images * 30);
-				
-				// c_image.height(row_width/number_of_images)
-				original_img_size = 949
-				ratio = original_img_size/c_image.height()
-
-				// higlighted area 1
-
-				curr_high_area_code = $("#image"+c_high_area_id+"_ha1"+"_code_id").attr("value")
-				high_area1.css("background-color", $("#code-"+curr_high_area_code).css("background-color"))
-
-				_top = parseFloat($("#image"+c_high_area_id+"_ha"+"1"+"_y1").attr("value")) / ratio
-				_top = _top + c_image.position().top
-				high_area1.css("top", _top + "px" )
-
-				_left = parseFloat($("#image"+c_high_area_id+"_ha"+"1"+"_x1").attr("value")) / ratio
-				_left = _left + c_image.position().left
-				high_area1.css("left", _left + "px")
-
-				_width = parseFloat($("#image"+c_high_area_id+"_ha"+"1"+"_width").attr("value")) / ratio
-				high_area1.css("width", _width + "px")
-
-				_height = parseFloat($("#image"+c_high_area_id+"_ha"+"1"+"_height").attr("value")) / ratio
-				high_area1.css("height", _height + "px")
-
-
-				// higlighted area 2
-				
-				curr_high_area_code = $("#image"+c_high_area_id+"_ha2"+"_code_id").attr("value")
-				high_area2.css("background-color", $("#code-"+curr_high_area_code).css("background-color"))	
-
-				_top = parseFloat($("#image"+c_high_area_id+"_ha"+"2"+"_y1").attr("value")) / ratio
-				_top = _top + c_image.position().top
-				high_area2.css("top", _top + "px" )
-
-				_left = parseFloat($("#image"+c_high_area_id+"_ha"+"2"+"_x1").attr("value")) / ratio
-				_left = _left + c_image.position().left
-				high_area2.css("left", _left + "px")
-
-				_width = parseFloat($("#image"+c_high_area_id+"_ha"+"2"+"_width").attr("value")) / ratio
-				high_area2.css("width", _width + "px")
-
-				_height = parseFloat($("#image"+c_high_area_id+"_ha"+"2"+"_height").attr("value")) / ratio
-				high_area2.css("height", _height + "px")
-
-		};
-
-	}
-
-	loadImagesHighlightedAreas();
-	
-	$(window).resize(function() {
-	 	loadImagesHighlightedAreas();
-	});
-
-	
-
-})
-
-
-</script>
 
 <%= javascript_include_tag "d3.min.js", "d3.layout.min.js", "rickshaw.min.js" %>
 <link rel="alternate" href="https://github.com/douglascrockford/JSON-js/blob/master/json2.js">
@@ -241,16 +149,111 @@ var graph = new Rickshaw.Graph( {
     } ]
 } );
 
+
 graph.render();
 
 </script>
+
+<script type="text/javascript">
+$(function () {
+	
+	var images = $(".images img")
+	var image_box = $(".images .span1")
+	var number_of_images = images.length/parseInt($("#number_of_rows").attr("value"))
+	var row_width = $("div.images").width() - 225;	
+
+	for (var i = 0; i < images.length; i++) {
+		var curr_img = $(images[i])
+		var curr_img_box = $(image_box[i])
+		var original_img_width = 670
+		var original_img_height = 1049
+		var image_down_size_ration = Math.ceil(original_img_width / (row_width/number_of_images))
+		curr_img.width(row_width/number_of_images - 9)
+
+		curr_img.height(Math.ceil(original_img_height/image_down_size_ration))
+
+		curr_img_box.css("width",row_width/number_of_images)
+
+	};
+
+	$(document).on("load",loadImagesHighlightedAreas());
+
+	function loadImagesHighlightedAreas () {
+
+		high_areas = $("#high_areas div")
+		for (var i = high_areas.length -1; i >= 0; i--) {
+				var c_high_area_id = $(high_areas[i]).attr("id").substr(5)
+				var high_area1 = $("div.images").find("div.thum_image"+c_high_area_id).find("div#high_area"+1)
+				var high_area2 = $("div.images").find("div.thum_image"+c_high_area_id).find("div#high_area"+2)
+				var c_image = $("img#image"+c_high_area_id)
+
+				var original_img_size = 670
+				var ratio = original_img_size/c_image.width()
+				
+				// higlighted area 1
+
+				var curr_high_area_code = $("#image"+c_high_area_id+"_ha1"+"_code_id").attr("value")
+				high_area1.css("background-color", $("#code-"+curr_high_area_code).css("background-color"))
+
+				var _top = parseFloat($("#image"+c_high_area_id+"_ha"+"1"+"_y1").attr("value")) / ratio
+
+				_top = _top + c_image.position().top
+
+				high_area1.css("top", Math.ceil(_top) + "px" )
+
+				var _left = parseFloat($("#image"+c_high_area_id+"_ha"+"1"+"_x1").attr("value")) / ratio
+				_left = _left + c_image.position().left
+				high_area1.css("left", Math.ceil(_left) + "px")
+
+				var _width = parseFloat($("#image"+c_high_area_id+"_ha"+"1"+"_width").attr("value")) / ratio
+				high_area1.css("width", _width + "px")
+
+				var _height = parseFloat($("#image"+c_high_area_id+"_ha"+"1"+"_height").attr("value")) / ratio
+				high_area1.css("height", _height + "px")
+
+
+				// higlighted area 2
+				
+				var curr_high_area_code = $("#image"+c_high_area_id+"_ha2"+"_code_id").attr("value")
+				high_area2.css("background-color", $("#code-"+curr_high_area_code).css("background-color"))	
+
+				_top = parseFloat($("#image"+c_high_area_id+"_ha"+"2"+"_y1").attr("value")) / ratio
+				_top = _top + c_image.position().top
+				high_area2.css("top", _top + "px" )
+
+				_left = parseFloat($("#image"+c_high_area_id+"_ha"+"2"+"_x1").attr("value")) / ratio
+				_left = _left + c_image.position().left
+				high_area2.css("left", _left + "px")
+
+				_width = parseFloat($("#image"+c_high_area_id+"_ha"+"2"+"_width").attr("value")) / ratio
+				high_area2.css("width", _width + "px")
+
+				_height = parseFloat($("#image"+c_high_area_id+"_ha"+"2"+"_height").attr("value")) / ratio
+				high_area2.css("height", _height + "px")
+
+		};
+
+	}
+
+	
+	$(window).resize(function() {
+	 	loadImagesHighlightedAreas();
+	});
+
+
+})
+
+	console.log($("#image4").height())
+
+</script>
+
+
 
 
 <script type="text/javascript">
 $(function (argument) {
     $(".breadcrumb li").filter("li.active").attr("class"," ");
     $("#display").attr("class", "active");
-
 })
 </script>
 

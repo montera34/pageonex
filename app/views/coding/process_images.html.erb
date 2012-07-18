@@ -34,10 +34,10 @@
         <div id="myCarousel" class="carousel slide">
           <!-- Carousel items -->
           <div class="carousel-inner">
-            <div class="active item"><%= image_tag "/assets#{@images[0].local_path}", :id => "image1", :style => "height: 949px;" , :media=>@images[0].media.display_name%></div>
+            <div class="active item"><%= image_tag "/assets#{@images[0].local_path}", :id => "image1", :style => "width: 670px;" , :media=>@images[0].media.display_name%></div>
 
             <% 1.upto(@image_counter-1) do |ic| %>
-                <div class="item"><%= image_tag "/assets#{@images[ic].local_path}", :id => "image#{ic+1}", :style => "height: 949px;", :media=>@images[ic].media.display_name %></div>
+                <div class="item"><%= image_tag "/assets#{@images[ic].local_path}", :id => "image#{ic+1}", :style => "width: 670px", :media=>@images[ic].media.display_name %></div>
             <%end%>
           </div>
           <!-- Carousel nav -->
@@ -82,7 +82,7 @@
                             <% if ha.code != nil %>
                                 <%= hidden_field_tag "#{ha.name}_code_id", "#{ha.code.id}" %>
                             <% else %>
-                                <%= hidden_field_tag "#{ha.name}_code_id", "#{ha.code}" %>
+                                <%= hidden_field_tag "#{ha.name}_code_id", "#{ha.code_id}" %>
                             <% end %>
                             <%= hidden_field_tag "#{ha.name}_x1", ha.areas[0].x1 %>
                             <%= hidden_field_tag "#{ha.name}_y1",ha.areas[0].y1 %>

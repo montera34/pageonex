@@ -11,6 +11,9 @@ $(document).ready(function () {
     // get the object of image selection plugin
     currrent_img_area_select = $('#images_section div.active img').imgAreaSelect({instance: true, handles: true,onSelectEnd: highlightingArea});
 
+    console.log($("#image11").height())
+
+
     // current display image 
     currrent_img = $("#images_section div.active img") 
     if (currrent_img.attr("alt")){
@@ -57,10 +60,14 @@ $(document).ready(function () {
 
     $("#skip_coding").click(function () {
         if ($("#"+image_hidden_fields.attr("id") +"_ha1_code_id").attr("value") != "-1") {
+            
             $("#"+image_hidden_fields.attr("id") +"_ha1").attr("value","1");
+            
             setHighlightingAreaValues("_ha1",$("#myCarousel").position().top,$("#myCarousel").position().left,'0','0',currrent_img.width(),'130px');
+            
             $("#"+image_hidden_fields.attr("id") +"_ha1_code_id").attr("value","-1");
             _top = $("#myCarousel").position().top + ($("#myCarousel").height()/2)
+            
             $("#high_area1").css("top",  _top);
 
             $("#high_area1").css("left",$("#myCarousel").position().left);
@@ -188,6 +195,14 @@ function loadHighlightingAreas () {
 
     code_id = image_hidden_fields.find("#"+image_hidden_fields.attr("id")+"_ha1_code_id").attr("value")
     $("#high_area1").css("background-color", $("div#code"+code_id).css("background-color"))  
+
+    if (image_hidden_fields.find("#"+image_hidden_fields.attr("id")+"_ha1_code_id").attr("value") == "-1")  {
+        $("#high_area1").css("background-color", "#eee") 
+        
+        $("#high_area1").css("top",image_hidden_fields.find("#"+image_hidden_fields.attr("id")+"_ha1_y1").attr("value"));
+
+        $("#high_area1").css("left",image_hidden_fields.find("#"+image_hidden_fields.attr("id")+"_ha1_x1").attr("value"));
+    };
 
     _top = img_pos.top + parseInt(image_hidden_fields.find("#"+image_hidden_fields.attr("id")+"_ha2_y1").attr("value"));
 
