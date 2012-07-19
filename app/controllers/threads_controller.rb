@@ -48,12 +48,20 @@ class ThreadsController < ApplicationController
 				image_info["image_name"] = image_name
 				media = Media.find_by_name(image_info[:media])
 
-				image_size = Magick::ImageList.new("app/assets/images" + image_info[:local_path])[0]
-				image_size = "#{image_size.columns}x#{image_size.rows}"
+				if image_info[:local_path] != "404.jpg"
+					image_size = Magick::ImageList.new("app/assets/images" + image_info[:local_path])[0]
+					image_size = "#{image_size.columns}x#{image_size.rows}"
+				else
+					image_size="750x951"
+					# change the default values
+					# image_info[:publication_date]
+					# image_info["image_name"]
+				end
 
 				image = Image.create!({ image_name: image_info["image_name"],publication_date: image_info[:publication_date], local_path: image_info[:local_path], media_id: media.id, size: image_size})
 				
 				images << image
+
 			# otherwise it find the image, and add to the array
 			else
 				image = Image.find_by_image_name(image_name)
@@ -66,6 +74,7 @@ class ThreadsController < ApplicationController
 
 		# specifying the owner, because there is a collaborators (related to Intercoder)
 		@thread.owner_id = current_user.id
+		@thread.status = "opened"
 		@thread.save!
 
 		redirect_to "/threads/#{@thread.thread_name}/coding"
@@ -96,6 +105,16 @@ class ThreadsController < ApplicationController
 	def show
 		@thread = Threadx.find_by_thread_name params[:id]
 		redirect_to "/threads/#{@thread.thread_name}/display"
+	end
+
+	def destroy
+		@thread = Threadx.find_by_thread_name params[:id]
+		@thread.codes.each do |code|
+			code.highlighted_areas.destroy_all
+			code.destroy
+		end
+		@thread.destroy
+		redirect_to "/threads/"
 	end
 
 end
