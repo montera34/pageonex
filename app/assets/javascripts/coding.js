@@ -11,9 +11,6 @@ $(document).ready(function () {
     // get the object of image selection plugin
     currrent_img_area_select = $('#images_section div.active img').imgAreaSelect({instance: true, handles: true,onSelectEnd: highlightingArea});
 
-    console.log($("#image11").height())
-
-
     // current display image 
     currrent_img = $("#images_section div.active img") 
     if (currrent_img.attr("alt")){
@@ -24,7 +21,12 @@ $(document).ready(function () {
     // change the currrent_img_area_select, currrent_img variable when user slide to another image, and also clean the highlighted areas
     carousel.on('slid',function(){
 
-        currrent_img_area_select = $('#images_section div.active img').imgAreaSelect({instance: true, handles: true,onSelectEnd: highlightingArea});
+        
+        if (currrent_img.attr("altr") == "Assets404") {
+            currrent_img_area_select = $('#images_section div.active img').imgAreaSelect({instance: true, handles: true,onSelectEnd: highlightingArea, disable:true});
+        }else{
+            currrent_img_area_select = $('#images_section div.active img').imgAreaSelect({instance: true, handles: true,onSelectEnd: highlightingArea});
+        }
 
         currrent_img = $("#images_section div.active img");
 
@@ -37,6 +39,14 @@ $(document).ready(function () {
 
         $("#publication_date").text(currrent_img.attr("alt").slice(0,10));
         $("#newspaper_name").text(currrent_img.attr("media"));
+    });
+
+    $(window).resize(function() {
+        clearHighlightedArea();
+
+        if ( $("#high_area1").css("top") == "0px") {
+            loadHighlightingAreas();
+        };
     });
 
     $('input[name="codes"]').on("click",function(){
@@ -63,36 +73,38 @@ $(document).ready(function () {
             
             $("#"+image_hidden_fields.attr("id") +"_ha1").attr("value","1");
             
-            setHighlightingAreaValues("_ha1",$("#myCarousel").position().top,$("#myCarousel").position().left,'0','0',currrent_img.width(),'130px');
+            setHighlightingAreaValues("_ha1",1,1,'0','0',currrent_img.width(),currrent_img.height());
             
             $("#"+image_hidden_fields.attr("id") +"_ha1_code_id").attr("value","-1");
-            _top = $("#myCarousel").position().top + ($("#myCarousel").height()/2)
+           
             
-            $("#high_area1").css("top",  _top);
+            $("#high_area1").css("top", $("#myCarousel").position().top);
 
-            $("#high_area1").css("left",$("#myCarousel").position().left);
+            $("#high_area1").css("left", $("#myCarousel").position().left);
 
             $("#high_area1").css("width",currrent_img.width());
 
-            $("#high_area1").css("height",'130px'); 
+            $("#high_area1").css("height",currrent_img.height()); 
 
             $("#high_area1").css("opacity","0.9");
 
             $("#high_area1").css("background-color","#eee");
 
-            $("#high_area1").append("<h1 style='text-align:center'>Nothing to code here</h1>");
+            $("#high_area1").append("<h1 style='text-align:center color: black;'>Nothing to code here</h1>");
         };
     })
 
-    
-    if ( $("#high_area1").css("top") == "0px") {
-        loadHighlightingAreas();
-    };
+    window.onload = function() {
+        if ( $("#high_area1").css("top") == "0px") {
+            loadHighlightingAreas();
+        };
+    }
 
 });
 function highlightingArea (img, selection) {
     
     img_pos = $("#myCarousel").position();
+    console.log($("#myCarousel").position().left)
     image_hidden_fields = $("div#" + currrent_img.attr("id"));
 
     if ( $("#"+image_hidden_fields.attr("id") +"_ha1").attr("value") == 0){
@@ -176,7 +188,7 @@ function loadHighlightingAreas () {
     
     // get the position of the image in the page
     img_pos = $("#myCarousel").position();
-
+    console.log($("#myCarousel").position().left)
     // get the div which contains the hidden field that holds the highlighted area values
     image_hidden_fields = $("div#" + currrent_img.attr("id"));
 
@@ -197,12 +209,19 @@ function loadHighlightingAreas () {
     $("#high_area1").css("background-color", $("div#code"+code_id).css("background-color"))  
 
     if (image_hidden_fields.find("#"+image_hidden_fields.attr("id")+"_ha1_code_id").attr("value") == "-1")  {
-        $("#high_area1").css("background-color", "#eee") 
-        
+        $("#high_area1").css("background-color", "#eee")
+        $("#high_area1").css("opacity", " 0.8")
+        if ($("#high_area1").children().length == 0) {
+            $("#high_area1").append("<h1 style='text-align:center; color: black;'>Nothing to code here</h1>");
+        }
         $("#high_area1").css("top",image_hidden_fields.find("#"+image_hidden_fields.attr("id")+"_ha1_y1").attr("value"));
 
         $("#high_area1").css("left",image_hidden_fields.find("#"+image_hidden_fields.attr("id")+"_ha1_x1").attr("value"));
-    };
+    }else{
+        $("#high_area1").css("opacity", " 0.4")
+        $("#high_area1").children().first().remove()
+    }
+
 
     _top = img_pos.top + parseInt(image_hidden_fields.find("#"+image_hidden_fields.attr("id")+"_ha2_y1").attr("value"));
 
