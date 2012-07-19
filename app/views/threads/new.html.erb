@@ -13,7 +13,13 @@
 	<%= f.text_field :end_date, placeholder: "DD/MM/YYYY", :class => "dates","rel" => "popover", "data-content"  => "There is limit on the end data in this beta version, which is: the year and the month of end date must be the same as in starting date", "data-original-title" => "End date limitation"  %>
 
   <%= f.label :status %>
-  <%= f.text_field :status, placeholder: "Open, Closed" %>
+  <div class="btn-group" data-toggle="buttons-radio">
+    <a class="btn btn-primary">Opened</a>
+    <a class="btn btn-inverse">Closed</a>
+  </div>
+  <%= hidden_field_tag :status %>
+  
+  <br>
 
   <%= f.label :category %>
   <%= f.text_field :category, placeholder: "International, national, Occupy" %>

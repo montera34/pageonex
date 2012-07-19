@@ -34,10 +34,14 @@
         <div id="myCarousel" class="carousel slide">
           <!-- Carousel items -->
           <div class="carousel-inner">
-            <div class="active item"><%= image_tag "/assets#{@images[0].local_path}", :id => "image1", :style => "width: 670px;" , :media=>@images[0].media.display_name%></div>
+            <div class="active item">
+                <%= image_tag "/assets#{@images[0].local_path}", :id => "image1", :style => "width: 670px;" , :media=>@images[0].media.display_name, image_size: @images[0].size %>
+            </div>
 
             <% 1.upto(@image_counter-1) do |ic| %>
-                <div class="item"><%= image_tag "/assets#{@images[ic].local_path}", :id => "image#{ic+1}", :style => "width: 670px", :media=>@images[ic].media.display_name %></div>
+                <div class="item">
+                    <%= image_tag "/assets#{@images[ic].local_path}", :id => "image#{ic+1}", :style => "width: 670px", :media=>@images[ic].media.display_name, image_size: @images[ic].size %>
+                </div>
             <%end%>
           </div>
           <!-- Carousel nav -->
@@ -71,12 +75,13 @@
         <%= form_tag "/threads/#{@thread.thread_name}/process_highlighted_areas" do %> 
             <div id="high_images">
                 <% un_high_ares_counter = []  %>
-                <% 1.upto(@image_counter) {|ic| un_high_ares_counter << "image#{ic}"} %>
+                <% 1.upto(@image_counter) {|ic| un_high_ares_counter << "image#{ic}_ha#{1}"; un_high_ares_counter << "image#{ic}_ha#{2}";  } %>
 
                 <% if @highlighted_areas != [] %>
                     <% @highlighted_areas.each do |ha| %>
                         <% image_number = ha.name.split('_')[0].slice(5,ha.name.split('_')[0].length) %>
-                        <% un_high_ares_counter.delete("image#{image_number}") %>
+                        <% ha_number = ha.name.split('_')[1].slice(2,ha.name.split('_')[1].length) %>
+                        <% un_high_ares_counter.delete("image#{image_number}_ha#{ha_number}") %>
                         <div id="image<%= image_number %>">
                             <%= hidden_field_tag ha.name,"1" %>
                             <% if ha.code != nil %>
@@ -94,24 +99,15 @@
                     <% end %>
                 <% end %>
                 <% un_high_ares_counter.each do |ha| %>
-                    <div id="<%= ha %>">
-                        <%= hidden_field_tag "#{ha}_ha1","0" %>
-                        <%= hidden_field_tag "#{ha}_ha1_code_id", "0" %>
-                        <%= hidden_field_tag "#{ha}_ha1_x1" %>
-                        <%= hidden_field_tag "#{ha}_ha1_y1" %>
-                        <%= hidden_field_tag "#{ha}_ha1_x2" %>
-                        <%= hidden_field_tag "#{ha}_ha1_y2" %>
-                        <%= hidden_field_tag "#{ha}_ha1_width"%>
-                        <%= hidden_field_tag "#{ha}_ha1_height"%>
-
-                        <%= hidden_field_tag "#{ha}_ha2","0" %>
-                        <%= hidden_field_tag "#{ha}_ha2_code_id", "0" %>
-                        <%= hidden_field_tag "#{ha}_ha2_x1" %>
-                        <%= hidden_field_tag "#{ha}_ha2_y1" %>
-                        <%= hidden_field_tag "#{ha}_ha2_x2" %>
-                        <%= hidden_field_tag "#{ha}_ha2_y2" %>
-                        <%= hidden_field_tag "#{ha}_ha2_width"%>
-                        <%= hidden_field_tag "#{ha}_ha2_height"%>
+                    <div id="<%= ha.split("_")[0] %>">
+                        <%= hidden_field_tag "#{ha}","0" %>
+                        <%= hidden_field_tag "#{ha}_code_id", "0" %>
+                        <%= hidden_field_tag "#{ha}_x1" %>
+                        <%= hidden_field_tag "#{ha}_y1" %>
+                        <%= hidden_field_tag "#{ha}_x2" %>
+                        <%= hidden_field_tag "#{ha}_y2" %>
+                        <%= hidden_field_tag "#{ha}_width"%>
+                        <%= hidden_field_tag "#{ha}_height"%>
                     </div>
                 <% end %>
             </div>
