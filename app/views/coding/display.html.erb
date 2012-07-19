@@ -82,7 +82,7 @@
 				<% if @thread.images[ic].media == m  %>
 					<div id="<%= "image_box#{ic+1}" %>" style="margin-bottom: 9px" class="span1 <%= "thum_image#{ic+1}" %>">
 	          <a href=<%= "/threads/#{@thread.thread_name}/coding/?i=image#{ic+1}" %> title="">
-	          <%= image_tag "/assets#{@thread.images[ic].local_path}", id: "image#{ic+1}", style: " opacity: 0.8;"%>
+	          <%= image_tag "/assets#{@thread.images[ic].local_path}", id: "image#{ic+1}", style: " opacity: 0.8;", image_size: @images[ic].size%>
 	          <div id="high_area1" style="position: absolute; overflow: hidden; z-index: 0; left: 0px; top: 0px; width: 0px; height: 0px; display: block; opacity: 0.7;" class="imgareaselect-outer"></div>
 
 	          <div id="high_area2" style="position: absolute; overflow: hidden; z-index: 0; left: 0px; top: 0px; width: 0px; height: 0px; display: block; opacity: 0.7;" class="imgareaselect-outer"></div>
@@ -104,7 +104,7 @@
 	        <% if ha.code != nil %>
               <%= hidden_field_tag "#{ha.name}_code_id", "#{ha.code.id}" %>
           <% else %>
-              <%= hidden_field_tag "#{ha.name}_code_id", "#{ha.code}" %>
+              <%= hidden_field_tag "#{ha.name}_code_id", "#{ha.code_id}" %>
           <% end %>
 	        <%= hidden_field_tag "#{ha.name}_x1", ha.areas[0].x1 %>
 	        <%= hidden_field_tag "#{ha.name}_y1",ha.areas[0].y1 %>
@@ -123,9 +123,9 @@
 
 // var data = [ { x: 0, y: 40 }, { x: 1, y: 49 }, { x: 2, y: 17 }, { x: 3, y: 42 } ];
 // var data = [ { x: 0, y: parseInt($("#v1").attr("value")) }, { x: 1, y: parseInt($("#v2").attr("value")) }, { x: 2, y: parseInt($("#v3").attr("value")) }, { x: 3, y: parseInt($("#v4").attr("value")) }, { x: 4, y: 17 }, { x:5, y: 42 } ];
-images = $(".images img")
+var images = $(".images img")
 
-number_of_images = images.length/parseInt($("#number_of_rows").attr("value"))
+var number_of_images = images.length/parseInt($("#number_of_rows").attr("value"))
 var data = []
 
 for (var i = 0; i < number_of_images; i++) {
@@ -135,7 +135,7 @@ for (var i = 0; i < number_of_images; i++) {
 	})
 };
 
-row_width = $("div.images").width() - 225;	
+var row_width = $("div.images").width() - 225;	
 
 var graph = new Rickshaw.Graph( {
     element: document.querySelector("#chart"),
@@ -165,51 +165,71 @@ $(function () {
 	for (var i = 0; i < images.length; i++) {
 		var curr_img = $(images[i])
 		var curr_img_box = $(image_box[i])
-		var original_img_width = 670
-		var original_img_height = 1049
-		var image_down_size_ration = Math.ceil(original_img_width / (row_width/number_of_images))
-		curr_img.width(row_width/number_of_images - 9)
 
-		curr_img.height(Math.ceil(original_img_height/image_down_size_ration))
+		
+		var original_img_width = curr_img.attr("image_size").split("x")[0]
+		var displayed_img_width = 670
 
-		curr_img_box.css("width",row_width/number_of_images)
+		var original_img_height = curr_img.attr("image_size").split("x")[1]
+		var displayed_img_height = (original_img_height / (original_img_width/displayed_img_width) )
+
+		var image_down_size_ratio = (displayed_img_width / (row_width/number_of_images - 9))	
+
+		curr_img.width((row_width/number_of_images - 9))
+
+		curr_img.height((displayed_img_height/image_down_size_ratio))
+
+		curr_img_box.css("width",(row_width/number_of_images))
 
 	};
 
-	$(document).on("load",loadImagesHighlightedAreas());
+	window.onload = function() {
+		loadImagesHighlightedAreas()
+	};
 
 	function loadImagesHighlightedAreas () {
 
 		high_areas = $("#high_areas div")
 		for (var i = high_areas.length -1; i >= 0; i--) {
 				var c_high_area_id = $(high_areas[i]).attr("id").substr(5)
+
 				var high_area1 = $("div.images").find("div.thum_image"+c_high_area_id).find("div#high_area"+1)
 				var high_area2 = $("div.images").find("div.thum_image"+c_high_area_id).find("div#high_area"+2)
 				var c_image = $("img#image"+c_high_area_id)
-
-				var original_img_size = 670
-				var ratio = original_img_size/c_image.width()
-				
+		
+				var dispalyed_img_size = 670
+				var ratio = (dispalyed_img_size/c_image.width())
+			
 				// higlighted area 1
 
 				var curr_high_area_code = $("#image"+c_high_area_id+"_ha1"+"_code_id").attr("value")
-				high_area1.css("background-color", $("#code-"+curr_high_area_code).css("background-color"))
+				
+				if (curr_high_area_code == "-1") {
+					high_area1.css("background-color", "#eee")
+					if (high_area1.children().length == 0) {
+						high_area1.append("<p style='text-align:center; color: black;'>Nothing to code here</p>");
+					};
+				}else{
+					high_area1.css("background-color", $("#code-"+curr_high_area_code).css("background-color"))
+				}
 
 				var _top = parseFloat($("#image"+c_high_area_id+"_ha"+"1"+"_y1").attr("value")) / ratio
 
-				_top = _top + c_image.position().top
-
+				_top = (_top) + c_image.position().top
+				
 				high_area1.css("top", Math.ceil(_top) + "px" )
 
 				var _left = parseFloat($("#image"+c_high_area_id+"_ha"+"1"+"_x1").attr("value")) / ratio
-				_left = _left + c_image.position().left
+
+				_left = (_left) + c_image.position().left
 				high_area1.css("left", Math.ceil(_left) + "px")
 
-				var _width = parseFloat($("#image"+c_high_area_id+"_ha"+"1"+"_width").attr("value")) / ratio
-				high_area1.css("width", _width + "px")
+				var _width = parseFloat($("#image"+c_high_area_id+"_ha"+"1"+"_width").attr("value")) / ratio 
+
+				high_area1.css("width", (_width) + "px")
 
 				var _height = parseFloat($("#image"+c_high_area_id+"_ha"+"1"+"_height").attr("value")) / ratio
-				high_area1.css("height", _height + "px")
+				high_area1.css("height", (_height) + "px")
 
 
 				// higlighted area 2
@@ -219,11 +239,11 @@ $(function () {
 
 				_top = parseFloat($("#image"+c_high_area_id+"_ha"+"2"+"_y1").attr("value")) / ratio
 				_top = _top + c_image.position().top
-				high_area2.css("top", _top + "px" )
+				high_area2.css("top", Math.ceil(_top) + "px" )
 
 				_left = parseFloat($("#image"+c_high_area_id+"_ha"+"2"+"_x1").attr("value")) / ratio
 				_left = _left + c_image.position().left
-				high_area2.css("left", _left + "px")
+				high_area2.css("left", Math.ceil(_left) + "px")
 
 				_width = parseFloat($("#image"+c_high_area_id+"_ha"+"2"+"_width").attr("value")) / ratio
 				high_area2.css("width", _width + "px")
@@ -242,8 +262,6 @@ $(function () {
 
 
 })
-
-	console.log($("#image4").height())
 
 </script>
 
