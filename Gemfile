@@ -6,7 +6,15 @@ gem 'rails', '3.2.2'
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
 # gem 'mysql2'
-gem 'sqlite3'
+# gem 'sqlite3'
+
+group :production do
+  gem 'pg'
+end
+
+group :development do
+  gem 'sqlite3'
+end
 
 # Gems used only for assets and not required
 # in production environments by default.
