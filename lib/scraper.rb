@@ -1,6 +1,6 @@
 require "fileutils"
 require "open-uri"
-#require "RMagick"
+require "RMagick"
 
 
 class Scraper
@@ -12,7 +12,6 @@ class Scraper
 		newspapers_issues_paths = Scraper.build_kiosko_issues(year, month, start_day, end_day, newspapers_names)
 		#newspapers_issues_paths = Scraper.build_newyork_times_issues(year, month, start_day, end_day)
 		#newspapers_issues_paths = Scraper.build_elpais_issues(year, month, start_day, end_day)
-
 
 		Scraper.scrape newspapers_issues_paths
 
