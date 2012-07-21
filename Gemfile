@@ -50,6 +50,8 @@ gem 'awesome_print'
 
 gem 'devise'
 
+gem 'thin'
+
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
 
