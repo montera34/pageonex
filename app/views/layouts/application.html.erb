@@ -91,12 +91,10 @@
               <div class="well sidebar-nav">
                 <h3>Opened Threads</h3>
                 <ul class="nav nav-list">
-                  <li class="nav-header">International</li>
-                    <li><%= link_to "Occupy", "/threads/Occupy"  %></li>
-                    <li><%= link_to "NBA Finals", "/threads/NBA Finals"  %></li>
-                    <li><%= link_to "Arab Spring", "/threads/Arab Spring"  %></li>
-                    <li><%= link_to "15M", "/threads/15M"  %></li>
-                    <li><%= link_to "Japanese Tsunami", "/threads/Japanese Tsunami"  %></li>
+                  <!-- <li class="nav-header">International</li> -->
+                  <% Threadx.all.each do |t| %>
+                    <li><%= link_to t.thread_display_name, "/threads/#{t.thread_name}/display"  %></li>
+                  <% end %>
                 </ul>
               </div><!--/.well -->
 
