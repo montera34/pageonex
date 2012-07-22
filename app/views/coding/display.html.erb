@@ -44,32 +44,19 @@
 		<h2>Surfaces percentage:</h2>
 	</div>
 	<div class="span6" style="width: 644px;">
-		<div id="chart" style="margin-left:-56px"></div>
+		<div id="chart" style="margin-left: -38px;"></div>
 	</div>
 </div>
 
-<div class="row">
-	<div class="span3" style="width: 195px;">
-		<h2>Dates:</h2>
-	</div>
-	
+<div id="ratios">
+	<% @ratios.each do |v,r|  %>
+		<%= hidden_field_tag "v#{v}", r %>
+	<% end %>
 </div>
-
-<hr>
-	
-	<%= hidden_field_tag "v1", @ratios[0][:y] %>
-	<%= hidden_field_tag "v2", @ratios[1][:y] %>
-	<%= hidden_field_tag "v3", @ratios[2][:y] %>
-	<%= hidden_field_tag "v4", @ratios[3][:y] %>
-
+	<%= hidden_field_tag "number_of_column", @ratios.length %>
 	<%= hidden_field_tag "number_of_rows", @thread.media.length %>
-	<div class="row">
-		<div class="span3" style="width: 195px; ">
-			<h2>Newspapers:</h2>
-		</div>
 
-	</div>
-	<hr>
+	<br>
 	<% @thread.media.each do |m| %>
 		<div class="row images">
 			<div class="span3" style="width: 195px;">
@@ -81,6 +68,9 @@
 			<% 0.upto(images_counter-1) do |ic| %>
 				<% if @thread.images[ic].media == m  %>
 					<div id="<%= "image_box#{ic+1}" %>" style="margin-bottom: 9px" class="span1 <%= "thum_image#{ic+1}" %>">
+						<% if  @thread.media.first == m %>
+							<h6 style="text-align: center; color:#000;font-size: 10px;"><%= "#{@thread.images[ic].publication_date.to_formatted_s(:short)}" %></h6>
+						<% end %>
 	          <a href=<%= "/threads/#{@thread.thread_name}/coding/?i=image#{ic+1}" %> title="">
 	          <%= image_tag "/assets#{@thread.images[ic].local_path}", id: "image#{ic+1}", style: " opacity: 0.8;", image_size: @images[ic].size%>
 	          <div id="high_area1" style="position: absolute; overflow: hidden; z-index: 0; left: 0px; top: 0px; width: 0px; height: 0px; display: block; opacity: 0.7;" class="imgareaselect-outer"></div>
@@ -118,20 +108,20 @@
 
 
 <%= javascript_include_tag "d3.min.js", "d3.layout.min.js", "rickshaw.min.js" %>
-<link rel="alternate" href="https://github.com/douglascrockford/JSON-js/blob/master/json2.js">
+
 <script>
 
 // var data = [ { x: 0, y: 40 }, { x: 1, y: 49 }, { x: 2, y: 17 }, { x: 3, y: 42 } ];
-// var data = [ { x: 0, y: parseInt($("#v1").attr("value")) }, { x: 1, y: parseInt($("#v2").attr("value")) }, { x: 2, y: parseInt($("#v3").attr("value")) }, { x: 3, y: parseInt($("#v4").attr("value")) }, { x: 4, y: 17 }, { x:5, y: 42 } ];
-var images = $(".images img")
+// var images = $(".images img")
 
-var number_of_images = images.length/parseInt($("#number_of_rows").attr("value"))
+var number_of_images = parseInt($("#number_of_column").attr("value"))
 var data = []
-
-for (var i = 0; i < number_of_images; i++) {
+var column_value = 0
+for (var i = 1; i <= number_of_images; i++) {
+	column_value = parseInt($("#ratios #v"+i).attr("value"))
 	data.push({
 		x: i,
-		y: i*10+10
+		y: column_value
 	})
 };
 
@@ -142,9 +132,9 @@ var graph = new Rickshaw.Graph( {
 		renderer: 'bar',
     //width: 640,
     width: row_width,
-    height: 460,
+    height: 90,
     series: [ {
-            color: '#ddd',
+            color: '#000',
             data: data
     } ]
 } );

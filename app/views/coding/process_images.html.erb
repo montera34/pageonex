@@ -1,12 +1,13 @@
 <% if @thread.status == "opened" %>
-    <div class="alert alert-info" style="height: 37px;">
+    <!-- <div class="alert alert-info" style="height: 37px;"> -->
 <% else %>
-    <div class="alert alert-error" style="height: 37px;">
+    <!-- <div class="alert alert-error" style="height: 37px;"> -->
 <% end %>
-<h1 class="pull-left">Coding: <%= @thread.thread_display_name.capitalize %></h1>
-<h1 class="pull-right"><%= @thread.status.capitalize %></h1>
+<!-- <div class="alert alert-error" style="height: 37px;">
+    <h1 class="pull-left">Coding: <% @thread.thread_display_name.capitalize %></h1>
+    <h1 class="pull-right"><% @thread.status.capitalize %></h1>
 </div>
-<hr>
+<hr> -->
 <div class="row">
     <div class="span2" >
         <% @thread.codes.each do |code| %>

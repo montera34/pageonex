@@ -51,42 +51,78 @@ class CodingController < ApplicationController
     @thread = Threadx.find_by_thread_name params[:thread_name]
     @images = @thread.images
     @image_counter = @thread.images.length
-    @highlighted_areas = []
-
-    @highlighted_areas = []
-
-
+    @codes = @thread.codes
     @highlighted_areas = @thread.highlighted_areas
 
-    @ratios =  [ { x: 0, y: 60 }, { x: 1, y: 49 }, { x: 2, y: 100 }, { x: 3, y: 42 } ]
+    # @ratios =  [ { x: 0, y: 60 }, { x: 1, y: 49 }, { x: 2, y: 100 }, { x: 3, y: 42 } ]
 
-    # @highlighted_areas.sort! do |ha1,ha2|
-    # 	ha1.name.split('_')[0][5..100].to_i <=> ha2.name.split('_')[0][5..100].to_i
-    # end
+    @highlighted_areas.sort! do |ha1,ha2|
+    	ha1.name.split('_')[0][5..100].to_i <=> ha2.name.split('_')[0][5..100].to_i
+    end
 
-    # @c_ratios = {}
+    @i_ratios = {}
 
-    # images_per_row = @thread.images.length / @thread.media.length
+    @h_ratios = {}
+    
+    @ratios = {}
 
-    # total_counter = @thread.images.length * @thread.media.length
+    images_per_row = @thread.images.length / @thread.media.length
 
-    # 1.upto(images_per_row) do |c|
-    # 	@c_ratios["c#{c}"] = []
-    # end
+    1.upto(images_per_row) do |c|
+    	@i_ratios["c#{c}"] = []
+    end
 
-    # current_c = 0
-    # @c_ratios.each do |c,c_ha|
-    # 	1.upto(4) do |ha|
-    # 		c_ha << @highlighted_areas[ha+current_c-1]
-    # 		current_c += 3
-    # 	end
-    # end
+    1.upto(images_per_row) do |c|
+      @h_ratios["c#{c}"] = []
+    end
 
-    # render text: @thread.images.length / @thread.media.length
+    1.upto(images_per_row) do |c|
+      @ratios["#{c}"] = 0
+    end
 
-    # render json: @highlighted_areas.to_json
+    @r_images = @images.sort do |img1, img2|
+      img1.publication_date <=> img2.publication_date
+    end
 
-    # render json: @c_ratios.to_json
+    cr = 1
+    d = @r_images.first.publication_date.day
+    @r_images.each do |img|
+      if img.publication_date.day == d
+        @i_ratios["c#{cr}"] << img
+      else
+        d = img.publication_date.day
+        cr += 1
+        @i_ratios["c#{cr}"] << img
+      end
+    end
+
+    @i_ratios.each do |cr,imgs|
+      
+      imgs.each do |img|
+        
+        img.highlighted_areas.each do |ha|
+          if @codes.include? ha.code
+            highlighted_area = ha.areas[0]["height"].to_f * ha.areas[0]["width"].to_f
+            image_area = ha.image.size.split("x")[0].to_f * ha.image.size.split("x")[1].to_f
+            ratio = (highlighted_area / image_area) * 100
+            @h_ratios[cr] << ratio.ceil
+          end
+        end
+
+      end
+
+    end
+
+    c = 0
+    @h_ratios.each do |cr,rs|
+      rs.each do |r|
+        c += r.to_i
+      end
+      @ratios[cr[1..cr.length]] = c
+      c = 0
+    end
+
+    # render json: @ratios.to_json
 
   end
 end

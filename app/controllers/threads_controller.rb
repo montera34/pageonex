@@ -114,7 +114,7 @@ class ThreadsController < ApplicationController
 			code.destroy
 		end
 		@thread.destroy
-		redirect_to "/threads/"
+		redirect_to "/"
 	end
 
 end

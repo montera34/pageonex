@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    carousel = $('#myCarousel').carousel({interval: 5000000,pause:"hover"});
+    carousel = $('#myCarousel').carousel({interval: 900000000,pause:"hover"});
 
     if ($("#target_image").attr("value") != null) {
         t_image = $("#target_image").attr("value")
