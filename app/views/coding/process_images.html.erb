@@ -36,12 +36,27 @@
           <!-- Carousel items -->
           <div class="carousel-inner">
             <div class="active item">
-                <%= image_tag "/assets#{@images[0].local_path}", :id => "image1", :style => "width: 670px;" , :media=>@images[0].media.display_name, image_size: @images[0].size %>
+                <% # image_tag "/assets#{@images[0].local_path}", :id => "image1", :style => "width: 670px;" , :media=>@images[0].media.display_name, image_size: @images[0].size %>
+
+                <!-- display live version form kiosko, just for the online beta version on heroku -->
+                <% if @thread.images[0].local_path == "404.jpg" %>
+                    <img src="/assets/404.jpg" alt="" id="<%= "image1" %>" style="width: 670px;" image_size="<%= @images[0].size %>" media="<%= @images[0].media.display_name%>" pub_date="<%= @images[0].publication_date %>"/>
+                <% else %>
+                    <img src="<%= @thread.images[0].local_path %>" alt="" id="<%= "image1" %>" style="width: 670px;" image_size="<%= @images[0].size %>" media="<%= @images[0].media.display_name%>" pub_date="<%= @images[0].publication_date %>" />
+                <% end %>
+                <!-- end -->
             </div>
 
             <% 1.upto(@image_counter-1) do |ic| %>
                 <div class="item">
-                    <%= image_tag "/assets#{@images[ic].local_path}", :id => "image#{ic+1}", :style => "width: 670px", :media=>@images[ic].media.display_name, image_size: @images[ic].size %>
+                    <% #image_tag "/assets#{@images[ic].local_path}", :id => "image#{ic+1}", :style => "width: 670px", :media=>@images[ic].media.display_name, image_size: @images[ic].size %>
+                    <!-- display live version form kiosko, just for the online beta version on heroku -->
+                    <% if @thread.images[ic].local_path == "404.jpg" %>
+                        <img src="/assets/404.jpg" alt="" id="<%= "image#{ic+1}" %>" style="width: 670px;" image_size="<%= @images[ic].size %>" media="<%= @images[ic].media.display_name%>" pub_date="<%= @images[ic].publication_date %>" />
+                    <% else %>
+                        <img src="<%= @thread.images[ic].local_path %>" alt="" id="<%= "image#{ic+1}" %>" style="width: 670px;" image_size="<%= @images[ic].size %>" media="<%= @images[ic].media.display_name%>" pub_date="<%= @images[ic].publication_date %>" />
+                    <% end %>
+                    <!-- end -->
                 </div>
             <%end%>
           </div>

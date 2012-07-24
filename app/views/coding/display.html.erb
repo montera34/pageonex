@@ -28,7 +28,7 @@
 	<div class="span5">
 		<h3>Topics coded</h3>
 			<% @thread.codes.each do |code| %>
-        <div id="code-<%= code.id %>" style="background-color:<%= code.color %>; margin-left: 7px; float: left;color:black" class="alert alert-info">
+        <div id="code-<%= code.id %>" style="background-color:<%= code.color %>; margin-left: 7px; float: left;color:black" class="alert alert-info codes">
             <p ><h4><%= code.code_text %></h4>
                 <br>
                 <%= code.code_description %>
@@ -57,7 +57,7 @@
 	<%= hidden_field_tag "number_of_rows", @thread.media.length %>
 
 	<br>
-	<% @thread.media.each do |m| %>
+		<% @thread.media.each do |m| %>
 		<div class="row images">
 			<div class="span3" style="width: 195px;">
 				<div class="" style="overflow: overlay; margin-right: 35px;font-size: 14px;">
@@ -72,7 +72,17 @@
 							<h6 style="text-align: center; color:#000;font-size: 10px;"><%= "#{@thread.images[ic].publication_date.to_formatted_s(:short)}" %></h6>
 						<% end %>
 	          <a href=<%= "/threads/#{@thread.thread_name}/coding/?i=image#{ic+1}" %> title="">
-	          <%= image_tag "/assets#{@thread.images[ic].local_path}", id: "image#{ic+1}", style: " opacity: 0.8;", image_size: @images[ic].size%>
+	         
+	          <% #image_tag "/assets#{@thread.images[ic].local_path}", id: "image#{ic+1}", style: " opacity: 0.8;", image_size: @images[ic].size%>
+						
+						<!-- display live version form kiosko, just for the online beta version on heroku -->
+						<% if @thread.images[ic].local_path == "404.jpg" %>
+							<img src="/assets/404.jpg" alt="" id="<%= "image#{ic+1}" %>" style=" opacity: 0.8;" image_size="<%= @images[ic].size %>" />
+	         	<% else %>
+	         		<img src="<%= @thread.images[ic].local_path %>" alt="" id="<%= "image#{ic+1}" %>" style=" opacity: 0.8;" image_size="<%= @images[ic].size %>" />
+						<% end %>
+						<!-- end -->
+
 	          <div id="high_area1" style="position: absolute; overflow: hidden; z-index: 0; left: 0px; top: 0px; width: 0px; height: 0px; display: block; opacity: 0.7;" class="imgareaselect-outer"></div>
 
 	          <div id="high_area2" style="position: absolute; overflow: hidden; z-index: 0; left: 0px; top: 0px; width: 0px; height: 0px; display: block; opacity: 0.7;" class="imgareaselect-outer"></div>
@@ -134,7 +144,7 @@ var graph = new Rickshaw.Graph( {
     width: row_width,
     height: 90,
     series: [ {
-            color: '#000',
+            color: $(".codes").css("background-color"),
             data: data
     } ]
 } );

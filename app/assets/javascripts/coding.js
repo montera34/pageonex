@@ -1,5 +1,7 @@
 $(document).ready(function () {
-    carousel = $('#myCarousel').carousel({interval: 900000000,pause:"hover"});
+    carousel = $('.carousel').carousel({
+        interval: 500000000
+    });
 
     if ($("#target_image").attr("value") != null) {
         t_image = $("#target_image").attr("value")
@@ -13,15 +15,14 @@ $(document).ready(function () {
 
     // current display image 
     currrent_img = $("#images_section div.active img") 
-    if (currrent_img.attr("alt")){
-        $("#publication_date").text(currrent_img.attr("alt").slice(0,10));
+    //if (currrent_img.attr("alt")){
+        $("#publication_date").text(currrent_img.attr("pub_date"));
         $("#newspaper_name").text(currrent_img.attr("media"));
-    };
+    //};
     
     // change the currrent_img_area_select, currrent_img variable when user slide to another image, and also clean the highlighted areas
     carousel.on('slid',function(){
 
-        
         if (currrent_img.attr("altr") == "Assets404") {
             currrent_img_area_select = $('#images_section div.active img').imgAreaSelect({instance: true, handles: true,onSelectEnd: highlightingArea, disable:true});
         }else{
@@ -37,7 +38,7 @@ $(document).ready(function () {
             loadHighlightingAreas();
         };
 
-        $("#publication_date").text(currrent_img.attr("alt").slice(0,10));
+        $("#publication_date").text(currrent_img.attr("pub_date"));
         $("#newspaper_name").text(currrent_img.attr("media"));
     });
 
@@ -104,7 +105,7 @@ $(document).ready(function () {
 function highlightingArea (img, selection) {
     
     img_pos = $("#myCarousel").position();
-    console.log($("#myCarousel").position().left)
+    
     image_hidden_fields = $("div#" + currrent_img.attr("id"));
 
     if ( $("#"+image_hidden_fields.attr("id") +"_ha1").attr("value") == 0){
@@ -188,7 +189,7 @@ function loadHighlightingAreas () {
     
     // get the position of the image in the page
     img_pos = $("#myCarousel").position();
-    console.log($("#myCarousel").position().left)
+    
     // get the div which contains the hidden field that holds the highlighted area values
     image_hidden_fields = $("div#" + currrent_img.attr("id"));
 

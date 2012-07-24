@@ -49,7 +49,8 @@ class ThreadsController < ApplicationController
 				media = Media.find_by_name(image_info[:media])
 
 				if image_info[:local_path] != "404.jpg"
-					image_size = Magick::ImageList.new("app/assets/images" + image_info[:local_path])[0]
+					# image_size = Magick::ImageList.new("app/assets/images" + image_info[:local_path])[0]
+					image_size = Magick::ImageList.new(image_info[:local_path])[0]
 					image_size = "#{image_size.columns}x#{image_size.rows}"
 				else
 					image_size="750x951"

@@ -8,18 +8,20 @@
 
 	<%= f.label :start_date %>
 	<%= f.text_field :start_date, placeholder: "DD/MM/YYYY", :class => "dates","rel" => "popover", "data-content"  => "Scraping is done from Kiosko.com, so there is some dates limitations which: available years is [2008, 2009, 2010, 2011, 2012], and most of newspaper issues exist starting from 2010", "data-original-title" => "Limitations of Sources" %>
-
-	<%= f.label :end_date %>
-	<%= f.text_field :end_date, placeholder: "DD/MM/YYYY", :class => "dates","rel" => "popover", "data-content"  => "There is limit on the end data in this beta version, which is: the year and the month of end date must be the same as in starting date", "data-original-title" => "End date limitation"  %>
-
+  
+  <br>
   <%= f.label :status %>
   <div class="btn-group" data-toggle="buttons-radio">
     <a class="btn btn-primary">Opened</a>
     <a class="btn btn-inverse">Closed</a>
   </div>
   <%= hidden_field_tag :status %>
-  
   <br>
+  <%= f.label :end_date %>
+  <%= f.text_field :end_date, placeholder: "DD/MM/YYYY", :class => "dates","rel" => "popover", "data-content"  => "There is limit on the end data in this beta version, which is: the year and the month of end date must be the same as in starting date", "data-original-title" => "End date limitation"  %>
+
+  
+
 
   <%= f.label :category %>
   <%= f.text_field :category, placeholder: "International, national, Occupy" %>
@@ -53,7 +55,8 @@
     
     
     <br>
-    <a id="add_topic" class="btn">Add Another Code/Topic</a>
+
+    <a disabled="disabled" id="add_topic" class="btn">Add Another Code/Topic</a>
     <%= hidden_field_tag :topic_count, 1 %>
   </div>
 
