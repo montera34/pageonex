@@ -1,17 +1,17 @@
-<div class="hero-unit">
+<div class="hero-unit" style="background-color: white;">
   <h1>PageOneX</h1>
-  <p>An online and easy the coding process of front page newspapers. Make this visualization process available for researchers, advocacy groups and anyone interested. I’ll will give some background about this process.</p>
-  <p>
-    <a href="http://montera34.org/pageonex/about/" class="btn btn-primary btn-large">
-      Learn more
-    </a><br><br>
-
-    <% if !user_signed_in? %>
+  <br>
+  <%= image_tag "/assets/header-blog.png", :style => "width: 789px;" %>
+  <hr>
+  <p><strong>PageOneX  makes it easy to track, code, and visualize major news stories based on  the proportion of newspaper front pages that they take up. It's a  useful tool for researchers, advocacy groups, and anyone interested in  better understanding the front page news. <a href="/home/about" style="text-decoration: underline;font-size: 12px;">Learn more </a></strong></p>
+  
+ <br>
+     <% if !user_signed_in? %>
       <a class="btn btn-info btn-large" href="<%= new_user_session_path %>">Sign in</a>
       <a class="btn btn-success btn-large" href="<%= new_user_registration_path %>">Sign up</a>
     <% else %>
-      <a class="btn btn-info btn-small" href="/threads/new">New Thread</a>
-      <a class="btn btn-success btn-small" href="/threads/">Show Threads</a>
+      <a class="btn btn-info btn-large" href="/threads/new">New Thread</a>
+      <a class="btn btn-success btn-large" href="/threads/">Show Threads</a>
     <% end %>
   </p>
 </div>

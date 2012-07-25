@@ -3,12 +3,6 @@ $(document).ready(function () {
         interval: 500000000
     });
 
-    if ($("#target_image").attr("value") != null) {
-        t_image = $("#target_image").attr("value")
-        $("#images_section div.active img").parent().attr("class", "item")
-        $("#images_section div img#" + t_image).parent().attr("class", "active item")
-
-    };
 
     // get the object of image selection plugin
     currrent_img_area_select = $('#images_section div.active img').imgAreaSelect({instance: true, handles: true,onSelectEnd: highlightingArea});

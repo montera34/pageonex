@@ -8,7 +8,7 @@ class ThreadsController < ApplicationController
 	def create
 		@thread = Threadx.new
 		@thread.update_attributes!(params[:threadx])
-		@thread.thread_name = params[:threadx]["thread_display_name"].sub(' ', '_')
+		@thread.thread_name = params[:threadx]["thread_display_name"].split(' ').join('_')
 
 
 		# this array is made to passed to Scraper.get_issues method, because this method accept the specific format of newspapers names as the following
@@ -78,7 +78,7 @@ class ThreadsController < ApplicationController
 		@thread.status = "opened"
 		@thread.save!
 
-		redirect_to "/threads/#{@thread.thread_name}/coding"
+		redirect_to "/users/#{current_user.username}/threads/#{@thread.thread_name}/coding"
 	end
 
 	def new
@@ -100,12 +100,12 @@ class ThreadsController < ApplicationController
 		@thread.update_attributes(params[:threadx])
 		@thread.thread_name = params[:threadx]["thread_display_name"].sub(' ', '_')
 		@thread.save!
-		redirect_to "/threads/#{@thread.thread_name}/display"
+		redirect_to "/users/#{current_user.username}/threads/#{@thread.thread_name}"
 	end
 
 	def show
 		@thread = Threadx.find_by_thread_name params[:id]
-		redirect_to "/threads/#{@thread.thread_name}/display"
+		redirect_to "/users/#{current_user.username}/threads/#{@thread.thread_name}"
 	end
 
 	def destroy
@@ -115,7 +115,7 @@ class ThreadsController < ApplicationController
 			code.destroy
 		end
 		@thread.destroy
-		redirect_to "/"
+		redirect_to "/threads/"
 	end
 
 end

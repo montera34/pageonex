@@ -3,11 +3,13 @@ Pageonex::Application.routes.draw do
 
   resources :threads
 
-  match 'threads/:thread_name/coding' => 'coding#process_images'
+  match 'users/:username/threads/:thread_name/coding' => 'coding#process_images'
   
-  match 'threads/:thread_name/process_highlighted_areas' => 'coding#process_highlighted_areas'
+  match 'users/:username/threads/:thread_name/process_highlighted_areas' => 'coding#process_highlighted_areas'
 
-  match 'threads/:thread_name/display' => 'coding#display'
+  match 'users/:username/threads/:thread_name' => 'coding#display'
+
+  match '/home/about' => 'home#about'
 
   root :to => "home#index"
 

@@ -8,6 +8,12 @@
     <h1 class="pull-right"><% @thread.status.capitalize %></h1>
 </div>
 <hr> -->
+<% unless @thread.owner == current_user %>
+<div class="alert alert-error" style="height: 37px;">
+    <h1 class="pull-left">You don't have a premission to code in this thread</h1>
+</div>
+<% end %>
+
 <div class="row">
     <div class="span2" >
         <% @thread.codes.each do |code| %>
@@ -88,7 +94,7 @@
           </div>
         </div>
 
-        <%= form_tag "/threads/#{@thread.thread_name}/process_highlighted_areas" do %> 
+        <%= form_tag "/users/#{current_user.username}/threads/#{@thread.thread_name}/process_highlighted_areas" do %> 
             <div id="high_images">
                 <% un_high_ares_counter = []  %>
                 <% 1.upto(@image_counter) {|ic| un_high_ares_counter << "image#{ic}_ha#{1}"; un_high_ares_counter << "image#{ic}_ha#{2}";  } %>
@@ -127,15 +133,19 @@
                     </div>
                 <% end %>
             </div>
-
-        <div class="form-actions" style="text-align:center">
-            
-            <%= submit_tag "Display Now »",  class: "btn btn-primary"%>
-            <a id="clear_highlighting" class="btn  btn-danger">Clear Highlighted Areas</a>
-            <a id="skip_coding" class="btn btn-inverse">Nothing to Code</a>
-            <a href"/" class="btn ">Cancel</a>
-        </div>
-
+        <% if @thread.owner == current_user %>
+            <div class="form-actions" style="text-align:center">
+                <%= submit_tag "Display Now »",  class: "btn btn-primary"%>
+                <a id="clear_highlighting" class="btn  btn-danger">Clear Highlighted Areas</a>
+                <a id="skip_coding" class="btn btn-inverse">Nothing to Code</a>
+                <a href="/" class="btn ">Cancel</a>
+            </div>
+        <% else %>
+            <div class="form-actions" style="text-align:center">
+                <a href="<%= "/users/#{@thread.owner.username}/threads/#{@thread.thread_name}/" %>" class="btn btn-inverse">Go to Display</a>
+                <a href="/" class="btn ">Cancel</a>
+            </div>
+        <% end %>
         <br>
         <% end %>
         
@@ -152,8 +162,15 @@ $(function (argument) {
     $(".breadcrumb li").filter("li.active").attr("class"," ");
     $("#code").attr("class", "active");
 
+    if ($("#target_image").attr("value") != null) {
+    t_image = $("#target_image").attr("value")
+    $("#images_section div.active img").parent().attr("class", "item")
+    $("#images_section div img#" + t_image).parent().attr("class", "active item")
+
+    };
 })
 </script>
 
-
-<%= javascript_include_tag "coding" %>
+<% #if @thread.owner == current_user %>
+    <%= javascript_include_tag "coding" %>
+<% #end %>

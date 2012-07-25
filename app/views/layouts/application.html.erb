@@ -3,7 +3,8 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PageOneX</title>
+    <title><%= @title %></title>
+    <% @title = "PageOneX" %>
     <%= csrf_meta_tags %>
     <%= javascript_include_tag "application" %>
     
@@ -39,9 +40,10 @@
           </a>
           <a class="brand" href="/">PageOneX</a>
           <div class="container nav-collapse">
-            <ul class="nav">
-                <li><%= link_to "", "/path1"  %></li>
-            </ul>
+       <!--    <ul class="nav">
+                <li><%= link_to "Blog", "http://montera34.org/pageonex/"  %></li>
+          </ul> -->
+
             <form class="navbar-search pull-right">
               <input type="text" class="search-query" placeholder="Search">
             </form>
@@ -66,15 +68,17 @@
                 <p><%= alert %></p>
               </div>
             <% end %>
-            <% if (params[:controller] == "threads" || params[:controller] == "coding")&&(params[:action] != "index" && params[:action] != "edit")%>
+            <% if (params[:controller] == "threads" || params[:controller] == "coding")&&(params[:action] != "index" && params[:action] != "edit" && params[:action] != "new")%>
             <ul style="text-align:center" class="breadcrumb">
-              <li id="initiate">
-                <a href="#">Initiate</a> <span style="margin: 0 80px 0 80px" class="divider">»</span>
-              </li>
+              <% if @thread.owner == current_user %>
+                <li id="initiate">
+                  <a href="<%= "/threads/#{@thread.thread_name}/edit"%>">Initiate</a> <span style="margin: 0 80px 0 80px" class="divider">»</span>
+                </li>
+              <% end %>
               <li id="code" class="active">
-                <a href="<%= "/threads/#{@thread.thread_name}/coding"%>">Code</a> <span style="margin: 0 80px 0 80px" class="divider">»</span>
+                <a href="<%= "/users/#{@thread.owner.username}/threads/#{@thread.thread_name}/coding"%>">Code</a> <span style="margin: 0 80px 0 80px" class="divider">»</span>
               </li>
-              <li id="display"><a href="<%= "/threads/#{@thread.thread_name}/display"%>">Display</a></li>
+              <li id="display"><a href="<%= "/users/#{@thread.owner.username}/threads/#{@thread.thread_name}"%>">Display</a></li>
             </ul>
             <% end %>
 
@@ -93,7 +97,7 @@
                 <ul class="nav nav-list">
                   <!-- <li class="nav-header">International</li> -->
                   <% Threadx.all.each do |t| %>
-                    <li><%= link_to t.thread_display_name, "/threads/#{t.thread_name}/display"  %></li>
+                    <li><%= link_to t.thread_display_name, "/users/#{t.owner.username}/threads/#{t.thread_name}"  %></li>
                   <% end %>
                 </ul>
               </div><!--/.well -->
@@ -103,7 +107,25 @@
       </div><!--/content-->
       <hr> 
       <footer>
+        <ul style="list-style: none; float: right;">
+          <li style="float: right;">
+            <a href="https://twitter.com/PageOneX">
+              <%= image_tag "/assets/twitter-icon.png", :style => "width: 28px;" %>
+            </a>
+          </li>
+          <li style="float: right;"> 
+            <a href="http://montera34.org/pageonex/">
+              <%= image_tag "/assets/wordpress-icon.png", :style => "width: 28px;" %>
+            </a>
+          </li>
+          <li style="float: right;">
+            <a href="#">
+              <%= image_tag "/assets/youtube-icon.png", :style => "width: 28px;" %>
+            </a>
+          </li>
+        </ul>
         <p>&copy; PageOneX 2012</p>
+        
       </footer>
 
     </div> <!-- /container -->

@@ -1,4 +1,9 @@
-<h1>Display: <%= @thread.thread_display_name.capitalize %></h1>
+<% @title = "PageOneX - Thread: #{@thread.thread_display_name.capitalize}" %>
+<h1>Display: <%= @thread.thread_display_name.capitalize %> </h1>
+<div class="pull-right" style="margin-top: -28px;margin-right: 159px;">
+<a href="https://twitter.com/share" class="twitter-share-button" data-via="PageOneX" data-hashtags="PageOneX" data-dnt="true">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+</div>
 <div class="btn-group pull-right" style="margin-top: -36px;">
     <button class="btn btn-large" disabled="disabled">Export to image</button>
     <button class="btn btn-large dropdown-toggle" disabled="disabled" data-toggle="dropdown"><span class="caret"></span></button>
@@ -11,6 +16,7 @@
       <li><a href="#">Download as [.pdf]</a></li>
     </ul>
 </div>
+
 <hr>
 
 <div class="row">
@@ -29,7 +35,7 @@
 		<h3>Topics coded</h3>
 			<% @thread.codes.each do |code| %>
         <div id="code-<%= code.id %>" style="background-color:<%= code.color %>; margin-left: 7px; float: left;color:black" class="alert alert-info codes">
-            <p ><h4><%= code.code_text %></h4>
+            <p ><h4><%= code.code_text.split("_").join(" ") %></h4>
                 <br>
                 <%= code.code_description %>
             </p>
@@ -71,13 +77,13 @@
 						<% if  @thread.media.first == m %>
 							<h6 style="text-align: center; color:#000;font-size: 10px;"><%= "#{@thread.images[ic].publication_date.to_formatted_s(:short)}" %></h6>
 						<% end %>
-	          <a href=<%= "/threads/#{@thread.thread_name}/coding/?i=image#{ic+1}" %> title="">
+	          		<a href=<%= "/users/#{@thread.owner.username}/threads/#{@thread.thread_name}/coding/?i=image#{ic+1}" %> title="">
 	         
-	          <% #image_tag "/assets#{@thread.images[ic].local_path}", id: "image#{ic+1}", style: " opacity: 0.8;", image_size: @images[ic].size%>
+	          		<% #image_tag "/assets#{@thread.images[ic].local_path}", id: "image#{ic+1}", style: " opacity: 0.8;", image_size: @images[ic].size%>
 						
 						<!-- display live version form kiosko, just for the online beta version on heroku -->
-						<% if @thread.images[ic].local_path == "404.jpg" %>
-							<img src="/assets/404.jpg" alt="" id="<%= "image#{ic+1}" %>" style=" opacity: 0.8;" image_size="<%= @images[ic].size %>" />
+					<% if @thread.images[ic].local_path == "404.jpg" %>
+						<img src="/assets/404.jpg" alt="" id="<%= "image#{ic+1}" %>" style=" opacity: 0.8;" image_size="<%= @images[ic].size %>" />
 	         	<% else %>
 	         		<img src="<%= @thread.images[ic].local_path %>" alt="" id="<%= "image#{ic+1}" %>" style=" opacity: 0.8;" image_size="<%= @images[ic].size %>" />
 						<% end %>
