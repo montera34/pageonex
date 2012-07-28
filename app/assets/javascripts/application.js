@@ -13,6 +13,45 @@
 //= require jquery
 //= require jquery_ujs
 
+// require jquery.ui.all
+
+//= require jquery.ui.core
+//= require jquery.ui.widget
+//= require jquery.ui.mouse
+//= require jquery.ui.position
+
+//= require jquery.ui.draggable
+//= require jquery.ui.droppable
+//= require jquery.ui.resizable
+//= require jquery.ui.selectable
+// require jquery.ui.sortable
+
+// require jquery.ui.accordion
+// require jquery.ui.autocomplete
+// require jquery.ui.button
+// require jquery.ui.dialog
+// require jquery.ui.slider
+// require jquery.ui.tabs
+// require jquery.ui.datepicker
+//= require jquery.ui.datepicker-en-AU
+// require jquery.ui.progressbar
+
+// require jquery.effects.all
+// require jquery.effects.core
+// require jquery.effects.blind
+// require jquery.effects.bounce
+// require jquery.effects.clip
+// require jquery.effects.drop
+// require jquery.effects.explode
+// require jquery.effects.fade
+// require jquery.effects.fold
+// require jquery.effects.highlight
+// require jquery.effects.pulsate
+// require jquery.effects.scale
+// require jquery.effects.shake
+// require jquery.effects.slide
+// require jquery.effects.transfer
+
 //= require twitter/bootstrap/bootstrap-transition
 //= require twitter/bootstrap/bootstrap-alert
 //= require twitter/bootstrap/bootstrap-modal
