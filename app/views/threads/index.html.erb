@@ -3,7 +3,12 @@
 <% if @threads != [] %>
 	<% @threads.each do |thread| %>
 		<div class="thumbnail">
-		  <img src="<%= "/assets#{thread.images[0].local_path}"%>" style="height: 130px;" alt="">
+		<!--  <img src="<%= "/assets#{thread.images[0].local_path}"%>" style="height: 130px;" alt=""> -->
+		
+		<!-- for heroku -->
+		<img src="<%= "#{thread.images[0].local_path}"%>" style="height: 130px;" alt="">
+		<!-- end -->
+
 		  <div class="caption">
 		    <h5 style="text-align:center"><%= thread.thread_display_name.capitalize %></h5>
 		    <hr>
@@ -27,7 +32,7 @@
 		    	</div>
 		    </div>
 
-		    <p><a href="<%= "/users/#{@thread.owner.username}/threads/#{thread.thread_name}/" %>" class="btn btn-primary">Show</a> 
+		    <p><a href="<%= "/users/#{thread.owner.username}/threads/#{thread.thread_name}/" %>" class="btn btn-primary">Show</a> 
 		    <%= link_to "Delete", "/threads/#{thread.thread_name}" ,:method=>"delete" , :class => "btn btn-danger" %>
 		    <a href="<%= "/threads/#{thread.thread_name}/edit/" %>" class="btn">Edit</a>
 		  

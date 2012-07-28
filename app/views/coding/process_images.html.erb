@@ -35,7 +35,7 @@
 
         <hr>
         <h3>Source of image</h3>
-        <a href="#">Kiosko.com</a>
+        <a href="http://Kiosko.net">Kiosko.net</a>
     </div>
     <div id="images_section" class="span7">
         <div id="myCarousel" class="carousel slide">
@@ -51,11 +51,13 @@
                     <img src="<%= @thread.images[0].local_path %>" alt="" id="<%= "image1" %>" style="width: 670px;" image_size="<%= @images[0].size %>" media="<%= @images[0].media.display_name%>" pub_date="<%= @images[0].publication_date %>" />
                 <% end %>
                 <!-- end -->
+                
             </div>
 
             <% 1.upto(@image_counter-1) do |ic| %>
                 <div class="item">
                     <% #image_tag "/assets#{@images[ic].local_path}", :id => "image#{ic+1}", :style => "width: 670px", :media=>@images[ic].media.display_name, image_size: @images[ic].size %>
+
                     <!-- display live version form kiosko, just for the online beta version on heroku -->
                     <% if @thread.images[ic].local_path == "404.jpg" %>
                         <img src="/assets/404.jpg" alt="" id="<%= "image#{ic+1}" %>" style="width: 670px;" image_size="<%= @images[ic].size %>" media="<%= @images[ic].media.display_name%>" pub_date="<%= @images[ic].publication_date %>" />
@@ -63,6 +65,7 @@
                         <img src="<%= @thread.images[ic].local_path %>" alt="" id="<%= "image#{ic+1}" %>" style="width: 670px;" image_size="<%= @images[ic].size %>" media="<%= @images[ic].media.display_name%>" pub_date="<%= @images[ic].publication_date %>" />
                     <% end %>
                     <!-- end -->
+
                 </div>
             <%end%>
           </div>

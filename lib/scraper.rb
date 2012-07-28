@@ -17,7 +17,7 @@ class Scraper
 
 		# puts "Scraping is done"
 
-		newspapers_issues_paths
+		# newspapers_issues_paths
 
 		@@newspapers_images
 	end
@@ -29,14 +29,18 @@ class Scraper
 
 		paths.each do |path|
 			begin
-				open(path) do |source| 
+				# open(path) do |source| 
 
-					# pass to save method the path of the issue and the issue it self
+				# 	# pass to save method the path of the issue and the issue it self
+				# 	Scraper.save_kiosko_issues path, source
+				# 	#Scraper.save_newyork_times_issues path, source
+				# 	#Scraper.save_elpais_issues path, source
+				# end
 
-					Scraper.save_kiosko_issues path, source
-					#Scraper.save_newyork_times_issues path, source
-					#Scraper.save_elpais_issues path, source
-				end	
+				# live scraping for deployed version on heroku
+				Scraper.save_kiosko_issues path
+				# end
+
 			rescue => e
 				newspaper_name = path.split('/').last
 				pub_date = "#{path.split('/')[-3]}-#{path.split('/')[-4]}-#{path.split('/')[-5]}"
@@ -47,7 +51,7 @@ class Scraper
 
 	end
 
-	# formating the issues date for Kiosko.com in "YYYY/MM/DD" based on the specified year, month, start day, and end day
+	# formating the issues date for Kiosko.net in "YYYY/MM/DD" based on the specified year, month, start day, and end day
 	def self.issues_dates(year, month, start_day, end_day)
 		day = start_day
 		days = []
@@ -125,7 +129,7 @@ class Scraper
 	end
 
 	# save each image in it's place with name contains the date if the issue
-	def self.save_kiosko_issues(path, source)
+	def self.save_kiosko_issues(path) #, source)
 
 		newspaper_name = path.split('/').last
 
@@ -141,12 +145,15 @@ class Scraper
 		# 	puts "done => #{path.split('/')[-3]}-#{path.split('/')[-4]}-#{path.split('/')[-5]}-" + newspaper_name
 		# end
 
+
+
+		# live scraping for deployed version on heroku
 		pub_date = "#{path.split('/')[-3]}-#{path.split('/')[-4]}-#{path.split('/')[-5]}"
 		
 		@@newspapers_images[newspaper_name.split(".")[0] +"-"+ pub_date] = {publication_date: pub_date, media: newspaper_name.split(".")[0], local_path: "#{path}"}
 
 		puts "done => #{path.split('/')[-3]}-#{path.split('/')[-4]}-#{path.split('/')[-5]}-" + newspaper_name
-
+		# end
 
 
 
