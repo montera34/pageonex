@@ -14,4 +14,7 @@ class Threadx < ActiveRecord::Base
 	has_many :images, :through => :threadx_images
 	
 	has_many :highlighted_areas
+
+	validates :thread_display_name, :start_date, :end_date, :description , :category, :presence => true
+
 end
