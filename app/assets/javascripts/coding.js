@@ -95,6 +95,10 @@ $(document).ready(function () {
         };
     }
 
+    $("#myCarousel img").error(function (e) {
+        $(this).attr("src","/assets/404.jpg")
+    })
+
 });
 function highlightingArea (img, selection) {
     

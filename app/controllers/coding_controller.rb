@@ -54,8 +54,6 @@ class CodingController < ApplicationController
     @codes = @thread.codes
     @highlighted_areas = @thread.highlighted_areas
 
-    # @ratios =  [ { x: 0, y: 60 }, { x: 1, y: 49 }, { x: 2, y: 100 }, { x: 3, y: 42 } ]
-
     @highlighted_areas.sort! do |ha1,ha2|
     	ha1.name.split('_')[0][5..100].to_i <=> ha2.name.split('_')[0][5..100].to_i
     end
