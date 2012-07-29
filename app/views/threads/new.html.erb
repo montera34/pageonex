@@ -1,3 +1,6 @@
+<%= javascript_include_tag "jquery.miniColors.js" %>
+<%= stylesheet_link_tag "jquery.miniColors.css" %>
+
 <h1>New Thread</h1>
 <hr>
 <%= form_for @thread, :url => { :controller => :threads, :action => :create}, :class => "form-horizontal" do |f| %>
@@ -9,6 +12,8 @@
         <% end %>
             <li id="date_message" style="display:none">End date must be greater than start date</li>
             <li id="media_message" style="display:none">You must at least select one newspaper</li>
+            <li id="topic_name_message" style="display:none">Topic name cannot be empty</li>
+            <li id="topic_color_message" style="display:none">Topic color cannot be empty</li>
       </div>
     <% end %>
   </div>
@@ -64,21 +69,25 @@
 	<h2>Coding info</h2><br>
 
   <div class="well">
-    <div id="topic_1" class="well">
-      <%= label_tag "topic_name_1", nil, :id => "topic_label_1" %>
+    <div id="topic_1" class="well date_errors">
+      <div class="topic_name_box">
+        <%= label_tag "topic_name_1", nil, :id => "topic_label_1" %>
 
-      <% if params["topic_name_1"] == "" %>
-        <%= text_field_tag "topic_name_1",nil,placeholder: "Code/Topic name" %> 
-      <% else %>
-        <%= text_field_tag "topic_name_1",params["topic_name_1"],placeholder: "Code/Topic name" %> 
-      <% end %>
-      <%= label_tag "topic_color_1", nil, :id => "topic_color_label_1" %>
+        <% if params["topic_name_1"] == "" %>
+          <%= text_field_tag "topic_name_1",nil,placeholder: "Code/Topic name", :class=>"topic_name js_validate" %> 
+        <% else %>
+          <%= text_field_tag "topic_name_1",params["topic_name_1"],placeholder: "Code/Topic name", :class=>"topic_name js_validate" %> 
+        <% end %>
+      </div>
+      <div class="topic_color_box">
+        <%= label_tag "topic_color_1", nil, :id => "topic_color_label_1" %>
 
-      <% if params["topic_color_1"] == "" %>
-        <%= text_field_tag "topic_color_1","#FF0000",placeholder: "#FF0000" %> 
-      <% else %>
-        <%= text_field_tag "topic_color_1",params["topic_color_1"],placeholder: "#FF0000" %> 
-      <% end %>
+        <% if params["topic_color_1"] == "" %>
+          <%= text_field_tag "topic_color_1",nil,placeholder: "#FF0000", :class=>"topic_color js_validate" %> 
+        <% else %>
+          <%= text_field_tag "topic_color_1",params["topic_color_1"],placeholder: "#FF0000",:class=>"topic_color js_validate" %> 
+        <% end %>
+      </div>
 
       <%= label_tag "topic_description_1", nil, :id => "topic_description_label_1" %>
 
@@ -104,7 +113,7 @@
 
 <%= hidden_field_tag :error_counter, "false"  %>
 
-<div id="topic" class="well"  style="display:none">
+<div id="topic" class="well date_errors"  style="display:none">
       <%= label_tag "topic_name", nil, :id => "topic_name_label" %>
       <%= text_field_tag "topic_name",nil,placeholder: "Code/Topic name" %> 
 
@@ -117,19 +126,24 @@
 
 <div class="modal hide" id="scraping">
   <div class="modal-header">
-    <!-- <button type="button" class="close" data-dismiss="modal">×</button> -->
     <h3>Scraping</h3>
   </div>
   <div class="modal-body" style="padding: 54px 0 56px 279px;">
   </div>
   <div class="modal-footer">
-    
-    <!-- <a href="#" data-dismiss="modal" class="btn btn-primary">Okay</a> -->
+
   </div>
 </div>
 
 <script type="text/javascript">
 $(function () {
+  $(".topic_color").miniColors({
+    change: function (hex,rgb) {
+      $(".miniColors-trigger").css("background-color",hex)
+      }
+    });
+
+  $(".miniColors-trigger").attr("style","margin-bottom:9px;width: 211px;height: 26px;display: block;")
   $('.datepicker').datepicker();
   $('.dates').popover()
   $('.status').popover()
@@ -279,16 +293,36 @@ $(function () {
       }
 
       if (dateValidator()) {
-        // errors_box.children().append('<li id="date_message">End date must be greater than start date</li>')
         $("#errors").find("#date_message").css("display","list-item")
         $("#error_counter").attr("value","true")
         
       }else{
         $("#errors").find("#date_message").css("display","none")
-        $(".date_errors").attr("class", "date_errors")
+        // $(".date_errors").attr("class", "date_errors")
         $("#error_counter").attr("value","false")
       }
 
+      if (topicNameValidator()) {
+        $("#errors").find("#topic_name_message").css("display","list-item")
+        $("#error_counter").attr("value","true")
+        
+      }else{
+        $("#errors").find("#topic_name_message").css("display","none")
+        $(".topic_name_box").attr("class", "topic_name_box")
+        $("#error_counter").attr("value","false")
+      }
+
+      if (topicColorValidator()) {
+        $("#errors").find("#topic_color_message").css("display","list-item")
+        $("#error_counter").attr("value","true")
+        
+      }else{
+        $("#errors").find("#topic_name_message").css("display","none")
+        $(".topic_color_box").attr("class", "topic_color_box")
+        $("#error_counter").attr("value","false")
+      }
+
+      
     };
   } 
 
@@ -307,9 +341,32 @@ $(function () {
     }
   }
 
+  function topicNameValidator () {
+    if ($(".topic_name").attr("value") == "") {
+      $(".topic_name_box").attr("class", "field_with_errors control-group error topic_name_box")
+      return true;
+    }else{
+      return false;
+    } 
+  }
+  
+  function topicColorValidator () {
+    if ($(".topic_color").attr("value") == "") {
+      $(".topic_color_box").attr("class", "field_with_errors control-group error topic_color_box")
+      return true;
+    }else{
+      return false;
+    } 
+  }
+
   function dateValidator () {
-    var start_date = new Date($("#threadx_start_date").attr("value"))
-    var end_date = new Date($("#threadx_end_date").attr("value"))
+    // var start_date = new Date($("#threadx_start_date").attr("value"))
+    // var end_date = new Date($("#threadx_end_date").attr("value"))
+    var s_d = $("#threadx_start_date").attr("value").split('/')
+    var e_d = $("#threadx_end_date").attr("value").split('/')
+
+    var start_date = new Date(s_d[2], parseInt(s_d[1])-1, s_d[0])
+    var end_date = new Date(e_d[2], parseInt(e_d[1])-1, e_d[0])
     if (start_date > end_date) {
       $(".date_errors").attr("class", "date_errors field_with_errors control-group error")
       return true;
@@ -327,3 +384,4 @@ $(function (argument) {
 
 })
 </script>
+
