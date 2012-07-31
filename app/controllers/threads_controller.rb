@@ -8,12 +8,15 @@ class ThreadsController < ApplicationController
 	def create
 
 		@thread = Threadx.new(params[:threadx])
+		@thread.thread_name = params[:threadx]["thread_display_name"].split(' ').join('_')
+		@thread.owner_id = current_user.id
+		@thread.status = params[:status]
 		# @thread.update_attributes(params[:threadx])
-		if @thread.valid?
+		
+		# existing_thread = current_user.owned_threads.find_by_thread_display_name params[:threadx]["thread_display_name"]
+		 
+		if @thread.valid? && params[:media] != nil #&& existing_thread != nil 
 
-			@thread.thread_name = params[:threadx]["thread_display_name"].split(' ').join('_')
-			@thread.owner_id = current_user.id
-			@thread.status = params[:status]
 			
 			# this array is made to passed to Scraper.get_issues method, because this method accept the specific format of newspapers names as the following
 			# {"es" => ["elpais", "abc"], "de" => ["faz", "bild"], "fr" => ["lemonde", "lacroix"], "it" => ["corriere_della_sera", "ilmessaggero"], "uk" => ["the_times", ],"us" => ["wsj", "newyork_times", "usa_today"]}
@@ -44,14 +47,17 @@ class ThreadsController < ApplicationController
 					newspapers_names[_media.city] = []
 					newspapers_names[_media.city] << _media.name
 				end
-
 			end
 
 			# create object for each code submited
-			number_of_topics = params[:topic_count].to_i
-			number_of_topics.downto(1) do |n|
-				Code.create!({:code_text => params["topic_name_#{n}"], :code_description => params["topic_description_#{n}"],:color => params["topic_color_#{n}"],:threadx_id => @thread.id})
-			end
+			# number_of_topics = params[:topic_count].to_i
+			# number_of_topics.downto(1) do |n|
+			# 	Code.create!({:code_text => params["topic_name_#{n}"], :code_description => params["topic_description_#{n}"],:color => params["topic_color_#{n}"],:threadx_id => @thread.id})
+			# end
+
+			# create object for each code submited
+			code = Code.create!({:code_text => params["topic_name_1"], :code_description => params["topic_description_1"],:color => params["topic_color_1"]})
+
 
 			# array of object refers to scraped images
 			images = []
@@ -65,12 +71,12 @@ class ThreadsController < ApplicationController
 					image_info["image_name"] = image_name
 					media = Media.find_by_name(image_info[:media])
 
-					
 					if image_info[:local_path] != "404.jpg"
 						# image_size = Magick::ImageList.new("app/assets/images" + image_info[:local_path])[0]
 						# image_size = "#{image_size.columns}x#{image_size.rows}"
 
 						# for the online heroku beta
+						
 						puts(image_info[:local_path])
 						begin
 							image_size = Magick::ImageList.new(image_info[:local_path])[0]
@@ -97,10 +103,12 @@ class ThreadsController < ApplicationController
 				end
 			end
 
-			# add reference to the scraped images to the thread
-			@thread.images << images
 
 			@thread.save
+
+			# add reference to the scraped images to the thread
+			@thread.images << images
+			@thread.codes << code
 
 			redirect_to "/users/#{current_user.username}/threads/#{@thread.thread_name}/coding"
 
@@ -110,6 +118,9 @@ class ThreadsController < ApplicationController
 				newspaper.name = "#{newspaper.country} - #{newspaper.display_name}"
 				@media << newspaper
 			end
+			# if existing_thread
+			# 	flash[:existing_thread]
+			# end
 			render "new"
 		end
 

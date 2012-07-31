@@ -3,9 +3,11 @@ $(document).ready(function () {
         interval: 500000000
     });
 
+    if ($("#allow_coding").attr("value") == "true") {
+        // get the object of image selection plugin
+        currrent_img_area_select = $('#images_section div.active img').imgAreaSelect({instance: true, handles: true,onSelectEnd: highlightingArea});
 
-    // get the object of image selection plugin
-    currrent_img_area_select = $('#images_section div.active img').imgAreaSelect({instance: true, handles: true,onSelectEnd: highlightingArea});
+    };
 
     // current display image 
     currrent_img = $("#images_section div.active img") 
@@ -17,10 +19,12 @@ $(document).ready(function () {
     // change the currrent_img_area_select, currrent_img variable when user slide to another image, and also clean the highlighted areas
     carousel.on('slid',function(){
 
-        if (currrent_img.attr("altr") == "Assets404") {
-            currrent_img_area_select = $('#images_section div.active img').imgAreaSelect({instance: true, handles: true,onSelectEnd: highlightingArea, disable:true});
-        }else{
-            currrent_img_area_select = $('#images_section div.active img').imgAreaSelect({instance: true, handles: true,onSelectEnd: highlightingArea});
+        if ($("#allow_coding").attr("value") == "true") {
+            if (currrent_img.attr("altr") == "Assets404") {
+                currrent_img_area_select = $('#images_section div.active img').imgAreaSelect({instance: true, handles: true,onSelectEnd: highlightingArea, disable:true});
+            }else{
+                currrent_img_area_select = $('#images_section div.active img').imgAreaSelect({instance: true, handles: true,onSelectEnd: highlightingArea});
+            }
         }
 
         currrent_img = $("#images_section div.active img");
@@ -122,10 +126,14 @@ function highlightingArea (img, selection) {
 
         $("#high_area1").css("width",image_hidden_fields.find("#"+image_hidden_fields.attr("id")+"_ha1_width").attr("value")); 
 
-        $('#coding_topics').modal({backdrop:false});
+        // $('#coding_topics').modal({backdrop:false});
+        $("#high_area1").css("background-color",$('.code').css("background-color"))
 
         $("#current_high_area").attr("value","high_area1")
 
+        ha = $("#current_high_area").attr("value")
+
+        image_hidden_fields.find("#"+image_hidden_fields.attr("id")+"_ha"+ha.substring(9)+"_code_id").attr("value",$('.code').attr("id").substr(4,100))
 
         $("#"+image_hidden_fields.attr("id") +"_ha1").attr("value","1")
 
@@ -144,9 +152,14 @@ function highlightingArea (img, selection) {
 
         $("#high_area2").css("width",image_hidden_fields.find("#"+image_hidden_fields.attr("id")+"_ha2_width").attr("value"));
         
-        $('#coding_topics').modal({backdrop:false});
+        // $('#coding_topics').modal({backdrop:false});
+        $("#high_area2").css("background-color",$('.code').css("background-color"))
 
         $("#current_high_area").attr("value","high_area2")
+        
+        ha = $("#current_high_area").attr("value")
+
+        image_hidden_fields.find("#"+image_hidden_fields.attr("id")+"_ha"+ha.substring(9)+"_code_id").attr("value",$('.code').attr("id").substr(4,100))
 
         $("#"+image_hidden_fields.attr("id") +"_ha2").attr("value","1")
 
