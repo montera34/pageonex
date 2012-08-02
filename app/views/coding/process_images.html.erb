@@ -1,21 +1,28 @@
-<% if @thread.status == "opened" %>
-    <!-- <div class="alert alert-info" style="height: 37px;"> -->
-<% else %>
-    <!-- <div class="alert alert-error" style="height: 37px;"> -->
-<% end %>
-<!-- <div class="alert alert-error" style="height: 37px;">
-    <h1 class="pull-left">Coding: <% @thread.thread_display_name.capitalize %></h1>
-    <h1 class="pull-right"><% @thread.status.capitalize %></h1>
-</div>
-<hr> -->
 <% unless @thread.owner == current_user %>
 <div class="alert alert-error" style="height: 37px;">
     <h1 class="pull-left">You don't have a premission to code in this thread</h1>
 </div>
 <% end %>
 
+
+
+<h3>Coding Progress: You Have Coded [<span id="remain"></span>] from [<span id="total"></span>]</h3>
+<div class="progress">
+  <div class="bar" style="width: 60%;"></div>
+</div>
+
+<%= hidden_field_tag "total_images_number", @thread.images.length %>
+
+<hr>
 <div class="row">
     <div class="span2" >
+        <h3>Thread Name:</h3>
+        <p><strong><%= @thread.thread_display_name.capitalize %></strong></p>
+        <hr>
+        <h3>Current Image Number:</h3>
+        <p id="image_number" style="font-weight:bold"></p>
+        <hr>
+        <h3>Topics:</h3>
         <% @thread.codes.each do |code| %>
             <div style="background-color:<%= code.color %>;color:black" id="code<%= code.id %>" class="alert alert-info code">
                 <p id="<%= code.code_text %>"><h4><%= code.code_text %></h4>
@@ -38,17 +45,17 @@
         <a href="http://Kiosko.net">Kiosko.net</a>
     </div>
     <div id="images_section" class="span7">
-        <div id="myCarousel" class="carousel slide">
+        <div id="myCarousel" class="carousel slide" >
           <!-- Carousel items -->
           <div class="carousel-inner">
             <div class="active item">
                 <% # image_tag "/assets#{@images[0].local_path}", :id => "image1", :style => "width: 670px;" , :media=>@images[0].media.display_name, image_size: @images[0].size %>
 
                 <!-- display live version form kiosko, just for the online beta version on heroku -->
-                <% if @thread.images[0].local_path == "404.jpg" %>
+                <% if @images[0].local_path == "404.jpg" %>
                     <img src="/assets/404.jpg" alt="" id="<%= "image1" %>" style="width: 670px;" image_size="<%= @images[0].size %>" media="<%= @images[0].media.display_name%>" pub_date="<%= @images[0].publication_date %>"/>
                 <% else %>
-                    <img src="<%= @thread.images[0].local_path %>" alt="" id="<%= "image1" %>" style="width: 670px;" image_size="<%= @images[0].size %>" media="<%= @images[0].media.display_name%>" pub_date="<%= @images[0].publication_date %>" />
+                    <img src="<%= @images[0].local_path %>" alt="" id="<%= "image1" %>" style="width: 670px;" image_size="<%= @images[0].size %>" media="<%= @images[0].media.display_name%>" pub_date="<%= @images[0].publication_date %>" />
                 <% end %>
                 <!-- end -->
                 
@@ -59,10 +66,10 @@
                     <% #image_tag "/assets#{@images[ic].local_path}", :id => "image#{ic+1}", :style => "width: 670px", :media=>@images[ic].media.display_name, image_size: @images[ic].size %>
 
                     <!-- display live version form kiosko, just for the online beta version on heroku -->
-                    <% if @thread.images[ic].local_path == "404.jpg" %>
+                    <% if @images[ic].local_path == "404.jpg" %>
                         <img src="/assets/404.jpg" alt="" id="<%= "image#{ic+1}" %>" style="width: 670px;" image_size="<%= @images[ic].size %>" media="<%= @images[ic].media.display_name%>" pub_date="<%= @images[ic].publication_date %>" />
                     <% else %>
-                        <img src="<%= @thread.images[ic].local_path %>" alt="" id="<%= "image#{ic+1}" %>" style="width: 670px;" image_size="<%= @images[ic].size %>" media="<%= @images[ic].media.display_name%>" pub_date="<%= @images[ic].publication_date %>" />
+                        <img src="<%= @images[ic].local_path %>" alt="" id="<%= "image#{ic+1}" %>" style="width: 670px;" image_size="<%= @images[ic].size %>" media="<%= @images[ic].media.display_name%>" pub_date="<%= @images[ic].publication_date %>" />
                     <% end %>
                     <!-- end -->
 
@@ -74,10 +81,10 @@
         <a class="carousel-control right" style="z-index: 200;" href="#myCarousel" data-slide="next">&rsaquo;</a>
         </div>
 
-        <div id="high_area1" style="position: absolute; overflow: hidden; z-index: 0; left: 0px; top: 0px; width: 0px; height: 0px; display: block; " class="imgareaselect-outer"></div>
+        <div id="high_area1" style="opacity: 0.5;position: absolute; overflow: hidden; z-index: 0; left: 0px; top: 0px; width: 0px; height: 0px; display: block; " class="high_area imgareaselect-outer"></div>
 
-        <div id="high_area2" style="position: absolute; overflow: hidden; z-index: 0; left: 0px; top: 0px; width: 0px; height: 0px; display: block; " class="imgareaselect-outer"></div>
-        <hr>
+        
+        <div id="high_area2" style="opacity: 0.5;position: absolute; overflow: hidden; z-index: 0; left: 0px; top: 0px; width: 0px; height: 0px; display: block; " class="high_area imgareaselect-outer"></div>
 
         <div class="modal hide" id="coding_topics">
           <div class="modal-header">
@@ -158,12 +165,15 @@
 <% if params[:i] != nil %>
     <%= hidden_field_tag "target_image", params[:i]  %>
 <% end %>
-
+<%= hidden_field_tag "help_closed" %>
 
 <script type="text/javascript">
 $(function (argument) {
     $(".breadcrumb li").filter("li.active").attr("class"," ");
     $("#code").attr("class", "active");
+    $("#code").css("font-weight","bold")
+    $("#code a").css("color","#fff")
+    $("#code a").attr("class", "btn btn-info");
 
     if ($("#target_image").attr("value") != null) {
     t_image = $("#target_image").attr("value")
@@ -171,6 +181,8 @@ $(function (argument) {
     $("#images_section div img#" + t_image).parent().attr("class", "active item")
 
     };
+
+
 })
 </script>
 
@@ -178,4 +190,4 @@ $(function (argument) {
     <%= hidden_field_tag :allow_coding, "true" %>
 <% end %>
 
-<%= javascript_include_tag "coding" %>
+<%= javascript_include_tag "jquery.imgareaselect", "coding" %>

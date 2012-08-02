@@ -3,11 +3,17 @@ class CodingController < ApplicationController
 
   def process_images
     @thread = Threadx.find_by_thread_name params[:thread_name]
-    @images = @thread.images
+    # @images = @thread.images
     @image_counter = @thread.images.length
     @highlighted_areas = []
 
     @highlighted_areas = @thread.highlighted_areas
+
+    @images = @thread.images.sort do |img1, img2|
+      img1.publication_date <=> img2.publication_date
+    end
+    # render json: @images.to_json
+
   end
 
   def process_highlighted_areas

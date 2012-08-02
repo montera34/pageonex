@@ -66,7 +66,7 @@
 //= require bootstrap-carousel
 //require twitter/bootstrap
 
-//= require jquery.imgareaselect
+// require jquery.imgareaselect
 //= require spin.min
 
 //require_tree .
