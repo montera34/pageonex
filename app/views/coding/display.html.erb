@@ -1,9 +1,23 @@
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=234164799951470";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+
+
 <% @title = "PageOneX - Thread: #{@thread.thread_display_name.capitalize}" %>
 <h1>Display: <%= @thread.thread_display_name.capitalize %> </h1>
-<div class="pull-right" style="margin-top: -28px;margin-right: 159px;">
-<a href="https://twitter.com/share" class="twitter-share-button" data-via="PageOneX" data-hashtags="PageOneX" data-dnt="true">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-</div>
+<h3>Create by: <%= @thread.owner.username %></h3>
+
+<% if %>
+	<a class="btn btn-mini btn-danger" href="">Delete this thread</a>
+<% end %>
+
 <div class="btn-group pull-right" style="margin-top: -36px;">
     <button class="btn btn-large" disabled="disabled">Export to image</button>
     <button class="btn btn-large dropdown-toggle" disabled="disabled" data-toggle="dropdown"><span class="caret"></span></button>
@@ -31,6 +45,8 @@
 		
 		
 	</div>
+
+
 	<div class="span5">
 		<h3>Topics coded</h3>
 			<% @thread.codes.each do |code| %>
@@ -42,7 +58,22 @@
         </div>
        <% end %>
 	</div>
+
+
 </div> 
+<h4>Share:</h4>
+<div class="row">
+
+
+	<div class="span2">
+		<a href="https://twitter.com/share" class="twitter-share-button" data-via="PageOneX" data-hashtags="PageOneX" data-dnt="true">Tweet</a>
+	</div>
+
+	<div class="span4" style="margin-left: -71px;">
+		<div class="fb-like" data-send="true" data-layout="button_count" data-width="460" data-show-faces="true" data-action="recommend" data-font="verdana"></div>
+	</div>
+
+</div>
 <hr>
 
 <div class="row">
@@ -164,6 +195,9 @@ graph.render();
 $(function (argument) {
     $(".breadcrumb li").filter("li.active").attr("class"," ");
     $("#display").attr("class", "active");
+    $("#display").css("font-weight","bold")
+    $("#display a").css("color","#fff")
+    $("#display a").attr("class", "btn btn-info");
 })
 </script>
 
