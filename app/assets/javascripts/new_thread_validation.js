@@ -19,9 +19,11 @@ $(function () {
     if ($(this).parent().attr("class") == "field_with_errors control-group error" ) {
       $(this).parent().attr("class", "")
       $("#validation_error").attr("value","false")
+       validates()
     }else if($(this).attr("value") == ""){
       $(this).parent().attr("class","field_with_errors control-group error")
       $("#validation_error").attr("value","true")
+
     }else{
       $("#validation_error").attr("value","false")
     }
@@ -152,51 +154,65 @@ $(function () {
  
   function validates () {
     var errors_box = $("#errors")
-    var valid=0
-    if (true) {
+    var m_valid=true,d_valid=true,t_n_valid=true
+    var empty_topic = $("#empty_topic")
+    var empty_media = $("#empty_media")
+    
+    if (errors_box.children().length >= 1 || empty_topic.attr('value') == 'true' || empty_media.attr('value') == 'true') {
+     
+      if (errors_box.children().length == 0) {
+        $("#errors").append('<div class="alert alert-error"></div>')
+        
+        if (empty_topic.attr('value') == 'true' ) {
+          $('.alert-error').append('<li id="topic_name_message" style="display:none">Topic name cannot be empty</li>')
+        };
+        if (empty_media.attr('value') == 'true') {
+          $('.alert-error').append('<li id="media_message" style="display:none">You must at least select one newspaper</li>')
+        };
+      };
+      
+
       if (mediaValidator()) {
         $("#errors").find("#media_message").css("display","list-item")
-        valid+=1
+        m_valid=false
 
       }else{
         $("#errors").find("#media_message").css("display","none")
         $("#media_box").attr("class", "")
-        valid=0
       }
 
       if (dateValidator()) {
         $("#errors").find("#date_message").css("display","list-item")
-        valid+=1
+        d_valid=false
         
       }else{
         $("#errors").find("#date_message").css("display","none")
         $(".date_errors").attr("class", "date_errors")
-        valid=0
       }
 
       if (topicNameValidator()) {
         $("#errors").find("#topic_name_message").css("display","list-item")
-        valid+=1
+        t_n_valid=false
 
       }else{
         $("#errors").find("#topic_name_message").css("display","none")
         $("#topic_name_box").attr("class", "")
-        valid=0
       }
 
       if (topicColorValidator()) {
         $("#errors").find("#topic_color_message").css("display","list-item")
-        valid+=1
         
       }else{
         $("#errors").find("#topic_color_message").css("display","none")
         $(".topic_color_box").attr("class", "topic_color_box")
-        valid=0
       }
 
-      if (valid != 0) {
+      if (m_valid && d_valid && t_n_valid) {
+        $("#validation_error").attr("value","false")
+      }else{
         $("#validation_error").attr("value","true")
-      };
+      }
+
     }
 
   } 

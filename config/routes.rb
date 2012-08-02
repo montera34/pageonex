@@ -10,6 +10,7 @@ Pageonex::Application.routes.draw do
   match 'users/:username/threads/:thread_name' => 'coding#display'
 
   match '/home/about' => 'home#about'
+  match '/home/help' => 'home#help'
 
   root :to => "home#index"
 

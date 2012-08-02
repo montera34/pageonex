@@ -43,6 +43,7 @@
           <ul class="nav">
             <li><%= link_to "Threads", "/threads/"  %></li>
             <li><%= link_to "Blog", "http://montera34.org/pageonex/"  %></li>
+            <li><%= link_to "Help", "/home/help"  %></li>
             <li><%= link_to "About", "/home/about"  %></li>
           </ul>
 
@@ -70,17 +71,17 @@
                 <p><%= alert %></p>
               </div>
             <% end %>
-            <% if (params[:controller] == "threads" || params[:controller] == "coding")&&(params[:action] != "index" && params[:action] != "edit" && params[:action] != "new" && params[:action] != "create")%>
-              <ul style="text-align:center" class="breadcrumb">
+            <% if (params[:controller] == "threads" || params[:controller] == "coding")&&(params[:action] != "index"  && params[:action] != "new" && params[:action] != "create")%>
+              <ul style="text-align:center; font-size:20px" class="breadcrumb">
                 <% if @thread.owner == current_user %>
                   <li id="initiate">
-                    <a href="<%= "/threads/#{@thread.thread_name}/edit"%>">Initiate</a> <span style="margin: 0 80px 0 80px" class="divider">»</span>
+                    <a href="<%= "/threads/#{@thread.thread_name}/edit"%>" class="btn" id="init" rel="popover"  data-content="Editing the thread information" data-original-title="Initiate" >Initiate</a> <span style="margin:0 100px 0 100px" class="divider"> | </span>
                   </li>
                 <% end %>
                 <li id="code" class="active">
-                  <a href="<%= "/users/#{@thread.owner.username}/threads/#{@thread.thread_name}/coding"%>">Code</a> <span style="margin: 0 80px 0 80px" class="divider">»</span>
+                  <a href="<%= "/users/#{@thread.owner.username}/threads/#{@thread.thread_name}/coding"%>" class="btn " id="coding" rel="popover"  data-content="Coding images, by highlighting the related news" data-original-title="Code">Code</a> <span style="margin: 0 100px 0 100px" class="divider"> | </span>
                 </li>
-                <li id="display"><a href="<%= "/users/#{@thread.owner.username}/threads/#{@thread.thread_name}"%>">Display</a></li>
+                <li id="display"><a href="<%= "/users/#{@thread.owner.username}/threads/#{@thread.thread_name}"%>" class="btn " id="disp" rel="popover"  data-content="Displaying the images matrix with bar chart of the ratios" data-original-title="Display">Display</a></li>
               </ul>
             <% end %>
 
@@ -103,6 +104,25 @@
                   <% end %>
                 </ul>
               </div><!--/.well -->
+              <% if params[:action] == "process_images" && params[:controller] == "coding" %>
+                <div class="alert alert-info">
+                  <a id="close_help" type="button" class="close" data-dismiss="alert">×</a>
+                  <h3>How coding works</h3>
+                  <br>    
+                  <h4>Steps</h4>
+                  <ol>
+                      <li>Drag the mouse over the related news box</li>
+                      <li>Release the mouse when you have covered the box</li>
+                      <li>If there is nothing to code, you can press the button at the bottom "Nothing to Code"</li>
+                  </ol>
+                  <h4>Notes</h4>
+                  <ul>
+                    <li>The progress bar at the top page shows how many images have been coded, and how many is not yet coded</li>
+                    <li>You have two highlighted areas to use</li>
+                    <li>If you cannot highlight a long news box, you can zoom out and highlight and then zoom in</li>
+                  </ul>
+                </div>
+              <% end %>
 
             </div><!--/span-->
         </div><!--/row-->
@@ -126,3 +146,14 @@
 
   </body>
 </html>
+
+<script type="text/javascript">
+$(function () {
+  $('#init').popover({placement:'bottom'})
+  $('#coding').popover({placement:'bottom'})
+  $('#disp').popover({placement:'bottom'})
+})
+
+
+
+</script>

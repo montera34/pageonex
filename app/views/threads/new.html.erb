@@ -5,7 +5,7 @@
 
 <% if thread != nil %>
   <script type="text/javascript">
-  window.location.href = '<%= "/users/#{current_user.user_name}/threads/#{thread.thread_name}" %>'
+  //window.location.href = '<%= "/users/#{current_user.username}/threads/#{thread.thread_name}" %>'
   </script>
 <% end %>
 
@@ -126,6 +126,8 @@
 <% end %>
 
 <%= hidden_field_tag :validation_error, "false"  %>
+<%= hidden_field_tag :empty_topic, params[:empty_topic] %>
+<%= hidden_field_tag :empty_media, params[:empty_media] %>
 
 <div id="topic" class="well date_errors"  style="display:none">
       <%= label_tag "topic_name", nil, :id => "topic_name_label" %>

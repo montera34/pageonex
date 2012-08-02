@@ -21,8 +21,12 @@ class Threadx < ActiveRecord::Base
 
 	def existing_thread
 		current_user = User.find owner_id
-		unless (current_user.owned_threads.find_by_thread_display_name thread_display_name) == nil
-			errors.add(:thread_display_name, "is already exist")
+		thread = current_user.owned_threads.find_by_thread_display_name thread_display_name
+		existed_thread = ( thread == nil )
+		unless existed_thread
+			unless thread.thread_name == nil
+				errors.add(:thread_display_name, "is already exist")
+			end
 		end
 	end
 

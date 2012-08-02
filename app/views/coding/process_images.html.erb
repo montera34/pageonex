@@ -1,6 +1,7 @@
 <% unless @thread.owner == current_user %>
-<div class="alert alert-error" style="height: 37px;">
-    <h1 class="pull-left">You don't have a premission to code in this thread</h1>
+<div class="alert alert-block">
+    <a type="button" class="close" data-dismiss="alert">×</a>
+    <h3 class="" style="text-align: center;">You don't have a premission to code in this thread</h3>
 </div>
 <% end %>
 

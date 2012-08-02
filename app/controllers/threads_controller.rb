@@ -15,7 +15,7 @@ class ThreadsController < ApplicationController
 		
 		# existing_thread = current_user.owned_threads.find_by_thread_display_name params[:threadx]["thread_display_name"]
 		 
-		if @thread.valid? && params[:media] != nil #&& existing_thread != nil 
+		if @thread.valid? && params[:media] != nil && params["topic_name_1"] != "" 
 
 			
 			# this array is made to passed to Scraper.get_issues method, because this method accept the specific format of newspapers names as the following
@@ -118,9 +118,12 @@ class ThreadsController < ApplicationController
 				newspaper.name = "#{newspaper.country} - #{newspaper.display_name}"
 				@media << newspaper
 			end
-			# if existing_thread
-			# 	flash[:existing_thread]
-			# end
+			if params["topic_name_1"] == ""
+				params[:empty_topic] = "true"
+			end
+			if params[:media] == nil
+				params[:empty_media] = "true"
+			end
 			render "new"
 		end
 
@@ -143,10 +146,10 @@ class ThreadsController < ApplicationController
 	end
 
 	def update
-		@thread = Threadx.find_by_thread_name params[:id]
-		@thread.update_attributes(params[:threadx])
-		@thread.thread_name = params[:threadx]["thread_display_name"].sub(' ', '_')
-		@thread.save!
+		@thread = Threadx.find_by_thread_display_name(params[:id])
+		@thread.thread_name = params[:threadx]["thread_display_name"].split(' ').join('_')
+		@thread.update_attributes!(params[:threadx])
+		# @thread.save!
 		redirect_to "/users/#{current_user.username}/threads/#{@thread.thread_name}"
 	end
 

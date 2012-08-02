@@ -19,5 +19,16 @@
 
   
   <%= f.submit "Update Thread", :class => "btn" %>
-  <a class="btn btn-primary" href="/threads">Cancel</a>
+  <a class="btn btn-primary" href='<%="/users/#{current_user.username}/threads/#{@thread.thread_name}"%>' >Cancel</a>
 <% end %>
+
+<script type="text/javascript">
+$(function () {
+  $(".breadcrumb li").filter("li.active").attr("class"," ");
+  $("#initiate").attr("class", "active");
+  $("#initiate").css("font-weight","bold")
+  $("#initiate a").css("color","#fff")
+  $("#initiate a").attr("class", "btn btn-info");
+    
+})
+</script>
