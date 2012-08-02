@@ -9,7 +9,7 @@
 
 <h3>Coding Progress: You Have Coded [<span id="remain"></span>] from [<span id="total"></span>]</h3>
 <div class="progress">
-  <div class="bar" style="width: 60%;"></div>
+  <div class="bar" style="width: 0%;"></div>
 </div>
 
 <%= hidden_field_tag "total_images_number", @thread.images.length %>
@@ -54,9 +54,9 @@
 
                 <!-- display live version form kiosko, just for the online beta version on heroku -->
                 <% if @images[0].local_path == "404.jpg" %>
-                    <img src="/assets/404.jpg" alt="" id="<%= "image1" %>" style="width: 670px;" image_size="<%= @images[0].size %>" media="<%= @images[0].media.display_name%>" pub_date="<%= @images[0].publication_date %>"/>
+                    <img src="/assets/404.jpg" alt="" id="<%= "image1" %>" style="width: 670px;" image_size="<%= @images[0].size %>" media="<%= @images[0].media.display_name%>" pub_date="<%= @images[0].publication_date %>" name="<%= "#{@images[ic].media.name}_#{@images[0].publication_date.day}_#{@images[0].publication_date.month}" %>" />
                 <% else %>
-                    <img src="<%= @images[0].local_path %>" alt="" id="<%= "image1" %>" style="width: 670px;" image_size="<%= @images[0].size %>" media="<%= @images[0].media.display_name%>" pub_date="<%= @images[0].publication_date %>" />
+                    <img src="<%= @images[0].local_path %>" alt="" id="<%= "image1" %>" style="width: 670px;" image_size="<%= @images[0].size %>" media="<%= @images[0].media.display_name%>" pub_date="<%= @images[0].publication_date %>" name="<%= "#{@images[0].media.name}_#{@images[0].publication_date.day}_#{@images[0].publication_date.month}" %>" />
                 <% end %>
                 <!-- end -->
                 
@@ -68,9 +68,9 @@
 
                     <!-- display live version form kiosko, just for the online beta version on heroku -->
                     <% if @images[ic].local_path == "404.jpg" %>
-                        <img src="/assets/404.jpg" alt="" id="<%= "image#{ic+1}" %>" style="width: 670px;" image_size="<%= @images[ic].size %>" media="<%= @images[ic].media.display_name%>" pub_date="<%= @images[ic].publication_date %>" />
+                        <img src="/assets/404.jpg" alt="" id="<%= "image#{ic+1}" %>" style="width: 670px;" image_size="<%= @images[ic].size %>" media="<%= @images[ic].media.display_name%>" pub_date="<%= @images[ic].publication_date %>" name="<%= "#{@images[ic].media.name}_#{@images[ic].publication_date.day}_#{@images[ic].publication_date.month}" %>" />
                     <% else %>
-                        <img src="<%= @images[ic].local_path %>" alt="" id="<%= "image#{ic+1}" %>" style="width: 670px;" image_size="<%= @images[ic].size %>" media="<%= @images[ic].media.display_name%>" pub_date="<%= @images[ic].publication_date %>" />
+                        <img src="<%= @images[ic].local_path %>" alt="" id="<%= "image#{ic+1}" %>" style="width: 670px;" image_size="<%= @images[ic].size %>" media="<%= @images[ic].media.display_name%>" pub_date="<%= @images[ic].publication_date %>" name="<%= "#{@images[ic].media.name}_#{@images[ic].publication_date.day}_#{@images[ic].publication_date.month}" %>" />
                     <% end %>
                     <!-- end -->
 
@@ -82,10 +82,12 @@
         <a class="carousel-control right" style="z-index: 200;" href="#myCarousel" data-slide="next">&rsaquo;</a>
         </div>
 
+
+        <div id="high_area2" style="opacity: 0.5;position: absolute; overflow: hidden; z-index: 0; left: 0px; top: 0px; width: 0px; height: 0px; display: block; " class="high_area imgareaselect-outer"></div>
+
         <div id="high_area1" style="opacity: 0.5;position: absolute; overflow: hidden; z-index: 0; left: 0px; top: 0px; width: 0px; height: 0px; display: block; " class="high_area imgareaselect-outer"></div>
 
         
-        <div id="high_area2" style="opacity: 0.5;position: absolute; overflow: hidden; z-index: 0; left: 0px; top: 0px; width: 0px; height: 0px; display: block; " class="high_area imgareaselect-outer"></div>
 
         <div class="modal hide" id="coding_topics">
           <div class="modal-header">
@@ -179,7 +181,7 @@ $(function (argument) {
     if ($("#target_image").attr("value") != null) {
     t_image = $("#target_image").attr("value")
     $("#images_section div.active img").parent().attr("class", "item")
-    $("#images_section div img#" + t_image).parent().attr("class", "active item")
+    $("#images_section div img[name='"+t_image+"']").parent().attr("class", "active item")
 
     };
 

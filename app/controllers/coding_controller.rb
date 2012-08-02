@@ -18,7 +18,11 @@ class CodingController < ApplicationController
 
   def process_highlighted_areas
     @thread = Threadx.find_by_thread_name params[:thread_name]
-    @images = @thread.images
+    # @images = @thread.images
+    @images = @thread.images.sort do |img1, img2|
+      img1.publication_date <=> img2.publication_date
+    end
+
     @image_counter = @thread.images.length
 
     # check for the number of highlighted areas, if it more than 0 that's mean, the user trying to modify, existing highlighted areas
@@ -37,6 +41,7 @@ class CodingController < ApplicationController
         high_area.destroy
       end
     end
+
     @image_counter.downto(1) do |c|
       2.downto(1) do |hc|
         if params["image#{c}_ha#{hc}"] == "1"
@@ -55,7 +60,11 @@ class CodingController < ApplicationController
 
   def display
     @thread = Threadx.find_by_thread_name params[:thread_name]
-    @images = @thread.images
+    # @images = @thread.images
+    @images = @thread.images.sort do |img1, img2|
+      img1.publication_date <=> img2.publication_date
+    end
+    
     @image_counter = @thread.images.length
     @codes = @thread.codes
     @highlighted_areas = @thread.highlighted_areas
@@ -64,6 +73,8 @@ class CodingController < ApplicationController
     	ha1.name.split('_')[0][5..100].to_i <=> ha2.name.split('_')[0][5..100].to_i
     end
 
+
+    # This part is used to calculate the highlighted areas percentages vertically 
     @i_ratios = {}
 
     @h_ratios = {}
@@ -84,7 +95,7 @@ class CodingController < ApplicationController
       @ratios["#{c}"] = 0
     end
 
-    @r_images = @images.sort do |img1, img2|
+    @r_images = @thread.images.sort do |img1, img2|
       img1.publication_date <=> img2.publication_date
     end
 
@@ -125,8 +136,8 @@ class CodingController < ApplicationController
       @ratios[cr[1..cr.length]] = c
       c = 0
     end
+    # end of the calculating and store the results in @ratios hash
 
-    # render json: @ratios.to_json
 
   end
 end

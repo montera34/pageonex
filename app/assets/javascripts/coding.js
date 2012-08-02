@@ -2,15 +2,44 @@ $(document).ready(function () {
     carousel = $('.carousel').carousel({
         interval: 500000000
     });
-
+    currrent_img = $("#images_section div.active img")
     if ($("#allow_coding").attr("value") == "true") {
         // get the object of image selection plugin
         currrent_img_area_select = $('#images_section div.active img').imgAreaSelect({instance: true, handles: true,onSelectEnd: highlightingArea});
+        // var currrent_img = $("#images_section div.active img")
+        var image_hidden_fields = $("div#" + currrent_img.attr("id"));
+    
+        $(".high_area").draggable({
+            stop: function (event, ui) {
+     
+                var carousel_position = $('.carousel').position()
+
+                var y1 =  ui.position.top - carousel_position.top
+
+                var x1 = ui.position.left - carousel_position.left
+
+                var ha = "_ha" + $(this).attr("id").substr(9);
+                image_hidden_fields.find("#"+image_hidden_fields.attr("id")+ha+"_y1").attr("value",y1);
+                image_hidden_fields.find("#"+image_hidden_fields.attr("id")+ha+"_x1").attr("value",x1);
+            },
+        }).resizable({
+            containment:'#myCarousel',
+            handles: "se, ne",
+            aspectRatio: false,
+            resize: function(e, ui) {
+                var ha = "_ha" + $(this).attr("id").substr(9);
+                image_hidden_fields.find("#"+image_hidden_fields.attr("id")+ha+"_width").attr("value",ui.size.width);
+                image_hidden_fields.find("#"+image_hidden_fields.attr("id")+ha+"_height").attr("value",ui.size.height);
+                $(this).css("width",ui.size.width)
+                $(this).css("height",ui.size.height)
+            },
+
+        })
 
     };
 
     // current display image 
-    currrent_img = $("#images_section div.active img") 
+    // currrent_img = $("#images_section div.active img") 
     //if (currrent_img.attr("alt")){
         $("#publication_date").text(currrent_img.attr("pub_date"));
         $("#newspaper_name").text(currrent_img.attr("media"));
@@ -34,6 +63,37 @@ $(document).ready(function () {
             }else{
                 currrent_img_area_select = $('#images_section div.active img').imgAreaSelect({instance: true, handles: true,onSelectEnd: highlightingArea});
             }
+
+            var image_hidden_fields = $("div#" + currrent_img.attr("id"));
+    
+            $(".high_area").draggable( {
+                stop: function (event, ui) {
+         
+                    carousel_position = $('.carousel').position()
+
+                    y1 =  ui.position.top - carousel_position.top
+
+                    x1 = ui.position.left - carousel_position.left
+
+                    ha = "_ha" + $(this).attr("id").substr(9);
+                    // alert(image_hidden_fields.find("#"+image_hidden_fields.attr("id")+ha+"_y1").attr("value"))
+                    image_hidden_fields.find("#"+image_hidden_fields.attr("id")+ha+"_y1").attr("value",y1);
+                    image_hidden_fields.find("#"+image_hidden_fields.attr("id")+ha+"_x1").attr("value",x1);
+                },
+            })
+            .resizable({
+                containment:'#myCarousel',
+                handles: "se, ne",
+                aspectRatio: false,
+                resize: function(e, ui) {
+                    var ha = "_ha" + $(this).attr("id").substr(9);
+                    image_hidden_fields.find("#"+image_hidden_fields.attr("id")+ha+"_width").attr("value",ui.size.width);
+                    image_hidden_fields.find("#"+image_hidden_fields.attr("id")+ha+"_height").attr("value",ui.size.height);
+                    $(this).css("width",ui.size.width)
+                    $(this).css("height",ui.size.height)
+                }
+
+            })
         }
 
         currrent_img = $("#images_section div.active img");
@@ -54,37 +114,7 @@ $(document).ready(function () {
         };
     });
 
-    // var currrent_img = $("#images_section div.active img");
-    var image_hidden_fields = $("div#" + currrent_img.attr("id"));
     
-    $(".high_area").draggable( {
-        stop: function (event, ui) {
- 
-            carousel_position = $('.carousel').position()
-
-            y1 =  ui.position.top - carousel_position.top
-
-            x1 = ui.position.left - carousel_position.left
-
-            ha = "_ha" + $(this).attr("id").substr(9);
-            // alert(image_hidden_fields.find("#"+image_hidden_fields.attr("id")+ha+"_y1").attr("value"))
-            image_hidden_fields.find("#"+image_hidden_fields.attr("id")+ha+"_y1").attr("value",y1);
-            image_hidden_fields.find("#"+image_hidden_fields.attr("id")+ha+"_x1").attr("value",x1);
-        },
-    })
-    .resizable({
-        start: function(e, ui) {
-            // alert('resizing started');
-        },
-        resize: function(e, ui) {
-            // alert($(this).attr("id"))
-            // $(this).css("width",ui.size.width)
-            // $(this).css("height",ui.size.height)
-        },
-        stop: function(e, ui) {
-            // $("#high_area1").resizable()
-        }
-    })
 
     
 
@@ -285,7 +315,7 @@ function loadHighlightingAreas () {
         $("#high_area1").css("left",image_hidden_fields.find("#"+image_hidden_fields.attr("id")+"_ha1_x1").attr("value"));
     }else{
         $("#high_area1").css("opacity", " 0.4")
-        $("#high_area1").children().first().remove()
+        // $("#high_area1").children().first().remove()
     }
 
 
