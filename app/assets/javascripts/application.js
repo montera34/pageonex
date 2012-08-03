@@ -21,9 +21,9 @@
 //= require jquery.ui.position
 
 //= require jquery.ui.draggable
-//= require jquery.ui.droppable
+// require jquery.ui.droppable
 //= require jquery.ui.resizable
-//= require jquery.ui.selectable
+// require jquery.ui.selectable
 // require jquery.ui.sortable
 
 // require jquery.ui.accordion
@@ -57,16 +57,16 @@
 //= require twitter/bootstrap/bootstrap-modal
 //= require twitter/bootstrap/bootstrap-dropdown
 //= require twitter/bootstrap/bootstrap-scrollspy
-//= require twitter/bootstrap/bootstrap-tab
+// require twitter/bootstrap/bootstrap-tab
 //= require twitter/bootstrap/bootstrap-tooltip
 //= require twitter/bootstrap/bootstrap-popover
 //= require twitter/bootstrap/bootstrap-button
 //= require twitter/bootstrap/bootstrap-collapse
-//= require twitter/bootstrap/bootstrap-typeahead
+// require twitter/bootstrap/bootstrap-typeahead
 //= require bootstrap-carousel
-//require twitter/bootstrap
+// require twitter/bootstrap
 
 // require jquery.imgareaselect
 //= require spin.min
 
-//require_tree .
+// require_tree .
