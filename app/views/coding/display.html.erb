@@ -35,15 +35,17 @@
 <hr>
 
 <div class="row">
-	<div class="span4">
+	<div class="span2">
 		<h3>Name:</h3> <p><%= @thread.thread_display_name %></p>
 		<h3>Description:</h3><p> <%= @thread.description %></p>
 		<h3>Category:</h3> <p><%= @thread.category %></p>
 		<h3>Status:</h3> <p><%= @thread.status %></p>
-		
+	</div>
+	<div class="span2">
 		<p><h3>From:</h3> <%= @thread.start_date.inspect %></p>
 		<p><h3>To:</h3> <%= @thread.end_date.inspect %></p>
-		
+	</div>
+	<div class="span2">
 		<h3>Topics coded:</h3>
 			<% @thread.codes.each do |code| %>
         		<div id="code-<%= code.id %>" style="background-color:<%= code.color %>; margin-left: 7px; float: left;color:black" class="codes"></div>
@@ -52,7 +54,7 @@
             	<h4>Color: </h4><span style="background-color:<%= code.color %>;color: <%= code.color %>"><%= code.color %></span>
     		
        <% end %>
-	</div>
+    </div>
 </div> 
 <br>
 <h3>Share:</h3>
@@ -69,63 +71,72 @@
 
 </div>
 <hr>
-
-<div class="row">
-	<div class="span3" style="width: 195px; ">
-		<h2>Surfaces percentage:</h2>
+<div id="datavis" style="display: none;">
+	<div class="row">
+		<div class="span3" style="width: 195px; ">
+			<h2>Surfaces percentage:</h2>
+		</div>
+		<div class="span6" style="width: 644px;">
+			<div id="chart" style="margin-left: -35px;"></div>
+		</div>
 	</div>
-	<div class="span6" style="width: 644px;">
-		<div id="chart" style="margin-left: -38px;"></div>
+
+	<div id="ratios">
+		<% @ratios.each do |v,r|  %>
+			<%= hidden_field_tag "v#{v}", r %>
+		<% end %>
 	</div>
-</div>
+		<%= hidden_field_tag "number_of_column", @ratios.length %>
+		<%= hidden_field_tag "number_of_rows", @thread.media.length %>
 
-<div id="ratios">
-	<% @ratios.each do |v,r|  %>
-		<%= hidden_field_tag "v#{v}", r %>
-	<% end %>
-</div>
-	<%= hidden_field_tag "number_of_column", @ratios.length %>
-	<%= hidden_field_tag "number_of_rows", @thread.media.length %>
-
-	<br>
-		<% @thread.media.each do |m| %>
-		<div class="row images">
-			<div class="span3" style="width: 195px;">
+		<br>
+	<% @thread.media.each do |m| %>
+		<div class="row images" >
+			<div class="span2" style="/*width: 195px;*/">
 				<div class="" style="overflow: overlay; margin-right: 35px;font-size: 14px;">
   				<h2 style="font-size: 14px;"><%= m.display_name %></h2>
 				</div>
 			</div>
-			<% images_counter = @thread.images.length %>
-			<% 0.upto(images_counter-1) do |ic| %>
-				<% if @images[ic].media == m  %>
-					<div id="<%= "image_box#{ic+1}" %>" style="margin-bottom: 9px" class="span1 <%= "thum_image#{ic+1}" %>">
-						<% if  @thread.media.first == m %>
-							<h6 style="text-align: center; color:#000;font-size: 10px;"><%= "#{@thread.images[ic].publication_date.day}/#{@thread.images[ic].publication_date.month}" %></h6>
-						<% end %>
-		          		<a href=<%= "/users/#{@thread.owner.username}/threads/#{@thread.thread_name}/coding/?i=#{@images[ic].media.name}_#{@images[ic].publication_date.day}_#{@images[ic].publication_date.month}" %> title="">
-			          		
-			          		<% #image_tag "/assets#{@thread.images[ic].local_path}", id: "image#{ic+1}", style: " opacity: 0.8;", image_size: @images[ic].size%>
-								
-							<!-- display live version form kiosko, just for the online beta version on heroku -->
-							<% if @images[ic].local_path == "404.jpg" %>
-								<img src="/assets/404.jpg" alt="" id="<%= "image#{ic+1}" %>" style=" opacity: 0.7;" image_size="<%= @images[ic].size %>" />
-			         		<% else %>
-			         		<img src="<%= @images[ic].local_path %>" alt="" id="<%= "image#{ic+1}" %>" class="thum-img" style=" opacity: 0.8;" image_size="<%= @images[ic].size %>" />
+			<div class="img_box span8" >
+				<% images_counter = @thread.images.length %>
+				<% 0.upto(images_counter-1) do |ic| %>
+					<% if @images[ic].media == m  %>
+						<div id="<%= "image_box#{ic+1}" %>" style="margin-bottom: 9px" class="span1 <%= "thum_image#{ic+1}" %>">
+							<% if  @thread.media.first == m %>
+								<h6 style="text-align: center; color:#000;font-size: 10px;"><%= "#{@thread.images[ic].publication_date.day}/#{@thread.images[ic].publication_date.month}" %></h6>
 							<% end %>
-							<!-- end -->
+			          		<a href=<%= "/users/#{@thread.owner.username}/threads/#{@thread.thread_name}/coding/?i=#{@images[ic].media.name}_#{@images[ic].publication_date.day}_#{@images[ic].publication_date.month}" %> title="">
+				          		
+				          		<% #image_tag "/assets#{@thread.images[ic].local_path}", id: "image#{ic+1}", style: " opacity: 0.8;", image_size: @images[ic].size%>
+									
+								<!-- display live version form kiosko, just for the online beta version on heroku -->
+								<% if @images[ic].local_path == "404.jpg" %>
+									<img src="/assets/404.jpg" alt="" id="<%= "image#{ic+1}" %>" style=" opacity: 0.7;" image_size="<%= @images[ic].size %>" />
+				         		<% else %>
+				         		<img src="<%= @images[ic].local_path %>" alt="" id="<%= "image#{ic+1}" %>" class="thum-img" style=" opacity: 0.8;" image_size="<%= @images[ic].size %>" />
+								<% end %>
+								<!-- end -->
 
-					        <div id="high_area1" style="position: absolute; overflow: hidden; z-index: 0; left: 0px; top: 0px; width: 0px; height: 0px; display: block; opacity: 0.7;" class="imgareaselect-outer"></div>
+						        <div id="high_area1" style="position: absolute; overflow: hidden; z-index: 0; left: 0px; top: 0px; width: 0px; height: 0px; display: block; opacity: 0.7;" class="imgareaselect-outer"></div>
 
-					        <div id="high_area2" style="position: absolute; overflow: hidden; z-index: 0; left: 0px; top: 0px; width: 0px; height: 0px; display: block; opacity: 0.7;" class="imgareaselect-outer"></div>
-		          		</a>
+						        <div id="high_area2" style="position: absolute; overflow: hidden; z-index: 0; left: 0px; top: 0px; width: 0px; height: 0px; display: block; opacity: 0.7;" class="imgareaselect-outer"></div>
+			          		</a>
 
-					</div>
+						</div>
+					<% end %>
+				
 				<% end %>
-			
-			<% end %>
+			</div>
 		</div>
-			
+		
 	<% end %>
+</div>
+
+<h2 id="loading-bar-h">Please wait</h2>
+<div id="loading-bar" class="progress progress-striped active">
+
+		<div class="bar" style="width:1%;"></div>
+</div>
 
 	<div id="high_areas">
 		<% @highlighted_areas.each do |ha| %>
@@ -165,7 +176,8 @@ for (var i = 1; i <= number_of_images; i++) {
 	})
 };
 
-var row_width = $("div.images").width() - 225;	
+// var row_width = $("div.images").width() - 225;	
+var row_width = $(".img_box").width()
 
 var graph = new Rickshaw.Graph( {
     element: document.querySelector("#chart"),

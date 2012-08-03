@@ -77,13 +77,14 @@ class ThreadsController < ApplicationController
 
 						# for the online heroku beta
 						
-						puts(image_info[:local_path])
-						begin
-							image_size = Magick::ImageList.new(image_info[:local_path])[0]
-							image_size = "#{image_size.columns}x#{image_size.rows}"
-						rescue => e
+							# puts(image_info[:local_path])
+							# begin
+							# 	image_size = Magick::ImageList.new(image_info[:local_path])[0]
+							# 	image_size = "#{image_size.columns}x#{image_size.rows}"
+							# rescue => e
+							# 	image_size="750x951"
+							# end
 							image_size="750x951"
-						end
 						# end
 					else
 						image_size="750x951"

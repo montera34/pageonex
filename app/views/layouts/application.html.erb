@@ -58,7 +58,7 @@
     <div class="container">
       <div class="content">
         <div class="row">
-           <div class="span9">
+           <div class="span10">
 
             <% if notice %>
               <div class="alert">
@@ -87,7 +87,7 @@
 
             <%= yield %>
             </div>
-            <div class="span3">
+            <div class="span2">
               <% if user_signed_in? %>
                 <div class="well sidebar-nav">
                 <h3><%= current_user.username.capitalize %></h3>
@@ -149,9 +149,10 @@
 
 <script type="text/javascript">
 $(function () {
-  $('#init').popover({placement:'bottom'})
-  $('#coding').popover({placement:'bottom'})
-  $('#disp').popover({placement:'bottom'})
+  d = { show: 700, hide: 1 }
+  $('#init').popover({placement:'bottom', delay:d })
+  $('#coding').popover({placement:'bottom',delay:d })
+  $('#disp').popover({placement:'bottom',delay:d})
 })
 
 
