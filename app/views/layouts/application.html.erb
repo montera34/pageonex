@@ -95,60 +95,14 @@
                 <li id="code" class="active">
                   <a href="<%= "/users/#{@thread.owner.username}/threads/#{@thread.thread_name}/coding"%>" class="btn " id="coding" rel="popover"  data-content="Coding images, by highlighting the related news" data-original-title="Code">Code</a> <span style="margin: 0 100px 0 100px" class="divider"> | </span>
                 </li>
-                <li id="display"><a href="<%= "/users/#{@thread.owner.username}/threads/#{@thread.thread_name}"%>" class="btn " id="disp" rel="popover"  data-content="Displaying the images matrix with bar chart of the ratios" data-original-title="Display">Display</a></li>
+                <li id="display"><a href="<%= "/users/#{@thread.owner.username.split(' ').join('_')}/threads/#{@thread.thread_name}"%>" class="btn " id="disp" rel="popover"  data-content="Displaying the images matrix with bar chart of the ratios" data-original-title="Display">Display</a></li>
               </ul>
             <% end %>
 
             <%= yield %>
             </div>
             <div class="span2" style="display:none">
-              <% if user_signed_in? %>
-                <div class="well sidebar-nav">
-                <h3><%= current_user.username.capitalize %></h3>
-                <%= link_to "Sign out", destroy_user_session_path, :method => :delete  %>
-                </div>
-              <% end %>
               
-              <div class="well sidebar-nav">
-                <h3>Opened Threads</h3>
-                <ul class="nav nav-list">
-                  <!-- <li class="nav-header">International</li> -->
-                  <% Threadx.all.each do |t| %>
-                    <li><%= link_to t.thread_display_name, "/users/#{t.owner.username}/threads/#{t.thread_name}"  %></li>
-                  <% end %>
-                </ul>
-
-              </div><!--/.well -->
-              <h3>Opened Threads</h3>
-              <div id="accordion">
-                  <% Threadx.all.each do |t| %>
-                  <h3><%= link_to t.thread_display_name, "/users/#{t.owner.username}/threads/#{t.thread_name}"  %></h3>
-                    <div>
-                      <p><%= t.description %></p>
-                      <%= link_to "Open", "/users/#{t.owner.username}/threads/#{t.thread_name}", :class => "btn btn-mini"  %>
-                    </div>
-                  <% end %>
-              </div>
-              <% if params[:action] == "process_images" && params[:controller] == "coding" %>
-                <div class="alert alert-info">
-                  <a id="close_help" type="button" class="close" data-dismiss="alert">×</a>
-                  <h3>How coding works</h3>
-                  <br>    
-                  <h4>Steps</h4>
-                  <ol>
-                      <li>Drag the mouse over the related news box</li>
-                      <li>Release the mouse when you have covered the box</li>
-                      <li>If there is nothing to code, you can press the button at the bottom "Nothing to Code"</li>
-                  </ol>
-                  <h4>Notes</h4>
-                  <ul>
-                    <li>The progress bar at the top page shows how many images have been coded, and how many is not yet coded</li>
-                    <li>You have two highlighted areas to use</li>
-                    <li>If you cannot highlight a long news box, you can zoom out and highlight and then zoom in, or you can start with small highlighted area and then resize it</li>
-                  </ul>
-                </div>
-              <% end %>
-
             </div><!--/span-->
         </div><!--/row-->
       </div><!--/content-->

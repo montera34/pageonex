@@ -106,7 +106,7 @@
 							<% if  @thread.media.first == m %>
 								<h6 style="text-align: center; color:#000;font-size: 10px;"><%= "#{@thread.images[ic].publication_date.day}/#{@thread.images[ic].publication_date.month}" %></h6>
 							<% end %>
-			          		<a href=<%= "/users/#{@thread.owner.username}/threads/#{@thread.thread_name}/coding/?i=#{@images[ic].media.name}_#{@images[ic].publication_date.day}_#{@images[ic].publication_date.month}" %> title="">
+			          		<a href=<%= "/users/#{@thread.owner.username.split(' ').join('_')}/threads/#{@thread.thread_name}/coding/?i=#{@images[ic].media.name}_#{@images[ic].publication_date.day}_#{@images[ic].publication_date.month}" %> title="">
 				          		
 				          		<% #image_tag "/assets#{@thread.images[ic].local_path}", id: "image#{ic+1}", style: " opacity: 0.8;", image_size: @images[ic].size%>
 									

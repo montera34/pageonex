@@ -111,7 +111,7 @@ class ThreadsController < ApplicationController
 			@thread.images << images
 			@thread.codes << code
 
-			redirect_to "/users/#{current_user.username}/threads/#{@thread.thread_name}/coding"
+			redirect_to "/users/#{current_user.username.split(' ').join('_')}/threads/#{@thread.thread_name}/coding"
 
 		else
 			@media = []
