@@ -23,23 +23,25 @@
         <h3>Current Image Number:</h3>
         <p id="image_number" style="font-weight:bold"></p>
         <hr>
-        <h3>Topics:</h3>
-        <% @thread.codes.each do |code| %>
-            <div style="background-color:<%= code.color %>;color:black" id="code<%= code.id %>" class="alert alert-info code">
-                <p id="<%= code.code_text %>"><h4><%= code.code_text %></h4>
-                    <br>
-                    <%= code.code_description %>
-                </p>
-            </div>
+        <h3>Topics coded:</h3>
+            <% @thread.codes.each do |code| %>
+                <div id="code<%= code.id %>" style="background-color:<%= code.color %>;color:black" class="code"></div>
+                <h4>Name: </h4> <span><%= code.code_text.split("_").join(" ") %></span>
+                <h4>Description: </h4><span><%= code.code_description %></span>
+                <h4>Color: </h4><span style="background-color:<%= code.color %>;color: <%= code.color %>"><%= code.color %></span>
+            
         <% end %>
+
+    
 
         <hr>
         <h3>Newspaper info</h3>
-        <a id="newspaper_name" href="#"> </a>
-
+        <!-- <a id="newspaper_name" href="#"> </a> -->
+        <p id="newspaper_name"></p>
         <hr>
         <h3>Publication Date</h3>
-        <a id="publication_date" href=""></a>
+        <!-- <a id="publication_date" href=""></a> -->
+        <p id="publication_date" href=""></p>
 
         <hr>
         <h3>Source of image</h3>
@@ -163,6 +165,25 @@
         <% end %>
         
     </div>
+    
+    <div class="alert alert-info span2" style="margin-left: 78px;">
+      <a id="close_help" type="button" class="close" data-dismiss="alert">×</a>
+      <h3>How coding works</h3>
+      <br>    
+      <h4>Steps</h4>
+      <ol>
+          <li>Drag the mouse over the related news box</li>
+          <li>Release the mouse when you have covered the box</li>
+          <li>If there is nothing to code, you can press the button at the bottom "Nothing to Code"</li>
+      </ol>
+      <h4>Notes</h4>
+      <ul>
+        <li>The progress bar at the top page shows how many images have been coded, and how many is not yet coded</li>
+        <li>You have two highlighted areas to use</li>
+        <li>If you cannot highlight a long news box, you can zoom out and highlight and then zoom in, or you can start with small highlighted area and then resize it</li>
+      </ul>
+    </div>
+    
 </div>
 
 <% if params[:i] != nil %>

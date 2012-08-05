@@ -5,6 +5,9 @@
 	</div>
 <% end %>
 
+<% if params[:a] == "t" %>
+	<% @threads = Threadx.all %>
+<% end %>
 <div class="row">
 <% if @threads != [] %>
 	<% @threads.each do |thread| %>
@@ -39,9 +42,10 @@
 		    </div>
 
 		    <p><a href="<%= "/users/#{thread.owner.username}/threads/#{thread.thread_name}/" %>" class="btn btn-primary">Show</a> 
-		    <%= link_to "Delete", "/threads/#{thread.thread_name}" ,:method=>"delete" , :class => "btn btn-danger delete" %>
-		    <a href="<%= "/threads/#{thread.thread_name}/edit/" %>" class="btn">Edit</a>
-		  
+		    <% if thread.owner == current_user %>
+			    <%= link_to "Delete", "/threads/#{thread.thread_name}" ,:method=>"delete" , :class => "btn btn-danger delete" %>
+			    <a href="<%= "/threads/#{thread.thread_name}/edit/" %>" class="btn">Edit</a>
+		  	<% end %>
 
 		  </div>
 		</div>

@@ -41,24 +41,38 @@
           <a class="brand" href="/">PageOneX</a>
           <div class="container nav-collapse">
           <ul class="nav">
-            <li><%= link_to "Threads", "/threads/"  %></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Threads<b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="/threads/" title="">Your Threads</a></li>
+                <li><a href="/threads/?a=t" title="">All Threads</a></li>
+              </ul>
+            </li>
             <li><%= link_to "Blog", "http://montera34.org/pageonex/"  %></li>
             <li><%= link_to "Help", "/home/help"  %></li>
-            <li><%= link_to "About", "/home/about"  %></li>
+            <li><%= link_to "About", "/home/about"  %></li>        
           </ul>
+          
 
-            <form class="navbar-search pull-right">
-              <input type="text" class="search-query" placeholder="Search">
-            </form>
+          
+          <form class="navbar-search pull-right">
+            <input type="text" class="search-query" placeholder="Search">
+          </form>
+          <% if user_signed_in? %>
+            <div class="pull-right" style="border-radius: 4px;padding: 0px 5px 0px 5px;box-shadow: 0px 0px 1px 2px #424242; margin-top: 5px;margin-right: 8px;">
+              <h5 style="margin-bottom: -6px;"><%= current_user.username.capitalize %></h5>
+              <%= link_to "Sign out", destroy_user_session_path, :method => :delete  %>
+            </div>
+          <% end %>
           </div><!--/.nav-collapse -->
         </div>
       </div>
     </div>
 
-    <div class="container">
+    <div class="container" style="min-width: 1170px;">
       <div class="content">
         <div class="row">
-           <div class="span10">
+           <div class="span12">
 
             <% if notice %>
               <div class="alert">
@@ -75,7 +89,7 @@
               <ul style="text-align:center; font-size:20px" class="breadcrumb">
                 <% if @thread.owner == current_user %>
                   <li id="initiate">
-                    <a href="<%= "/threads/#{@thread.thread_name}/edit"%>" class="btn" id="init" rel="popover"  data-content="Editing the thread information" data-original-title="Initiate" >Initiate</a> <span style="margin:0 100px 0 100px" class="divider"> | </span>
+                    <a href="#<% "/threads/#{@thread.thread_name}/edit"%>" class="btn" id="init" rel="popover"  data-content="Editing the thread information" data-original-title="Initiate (Soon)" disabled="disabled" >Initiate</a> <span style="margin:0 100px 0 100px" class="divider"> | </span>
                   </li>
                 <% end %>
                 <li id="code" class="active">
@@ -87,7 +101,7 @@
 
             <%= yield %>
             </div>
-            <div class="span2">
+            <div class="span2" style="display:none">
               <% if user_signed_in? %>
                 <div class="well sidebar-nav">
                 <h3><%= current_user.username.capitalize %></h3>
@@ -103,7 +117,18 @@
                     <li><%= link_to t.thread_display_name, "/users/#{t.owner.username}/threads/#{t.thread_name}"  %></li>
                   <% end %>
                 </ul>
+
               </div><!--/.well -->
+              <h3>Opened Threads</h3>
+              <div id="accordion">
+                  <% Threadx.all.each do |t| %>
+                  <h3><%= link_to t.thread_display_name, "/users/#{t.owner.username}/threads/#{t.thread_name}"  %></h3>
+                    <div>
+                      <p><%= t.description %></p>
+                      <%= link_to "Open", "/users/#{t.owner.username}/threads/#{t.thread_name}", :class => "btn btn-mini"  %>
+                    </div>
+                  <% end %>
+              </div>
               <% if params[:action] == "process_images" && params[:controller] == "coding" %>
                 <div class="alert alert-info">
                   <a id="close_help" type="button" class="close" data-dismiss="alert">×</a>
@@ -153,6 +178,7 @@ $(function () {
   $('#init').popover({placement:'bottom', delay:d })
   $('#coding').popover({placement:'bottom',delay:d })
   $('#disp').popover({placement:'bottom',delay:d})
+  $( "#accordion" ).accordion({ collapsible: true, active: false });
 })
 
 

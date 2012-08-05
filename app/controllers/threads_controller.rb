@@ -1,5 +1,5 @@
 class ThreadsController < ApplicationController
-	before_filter :authenticate_user!, :except => :show
+	before_filter :authenticate_user!
 
 	def index
 		@threads = current_user.owned_threads
@@ -143,12 +143,12 @@ class ThreadsController < ApplicationController
 	end
 
 	def edit
-		# @thread = Threadx.find_by_thread_name params[:id]
-		@thread = current_user.owned_threads.find_by_thread_name params[:id]
-		if @thread == nil
-			flash[:thread_name_error] = "You don't have premission to edit this thread"
-			redirect_to "/threads/"
-		end
+		# @thread = current_user.owned_threads.find_by_thread_name params[:id]
+		# if @thread == nil
+		# 	flash[:thread_name_error] = "You don't have premission to edit this thread"
+		# 	redirect_to "/threads/"
+		# end
+		redirect_to "/threads/"
 	end
 
 	def update

@@ -166,9 +166,9 @@ $(document).ready(function () {
 
             $("#high_area1").css("background-color","#eee");
 
-            if ($("#high_area1").children().length == 2) {
-                $("#high_area1").append("<h1 style='text-align:center color: black;'>None</h1>");
-            }
+            // if ($("#high_area1").children().length == 2) {
+            //     $("#high_area1").append("<h1 style='text-align:center color: black;'>None</h1>");
+            // }
         };
         progressBarPercentage()
     })

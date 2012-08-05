@@ -52,9 +52,9 @@ $(function () {
 				
 				if (curr_high_area_code == "-1") {
 					high_area1.css("background-color", "#eee")
-					if (high_area1.children().length == 0) {
-						high_area1.append("<p style='text-align:center; color: black;'>None</p>");
-					};
+					// if (high_area1.children().length == 0) {
+					// 	high_area1.append("<p style='text-align:center; color: black;'>None</p>");
+					// };
 				}else{
 					high_area1.css("background-color", $("#code-"+curr_high_area_code).css("background-color"))
 				}

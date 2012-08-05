@@ -77,6 +77,7 @@
 			<h2>Surfaces percentage:</h2>
 		</div>
 		<div class="span6" style="width: 644px;">
+			<div id="y_axis"></div>
 			<div id="chart" style="margin-left: -35px;"></div>
 		</div>
 	</div>
@@ -97,7 +98,7 @@
   				<h2 style="font-size: 14px;"><%= m.display_name %></h2>
 				</div>
 			</div>
-			<div class="img_box span8" >
+			<div class="img_box span10" >
 				<% images_counter = @thread.images.length %>
 				<% 0.upto(images_counter-1) do |ic| %>
 					<% if @images[ic].media == m  %>
@@ -113,7 +114,7 @@
 								<% if @images[ic].local_path == "404.jpg" %>
 									<img src="/assets/404.jpg" alt="" id="<%= "image#{ic+1}" %>" style=" opacity: 0.7;" image_size="<%= @images[ic].size %>" />
 				         		<% else %>
-				         		<img src="<%= @images[ic].local_path %>" alt="" id="<%= "image#{ic+1}" %>" class="thum-img" style=" opacity: 0.8;" image_size="<%= @images[ic].size %>" />
+				         			<img src="<%= @images[ic].local_path %>" alt="" id="<%= "image#{ic+1}" %>" class="thum-img" style=" opacity: 0.8;" image_size="<%= @images[ic].size %>" />
 								<% end %>
 								<!-- end -->
 
@@ -163,36 +164,36 @@
 
 <script>
 
-// var data = [ { x: 0, y: 40 }, { x: 1, y: 49 }, { x: 2, y: 17 }, { x: 3, y: 42 } ];
+	// var data = [ { x: 0, y: 40 }, { x: 1, y: 49 }, { x: 2, y: 17 }, { x: 3, y: 42 } ];
 
-var number_of_images = parseInt($("#number_of_column").attr("value"))
-var data = []
-var column_value = 0
-for (var i = 1; i <= number_of_images; i++) {
-	column_value = parseInt($("#ratios #v"+i).attr("value"))
-	data.push({
-		x: i,
-		y: column_value
-	})
-};
+	var number_of_images = parseInt($("#number_of_column").attr("value"))
+	var data = []
+	var column_value = 0
+	for (var i = 1; i <= number_of_images; i++) {
+		column_value = parseInt($("#ratios #v"+i).attr("value"))
+		data.push({
+			x: i,
+			y: column_value
+		})
+	};
 
-// var row_width = $("div.images").width() - 225;	
-var row_width = $(".img_box").width()
+	// var row_width = $("div.images").width() - 225;	
+	var row_width = $(".img_box").width()
 
-var graph = new Rickshaw.Graph( {
-    element: document.querySelector("#chart"),
-		renderer: 'bar',
-    //width: 640,
-    width: row_width,
-    height: 90,
-    series: [ {
-            color: $(".codes").css("background-color"),
-            data: data
-    } ]
-} );
+	var graph = new Rickshaw.Graph( {
+	    element: document.querySelector("#chart"),
+			renderer: 'bar',
+	    //width: 640,
+	    width: row_width,
+	    height: 90,
+	    series: [ {
+	            color: $(".codes").css("background-color"),
+	            data: data
+	    } ]
+	} );
 
+	graph.render();
 
-graph.render();
 
 </script>
 

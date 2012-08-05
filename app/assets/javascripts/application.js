@@ -26,7 +26,7 @@
 // require jquery.ui.selectable
 // require jquery.ui.sortable
 
-// require jquery.ui.accordion
+//= require jquery.ui.accordion
 // require jquery.ui.autocomplete
 // require jquery.ui.button
 // require jquery.ui.dialog
@@ -37,7 +37,7 @@
 // require jquery.ui.progressbar
 
 // require jquery.effects.all
-// require jquery.effects.core
+//= require jquery.effects.core
 // require jquery.effects.blind
 // require jquery.effects.bounce
 // require jquery.effects.clip
