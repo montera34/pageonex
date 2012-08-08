@@ -1,4 +1,17 @@
-<%= form_for @thread, :url=> "/threads/#{@thread.thread_name}", method: "PUT" do |f| %>
+<%= form_for @thread, :url=> { :controller => :threads, :action => :update}, method: "PUT" do |f| %>
+  <div id="errors">
+    <% if @thread.errors.any? %>
+      <div class="alert alert-error">
+        <% @thread.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+        <% end %>
+            <li id="date_message" style="display:none">End date must be greater than start date</li>
+            <li id="media_message" style="display:none">You must at least select one newspaper</li>
+            <li id="topic_name_message" style="display:none">Topic name cannot be empty</li>
+            <li id="topic_color_message" style="display:none">Topic color cannot be empty</li>
+      </div>
+    <% end %>
+  </div>
   <%= f.label :thread_display_name, "Thread Name" %>
   <%= f.text_field :thread_display_name %><br />
 
@@ -19,16 +32,7 @@
 
   
   <%= f.submit "Update Thread", :class => "btn" %>
-  <a class="btn btn-primary" href='<%="/users/#{current_user.username}/threads/#{@thread.thread_name}"%>' >Cancel</a>
+  <!-- <a class="btn btn-primary" href='<%="/users/#{current_user.username}/threads/#{@thread.thread_name}"%>' >Cancel</a> -->
+  <a class="btn btn-primary" href='<%="/threads/"%>' >Cancel</a>
 <% end %>
 
-<script type="text/javascript">
-$(function () {
-  $(".breadcrumb li").filter("li.active").attr("class"," ");
-  $("#initiate").attr("class", "active");
-  $("#initiate").css("font-weight","bold")
-  $("#initiate a").css("color","#fff")
-  $("#initiate a").attr("class", "btn btn-info");
-    
-})
-</script>

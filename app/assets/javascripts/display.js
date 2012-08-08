@@ -1,5 +1,6 @@
 $(function () {
-	
+
+
 	function imagesResizing () {
 		
 		var images = $(".images img")
@@ -110,7 +111,17 @@ $(function () {
 		
 		$("#datavis").css("display","block")
 
+		// insert images dates above the first images row
+		var dates = $('#date-box').children()
+		var imgs = $($('.img_box')[0]).children()
+		var columns = dates.length
+		for (var i = 0; i < columns; i++) {
+			$(imgs[i]).prepend('<h6 style="text-align:center; color:#000;font-size: 10px;">'+$(dates[i]).attr("name")+'</h6>')
+		};
+		
 		loadImagesHighlightedAreas()
+
+
 
 		$("#loading-bar").css("display","none")
 		$("#loading-bar-h").css("display","none")

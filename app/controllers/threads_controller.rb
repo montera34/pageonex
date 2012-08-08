@@ -143,20 +143,23 @@ class ThreadsController < ApplicationController
 	end
 
 	def edit
-		# @thread = current_user.owned_threads.find_by_thread_name params[:id]
-		# if @thread == nil
-		# 	flash[:thread_name_error] = "You don't have premission to edit this thread"
-		# 	redirect_to "/threads/"
-		# end
-		redirect_to "/threads/"
+		@thread = current_user.owned_threads.find_by_thread_name params[:id]
+		if @thread == nil
+			flash[:thread_name_error] = "You don't have premission to edit this thread"
+			redirect_to "/threads/"
+		end
+		# redirect_to "/threads/"
 	end
 
 	def update
 		@thread = Threadx.find_by_thread_display_name(params[:id])
 		@thread.thread_name = params[:threadx]["thread_display_name"].split(' ').join('_')
-		@thread.update_attributes!(params[:threadx])
-		# @thread.save!
-		redirect_to "/users/#{current_user.username}/threads/#{@thread.thread_name}"
+		if @thread.update_attributes(params[:threadx])
+			@thread.save!
+			redirect_to "/users/#{current_user.username}/threads/#{@thread.thread_name}"
+		else
+			render "edit"	
+		end
 	end
 
 	def show

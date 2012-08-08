@@ -17,22 +17,20 @@
 <hr>
 <div class="row">
     <div class="span2" >
-        <h3>Thread Name:</h3>
-        <p><strong><%= @thread.thread_display_name.capitalize %></strong></p>
+        <h2>Thread Name:</h2>
+        <h3><%= @thread.thread_display_name.capitalize %></h3>
         <hr>
         <h3>Current Image Number:</h3>
-        <p id="image_number" style="font-weight:bold"></p>
+        <h3 id="image_number" style="font-weight:normal"></h3>
         <hr>
         <h3>Topics coded:</h3>
             <% @thread.codes.each do |code| %>
                 <div id="code<%= code.id %>" style="background-color:<%= code.color %>;color:black" class="code"></div>
-                <h4>Name: </h4> <span><%= code.code_text.split("_").join(" ") %></span>
-                <h4>Description: </h4><span><%= code.code_description %></span>
-                <h4>Color: </h4><span style="background-color:<%= code.color %>;color: <%= code.color %>"><%= code.color %></span>
+                <h3>Name: </h3> <span><%= code.code_text.split("_").join(" ") %></span>
+                <h3>Description: </h3><span><%= code.code_description %></span>
+                <h3>Color: </h3><span style="background-color:<%= code.color %>;color: <%= code.color %>"><%= code.color %></span>
             
         <% end %>
-
-    
 
         <hr>
         <h3>Newspaper info</h3>
@@ -150,10 +148,15 @@
             </div>
         <% if @thread.owner == current_user %>
             <div class="form-actions" style="text-align:center">
-                <%= submit_tag "Display Now »",  class: "btn btn-primary"%>
-                <a id="clear_highlighting" class="btn  btn-danger">Clear Highlighted Areas</a>
-                <a id="skip_coding" class="btn btn-inverse">Nothing to Code</a>
-                <a href="/" class="btn ">Cancel</a>
+                <div class="pull-left">
+                    <a id="clear_highlighting" class="btn  btn-danger">Clear Highlighted Areas</a>
+                    <a id="skip_coding" class="btn btn-inverse">Nothing to Code</a>
+                </div>
+
+                <div class="pull-right">
+                    <%= submit_tag "Save",  class: "btn btn-primary "%>
+                    <a href="/" class="btn ">Cancel</a>
+                </div>
             </div>
         <% else %>
             <div class="form-actions" style="text-align:center">
@@ -194,10 +197,10 @@
 <script type="text/javascript">
 $(function (argument) {
     $(".breadcrumb li").filter("li.active").attr("class"," ");
-    $("#code").attr("class", "active");
-    $("#code").css("font-weight","bold")
-    $("#code a").css("color","#fff")
-    $("#code a").attr("class", "btn btn-info");
+    // $("#code").attr("class", "active");
+    $("#coding").css("font-weight","bold")
+    $("#coding").css("color","#fff")
+    $("#coding").attr("class", "btn btn-info");
 
     if ($("#target_image").attr("value") != null) {
     t_image = $("#target_image").attr("value")
@@ -207,7 +210,11 @@ $(function (argument) {
     };
 
 
+
 })
+window.onbeforeunload = function() {
+  return "If you leave this page without saving you will lose your work";
+}
 </script>
 
 <% if @thread.owner == current_user %>

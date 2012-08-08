@@ -86,17 +86,15 @@
               </div>
             <% end %>
             <% if (params[:controller] == "threads" || params[:controller] == "coding")&&(params[:action] != "index"  && params[:action] != "new" && params[:action] != "create")%>
-              <ul style="text-align:center; font-size:20px" class="breadcrumb">
-                <% if @thread.owner == current_user %>
-                  <li id="initiate">
-                    <a href="#<% "/threads/#{@thread.thread_name}/edit"%>" class="btn" id="init" rel="popover"  data-content="Editing the thread information" data-original-title="Initiate (Soon)" disabled="disabled" >Initiate</a> <span style="margin:0 100px 0 100px" class="divider"> | </span>
-                  </li>
-                <% end %>
-                <li id="code" class="active">
-                  <a href="<%= "/users/#{@thread.owner.username.split(' ').join('_')}/threads/#{@thread.thread_name}/coding"%>" class="btn " id="coding" rel="popover"  data-content="Coding images, by highlighting the related news" data-original-title="Code">Code</a> <span style="margin: 0 100px 0 100px" class="divider"> | </span>
-                </li>
-                <li id="display"><a href="<%= "/users/#{@thread.owner.username.split(' ').join('_')}/threads/#{@thread.thread_name}"%>" class="btn " id="disp" rel="popover"  data-content="Displaying the images matrix with bar chart of the ratios" data-original-title="Display">Display</a></li>
-              </ul>
+              <div style="text-align:center; font-size:20px ;list-style: none;" class="">
+                 
+                  <a href="<%= "/users/#{@thread.owner.username.split(' ').join('_')}/threads/#{@thread.thread_name}/coding"%>" class="btn " id="coding" rel="popover"  data-content="Coding images, by highlighting the related news" data-original-title="Code" style="border-radius: 0px 0px 0px 0px;">Code</a> 
+
+                  <span style="margin: 0 100px 0 100px" class="divider"> - </span>
+
+                  <a href="<%= "/users/#{@thread.owner.username.split(' ').join('_')}/threads/#{@thread.thread_name}"%>" class="btn " id="disp" rel="popover"  data-content="Displaying the images matrix with bar chart of the ratios" data-original-title="Display" style="border-radius: 0px 0px 0px 0px;">Display</a>
+                <hr>
+              </div>
             <% end %>
 
             <%= yield %>
@@ -129,10 +127,10 @@
 <script type="text/javascript">
 $(function () {
   d = { show: 700, hide: 1 }
-  $('#init').popover({placement:'bottom', delay:d })
+  // $('#init').popover({placement:'bottom', delay:d })
   $('#coding').popover({placement:'bottom',delay:d })
   $('#disp').popover({placement:'bottom',delay:d})
-  $( "#accordion" ).accordion({ collapsible: true, active: false });
+  // $("#accordion").accordion({ collapsible: true, active: false });
 })
 
 

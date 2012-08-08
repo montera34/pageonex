@@ -16,7 +16,9 @@
 
 <% if @thread.owner == current_user %>
 	<!-- <a class="btn btn-mini btn-danger" href="">Delete this thread</a> -->
-	<%= link_to "Delete this thread", "/threads/#{@thread.thread_name}" ,:method=>"delete" , :class => "btn btn-danger btn-mini delete" %>
+	<%= link_to "Delete", "/threads/#{@thread.thread_name}" ,:method=>"delete" , :class => "btn btn-danger btn-mini delete" %>
+	<br>
+	<a href="<%= "/threads/#{@thread.thread_name}/edit"%>" class="btn  btn-mini" style="margin-top: 4px;">Edit</a> 
 <% end %>
 
 <div class="btn-group pull-right" style="margin-top: -36px;">
@@ -87,15 +89,23 @@
 			<%= hidden_field_tag "v#{v}", r %>
 		<% end %>
 	</div>
-		<%= hidden_field_tag "number_of_column", @ratios.length %>
-		<%= hidden_field_tag "number_of_rows", @thread.media.length %>
+	<%= hidden_field_tag "number_of_column", @ratios.length %>
+	<%= hidden_field_tag "number_of_rows", @thread.media.length %>
 
-		<br>
+	<br>
+
+	<div id="date-box">
+		<% (@thread.start_date..@thread.end_date).each do |d| %>
+			<%= hidden_field_tag "#{d.day}/#{d.month}" %>
+		<% end %>
+	</div>
+
+	<!-- loop over all the newspaper in the thread and find which images are belongs to this newspaper and then insert this images into this newspaper row -->
 	<% @thread.media.each do |m| %>
 		<div class="row images" >
 			<div class="span2" style="/*width: 195px;*/">
 				<div class="" style="overflow: overlay; margin-right: 35px;font-size: 14px;">
-  				<h2 style="font-size: 14px;"><%= m.display_name %></h2>
+  					<h2 style="font-size: 14px;"><%= m.display_name %></h2>
 				</div>
 			</div>
 			<div class="img_box span10" >
@@ -103,10 +113,13 @@
 				<% 0.upto(images_counter-1) do |ic| %>
 					<% if @images[ic].media == m  %>
 						<div id="<%= "image_box#{ic+1}" %>" style="margin-bottom: 9px" class="span1 <%= "thum_image#{ic+1}" %>">
+							
 							<% if  @thread.media.first == m %>
-								<h6 style="text-align: center; color:#000;font-size: 10px;"><%= "#{@thread.images[ic].publication_date.day}/#{@thread.images[ic].publication_date.month}" %></h6>
+								<!-- <h6 style="text-align: center; color:#000;font-size: 10px;"><% "#{@thread.images[ic].publication_date.day}/#{@thread.images[ic].publication_date.month}" %></h6> -->
 							<% end %>
-			          		<a href=<%= "/users/#{@thread.owner.username.split(' ').join('_')}/threads/#{@thread.thread_name}/coding/?i=#{@images[ic].media.name}_#{@images[ic].publication_date.day}_#{@images[ic].publication_date.month}" %> title="">
+
+
+			          		<a href='<%= "/users/#{@thread.owner.username.split(' ').join('_')}/threads/#{@thread.thread_name}/coding/?i=#{@images[ic].media.name}_#{@images[ic].publication_date.day}_#{@images[ic].publication_date.month}" %>' title="">
 				          		
 				          		<% #image_tag "/assets#{@thread.images[ic].local_path}", id: "image#{ic+1}", style: " opacity: 0.8;", image_size: @images[ic].size%>
 									
@@ -201,10 +214,10 @@
 <script type="text/javascript">
 $(function (argument) {
     $(".breadcrumb li").filter("li.active").attr("class"," ");
-    $("#display").attr("class", "active");
-    $("#display").css("font-weight","bold")
-    $("#display a").css("color","#fff")
-    $("#display a").attr("class", "btn btn-info");
+    // $("#display").attr("class", "active");
+    $("#disp").css("font-weight","bold")
+    $("#disp").css("color","#fff")
+    $("#disp").attr("class", "btn btn-info");
 
 	$(".delete").click(function (event) {
 		event.preventDefault()

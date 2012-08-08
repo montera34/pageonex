@@ -60,7 +60,8 @@ class CodingController < ApplicationController
 
   def display
     @thread = Threadx.find_by_thread_name params[:thread_name]
-    # @images = @thread.images
+    
+    # sort images by their publication date
     @images = @thread.images.sort do |img1, img2|
       img1.publication_date <=> img2.publication_date
     end
@@ -69,6 +70,7 @@ class CodingController < ApplicationController
     @codes = @thread.codes
     @highlighted_areas = @thread.highlighted_areas
 
+    # sort highlighted areas by the image name
     @highlighted_areas.sort! do |ha1,ha2|
     	ha1.name.split('_')[0][5..100].to_i <=> ha2.name.split('_')[0][5..100].to_i
     end
