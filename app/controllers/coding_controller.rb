@@ -54,8 +54,9 @@ class CodingController < ApplicationController
 
     end # ends of [@image_counter.downto(1)] block
 
-
-    redirect_to "/users/#{current_user.username.split(' ').join('_')}/threads/#{@thread.thread_name}"
+    render json: params.to_json
+    
+    # redirect_to "/users/#{current_user.username.split(' ').join('_')}/threads/#{@thread.thread_name}"
   end
 
   def display

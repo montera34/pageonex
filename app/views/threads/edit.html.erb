@@ -1,3 +1,6 @@
+<%= javascript_include_tag "jquery.miniColors.js" %>
+<%= stylesheet_link_tag "jquery.miniColors.css" %>
+
 <%= form_for @thread, :url=> { :controller => :threads, :action => :update}, method: "PUT" do |f| %>
   <div id="errors">
     <% if @thread.errors.any? %>
@@ -30,9 +33,59 @@
   <%= f.label :description %>
 	<%= f.text_area :description, :rows => "10"%><br>
 
-  
+  <h2>Newspapers info</h2><br>
+  <div id="media_box">
+    <%= label_tag :media, nil, :id => "media_label1" %>
+    <%= select_tag :media, options_from_collection_for_select(@media, "id", "name"),  :multiple => true , style: "height: 300px;width: 300px;", :class=>"js_validate" %>
+    <br>
+
+    <%= hidden_field_tag :org_media, params["media"] %>
+  </div>
+
+
+  <hr>
+  <h2>Coding info</h2><br>
+
+  <div class="well">
+    <div id="topic_1" class="well">
+      <div id="topic_name_box">
+        <%= label_tag "topic_name_1", nil, :id => "topic_label_1" %>
+
+        <%= text_field_tag "topic_name_1",@thread.codes[0].code_text,placeholder: "Code/Topic name", :class=>"topic_name js_validate" %> 
+        
+      </div>
+
+      <div class="topic_color_box ">
+        <%= label_tag "topic_color_1", nil, :id => "topic_color_label_1" %>
+
+        <%= text_field_tag "topic_color_1",@thread.codes[0].color,placeholder: "#FF0000", :class=>"topic_color js_validate" %> 
+        
+      </div>
+
+      <%= label_tag "topic_description_1", nil, :id => "topic_description_label_1" %>
+
+      <%= text_area_tag "topic_description_1",@thread.codes[0].code_description,:rows => "5",placeholder: "Some Info about that topic" %> 
+    </div>
+  </div>
+
+  <hr>
   <%= f.submit "Update Thread", :class => "btn" %>
   <!-- <a class="btn btn-primary" href='<%="/users/#{current_user.username}/threads/#{@thread.thread_name}"%>' >Cancel</a> -->
   <a class="btn btn-primary" href='<%="/threads/"%>' >Cancel</a>
 <% end %>
 
+<script type="text/javascript">
+$(function () {
+  $("#media").val($("#org_media").attr("value").split(" "));
+
+  $(".topic_color").miniColors({
+    change: function (hex,rgb) {
+      $(".miniColors-trigger").css("background-color",hex)
+      }
+    });
+
+  $(".miniColors-trigger").attr("style","margin-bottom:9px;width: 214px;height: 26px;display: block;").css("background-color", $(".miniColors").attr("value"))
+  
+
+})
+</script>

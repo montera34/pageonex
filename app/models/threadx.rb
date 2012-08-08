@@ -17,7 +17,7 @@ class Threadx < ActiveRecord::Base
 
 	validates :thread_display_name, :start_date, :end_date, :description , :category, :presence => true
 	
-	validate :existing_thread
+	validate :existing_thread, :on => :create
 
 	def existing_thread
 		current_user = User.find owner_id

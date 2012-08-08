@@ -76,14 +76,6 @@ class ThreadsController < ApplicationController
 						# image_size = "#{image_size.columns}x#{image_size.rows}"
 
 						# for the online heroku beta
-						
-							# puts(image_info[:local_path])
-							# begin
-							# 	image_size = Magick::ImageList.new(image_info[:local_path])[0]
-							# 	image_size = "#{image_size.columns}x#{image_size.rows}"
-							# rescue => e
-							# 	image_size="750x951"
-							# end
 							image_size="750x951"
 						# end
 					else
@@ -148,23 +140,129 @@ class ThreadsController < ApplicationController
 			flash[:thread_name_error] = "You don't have premission to edit this thread"
 			redirect_to "/threads/"
 		end
-		# redirect_to "/threads/"
+		@media = []
+		Media.all.each do |newspaper|
+			newspaper.name = "#{newspaper.country} - #{newspaper.display_name}"
+			@media << newspaper
+		end
+
+		params["media"] = []
+		@thread.media.each do |m|
+			params["media"] << m.id
+		end
+	
+
+		# render json: params["media"].to_json
 	end
 
 	def update
-		@thread = Threadx.find_by_thread_display_name(params[:id])
+		@thread = current_user.owned_threads.find_by_thread_name params[:id]
 		@thread.thread_name = params[:threadx]["thread_display_name"].split(' ').join('_')
+		media = params[:media]
+		# org_media = params[:org_media].split(" ")
+		# new_media = []
+		# remain_media = []
+		# all_media = []
+		
+		# media.each do |m|
+		# 	new_media << m unless org_media.include? m
+		# end
+
+		# media.each do |m|
+		# 	remain_media << m if org_media.include? m
+		# end
+
+		# all_media = new_media + remain_media
+
+
+
+
 		if @thread.update_attributes(params[:threadx])
-			@thread.save!
-			redirect_to "/users/#{current_user.username}/threads/#{@thread.thread_name}"
+
+			if true
+				images = []
+				newspapers_names = {}
+				@thread.media = []
+
+				media.each do |m|
+					_media = Media.find(m)
+					@thread.media << _media
+					if newspapers_names[_media.city] != nil
+						newspapers_names[_media.city] << _media.name 
+					else
+						newspapers_names[_media.city] = []
+						newspapers_names[_media.city] << _media.name
+					end
+				end
+
+				newspapers_images = Scraper.get_issues(@thread.start_date.year,@thread.start_date.month,@thread.start_date.day,@thread.end_date.day, newspapers_names)
+
+				newspapers_images.each do |image_name, image_info|
+					# search if the image dose not exsit, it create an object for this image 
+					if ( (image = Image.find_by_image_name image_name) == nil)
+						image_info["image_name"] = image_name
+						media = Media.find_by_name(image_info[:media])
+
+						if image_info[:local_path] != "404.jpg"
+							# image_size = Magick::ImageList.new("app/assets/images" + image_info[:local_path])[0]
+							# image_size = "#{image_size.columns}x#{image_size.rows}"
+
+							# for the online heroku beta
+								image_size="750x951"
+							# end
+						else
+							image_size="750x951"
+							# change the default values
+							# image_info[:publication_date]
+							# image_info["image_name"]
+						end
+
+						image = Image.create!({ image_name: image_info["image_name"],publication_date: image_info[:publication_date], local_path: image_info[:local_path], media_id: media.id, size: image_size})
+						
+						images << image
+
+					# otherwise it find the image, and add to the array
+					else
+						image = Image.find_by_image_name(image_name)
+						images << image
+					end
+				end
+
+				
+				@thread.images = []
+				@thread.images << images
+			end
+			if true
+				@thread.codes[0].update_attributes({code_text: params[:topic_name_1], color: params[:topic_color_1], code_description: params[:topic_description_1]})
+			end
+
+			@thread.save			
+
+			redirect_to "/users/#{current_user.username.split(' ').join('_')}/threads/#{@thread.thread_name}"
+			# render json: params.to_json
 		else
+			@media = []
+			Media.all.each do |newspaper|
+				newspaper.name = "#{newspaper.country} - #{newspaper.display_name}"
+				@media << newspaper
+			end
+
+			@thread.media.each do |m|
+				params["media"] << "#{m.id}"
+			end
+
+			
+
 			render "edit"	
+			# render json: params.to_json
 		end
+
+
 	end
 
 	def show
 		@thread = Threadx.find_by_thread_name params[:id]
-		redirect_to "/users/#{current_user.username}/threads/#{@thread.thread_name}"
+		redirect_to "/users/#{current_user.username.split(' ').join('_')}/threads/#{@thread.thread_name}"
 	end
 
 	def destroy

@@ -113,9 +113,6 @@ $(document).ready(function () {
         };
     });
 
-    
-
-    
 
     $('input[name="codes"]').on("click",function(){
         var currrent_img = $("#images_section div.active img")

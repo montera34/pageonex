@@ -70,7 +70,8 @@
                     <% if @images[ic].local_path == "404.jpg" %>
                         <img src="/assets/404.jpg" alt="" id="<%= "image#{ic+1}" %>" style="width: 670px;" image_size="<%= @images[ic].size %>" media="<%= @images[ic].media.display_name%>" pub_date="<%= @images[ic].publication_date %>" name="<%= "#{@images[ic].media.name}_#{@images[ic].publication_date.day}_#{@images[ic].publication_date.month}" %>" />
                     <% else %>
-                        <img src="<%= @images[ic].local_path %>" alt="" id="<%= "image#{ic+1}" %>" style="width: 670px;" image_size="<%= @images[ic].size %>" media="<%= @images[ic].media.display_name%>" pub_date="<%= @images[ic].publication_date %>" name="<%= "#{@images[ic].media.name}_#{@images[ic].publication_date.day}_#{@images[ic].publication_date.month}" %>" />
+                        <img src="<%= @images[ic].local_path %>" alt="" id="<%= "image#{ic+1}" %>" style="width: 670px;" image_size="<%= @images[ic].size %>" media="<%= @images[ic].media.display_name%>" pub_date="<%= @images[ic].publication_date %>" name="<%= @images[ic].image_name %>" />
+                        <!-- "#{@images[ic].media.name}_#{@images[ic].publication_date.day}_#{@images[ic].publication_date.month}"  -->
                     <% end %>
                     <!-- end -->
 
