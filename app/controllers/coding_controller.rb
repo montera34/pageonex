@@ -25,7 +25,6 @@ class CodingController < ApplicationController
 
     @image_counter = @thread.images.length
 
-    # check for the number of highlighted areas, if it more than 0 that's mean, the user trying to modify, existing highlighted areas
     no_highlighted_area = 0
     @image_counter.downto(1) do |c|
       2.downto(1) do |hc|
@@ -35,6 +34,7 @@ class CodingController < ApplicationController
       end
     end
 
+    # check for the number of highlighted areas, if it more than 0 that's mean, the user trying to modify, existing highlighted areas
     if (no_highlighted_area != 0)
       @thread.highlighted_areas.each do |high_area|
         high_area.areas[0].destroy
@@ -54,9 +54,9 @@ class CodingController < ApplicationController
 
     end # ends of [@image_counter.downto(1)] block
 
-    render json: params.to_json
-    
-    # redirect_to "/users/#{current_user.username.split(' ').join('_')}/threads/#{@thread.thread_name}"
+    # render json: params.to_json
+   
+    redirect_to "/users/#{current_user.username.split(' ').join('_')}/threads/#{@thread.thread_name}"
   end
 
   def display

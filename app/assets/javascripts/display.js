@@ -1,6 +1,5 @@
 $(function () {
 
-
 	function imagesResizing () {
 		
 		var images = $(".images img")
@@ -40,10 +39,16 @@ $(function () {
 		for (var i = high_areas.length -1; i >= 0; i--) {
 				var c_high_area_id = $(high_areas[i]).attr("id").substr(5)
 
-				var high_area1 = $("div.images").find("div.thum_image"+c_high_area_id).find("div#high_area"+1)
-				var high_area2 = $("div.images").find("div.thum_image"+c_high_area_id).find("div#high_area"+2)
-				var c_image = $("img#image"+c_high_area_id)
-		
+				// var c_image = $("img#image"+c_high_area_id)
+				// var high_area1 = $("div.images").find("div.thum_image"+c_high_area_id).find("div#high_area"+1)
+				// var high_area2 = $("div.images").find("div.thum_image"+c_high_area_id).find("div#high_area"+2)
+
+				var img_name = $($(high_areas[i]).children()[2]).attr("value")
+				var c_image = $('img[name='+img_name+']') 
+				var high_area1 = $("div[image_name="+img_name+"]").find("div#high_area"+1)
+				var high_area2 = $("div[image_name="+img_name+"]").find("div#high_area"+2)
+				
+
 				var dispalyed_img_size = 670
 				var ratio = (dispalyed_img_size/c_image.width())
 			
@@ -101,27 +106,27 @@ $(function () {
 		};
 
 	}
+
 	var step = 100 / $(".images img").length
 	$(".images img").load(function (event) {
 		curr_progress = parseInt($("#loading-bar .bar").attr("style").split(':')[1].split('%')[0])
 		$("#loading-bar .bar").css("width", curr_progress + step*2 + "%")
 	})
+
 	window.onload = function() {
 		imagesResizing()
 		
 		$("#datavis").css("display","block")
 
 		// insert images dates above the first images row
-		var dates = $('#date-box').children()
-		var imgs = $($('.img_box')[0]).children()
-		var columns = dates.length
-		for (var i = 0; i < columns; i++) {
-			$(imgs[i]).prepend('<h6 style="text-align:center; color:#000;font-size: 10px;">'+$(dates[i]).attr("name")+'</h6>')
-		};
+		// var dates = $('#date-box').children()
+		// var imgs = $($('.img_box')[0]).children()
+		// var columns = dates.length
+		// for (var i = 0; i < columns; i++) {
+		// 	$(imgs[i]).prepend('<h6 style="text-align:center; color:#000;font-size: 10px;">'+$(dates[i]).attr("name")+'</h6>')
+		// };
 		
 		loadImagesHighlightedAreas()
-
-
 
 		$("#loading-bar").css("display","none")
 		$("#loading-bar-h").css("display","none")

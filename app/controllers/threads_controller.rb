@@ -236,7 +236,12 @@ class ThreadsController < ApplicationController
 				@thread.codes[0].update_attributes({code_text: params[:topic_name_1], color: params[:topic_color_1], code_description: params[:topic_description_1]})
 			end
 
-			@thread.save			
+			@thread.save	
+
+			@thread.highlighted_areas.each do |ha|
+				ha.destroy unless @thread.images.include? ha.image
+			end
+			# rename the current highlithted areas	
 
 			redirect_to "/users/#{current_user.username.split(' ').join('_')}/threads/#{@thread.thread_name}"
 			# render json: params.to_json

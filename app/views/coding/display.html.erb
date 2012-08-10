@@ -51,7 +51,7 @@
 		<h3>Topics coded:</h3>
 			<% @thread.codes.each do |code| %>
         		<div id="code-<%= code.id %>" style="background-color:<%= code.color %>; margin-left: 7px; float: left;color:black" class="codes"></div>
-        		<h4>Name: </h4> <span><%= code.code_text.split("_").join(" ") %></span>
+        		<h4>Name: </h4> <span id="code1_name"><%= code.code_text.split("_").join(" ") %></span>
             	<h4>Description: </h4><span><%= code.code_description %></span>
             	<h4>Color: </h4><span style="background-color:<%= code.color %>;color: <%= code.color %>"><%= code.color %></span>
     		
@@ -73,14 +73,15 @@
 
 </div>
 <hr>
-<div id="datavis" style="display: none;">
+<div id="datavis" style="display: block;">
 	<div class="row">
 		<div class="span3" style="width: 195px; ">
 			<h2>Surfaces percentage:</h2>
 		</div>
-		<div class="span6" style="width: 644px;">
-			<div id="y_axis"></div>
-			<div id="chart" style="margin-left: -35px;"></div>
+		<div class="span6" style="/*width: 644px;*/">
+			<!-- <div id="y_axis"></div> -->
+			<!-- <div id="chart" style="margin-left: -35px;"></div> -->
+			<div id="chart_div" style="margin-left: -145px;width: 1195px; margin-bottom: -36px;"></div>
 		</div>
 	</div>
 
@@ -112,7 +113,7 @@
 				<% images_counter = @thread.images.length %>
 				<% 0.upto(images_counter-1) do |ic| %>
 					<% if @images[ic].media == m  %>
-						<div id="<%= "image_box#{ic+1}" %>" style="margin-bottom: 9px" class="span1 <%= "thum_image#{ic+1}" %>">
+						<div id="<%= "image_box#{ic+1}" %>" style="margin-bottom: 9px" class="span1 <%= "thum_image#{ic+1}" %>" image_name="<%= @images[ic].image_name %>">
 
 			          		<a href='<%= "/users/#{@thread.owner.username.split(' ').join('_')}/threads/#{@thread.thread_name}/coding/?i=#{@images[ic].image_name}" %>' title="">
 				          		
@@ -122,7 +123,7 @@
 								<% if @images[ic].local_path == "404.jpg" %>
 									<img src="/assets/404.jpg" alt="" id="<%= "image#{ic+1}" %>" style=" opacity: 0.7;" image_size="<%= @images[ic].size %>" />
 				         		<% else %>
-				         			<img src="<%= @images[ic].local_path %>" alt="" id="<%= "image#{ic+1}" %>" class="thum-img" style=" opacity: 0.8;" image_size="<%= @images[ic].size %>" />
+				         			<img src="<%= @images[ic].local_path %>" alt="" id="<%= "image#{ic+1}" %>" class="thum-img" style=" opacity: 0.8;" image_size="<%= @images[ic].size %>" name="<%= @images[ic].image_name %>" />
 								<% end %>
 								<!-- end -->
 
@@ -153,10 +154,13 @@
 	    <div id="image<%= image_number %>">
 	        <%= hidden_field_tag ha.name,"1" %>
 	        <% if ha.code != nil %>
-              <%= hidden_field_tag "#{ha.name}_code_id", "#{ha.code.id}" %>
-          <% else %>
-              <%= hidden_field_tag "#{ha.name}_code_id", "#{ha.code_id}" %>
-          <% end %>
+              	<%= hidden_field_tag "#{ha.name}_code_id", "#{ha.code.id}" %>
+          	<% else %>
+            	<%= hidden_field_tag "#{ha.name}_code_id", "#{ha.code_id}" %>
+            <% end %>
+
+            <%= hidden_field_tag "#{ha.name}_image_name", ha.image.image_name %>
+
 	        <%= hidden_field_tag "#{ha.name}_x1", ha.areas[0].x1 %>
 	        <%= hidden_field_tag "#{ha.name}_y1",ha.areas[0].y1 %>
 	        <%= hidden_field_tag "#{ha.name}_x2",ha.areas[0].x2 %>
@@ -167,42 +171,91 @@
 	  <% end %>
   </div>
 
-
-<%= javascript_include_tag "d3.min.js", "d3.layout.min.js", "rickshaw.min.js", "display.js" %>
+<!-- "d3.min.js", "d3.layout.min.js", "rickshaw.min.js", -->
+<%= javascript_include_tag  "display.js" %>
 
 <script>
 
 	// var data = [ { x: 0, y: 40 }, { x: 1, y: 49 }, { x: 2, y: 17 }, { x: 3, y: 42 } ];
 
+	// var number_of_images = parseInt($("#number_of_column").attr("value"))
+	// var data = []
+	// var column_value = 0
+	// for (var i = 1; i <= number_of_images; i++) {
+	// 	column_value = parseInt($("#ratios #v"+i).attr("value"))
+	// 	data.push({
+	// 		x: i,
+	// 		y: column_value
+	// 	})
+	// };
+
+	// // var row_width = $("div.images").width() - 225;	
+	// var row_width = $(".img_box").width()
+
+	// var graph = new Rickshaw.Graph( {
+	//     element: document.querySelector("#chart"),
+	// 	renderer: 'bar',
+	//     //width: 640,
+	//     width: row_width,
+	//     height: 90,
+	//     series: [ {
+	//             color: $(".codes").css("background-color"),
+	//             data: data
+	//     } ]
+	// } );
+
+	// graph.render();
+
+
+</script>
+
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript">
+  // $("#chart_div").css("width",$(".img_box").width())
+	google.load("visualization", "1", {packages:["corechart"]});
+	google.setOnLoadCallback(drawChart);
+	var code1 = $("#code1_name").text()
 	var number_of_images = parseInt($("#number_of_column").attr("value"))
-	var data = []
+	var columns_data = [['Dates', code1, "a column"]]
 	var column_value = 0
+	var dates = $("#date-box input")
 	for (var i = 1; i <= number_of_images; i++) {
 		column_value = parseInt($("#ratios #v"+i).attr("value"))
-		data.push({
-			x: i,
-			y: column_value
-		})
+		columns_data.push([ dates[i-1].name,column_value, 6])
+	};
+	function drawChart() {
+		var data = google.visualization.arrayToDataTable(
+			columns_data
+		// [
+		//   ['Dates', 'c1'],
+		//   ['1',  1000],
+		//   ['2',  1000],
+		//   ['3',  1000],
+		//   ['4',  1000],
+		//   ['5',  1000],
+		//   ['6',  1000],
+		//   ['7',  1000],
+		//   ['8',  1000],
+		//   ['9',  1000],
+		//   ['10',  1000],
+		//   ['11',  1000]
+		// ]  
+	);
+
+	var options = {
+	  // title: 'Company Performance',
+	  hAxis: { 
+	  	textPosition: 'out',
+	  	// format:'d, m' ,
+	  	textStyle: { fontSize: 9}
+	  },
+	  bar:{groupWidth:'51%'},
+	  colors: [$(".codes").css("background-color"),'green']
 	};
 
-	// var row_width = $("div.images").width() - 225;	
-	var row_width = $(".img_box").width()
-
-	var graph = new Rickshaw.Graph( {
-	    element: document.querySelector("#chart"),
-		renderer: 'bar',
-	    //width: 640,
-	    width: row_width,
-	    height: 90,
-	    series: [ {
-	            color: $(".codes").css("background-color"),
-	            data: data
-	    } ]
-	} );
-
-	graph.render();
-
-
+	var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+	chart.draw(data, options);
+	}
 </script>
 
 

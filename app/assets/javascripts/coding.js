@@ -188,7 +188,8 @@ function highlightingArea (img, selection) {
     var currrent_img = $("#images_section div.active img")
     img_pos = $("#myCarousel").position();
     
-    var image_hidden_fields = $("div#" + currrent_img.attr("id"));
+    // var image_hidden_fields = $("div#" + currrent_img.attr("id"));
+    var image_hidden_fields = $("div[image_name="+ currrent_img.attr("name") +"]")
 
     if ( $("#"+image_hidden_fields.attr("id") +"_ha1").attr("value") == 0){
 
@@ -270,7 +271,9 @@ function highlightingArea (img, selection) {
 
 function setHighlightingAreaValues (ha, x1, y1, x2, y2, width, height) {
     var currrent_img = $("#images_section div.active img")
-    var image_hidden_fields = $("div#" + currrent_img.attr("id"));
+    // var image_hidden_fields = $("div#" + currrent_img.attr("id"));
+    var image_hidden_fields = $("div[image_name="+ currrent_img.attr("name") +"]")
+
     image_hidden_fields.find("#"+image_hidden_fields.attr("id")+ha+"_code_id").attr("value",0);
     image_hidden_fields.find("#"+image_hidden_fields.attr("id")+ha+"_x1").attr("value",x1);
     image_hidden_fields.find("#"+image_hidden_fields.attr("id")+ha+"_y1").attr("value",y1);
@@ -297,8 +300,8 @@ function loadHighlightingAreas () {
     img_pos = $("#myCarousel").position();
     
     // get the div which contains the hidden field that holds the highlighted area values
-    var image_hidden_fields = $("div#" + currrent_img.attr("id"));
-
+    // var image_hidden_fields = $("div#" + currrent_img.attr("id"));
+    var image_hidden_fields = $("div[image_name="+ currrent_img.attr("name") +"]")
 
     _top = img_pos.top + parseInt(image_hidden_fields.find("#"+image_hidden_fields.attr("id")+"_ha1_y1").attr("value"));
 
