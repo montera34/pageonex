@@ -76,12 +76,12 @@
 <div id="datavis" style="display: block;">
 	<div class="row">
 		<div class="span3" style="width: 195px; ">
-			<h2>Surfaces percentage:</h2>
+			<!-- <h2>Surfaces percentage:</h2> -->
 		</div>
 		<div class="span6" style="/*width: 644px;*/">
 			<!-- <div id="y_axis"></div> -->
 			<!-- <div id="chart" style="margin-left: -35px;"></div> -->
-			<div id="chart_div" style="margin-left: -145px;width: 1195px; margin-bottom: -36px;"></div>
+			<div id="chart_div" style="margin-left: 82px;width: 1195px; margin-bottom: -36px;"></div>
 		</div>
 	</div>
 
@@ -244,13 +244,14 @@
 
 	var options = {
 	  // title: 'Company Performance',
-	  hAxis: { 
-	  	textPosition: 'out',
-	  	// format:'d, m' ,
+	  hAxis: { textPosition: 'out',// format:'d, m' ,
 	  	textStyle: { fontSize: 9}
 	  },
+	  vAxis: {title: 'Surfaces percentage', titleTextStyle: {color: '#FF0000'}, format:'#,##%'},
 	  bar:{groupWidth:'51%'},
+	  legend:{position: 'none'},
 	  colors: [$(".codes").css("background-color"),'green']
+
 	};
 
 	var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));

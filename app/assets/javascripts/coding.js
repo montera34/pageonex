@@ -8,7 +8,7 @@ $(document).ready(function () {
         var currrent_img = $("#images_section div.active img")
         var currrent_img_area_select = $('#images_section div.active img').imgAreaSelect({instance: true, handles: true,onSelectEnd: highlightingArea});
         // var currrent_img = $("#images_section div.active img")
-        var image_hidden_fields = $("div#" + currrent_img.attr("id"));
+        var image_hidden_fields = $("div[image_name="+ currrent_img.attr("name") +"]")
     
         $(".high_area").draggable({
             stop: function (event, ui) {
@@ -20,8 +20,9 @@ $(document).ready(function () {
                 var x1 = ui.position.left - carousel_position.left
 
                 var ha = "_ha" + $(this).attr("id").substr(9);
-                image_hidden_fields.find("#"+image_hidden_fields.attr("id")+ha+"_y1").attr("value",y1);
-                image_hidden_fields.find("#"+image_hidden_fields.attr("id")+ha+"_x1").attr("value",x1);
+                console.log(image_hidden_fields.attr("id").split('_')[0]+ha)
+                image_hidden_fields.find("#"+image_hidden_fields.attr("id").split('_')[0]+ha+"_y1").attr("value",y1);
+                image_hidden_fields.find("#"+image_hidden_fields.attr("id").split('_')[0]+ha+"_x1").attr("value",x1);
             },
         }).resizable({
             containment:'#myCarousel',
@@ -29,8 +30,9 @@ $(document).ready(function () {
             aspectRatio: false,
             resize: function(e, ui) {
                 var ha = "_ha" + $(this).attr("id").substr(9);
-                image_hidden_fields.find("#"+image_hidden_fields.attr("id")+ha+"_width").attr("value",ui.size.width);
-                image_hidden_fields.find("#"+image_hidden_fields.attr("id")+ha+"_height").attr("value",ui.size.height);
+                console.log(image_hidden_fields.attr("id").split('_')[0]+ha)
+                image_hidden_fields.find("#"+image_hidden_fields.attr("id").split('_')[0]+ha+"_width").attr("value",ui.size.width);
+                image_hidden_fields.find("#"+image_hidden_fields.attr("id").split('_')[0]+ha+"_height").attr("value",ui.size.height);
                 $(this).css("width",ui.size.width)
                 $(this).css("height",ui.size.height)
             },
@@ -63,7 +65,7 @@ $(document).ready(function () {
                 currrent_img_area_select = $('#images_section div.active img').imgAreaSelect({instance: true, handles: true,onSelectEnd: highlightingArea});
             }
 
-            var image_hidden_fields = $("div#" + currrent_img.attr("id"));
+            var image_hidden_fields = $("div[image_name="+ currrent_img.attr("name") +"]")
     
             $(".high_area").draggable( {
                 stop: function (event, ui) {
@@ -75,9 +77,9 @@ $(document).ready(function () {
                     x1 = ui.position.left - carousel_position.left
 
                     ha = "_ha" + $(this).attr("id").substr(9);
-                    // alert(image_hidden_fields.find("#"+image_hidden_fields.attr("id")+ha+"_y1").attr("value"))
-                    image_hidden_fields.find("#"+image_hidden_fields.attr("id")+ha+"_y1").attr("value",y1);
-                    image_hidden_fields.find("#"+image_hidden_fields.attr("id")+ha+"_x1").attr("value",x1);
+                    console.log(image_hidden_fields.attr("id").split('_')[0]+ha)
+                    image_hidden_fields.find("#"+image_hidden_fields.attr("id").split('_')[0]+ha+"_y1").attr("value",y1);
+                    image_hidden_fields.find("#"+image_hidden_fields.attr("id").split('_')[0]+ha+"_x1").attr("value",x1);
                 },
             })
             .resizable({
@@ -86,8 +88,8 @@ $(document).ready(function () {
                 aspectRatio: false,
                 resize: function(e, ui) {
                     var ha = "_ha" + $(this).attr("id").substr(9);
-                    image_hidden_fields.find("#"+image_hidden_fields.attr("id")+ha+"_width").attr("value",ui.size.width);
-                    image_hidden_fields.find("#"+image_hidden_fields.attr("id")+ha+"_height").attr("value",ui.size.height);
+                    image_hidden_fields.find("#"+image_hidden_fields.attr("id").split('_')[0]+ha+"_width").attr("value",ui.size.width);
+                    image_hidden_fields.find("#"+image_hidden_fields.attr("id").split('_')[0]+ha+"_height").attr("value",ui.size.height);
                     $(this).css("width",ui.size.width)
                     $(this).css("height",ui.size.height)
                 }
@@ -117,7 +119,7 @@ $(document).ready(function () {
     $('input[name="codes"]').on("click",function(){
         var currrent_img = $("#images_section div.active img")
 
-        image_hidden_fields = $("div#" + currrent_img.attr("id"));
+        var image_hidden_fields = $("div[image_name="+ currrent_img.attr("name") +"]")
         
         ha = $("#current_high_area").attr("value")
 
@@ -129,7 +131,7 @@ $(document).ready(function () {
     $("#clear_highlighting").click(function () {
         var currrent_img = $("#images_section div.active img")
 
-        var image_hidden_fields = $("div#" + currrent_img.attr("id"));
+        var image_hidden_fields = $("div[image_name="+ currrent_img.attr("name") +"]")
         $("#"+image_hidden_fields.attr("id") +"_ha1").attr("value","0");
 
         $("#"+image_hidden_fields.attr("id") +"_ha2").attr("value","0");
@@ -141,7 +143,7 @@ $(document).ready(function () {
 
     $("#skip_coding").click(function () {
         var currrent_img = $("#images_section div.active img")
-        var image_hidden_fields = $("div#" + currrent_img.attr("id"));
+        var image_hidden_fields = $("div[image_name="+ currrent_img.attr("name") +"]")
         if ($("#"+image_hidden_fields.attr("id") +"_ha1_code_id").attr("value") != "-1") {
             clearHighlightedArea()
             
@@ -191,48 +193,51 @@ function highlightingArea (img, selection) {
     // var image_hidden_fields = $("div#" + currrent_img.attr("id"));
     var image_hidden_fields = $("div[image_name="+ currrent_img.attr("name") +"]")
 
-    if ( $("#"+image_hidden_fields.attr("id") +"_ha1").attr("value") == 0){
+    var ha1 = $(image_hidden_fields[0]).attr("id")
+    var ha2 = $(image_hidden_fields[1]).attr("id")
 
-        setHighlightingAreaValues("_ha1", selection.x1,selection.y1,selection.x2,selection.y2,selection.width,selection.height);
+    if ( $($("#"+ha1).children()[0]).attr("value") == 0){
 
-        _top = img_pos.top + parseInt(image_hidden_fields.find("#"+image_hidden_fields.attr("id")+"_ha1_y1").attr("value"));
+        setHighlightingAreaValues(ha1, selection.x1,selection.y1,selection.x2,selection.y2,selection.width,selection.height);
 
-        _left= img_pos.left + parseInt(image_hidden_fields.find("#"+image_hidden_fields.attr("id")+"_ha1_x1").attr("value"));
+        _top = img_pos.top + parseInt(image_hidden_fields.find("#"+ha1+"_y1").attr("value"));
+
+        _left= img_pos.left + parseInt(image_hidden_fields.find("#"+ha1+"_x1").attr("value"));
 
         $("#high_area1").css("top",_top);
 
         $("#high_area1").css("left",_left);
 
-        $("#high_area1").css("height",image_hidden_fields.find("#"+image_hidden_fields.attr("id")+"_ha1_height").attr("value"));
+        $("#high_area1").css("height",image_hidden_fields.find("#"+ha1+"_height").attr("value"));
 
-        $("#high_area1").css("width",image_hidden_fields.find("#"+image_hidden_fields.attr("id")+"_ha1_width").attr("value")); 
+        $("#high_area1").css("width",image_hidden_fields.find("#"+ha1+"_width").attr("value")); 
 
         // $('#coding_topics').modal({backdrop:false});
         $("#high_area1").css("background-color",$('.code').css("background-color"))
 
         $("#current_high_area").attr("value","high_area1")
 
-        ha = $("#current_high_area").attr("value")
+        // var ha = $("#current_high_area").attr("value")
 
-        image_hidden_fields.find("#"+image_hidden_fields.attr("id")+"_ha"+ha.substring(9)+"_code_id").attr("value",$('.code').attr("id").substr(4,100))
+        image_hidden_fields.find("#"+ha1+"_code_id").attr("value",$('.code').attr("id").substr(4,100))
 
-        $("#"+image_hidden_fields.attr("id") +"_ha1").attr("value","1")
+        $("#"+ha1).children()[0].value ="1"
         progressBarPercentage()
 
-    } else if ( $("#"+image_hidden_fields.attr("id") +"_ha2").attr("value") == 0){
-        setHighlightingAreaValues("_ha2", selection.x1,selection.y1,selection.x2,selection.y2,selection.width,selection.height);
+    } else if ( $($("#"+ha2).children()[1]).attr("value") == 0){
+        setHighlightingAreaValues(ha2, selection.x1,selection.y1,selection.x2,selection.y2,selection.width,selection.height);
 
-        _top = img_pos.top + parseInt(image_hidden_fields.find("#"+image_hidden_fields.attr("id")+"_ha2_y1").attr("value"));
+        _top = img_pos.top + parseInt(image_hidden_fields.find("#"+ha2+"_y1").attr("value"));
 
-        _left= img_pos.left + parseInt(image_hidden_fields.find("#"+image_hidden_fields.attr("id")+"_ha2_x1").attr("value"));
+        _left= img_pos.left + parseInt(image_hidden_fields.find("#"+ha2+"_x1").attr("value"));
 
         $("#high_area2").css("top",_top);
 
         $("#high_area2").css("left",_left);
 
-        $("#high_area2").css("height",image_hidden_fields.find("#"+image_hidden_fields.attr("id")+"_ha2_height").attr("value"));
+        $("#high_area2").css("height",image_hidden_fields.find("#"+ha2+"_height").attr("value"));
 
-        $("#high_area2").css("width",image_hidden_fields.find("#"+image_hidden_fields.attr("id")+"_ha2_width").attr("value"));
+        $("#high_area2").css("width",image_hidden_fields.find("#"+ha2+"_width").attr("value"));
         
         // $('#coding_topics').modal({backdrop:false});
         $("#high_area2").css("background-color",$('.code').css("background-color"))
@@ -241,9 +246,9 @@ function highlightingArea (img, selection) {
         
         ha = $("#current_high_area").attr("value")
 
-        image_hidden_fields.find("#"+image_hidden_fields.attr("id")+"_ha"+ha.substring(9)+"_code_id").attr("value",$('.code').attr("id").substr(4,100))
+        image_hidden_fields.find("#"+ha2+"_code_id").attr("value",$('.code').attr("id").substr(4,100))
 
-        $("#"+image_hidden_fields.attr("id") +"_ha2").attr("value","1")
+        $("#"+ha2).children()[0].value ="1"
         progressBarPercentage()
 
     } else {
@@ -274,13 +279,13 @@ function setHighlightingAreaValues (ha, x1, y1, x2, y2, width, height) {
     // var image_hidden_fields = $("div#" + currrent_img.attr("id"));
     var image_hidden_fields = $("div[image_name="+ currrent_img.attr("name") +"]")
 
-    image_hidden_fields.find("#"+image_hidden_fields.attr("id")+ha+"_code_id").attr("value",0);
-    image_hidden_fields.find("#"+image_hidden_fields.attr("id")+ha+"_x1").attr("value",x1);
-    image_hidden_fields.find("#"+image_hidden_fields.attr("id")+ha+"_y1").attr("value",y1);
-    image_hidden_fields.find("#"+image_hidden_fields.attr("id")+ha+"_x2").attr("value",x2);
-    image_hidden_fields.find("#"+image_hidden_fields.attr("id")+ha+"_y2").attr("value",y2);
-    image_hidden_fields.find("#"+image_hidden_fields.attr("id")+ha+"_width").attr("value",width);
-    image_hidden_fields.find("#"+image_hidden_fields.attr("id")+ha+"_height").attr("value",height);
+    image_hidden_fields.find("#"+ha+"_code_id").attr("value",0);
+    image_hidden_fields.find("#"+ha+"_x1").attr("value",x1);
+    image_hidden_fields.find("#"+ha+"_y1").attr("value",y1);
+    image_hidden_fields.find("#"+ha+"_x2").attr("value",x2);
+    image_hidden_fields.find("#"+ha+"_y2").attr("value",y2);
+    image_hidden_fields.find("#"+ha+"_width").attr("value",width);
+    image_hidden_fields.find("#"+ha+"_height").attr("value",height);
     
 }
 
@@ -302,50 +307,53 @@ function loadHighlightingAreas () {
     // get the div which contains the hidden field that holds the highlighted area values
     // var image_hidden_fields = $("div#" + currrent_img.attr("id"));
     var image_hidden_fields = $("div[image_name="+ currrent_img.attr("name") +"]")
+    var ha1 = $(image_hidden_fields[0]).attr("id")
+    var ha2 = $(image_hidden_fields[1]).attr("id")
 
-    _top = img_pos.top + parseInt(image_hidden_fields.find("#"+image_hidden_fields.attr("id")+"_ha1_y1").attr("value"));
 
-    _left= img_pos.left + parseInt(image_hidden_fields.find("#"+image_hidden_fields.attr("id")+"_ha1_x1").attr("value"));
+    _top = img_pos.top + parseInt(image_hidden_fields.find("#"+ha1+"_y1").attr("value"));
+
+    _left= img_pos.left + parseInt(image_hidden_fields.find("#"+ha1+"_x1").attr("value"));
 
     $("#high_area1").css("top",_top);
 
     $("#high_area1").css("left",_left);
 
-    $("#high_area1").css("height",image_hidden_fields.find("#"+image_hidden_fields.attr("id")+"_ha1_height").attr("value"));
+    $("#high_area1").css("height",image_hidden_fields.find("#"+ha1+"_height").attr("value"));
 
-    $("#high_area1").css("width",image_hidden_fields.find("#"+image_hidden_fields.attr("id")+"_ha1_width").attr("value")); 
+    $("#high_area1").css("width",image_hidden_fields.find("#"+ha1+"_width").attr("value")); 
 
-    var code_id = image_hidden_fields.find("#"+image_hidden_fields.attr("id")+"_ha1_code_id").attr("value")
+    var code_id = image_hidden_fields.find("#"+ha1+"_code_id").attr("value")
     $("#high_area1").css("background-color", $("div#code"+code_id).css("background-color"))  
 
-    if (image_hidden_fields.find("#"+image_hidden_fields.attr("id")+"_ha1_code_id").attr("value") == "-1")  {
+    if (image_hidden_fields.find("#"+ha1+"_code_id").attr("value") == "-1")  {
         $("#high_area1").css("background-color", "#eee")
         $("#high_area1").css("opacity", " 0.8")
         if ($("#high_area1").children().length == 0) {
             $("#high_area1").append("<h1 style='text-align:center; color: black;'>None</h1>");
         }
-        $("#high_area1").css("top",image_hidden_fields.find("#"+image_hidden_fields.attr("id")+"_ha1_y1").attr("value"));
+        $("#high_area1").css("top",image_hidden_fields.find("#"+ha1+"_y1").attr("value"));
 
-        $("#high_area1").css("left",image_hidden_fields.find("#"+image_hidden_fields.attr("id")+"_ha1_x1").attr("value"));
+        $("#high_area1").css("left",image_hidden_fields.find("#"+ha1+"_x1").attr("value"));
     }else{
         $("#high_area1").css("opacity", " 0.4")
         // $("#high_area1").children().first().remove()
     }
 
 
-    _top = img_pos.top + parseInt(image_hidden_fields.find("#"+image_hidden_fields.attr("id")+"_ha2_y1").attr("value"));
+    _top = img_pos.top + parseInt(image_hidden_fields.find("#"+ha2+"_y1").attr("value"));
 
-    _left= img_pos.left + parseInt(image_hidden_fields.find("#"+image_hidden_fields.attr("id")+"_ha2_x1").attr("value"));
+    _left= img_pos.left + parseInt(image_hidden_fields.find("#"+ha2+"_x1").attr("value"));
 
     $("#high_area2").css("top",_top);
 
     $("#high_area2").css("left",_left);
 
-    $("#high_area2").css("height",image_hidden_fields.find("#"+image_hidden_fields.attr("id")+"_ha2_height").attr("value"));
+    $("#high_area2").css("height",image_hidden_fields.find("#"+ha2+"_height").attr("value"));
 
-    $("#high_area2").css("width",image_hidden_fields.find("#"+image_hidden_fields.attr("id")+"_ha2_width").attr("value")); 
+    $("#high_area2").css("width",image_hidden_fields.find("#"+ha2+"_width").attr("value")); 
 
-    code_id = image_hidden_fields.find("#"+image_hidden_fields.attr("id")+"_ha2_code_id").attr("value")
+    code_id = image_hidden_fields.find("#"+ha2+"_code_id").attr("value")
     $("#high_area2").css("background-color", $("div#code"+code_id).css("background-color"))  
     
 }

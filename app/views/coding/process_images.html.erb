@@ -115,11 +115,19 @@
 
                 <% if @highlighted_areas != [] %>
                     <% @highlighted_areas.each do |ha| %>
+
+                        <!-- delete -->
                         <% image_number = ha.name.split('_')[0].slice(5,ha.name.split('_')[0].length) %>
                         <% ha_number = ha.name.split('_')[1].slice(2,ha.name.split('_')[1].length) %>
                         <% un_high_ares_counter.delete("image#{image_number}_ha#{ha_number}") %>
-                        <div id="image<%= image_number %>" image_name="<%= ha.image.image_name %>">
-                            <%= hidden_field_tag ha.name,"1" %>
+                        <!-- /delete --> 
+
+                        <div id="<%= ha.name %>" image_name="<%= ha.image.image_name %>">
+                            <% if ha.code  == nil %>
+                                <%= hidden_field_tag ha.name,"0" %>
+                            <% else %>
+                                <%= hidden_field_tag ha.name,"1" %>
+                            <% end %>
                             <!-- This condition for the "nothing to code here", because in this case the code id will be -1 which is not an actual code id -->
                             <% if ha.code != nil %>
                                 <%= hidden_field_tag "#{ha.name}_code_id", "#{ha.code.id}" %>
@@ -138,18 +146,22 @@
                         </div>
                     <% end %>
                 <% end %>
+                
+                <!-- delete -->
                 <% un_high_ares_counter.each do |ha| %>
-                    <div id="<%= ha.split("_")[0] %>">
-                        <%= hidden_field_tag "#{ha}","0" %>
-                        <%= hidden_field_tag "#{ha}_code_id", "0" %>
-                        <%= hidden_field_tag "#{ha}_x1" %>
-                        <%= hidden_field_tag "#{ha}_y1" %>
-                        <%= hidden_field_tag "#{ha}_x2" %>
-                        <%= hidden_field_tag "#{ha}_y2" %>
-                        <%= hidden_field_tag "#{ha}_width"%>
-                        <%= hidden_field_tag "#{ha}_height"%>
-                    </div>
+                    <!-- <div id="<% ha.split("_")[0] %>"> -->
+                        <% hidden_field_tag "#{ha}","0" %>
+                        <% hidden_field_tag "#{ha}_code_id", "0" %>
+                        <% hidden_field_tag "#{ha}_x1" %>
+                        <% hidden_field_tag "#{ha}_y1" %>
+                        <% hidden_field_tag "#{ha}_x2" %>
+                        <% hidden_field_tag "#{ha}_y2" %>
+                        <% hidden_field_tag "#{ha}_width"%>
+                        <% hidden_field_tag "#{ha}_height"%>
+                    <!-- </div> -->
                 <% end %>
+                <!-- /delete -->
+
             </div>
         <% if @thread.owner == current_user %>
             <div class="form-actions" style="text-align:center">

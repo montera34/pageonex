@@ -24,19 +24,6 @@ class ThreadsController < ApplicationController
 			# name attribute holds the name of the newspaper {"elpais", "abc", ...}
 			newspapers_names = {}
 
-			# number_of_newspapers = params[:media_count].to_i
-			# number_of_newspapers.downto(1) do |n|
-			# 	_media = Media.find(params["media#{n}"])
-			# 	@thread.media << _media
-			# 	if newspapers_names[_media.city] != nil
-			# 		newspapers_names[_media.city] << _media.name 
-			# 	else
-			# 		newspapers_names[_media.city] = []
-			# 		newspapers_names[_media.city] << _media.name
-			# 	end
-
-			# end
-
 			media = params[:media]
 			media.each do |m|
 				_media = Media.find(m)
@@ -101,6 +88,17 @@ class ThreadsController < ApplicationController
 
 			# add reference to the scraped images to the thread
 			@thread.images << images
+
+			@thread.images.each do |img|
+				highlighted_area1 = HighlightedArea.create!({:name => "image#{img.id}_ha1" ,:image => img, user: current_user,  threadx: @thread })
+
+				Area.create({highlighted_area: highlighted_area1})
+
+				highlighted_area2 = HighlightedArea.create!({:name => "image#{img.id}_ha2" ,:image => img, user: current_user,threadx: @thread })
+
+          		Area.create({highlighted_area: highlighted_area2})
+			end
+
 			@thread.codes << code
 
 			redirect_to "/users/#{current_user.username.split(' ').join('_')}/threads/#{@thread.thread_name}/coding"
@@ -174,9 +172,6 @@ class ThreadsController < ApplicationController
 
 		# all_media = new_media + remain_media
 
-
-
-
 		if @thread.update_attributes(params[:threadx])
 
 			if true
@@ -238,14 +233,27 @@ class ThreadsController < ApplicationController
 
 			@thread.save	
 
-			@thread.highlighted_areas.each do |ha|
-				ha.destroy unless @thread.images.include? ha.image
+			# delete unused highlighed areas
+			# @thread.highlighted_areas.each do |ha|
+			# 	ha.destroy unless @thread.images.include? ha.image
+			# end
+
+			@thread.images.each do |img|
+				if img.highlighted_areas.find_by_threadx_id(@thread.id) == nil
+					highlighted_area1 = HighlightedArea.create!({:name => "image#{img.id}_ha1" ,:image => img, user: current_user,  threadx: @thread })
+
+					Area.create({highlighted_area: highlighted_area1})
+
+					highlighted_area2 = HighlightedArea.create!({:name => "image#{img.id}_ha2" ,:image => img, user: current_user,threadx: @thread })
+
+	          		Area.create({highlighted_area: highlighted_area2})
+	          	end
 			end
-			# rename the current highlithted areas	
 
 			redirect_to "/users/#{current_user.username.split(' ').join('_')}/threads/#{@thread.thread_name}"
 			# render json: params.to_json
 		else
+
 			@media = []
 			Media.all.each do |newspaper|
 				newspaper.name = "#{newspaper.country} - #{newspaper.display_name}"
