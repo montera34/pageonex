@@ -17,15 +17,34 @@
   </div>
   <%= f.label :thread_display_name, "Thread Name" %>
   <%= f.text_field :thread_display_name %><br />
+  
+  <%= f.label :status %>
+  <% if @thread.status  == "closed" %>
+    <div class="btn-group" data-toggle="buttons-radio">
+      <a id="open_thread" class="btn btn-primary status" rel="popover"  data-content="In case of selecting this option, this means each day PageOneX, will scrape the latest newspapers front pages related to the thread automatically" data-original-title="Opened Thread" >Opened</a>
+      <a id="close_thread" class="btn btn-inverse active status" rel="popover"  data-content="In case of selecting this option, this means the created thread will not be updated and PageOneX will not scrape any newspapers front pages automatically" data-original-title="Closed Thread" >Closed</a>
+    </div>
+  <% else %>
+    <div class="btn-group" data-toggle="buttons-radio">
+      <a id="open_thread" class="btn btn-primary status active" rel="popover"  data-content="In case of selecting this option, this means each day PageOneX, will scrape the latest newspapers front pages related to the thread automatically" data-original-title="Opened Thread" >Opened</a>
+      <a id="close_thread" class="btn btn-inverse  status" rel="popover"  data-content="In case of selecting this option, this means the created thread will not be updated and PageOneX will not scrape any newspapers front pages automatically" data-original-title="Closed Thread" >Closed</a>
+    </div>
+  <% end %>
+  <%= hidden_field_tag :status, @thread.status %>
+  <br>
 
   <%= f.label :start_date %>
-	<%= f.text_field :start_date %>
+	<%= f.text_field :start_date, :class => "datepicker"%>
 
-	<%= f.label :end_date %>
-	<%= f.text_field :end_date %>
+  <% if @thread.status  == "closed" %>
+    <%= f.label :end_date %>
+    <%= f.text_field :end_date , :class => "datepicker"%>
+  <% else %>
+    <%= f.label :end_date, :style=>"display:none"%>
+    <%= f.text_field :end_date , :class => "datepicker" , :style=>"display:none"%>
+  <% end %>
 
-  <%= f.label :status %>
-  <%= f.text_field :status %><br>
+
 
   <%= f.label :category %>
   <%= f.text_field :category %><br>
@@ -67,6 +86,10 @@
       <%= text_area_tag "topic_description_1",@thread.codes[0].code_description,:rows => "5",placeholder: "Some Info about that topic" %> 
     </div>
   </div>
+  <label class="checkbox">
+    <!-- <input id="clean_high_areas" type="checkbox">  -->
+    <%= check_box_tag "clean_high_areas" %> Keep all highlighted areas that you have done, even which is related to deleted images
+  </label>
 
   <hr>
   <%= f.submit "Update Thread", :class => "btn" %>
@@ -85,7 +108,21 @@ $(function () {
     });
 
   $(".miniColors-trigger").attr("style","margin-bottom:9px;width: 214px;height: 26px;display: block;").css("background-color", $(".miniColors").attr("value"))
-  
+
+  $('.datepicker').datepicker();
+
+  $("#open_thread").click(function () {
+    $("label[for='threadx_end_date']").hide()
+    $("#threadx_end_date").hide()
+    $("#status").attr("value","opened")
+  })
+
+  $("#close_thread").click(function () {
+    $("label[for='threadx_end_date']").show()
+    $("#threadx_end_date").show()
+    $("#status").attr("value","closed")
+  })
+
 
 })
 </script>

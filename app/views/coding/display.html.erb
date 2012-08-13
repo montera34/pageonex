@@ -81,7 +81,7 @@
 		<div class="span6" style="/*width: 644px;*/">
 			<!-- <div id="y_axis"></div> -->
 			<!-- <div id="chart" style="margin-left: -35px;"></div> -->
-			<div id="chart_div" style="margin-left: 82px;width: 1195px; margin-bottom: -36px;"></div>
+			<div id="chart_div" style="margin-left: 82px;width: 1210px; margin-bottom: -30px;"></div>
 		</div>
 	</div>
 
@@ -105,15 +105,15 @@
 	<% @thread.media.each do |m| %>
 		<div class="row images" >
 			<div class="span2" style="/*width: 195px;*/">
-				<div class="" style="overflow: overlay; margin-right: 35px;font-size: 14px;">
-  					<h2 style="font-size: 14px;"><%= m.display_name %></h2>
+				<div class="" style="overflow: overlay; margin-right: -23px ;text-align: right;">
+  					<h2 style="font-size: 12px;"><%= m.display_name %></h2>
 				</div>
 			</div>
 			<div class="img_box span10" >
 				<% images_counter = @thread.images.length %>
 				<% 0.upto(images_counter-1) do |ic| %>
 					<% if @images[ic].media == m  %>
-						<div id="<%= "image_box#{ic+1}" %>" style="margin-bottom: 9px" class="span1 <%= "thum_image#{ic+1}" %>" image_name="<%= @images[ic].image_name %>">
+						<div id="<%= "image_box#{ic+1}" %>" style="margin-bottom: 4px" class="span1 <%= "thum_image#{ic+1}" %>" image_name="<%= @images[ic].image_name %>">
 
 			          		<a href='<%= "/users/#{@thread.owner.username.split(' ').join('_')}/threads/#{@thread.thread_name}/coding/?i=#{@images[ic].image_name}" %>' title="">
 				          		

@@ -34,7 +34,7 @@
   <br>
   <%= f.label :status %>
   <div class="btn-group" data-toggle="buttons-radio">
-    <a disabled="disabled" id="open_thread" class="btn btn-primary status" rel="popover"  data-content="In case of selecting this option, this means each day PageOneX, will scrape the latest newspapers front pages related to the thread automatically" data-original-title="Opened Thread" >Opened</a>
+    <a id="open_thread" class="btn btn-primary status" rel="popover"  data-content="In case of selecting this option, this means each day PageOneX, will scrape the latest newspapers front pages related to the thread automatically" data-original-title="Opened Thread" >Opened</a>
     <a id="close_thread" class="btn btn-inverse active status" rel="popover"  data-content="In case of selecting this option, this means the created thread will not be updated and PageOneX will not scrape any newspapers front pages automatically" data-original-title="Closed Thread" >Closed</a>
   </div>
   <%= hidden_field_tag :status,"closed" %>

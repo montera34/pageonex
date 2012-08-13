@@ -8,13 +8,14 @@ class ThreadsController < ApplicationController
 	def create
 
 		@thread = Threadx.new(params[:threadx])
-		@thread.thread_name = params[:threadx]["thread_display_name"].split(' ').join('_')
+		@thread.thread_name = params[:threadx]["thread_display_name"].split(' ').join('_').downcase
 		@thread.owner_id = current_user.id
 		@thread.status = params[:status]
-		# @thread.update_attributes(params[:threadx])
-		
-		# existing_thread = current_user.owned_threads.find_by_thread_display_name params[:threadx]["thread_display_name"]
-		 
+		# if the thread is opened, set the last date with today date and update the thread each time it displayed
+		if @thread.status == "opened"
+			@thread.end_date = Date.today
+		end
+				 
 		if @thread.valid? && params[:media] != nil && params["topic_name_1"] != "" 
 
 			
@@ -50,7 +51,7 @@ class ThreadsController < ApplicationController
 			images = []
 
 			# passes dates and formated newspapers_names array, and the return is a hash contains info about each images(publication_date, media, local_path)
-			newspapers_images = Scraper.get_issues(@thread.start_date.year,@thread.start_date.month,@thread.start_date.day,@thread.end_date.day, newspapers_names)
+			newspapers_images = Scraper.get_issues(@thread.start_date, @thread.end_date, newspapers_names)
 
 			newspapers_images.each do |image_name, image_info|
 				# search if the image dose not exsit, it create an object for this image 
@@ -155,24 +156,16 @@ class ThreadsController < ApplicationController
 
 	def update
 		@thread = current_user.owned_threads.find_by_thread_name params[:id]
-		@thread.thread_name = params[:threadx]["thread_display_name"].split(' ').join('_')
+		@thread.thread_name = params[:threadx]["thread_display_name"].split(' ').join('_').downcase
 		media = params[:media]
-		# org_media = params[:org_media].split(" ")
-		# new_media = []
-		# remain_media = []
-		# all_media = []
-		
-		# media.each do |m|
-		# 	new_media << m unless org_media.include? m
-		# end
 
-		# media.each do |m|
-		# 	remain_media << m if org_media.include? m
-		# end
-
-		# all_media = new_media + remain_media
 
 		if @thread.update_attributes(params[:threadx])
+			
+			@thread.status = params[:status]
+			if @thread.status == "opened"
+				@thread.update_attribute(:end_date, Date.today)
+			end
 
 			if true
 				images = []
@@ -189,8 +182,8 @@ class ThreadsController < ApplicationController
 						newspapers_names[_media.city] << _media.name
 					end
 				end
-
-				newspapers_images = Scraper.get_issues(@thread.start_date.year,@thread.start_date.month,@thread.start_date.day,@thread.end_date.day, newspapers_names)
+				
+				newspapers_images = Scraper.get_issues(@thread.start_date, @thread.end_date, newspapers_names)
 
 				newspapers_images.each do |image_name, image_info|
 					# search if the image dose not exsit, it create an object for this image 
@@ -203,7 +196,7 @@ class ThreadsController < ApplicationController
 							# image_size = "#{image_size.columns}x#{image_size.rows}"
 
 							# for the online heroku beta
-								image_size="750x951"
+							image_size="750x951"
 							# end
 						else
 							image_size="750x951"
@@ -222,7 +215,6 @@ class ThreadsController < ApplicationController
 						images << image
 					end
 				end
-
 				
 				@thread.images = []
 				@thread.images << images
@@ -234,9 +226,11 @@ class ThreadsController < ApplicationController
 			@thread.save	
 
 			# delete unused highlighed areas
-			# @thread.highlighted_areas.each do |ha|
-			# 	ha.destroy unless @thread.images.include? ha.image
-			# end
+			if params["clean_high_areas"] != "1"
+				@thread.highlighted_areas.each do |ha|
+					ha.destroy unless @thread.images.include? ha.image
+				end
+			end
 
 			@thread.images.each do |img|
 				if img.highlighted_areas.find_by_threadx_id(@thread.id) == nil
@@ -269,12 +263,22 @@ class ThreadsController < ApplicationController
 			render "edit"	
 			# render json: params.to_json
 		end
-
+		
+		# render json: params.to_json	
 
 	end
 
 	def show
 		@thread = Threadx.find_by_thread_name params[:id]
+=begin
+	
+for opened thread:
+	each time a user open the thread, check first if the status is opened, if so:
+		- check if the end date is the same as today, if not change the date
+		- and run the scraper again to update the thread
+
+=end		
+
 		redirect_to "/users/#{current_user.username.split(' ').join('_')}/threads/#{@thread.thread_name}"
 	end
 

@@ -123,9 +123,9 @@ $(function () {
   })
 
   $("#open_thread").click(function () {
-    // it's disabled until the feature implemented on the back end
-    // $("label[for='threadx_end_date']").hide()
-    // $("#threadx_end_date").hide()
+    $("label[for='threadx_end_date']").hide()
+    $("#threadx_end_date").hide()
+    $("#status").attr("value","opened")
 
   })
 

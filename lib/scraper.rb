@@ -5,11 +5,11 @@ require "RMagick"
 
 class Scraper
 
-	def self.get_issues(year=2012, month=5, start_day=3, end_day=4, newspapers_names)
+	def self.get_issues(start_date , end_date, newspapers_names)
 
 		@@newspapers_images = {}
 		# URIs of the issues 
-		newspapers_issues_paths = Scraper.build_kiosko_issues(year, month, start_day, end_day, newspapers_names)
+		newspapers_issues_paths = Scraper.build_kiosko_issues(start_date, end_date, newspapers_names)
 		#newspapers_issues_paths = Scraper.build_newyork_times_issues(year, month, start_day, end_day)
 		#newspapers_issues_paths = Scraper.build_elpais_issues(year, month, start_day, end_day)
 
@@ -52,39 +52,51 @@ class Scraper
 	end
 
 	# formating the issues date for Kiosko.net in "YYYY/MM/DD" based on the specified year, month, start day, and end day
-	def self.issues_dates(year, month, start_day, end_day)
-		day = start_day
-		days = []
 
-		# assume that at least the number of issues is on
-		number_of_issues = 1
+	# first version paramters(year, month, start_day, end_day)
+	def self.issues_dates(start_date, end_date)
+		# add custom data format for the scraper
+		Date::DATE_FORMATS[:scraper]="%Y/%m/%d"
 
-		# calculate the number of issues
-		number_of_issues = end_day - start_day + 1 unless end_day == 0 
+		dates = (start_date..end_date).map do |d|
+			d.to_formatted_s(:scraper)
+		end
 
-		number_of_issues.times do 
-			if day < 10 
-				f_day = String("0" + day.to_s)
-			else
-				f_day = day.to_s
-			end
 
-			if month < 10
-				# formating the dates part of the images name 
-				days << "#{year}/" + "0#{month}/" + f_day	
-			else
-				days << "#{year}/" + "#{month}/" + f_day
-			end
+		# day = start_day
+		# days = []
+
+		# # assume that at least the number of issues is on
+		# number_of_issues = 1
+
+		# # calculate the number of issues
+		# number_of_issues = end_day - start_day + 1 unless end_day == 0 
+
+		# number_of_issues.times do 
+		# 	if day < 10 
+		# 		f_day = String("0" + day.to_s)
+		# 	else
+		# 		f_day = day.to_s
+		# 	end
+
+		# 	if month < 10
+		# 		# formating the dates part of the images name 
+		# 		days << "#{year}/" + "0#{month}/" + f_day	
+		# 	else
+		# 		days << "#{year}/" + "#{month}/" + f_day
+		# 	end
 			
 
-			day += 1
-		end
-		days
+		# 	day += 1
+		# end
+		# days
+
 	end
 
 	# building the URIs of the issues based on the passed dates
 	# this script able to scrape back to 2008, 2009, and 2010 but most of the newspaper dosen't exsit in this years, and it also covers 2011, 2012 
-	def self.build_kiosko_issues(year, month, start_day, end_day, newspapers_names)
+	# first version params
+	def self.build_kiosko_issues(start_date, end_date, newspapers_names)
 
 		FileUtils.mkdir "app/assets/images/kiosko" unless File.directory? "app/assets/images/kiosko" 
 
@@ -105,7 +117,7 @@ class Scraper
 
 		domain = "http://img.kiosko.net/"
 
-		issues = Scraper.issues_dates year, month, start_day, end_day
+		issues = Scraper.issues_dates start_date, end_date
 
 		newspapers_issues = []
 		newspapers_issues_paths = []

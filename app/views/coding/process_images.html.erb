@@ -229,9 +229,10 @@ $(function (argument) {
 
 
 })
-window.onbeforeunload = function() {
-  return "If you leave this page without saving you will lose your work";
-}
+
+// window.onbeforeunload = function() {
+//   return "If you leave this page without saving you will lose your work";
+// }
 </script>
 
 <% if @thread.owner == current_user %>

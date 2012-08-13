@@ -31,7 +31,7 @@ class CodingController < ApplicationController
     #   high_area.areas[0].destroy
     #   high_area.destroy
     # end
-
+ 
 
     @thread.highlighted_areas.each do |ha|
       if params["#{ha.name}"] == "1"
@@ -43,9 +43,9 @@ class CodingController < ApplicationController
 
     end
 
-    # render json: params.to_json
    
     redirect_to "/users/#{current_user.username.split(' ').join('_')}/threads/#{@thread.thread_name}"
+    # render json: params.to_json
   end
 
   def display
@@ -103,7 +103,7 @@ class CodingController < ApplicationController
       end
     end
 
-    @i_ratios.each do |cr,imgs|
+    @i_ratios .each do |cr,imgs|
       
       imgs.each do |img|
         

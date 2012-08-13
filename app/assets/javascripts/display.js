@@ -6,7 +6,7 @@ $(function () {
 		var image_box = $(".images .span1")
 		var number_of_images = parseInt($("#number_of_column").attr("value"))// images.length/parseInt($("#number_of_rows").attr("value"))
 		// var row_width = $("div.images").width() - 225;	
-		var row_width = $(".img_box").width()
+		var row_width = $(".img_box").width() 
 
 		for (var i = 0; i < images.length; i++) {
 			var curr_img = $(images[i])
@@ -21,9 +21,9 @@ $(function () {
 			var original_img_height = $(images[i]).height() // for the images with direct links from kisoko
 			var displayed_img_height = (original_img_height / (original_img_width/displayed_img_width) )
 
-			var image_down_size_ratio = (displayed_img_width / (row_width/number_of_images - 5))//9	margin between images
+			var image_down_size_ratio = (displayed_img_width / (row_width/number_of_images - 0))//9	margin between images
 
-			curr_img.width((row_width/number_of_images - 5))//9 margin between images
+			curr_img.width((row_width/number_of_images - 0))//9 margin between images
 
 			curr_img.height((displayed_img_height/image_down_size_ratio))
 
