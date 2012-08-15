@@ -20,9 +20,10 @@ $(document).ready(function () {
                 var x1 = ui.position.left - carousel_position.left
 
                 var ha = "_ha" + $(this).attr("id").substr(9);
-                console.log(image_hidden_fields.attr("id").split('_')[0]+ha)
                 image_hidden_fields.find("#"+image_hidden_fields.attr("id").split('_')[0]+ha+"_y1").attr("value",y1);
                 image_hidden_fields.find("#"+image_hidden_fields.attr("id").split('_')[0]+ha+"_x1").attr("value",x1);
+                image_hidden_fields.find("#"+image_hidden_fields.attr("id").split('_')[0]+ha+"_status").attr("value","1");
+                $("#status").attr("value","1")
             },
         }).resizable({
             containment:'#myCarousel',
@@ -30,9 +31,10 @@ $(document).ready(function () {
             aspectRatio: false,
             resize: function(e, ui) {
                 var ha = "_ha" + $(this).attr("id").substr(9);
-                console.log(image_hidden_fields.attr("id").split('_')[0]+ha)
                 image_hidden_fields.find("#"+image_hidden_fields.attr("id").split('_')[0]+ha+"_width").attr("value",ui.size.width);
                 image_hidden_fields.find("#"+image_hidden_fields.attr("id").split('_')[0]+ha+"_height").attr("value",ui.size.height);
+                image_hidden_fields.find("#"+image_hidden_fields.attr("id").split('_')[0]+ha+"_status").attr("value","1");
+                $("#status").attr("value","1")
                 $(this).css("width",ui.size.width)
                 $(this).css("height",ui.size.height)
             },
@@ -41,12 +43,8 @@ $(document).ready(function () {
 
     };
 
-    // current display image 
-    // currrent_img = $("#images_section div.active img") 
-    //if (currrent_img.attr("alt")){
     $("#publication_date").text($("#images_section div.active img").attr("pub_date"));
     $("#newspaper_name").text($("#images_section div.active img").attr("media"));
-    //};
     
     carousel.on('slide',function () {
         // reset the highlighted areas values
@@ -77,9 +75,10 @@ $(document).ready(function () {
                     x1 = ui.position.left - carousel_position.left
 
                     ha = "_ha" + $(this).attr("id").substr(9);
-                    console.log(image_hidden_fields.attr("id").split('_')[0]+ha)
                     image_hidden_fields.find("#"+image_hidden_fields.attr("id").split('_')[0]+ha+"_y1").attr("value",y1);
                     image_hidden_fields.find("#"+image_hidden_fields.attr("id").split('_')[0]+ha+"_x1").attr("value",x1);
+                    image_hidden_fields.find("#"+image_hidden_fields.attr("id").split('_')[0]+ha+"_status").attr("value","1");
+                    $("#status").attr("value","1")
                 },
             })
             .resizable({
@@ -90,6 +89,8 @@ $(document).ready(function () {
                     var ha = "_ha" + $(this).attr("id").substr(9);
                     image_hidden_fields.find("#"+image_hidden_fields.attr("id").split('_')[0]+ha+"_width").attr("value",ui.size.width);
                     image_hidden_fields.find("#"+image_hidden_fields.attr("id").split('_')[0]+ha+"_height").attr("value",ui.size.height);
+                    image_hidden_fields.find("#"+image_hidden_fields.attr("id").split('_')[0]+ha+"_status").attr("value","1");
+                    $("#status").attr("value","1")
                     $(this).css("width",ui.size.width)
                     $(this).css("height",ui.size.height)
                 }
@@ -98,6 +99,9 @@ $(document).ready(function () {
         }
 
         currrent_img = $("#images_section div.active img");
+        
+        $("#high_area1").css("background-color","#000")
+        $("#high_area2").css("background-color","#000")
 
         if ( $("#high_area1").css("top") == "0px") {
             loadHighlightingAreas();
@@ -115,28 +119,38 @@ $(document).ready(function () {
         };
     });
 
-
-    $('input[name="codes"]').on("click",function(){
+    $("#set_code").on("click",function () {
         var currrent_img = $("#images_section div.active img")
 
         var image_hidden_fields = $("div[image_name="+ currrent_img.attr("name") +"]")
-        
-        ha = $("#current_high_area").attr("value")
 
-        image_hidden_fields.find("#"+image_hidden_fields.attr("id")+"_ha"+ha.substring(9)+"_code_id").attr("value",$(this).attr("code_id"))
+        var code_id = $("#codes").attr("value") 
+        var c_ha = $("#current_high_area").attr("value")
+
+        if (c_ha == "high_area1"){
+            //high_area_1
+            $($(image_hidden_fields[0]).children()[1]).attr("value",code_id);
+            $("#"+c_ha).css("background-color", $("#code_"+code_id).css("background-color"))
+        }else{
+            //high_area_2
+            $($(image_hidden_fields[1]).children()[1]).attr("value",code_id);
+            $("#"+c_ha).css("background-color", $("#code_"+code_id).css("background-color"))
+        }
         
-        $("#"+ha).css("background-color",$(this).attr("color"));    
-    });
+    })
 
     $("#clear_highlighting").click(function () {
         var currrent_img = $("#images_section div.active img")
 
         var image_hidden_fields = $("div[image_name="+ currrent_img.attr("name") +"]")
-        $("#"+image_hidden_fields.attr("id") +"_ha1").attr("value","0");
 
-        $("#"+image_hidden_fields.attr("id") +"_ha2").attr("value","0");
-        setHighlightingAreaValues("_ha1",'0','0','0','0','0','0');
-        setHighlightingAreaValues("_ha2",'0','0','0','0','0','0');
+        $($(image_hidden_fields[0]).children()[0]).attr("value","0");
+        $($(image_hidden_fields[0]).children()[0]).attr("value","0");
+
+        var ha1 = $(image_hidden_fields[0]).attr("id")
+        var ha2 = $(image_hidden_fields[1]).attr("id")
+        setHighlightingAreaValues(ha1,'0','0','0','0','0','0');
+        setHighlightingAreaValues(ha2,'0','0','0','0','0','0');
         clearHighlightedArea()
         progressBarPercentage()
     })  
@@ -182,7 +196,13 @@ $(document).ready(function () {
         $(this).attr("src","/assets/404.jpg")
     })
 
+    $("#high_images input").on("change",function () {
+        alert("okay")
+    })              
+    
     progressBarPercentage()
+
+    $(".codes_boxes").popover()
 
 
 });
@@ -212,14 +232,15 @@ function highlightingArea (img, selection) {
 
         $("#high_area1").css("width",image_hidden_fields.find("#"+ha1+"_width").attr("value")); 
 
-        // $('#coding_topics').modal({backdrop:false});
-        $("#high_area1").css("background-color",$('.code').css("background-color"))
+        $('#coding_topics').modal({backdrop:false});
 
         $("#current_high_area").attr("value","high_area1")
 
+        // $("#high_area1").css("background-color",$('.code').css("background-color"))
+
         // var ha = $("#current_high_area").attr("value")
 
-        image_hidden_fields.find("#"+ha1+"_code_id").attr("value",$('.code').attr("id").substr(4,100))
+        // image_hidden_fields.find("#"+ha1+"_code_id").attr("value",$('.code').attr("id").substr(4,100))
 
         $("#"+ha1).children()[0].value ="1"
         progressBarPercentage()
@@ -239,14 +260,15 @@ function highlightingArea (img, selection) {
 
         $("#high_area2").css("width",image_hidden_fields.find("#"+ha2+"_width").attr("value"));
         
-        // $('#coding_topics').modal({backdrop:false});
-        $("#high_area2").css("background-color",$('.code').css("background-color"))
+        $('#coding_topics').modal({backdrop:false});
 
         $("#current_high_area").attr("value","high_area2")
-        
-        ha = $("#current_high_area").attr("value")
 
-        image_hidden_fields.find("#"+ha2+"_code_id").attr("value",$('.code').attr("id").substr(4,100))
+        // $("#high_area2").css("background-color",$('.code').css("background-color"))
+        
+        // ha = $("#current_high_area").attr("value")
+
+        // image_hidden_fields.find("#"+ha2+"_code_id").attr("value",$('.code').attr("id").substr(4,100))
 
         $("#"+ha2).children()[0].value ="1"
         progressBarPercentage()
@@ -286,6 +308,8 @@ function setHighlightingAreaValues (ha, x1, y1, x2, y2, width, height) {
     image_hidden_fields.find("#"+ha+"_y2").attr("value",y2);
     image_hidden_fields.find("#"+ha+"_width").attr("value",width);
     image_hidden_fields.find("#"+ha+"_height").attr("value",height);
+    image_hidden_fields.find("#"+ha+"_status").attr("value","1");
+    $("#status").attr("value","1")
     
 }
 
@@ -323,8 +347,12 @@ function loadHighlightingAreas () {
 
     $("#high_area1").css("width",image_hidden_fields.find("#"+ha1+"_width").attr("value")); 
 
+    
+    // $("#high_area1").css("background-color", $("div#code"+code_id).css("background-color"))  
+
     var code_id = image_hidden_fields.find("#"+ha1+"_code_id").attr("value")
-    $("#high_area1").css("background-color", $("div#code"+code_id).css("background-color"))  
+    $("#high_area1").css("background-color", $("#code_"+code_id).css("background-color"))
+
 
     if (image_hidden_fields.find("#"+ha1+"_code_id").attr("value") == "-1")  {
         $("#high_area1").css("background-color", "#eee")
@@ -353,8 +381,10 @@ function loadHighlightingAreas () {
 
     $("#high_area2").css("width",image_hidden_fields.find("#"+ha2+"_width").attr("value")); 
 
-    code_id = image_hidden_fields.find("#"+ha2+"_code_id").attr("value")
-    $("#high_area2").css("background-color", $("div#code"+code_id).css("background-color"))  
+    var code_id = image_hidden_fields.find("#"+ha2+"_code_id").attr("value")
+    $("#high_area2").css("background-color", $("#code_"+code_id).css("background-color"))
+
+    // $("#high_area2").css("background-color", $("div#code"+code_id).css("background-color"))  
     
 }
 
@@ -372,11 +402,17 @@ function progressBarPercentage () {
     $("#total").text($("#total_images_number").attr("value"))
     var images_counter = parseInt($("#total").text())
     var remain_counter = 0
-    for (var i = 1; i <= images_counter; i++) {
-        // ha1 = $("div#image"+i).first().children()[0].value
-        ha1 = $("#image"+i+"_ha1").attr("value")
-        // ha2 = $("div#image"+i).last().children()[0].value 
-        if (ha1 != "1" ) {
+    // for (var i = 1; i <= images_counter; i++) {
+    //     // change this
+    //     ha1 = $("#image"+i+"_ha1").attr("value")
+    //     if (ha1 != "1" ) {
+    //         remain_counter += 1
+    //     };
+    // };
+    var images = $("#high_images").children()
+    for (var i = 0; i < images.length; i++) {
+        ha=$("input#"+images[i].id).attr("value")
+        if (ha != "1" && images[i].id.split('_')[1] == "ha1") {
             remain_counter += 1
         };
     };

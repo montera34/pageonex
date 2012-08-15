@@ -50,11 +50,12 @@
 	<div class="span2">
 		<h3>Topics coded:</h3>
 			<% @thread.codes.each do |code| %>
-        		<div id="code-<%= code.id %>" style="background-color:<%= code.color %>; margin-left: 7px; float: left;color:black" class="codes"></div>
-        		<h4>Name: </h4> <span id="code1_name"><%= code.code_text.split("_").join(" ") %></span>
-            	<h4>Description: </h4><span><%= code.code_description %></span>
-            	<h4>Color: </h4><span style="background-color:<%= code.color %>;color: <%= code.color %>"><%= code.color %></span>
-    		
+        		<!-- <div id="code-<%= code.id %>" style="background-color:<%= code.color %>; margin-left: 7px; float: left;color:black" class="codes"></div> -->
+        		<h3 class="codes_boxes" style="display: inline;cursor: no-drop;" rel="popover"  data-content="<%= code.code_description %>" data-original-title="Description">
+                    <span id="code_<%= code.id %>" style="background-color:<%= code.color %>;color: <%= code.color %>">CL</span>
+                    <span><%= code.code_text.split("_").join(" ") %></span>
+                </h3> 
+                <br>
        <% end %>
     </div>
 </div> 
@@ -79,9 +80,8 @@
 			<!-- <h2>Surfaces percentage:</h2> -->
 		</div>
 		<div class="span6" style="/*width: 644px;*/">
-			<!-- <div id="y_axis"></div> -->
-			<!-- <div id="chart" style="margin-left: -35px;"></div> -->
-			<div id="chart_div" style="margin-left: 82px;width: 1210px; margin-bottom: -30px;"></div>
+			<div id="chart" style="margin-left: 218px;"></div>
+			<!-- <div id="chart_div" style="margin-left: 82px;width: 1210px; margin-bottom: -30px;"></div> -->
 		</div>
 	</div>
 
@@ -127,9 +127,9 @@
 								<% end %>
 								<!-- end -->
 
-						        <div id="high_area1" style="position: absolute; overflow: hidden; z-index: 0; left: 0px; top: 0px; width: 0px; height: 0px; display: block; opacity: 0.7;" class="imgareaselect-outer"></div>
+						        <div id="high_area1" style="position: absolute; overflow: hidden; z-index: 0; left: 0px; top: 0px; width: 0px; height: 0px; display: block; opacity: 0.7;" class=""></div>
 
-						        <div id="high_area2" style="position: absolute; overflow: hidden; z-index: 0; left: 0px; top: 0px; width: 0px; height: 0px; display: block; opacity: 0.7;" class="imgareaselect-outer"></div>
+						        <div id="high_area2" style="position: absolute; overflow: hidden; z-index: 0; left: 0px; top: 0px; width: 0px; height: 0px; display: block; opacity: 0.7;" class=""></div>
 			          		</a>
 
 						</div>
@@ -172,91 +172,74 @@
   </div>
 
 <!-- "d3.min.js", "d3.layout.min.js", "rickshaw.min.js", -->
-<%= javascript_include_tag  "display.js" %>
+<%= javascript_include_tag "d3.min.js", "d3.layout.min.js", "rickshaw.min.js","display.js" %>
 
 <script>
 
-	// var data = [ { x: 0, y: 40 }, { x: 1, y: 49 }, { x: 2, y: 17 }, { x: 3, y: 42 } ];
+	var data = [ { x: 0, y: 40 }, { x: 1, y: 49 }, { x: 2, y: 17 }, { x: 3, y: 42 } ];
 
-	// var number_of_images = parseInt($("#number_of_column").attr("value"))
-	// var data = []
-	// var column_value = 0
-	// for (var i = 1; i <= number_of_images; i++) {
-	// 	column_value = parseInt($("#ratios #v"+i).attr("value"))
-	// 	data.push({
-	// 		x: i,
-	// 		y: column_value
-	// 	})
-	// };
+	var number_of_images = parseInt($("#number_of_column").attr("value"))
+	var data = []
+	var column_value = 0
+	for (var i = 1; i <= number_of_images; i++) {
+		column_value = parseInt($("#ratios #v"+i).attr("value"))
+		data.push({
+			x: i,
+			y: column_value
+		})
+	};
 
-	// // var row_width = $("div.images").width() - 225;	
-	// var row_width = $(".img_box").width()
+	// var row_width = $("div.images").width() - 225;	
+	var row_width = $(".img_box").width()
 
-	// var graph = new Rickshaw.Graph( {
-	//     element: document.querySelector("#chart"),
-	// 	renderer: 'bar',
-	//     //width: 640,
-	//     width: row_width,
-	//     height: 90,
-	//     series: [ {
-	//             color: $(".codes").css("background-color"),
-	//             data: data
-	//     } ]
-	// } );
+	var graph = new Rickshaw.Graph( {
+	    element: document.querySelector("#chart"),
+		renderer: 'bar',
+	    //width: 640,
+	    width: row_width,
+	    height: 90,
+	    series: [ {
+	            color: $(".codes").css("background-color"),
+	            data: data
+	    } ]
+	} );
 
-	// graph.render();
+	graph.render();
 
 
 </script>
 
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script type="text/javascript">
-  // $("#chart_div").css("width",$(".img_box").width())
-	google.load("visualization", "1", {packages:["corechart"]});
-	google.setOnLoadCallback(drawChart);
-	var code1 = $("#code1_name").text()
-	var number_of_images = parseInt($("#number_of_column").attr("value"))
-	var columns_data = [['Dates', code1, "a column"]]
-	var column_value = 0
-	var dates = $("#date-box input")
-	for (var i = 1; i <= number_of_images; i++) {
-		column_value = parseInt($("#ratios #v"+i).attr("value"))
-		columns_data.push([ dates[i-1].name,column_value, 6])
-	};
-	function drawChart() {
-		var data = google.visualization.arrayToDataTable(
-			columns_data
-		// [
-		//   ['Dates', 'c1'],
-		//   ['1',  1000],
-		//   ['2',  1000],
-		//   ['3',  1000],
-		//   ['4',  1000],
-		//   ['5',  1000],
-		//   ['6',  1000],
-		//   ['7',  1000],
-		//   ['8',  1000],
-		//   ['9',  1000],
-		//   ['10',  1000],
-		//   ['11',  1000]
-		// ]  
-	);
+ //  // $("#chart_div").css("width",$(".img_box").width())
+	// google.load("visualization", "1", {packages:["corechart"]});
+	// google.setOnLoadCallback(drawChart);
+	// var code1 = $("#code1_name").text()
+	// var number_of_images = parseInt($("#number_of_column").attr("value"))
+	// var columns_data = [['Dates', code1, "a column"]]
+	// var column_value = 0
+	// var dates = $("#date-box input")
+	// for (var i = 1; i <= number_of_images; i++) {
+	// 	column_value = parseInt($("#ratios #v"+i).attr("value"))
+	// 	columns_data.push([ dates[i-1].name,column_value, 6])
+	// };
+	// function drawChart() {
+	// 	var data = google.visualization.arrayToDataTable(columns_data);
 
-	var options = {
-	  // title: 'Company Performance',
-	  hAxis: { textPosition: 'out',// format:'d, m' ,
-	  	textStyle: { fontSize: 9}
-	  },
-	  vAxis: {title: 'Surfaces percentage', titleTextStyle: {color: '#FF0000'}, format:'#,##%'},
-	  bar:{groupWidth:'51%'},
-	  legend:{position: 'none'},
-	  colors: [$(".codes").css("background-color"),'green']
-
-	};
-
-	var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
-	chart.draw(data, options);
-	}
+	// 	var options = {
+	// 	  hAxis: { textPosition: 'out',	textStyle: { fontSize: 9} },
+	// 	  vAxis: {title: 'Surfaces percentage', titleTextStyle: {color: '#FF0000'}, format:'#,##%', gridlines: {count: 1}}, 
+	// 	  bar:{groupWidth:'51%'}, 
+	// 	  legend:{position: 'none'}, 
+	// 	  colors: [$(".codes").css("background-color"),'green'],
+	// 	};
+		  
+	// 	var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));	
+	// 	// to be used after adding twitter
+	// 	// var chart = new google.visualization.ComboChart(document.getElementById('chart_div'));	
+		
+	// 	chart.draw(data, options);
+	// }
 </script>
 
 

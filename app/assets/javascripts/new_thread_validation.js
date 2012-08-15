@@ -1,12 +1,13 @@
 $(function () {
-  $(".topic_color").miniColors({
+  $("#topic_color_1").miniColors({
     change: function (hex,rgb) {
-      $(".miniColors-trigger").css("background-color",hex)
+      $("div#topic_1 .miniColors-trigger").css("background-color",hex)
       }
     });
 
-  $(".miniColors").attr("value","#FF0000")  
-  $(".miniColors-trigger").attr("style","margin-bottom:9px;width: 214px;height: 26px;display: block;").css("background-color", $(".miniColors").attr("value"))
+  $("div#topic_1 .miniColors").attr("value","#FF0000")  
+  $("div#topic_1 .miniColors-trigger").attr("style","margin-bottom:9px;width: 214px;height: 26px;display: block;").css("background-color", $("div#topic_1 .miniColors").attr("value"))
+
   $('.datepicker').datepicker();
   $('.dates').popover()
   $('.status').popover()
@@ -53,7 +54,7 @@ $(function () {
   //   $("#media_count").attr("value", media_count);
   // });
 
-  topic_count=1
+  topic_count = parseInt($("#topic_count").attr("value"))
   $("#add_topic").on("click",function () {
     
     var topic_element = $("#topic").clone();
@@ -67,7 +68,7 @@ $(function () {
     var topic_description_label_element = topic_element.find("#topic_description_label");
 
     topic_element.attr("style","display:block");
-    topic_element.attr("id","topic"+ ++topic_count);
+    topic_element.attr("id","topic_"+ ++topic_count);
 
     topic_name_element.attr("id","topic_name_"+topic_count);
     topic_name_element.attr("name","topic_name_"+topic_count);
@@ -94,6 +95,17 @@ $(function () {
     topic_description_label_element.text("topic_description_"+topic_count)
 
     $(topic_element).insertBefore("#add_topic");
+
+    $("#topic_color_"+topic_count).miniColors({
+      change: function (hex,rgb) {
+        $("div#topic_"+topic_count+" .miniColors-trigger").css("background-color",hex)
+      }
+    });
+
+    $("div#topic_"+topic_count+" .miniColors").attr("value","#FF0000")  
+    $("div#topic_"+topic_count+" .miniColors-trigger").attr("style","margin-bottom:9px;width: 214px;height: 26px;display: block;").css("background-color", $("div#topic_"+topic_count+" .miniColors").attr("value"))
+
+
     $("<br/>").insertBefore('#add_topic');
     $("#topic_count").attr("value", topic_count);
   });

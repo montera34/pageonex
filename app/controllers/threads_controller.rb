@@ -1,8 +1,8 @@
 class ThreadsController < ApplicationController
-	before_filter :authenticate_user!
+	before_filter :authenticate_user!, :except => "index"
 
 	def index
-		@threads = current_user.owned_threads
+		# @threads = current_user.owned_threads
 	end
 
 	def create
@@ -38,13 +38,14 @@ class ThreadsController < ApplicationController
 			end
 
 			# create object for each code submited
-			# number_of_topics = params[:topic_count].to_i
-			# number_of_topics.downto(1) do |n|
-			# 	Code.create!({:code_text => params["topic_name_#{n}"], :code_description => params["topic_description_#{n}"],:color => params["topic_color_#{n}"],:threadx_id => @thread.id})
-			# end
+			codes = []
+			number_of_topics = params[:topic_count].to_i
+			1.upto(number_of_topics) do |n|
+				codes << Code.create!({:code_text => params["topic_name_#{n}"], :code_description => params["topic_description_#{n}"],:color => params["topic_color_#{n}"]})
+			end
 
 			# create object for each code submited
-			code = Code.create!({:code_text => params["topic_name_1"], :code_description => params["topic_description_1"],:color => params["topic_color_1"]})
+			# code = Code.create!({:code_text => params["topic_name_1"], :code_description => params["topic_description_1"],:color => params["topic_color_1"]})
 
 
 			# array of object refers to scraped images
@@ -100,7 +101,7 @@ class ThreadsController < ApplicationController
           		Area.create({highlighted_area: highlighted_area2})
 			end
 
-			@thread.codes << code
+			@thread.codes << codes
 
 			redirect_to "/users/#{current_user.username.split(' ').join('_')}/threads/#{@thread.thread_name}/coding"
 
@@ -117,9 +118,9 @@ class ThreadsController < ApplicationController
 				params[:empty_media] = "true"
 			end
 			render "new"
+			# render json: params.to_json
 		end
 
-		# render json: params.to_json
 
 	end
 
