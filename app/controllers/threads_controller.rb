@@ -221,7 +221,9 @@ class ThreadsController < ApplicationController
 				@thread.images << images
 			end
 			if true
-				@thread.codes[0].update_attributes({code_text: params[:topic_name_1], color: params[:topic_color_1], code_description: params[:topic_description_1]})
+				@thread.codes.to_enum.with_index.each do |code,index|
+					code.update_attributes({code_text: params["topic_name_#{index+1}"], color: params["topic_color_#{index+1}"], code_description: params["topic_description_#{index}"]})
+				end
 			end
 
 			@thread.save	

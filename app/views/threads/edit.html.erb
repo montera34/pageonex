@@ -65,27 +65,29 @@
   <hr>
   <h2>Coding info</h2><br>
 
-  <div class="well">
-    <div id="topic_1" class="well">
-      <div id="topic_name_box">
-        <%= label_tag "topic_name_1", nil, :id => "topic_label_1" %>
+  <% @thread.codes.to_enum.with_index.each do |code,index| %>
+    <div class="well">
+      <div id=<%= "topic_#{index+1}" %> class="well">
+        <div id="topic_name_box">
+          <%= label_tag "topic_name_#{index+1}", nil, :id => "topic_label_1" %>
 
-        <%= text_field_tag "topic_name_1",@thread.codes[0].code_text,placeholder: "Code/Topic name", :class=>"topic_name js_validate" %> 
-        
+          <%= text_field_tag "topic_name_#{index+1}",code.code_text,placeholder: "Code/Topic name", :class=>"topic_name js_validate" %> 
+          
+        </div>
+
+        <div class="topic_color_box ">
+          <%= label_tag "topic_color_#{index+1}", nil, :id => "topic_color_label_#{index+1}" %>
+
+          <%= text_field_tag "topic_color_#{index+1}",code.color,placeholder: "#FF0000", :class=>"js_validate" %> 
+          
+        </div>
+
+        <%= label_tag "topic_description_#{index+1}", nil, :id => "topic_description_label_#{index+1}" %>
+
+        <%= text_area_tag "topic_description_#{index+1}",code.code_description,:rows => "5",placeholder: "Some Info about that topic" %> 
       </div>
-
-      <div class="topic_color_box ">
-        <%= label_tag "topic_color_1", nil, :id => "topic_color_label_1" %>
-
-        <%= text_field_tag "topic_color_1",@thread.codes[0].color,placeholder: "#FF0000", :class=>"topic_color js_validate" %> 
-        
-      </div>
-
-      <%= label_tag "topic_description_1", nil, :id => "topic_description_label_1" %>
-
-      <%= text_area_tag "topic_description_1",@thread.codes[0].code_description,:rows => "5",placeholder: "Some Info about that topic" %> 
     </div>
-  </div>
+  <% end %>
   <label class="checkbox">
     <!-- <input id="clean_high_areas" type="checkbox">  -->
     <%= check_box_tag "clean_high_areas" %> Keep all highlighted areas that you have done, even which is related to deleted images

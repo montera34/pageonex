@@ -74,14 +74,14 @@
 
 </div>
 <hr>
-<div id="datavis" style="display: block;">
+
 	<div class="row">
 		<div class="span3" style="width: 195px; ">
 			<!-- <h2>Surfaces percentage:</h2> -->
 		</div>
 		<div class="span6" style="/*width: 644px;*/">
-			<div id="chart" style="margin-left: 218px;"></div>
-			<!-- <div id="chart_div" style="margin-left: 82px;width: 1210px; margin-bottom: -30px;"></div> -->
+			<!-- <div id="chart" style="margin-left: 218px;"></div> -->
+			<div id="chart_div" style="margin-left: 82px;width: 1210px; margin-bottom: -30px;"></div>
 		</div>
 	</div>
 
@@ -100,7 +100,7 @@
 			<%= hidden_field_tag "#{d.day}/#{d.month}" %>
 		<% end %>
 	</div>
-
+<div id="datavis" style="display: none;">
 	<!-- loop over all the newspaper in the thread and find which images are belongs to this newspaper and then insert this images into this newspaper row -->
 	<% @thread.media.each do |m| %>
 		<div class="row images" >
@@ -172,74 +172,87 @@
   </div>
 
 <!-- "d3.min.js", "d3.layout.min.js", "rickshaw.min.js", -->
-<%= javascript_include_tag "d3.min.js", "d3.layout.min.js", "rickshaw.min.js","display.js" %>
+<%= javascript_include_tag "display.js" %>
 
 <script>
 
-	var data = [ { x: 0, y: 40 }, { x: 1, y: 49 }, { x: 2, y: 17 }, { x: 3, y: 42 } ];
+	// var data = [ { x: 0, y: 40 }, { x: 1, y: 49 }, { x: 2, y: 17 }, { x: 3, y: 42 } ];
 
-	var number_of_images = parseInt($("#number_of_column").attr("value"))
-	var data = []
-	var column_value = 0
-	for (var i = 1; i <= number_of_images; i++) {
-		column_value = parseInt($("#ratios #v"+i).attr("value"))
-		data.push({
-			x: i,
-			y: column_value
-		})
-	};
+	// var number_of_images = parseInt($("#number_of_column").attr("value"))
+	// var data = []
+	// var column_value = 0
+	// for (var i = 1; i <= number_of_images; i++) {
+	// 	column_value = parseInt($("#ratios #v"+i).attr("value"))
+	// 	data.push({
+	// 		x: i,
+	// 		y: column_value
+	// 	})
+	// };
 
-	// var row_width = $("div.images").width() - 225;	
-	var row_width = $(".img_box").width()
+	// // var row_width = $("div.images").width() - 225;	
+	// var row_width = $(".img_box").width()
 
-	var graph = new Rickshaw.Graph( {
-	    element: document.querySelector("#chart"),
-		renderer: 'bar',
-	    //width: 640,
-	    width: row_width,
-	    height: 90,
-	    series: [ {
-	            color: $(".codes").css("background-color"),
-	            data: data
-	    } ]
-	} );
+	// var graph = new Rickshaw.Graph( {
+	//     element: document.querySelector("#chart"),
+	// 	renderer: 'bar',
+	//     //width: 640,
+	//     width: row_width,
+	//     height: 90,
+	//     series: [ {
+	//             color: $(".codes").css("background-color"),
+	//             data: data
+	//     } ]
+	// } );
 
-	graph.render();
+	// graph.render();
 
 
 </script>
 
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script type="text/javascript">
- //  // $("#chart_div").css("width",$(".img_box").width())
-	// google.load("visualization", "1", {packages:["corechart"]});
-	// google.setOnLoadCallback(drawChart);
-	// var code1 = $("#code1_name").text()
-	// var number_of_images = parseInt($("#number_of_column").attr("value"))
-	// var columns_data = [['Dates', code1, "a column"]]
-	// var column_value = 0
-	// var dates = $("#date-box input")
-	// for (var i = 1; i <= number_of_images; i++) {
-	// 	column_value = parseInt($("#ratios #v"+i).attr("value"))
-	// 	columns_data.push([ dates[i-1].name,column_value, 6])
-	// };
-	// function drawChart() {
-	// 	var data = google.visualization.arrayToDataTable(columns_data);
+  	// $("#chart_div").css("width",$(".img_box").width())
+	google.load("visualization", "1", {packages:["corechart"]});
+	google.setOnLoadCallback(drawChart);
+	
+	var number_of_images = parseInt($("#number_of_column").attr("value"))
+	var number_of_codes = $(".codes_boxes").children().length/2
 
-	// 	var options = {
-	// 	  hAxis: { textPosition: 'out',	textStyle: { fontSize: 9} },
-	// 	  vAxis: {title: 'Surfaces percentage', titleTextStyle: {color: '#FF0000'}, format:'#,##%', gridlines: {count: 1}}, 
-	// 	  bar:{groupWidth:'51%'}, 
-	// 	  legend:{position: 'none'}, 
-	// 	  colors: [$(".codes").css("background-color"),'green'],
-	// 	};
+	var columns_data = [['Dates']]
+	for (var i = 0; i < number_of_codes; i++) {
+		columns_data[0].push($($($(".codes_boxes")[i]).children()[1]).text())
+	};
+	var column_value = 0
+	var dates = $("#date-box input")
+	
+	for (var i = 1; i <= number_of_images; i++) {
+		column_value = parseInt($("#ratios #v"+i).attr("value"))
+		columns_data.push([ dates[i-1].name,column_value, 6,4,2,5])
+	};
+
+	var codes = $(".codes_boxes span")
+	var codes_colors = []
+	for (var i = 0; i < codes.length; i+=2) {
+		codes_colors.push($(codes[i]).css("background-color"))
+	};
+	console.log(columns_data)
+	function drawChart() {
+		var data = google.visualization.arrayToDataTable(columns_data);
+
+		var options = {
+		  hAxis: { textPosition: 'out',	textStyle: { fontSize: 9} },
+		  vAxis: {title: 'Surfaces percentage', titleTextStyle: {color: '#FF0000'}, format:'#,##%', gridlines: {count: 1}}, 
+		  bar:{groupWidth:'51%'}, 
+		  legend:{position: 'none'}, 
+		  colors: codes_colors,
+		};
 		  
-	// 	var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));	
-	// 	// to be used after adding twitter
-	// 	// var chart = new google.visualization.ComboChart(document.getElementById('chart_div'));	
+		var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));	
+		// to be used after adding twitter
+		// var chart = new google.visualization.ComboChart(document.getElementById('chart_div'));	
 		
-	// 	chart.draw(data, options);
-	// }
+		chart.draw(data, options);
+	}
 </script>
 
 

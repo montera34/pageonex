@@ -12,12 +12,9 @@ $(function () {
 			var curr_img = $(images[i])
 			var curr_img_box = $(image_box[i])
 
-			// var original_img_width = curr_img.attr("image_size").split("x")[0] // for scraped full image size
 			var original_img_width = $(images[i]).width() // for the images with direct links from kisoko
-			// alert($(images[i]).height())
 			var displayed_img_width = 670
 
-			// var original_img_height = curr_img.attr("image_size").split("x")[1] // for scraped full image size
 			var original_img_height = $(images[i]).height() // for the images with direct links from kisoko
 			var displayed_img_height = (original_img_height / (original_img_width/displayed_img_width) )
 
@@ -111,12 +108,11 @@ $(function () {
 		imagesResizing()
 		
 		$("#datavis").css("display","block")
-		
+
 		loadImagesHighlightedAreas()
 
 		$("#loading-bar").css("display","none")
 		$("#loading-bar-h").css("display","none")
-		// $(".images").css("visibility","visible")
 	};
 	$(window).resize(function() {
 	 	loadImagesHighlightedAreas();
