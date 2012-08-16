@@ -85,13 +85,25 @@
 		</div>
 	</div>
 
-	<div id="ratios">
+	<!-- <div id="ratios"> -->
 		<% @ratios.each do |v,r|  %>
-			<%= hidden_field_tag "v#{v}", r %>
+			<% hidden_field_tag "v#{v}", r %>
 		<% end %>
-	</div>
+	<!-- </div> -->
 	<%= hidden_field_tag "number_of_column", @ratios.length %>
 	<%= hidden_field_tag "number_of_rows", @thread.media.length %>
+
+
+	<div id="ratios">
+		<% @codes_high_areas.each do |column, codes| %>
+			<div id="<%= "row_#{column}" %>">
+					<% codes.each do |code_id,value| %>
+						<%= hidden_field_tag "#{code_id}", value %>
+					<% end %>
+				
+			</div>
+		<% end %>
+	</div>
 
 	<br>
 
@@ -123,7 +135,12 @@
 								<% if @images[ic].local_path == "404.jpg" %>
 									<img src="/assets/404.jpg" alt="" id="<%= "image#{ic+1}" %>" style=" opacity: 0.7;" image_size="<%= @images[ic].size %>" />
 				         		<% else %>
-				         			<img src="<%= @images[ic].local_path %>" alt="" id="<%= "image#{ic+1}" %>" class="thum-img" style=" opacity: 0.8;" image_size="<%= @images[ic].size %>" name="<%= @images[ic].image_name %>" />
+				         			<% ha = HighlightedArea.where(:threadx_id=>@thread.id, :image_id=>@images[ic].id)[0] %>
+				         			<% if ha.code != nil %>
+					         			<img src="<%= @images[ic].local_path %>" alt="" id="<%= "image#{ic+1}" %>" class="thum-img" style=" opacity: 0.4;" image_size="<%= @images[ic].size %>" name="<%= @images[ic].image_name %>" />
+				         			<% else %>
+				         				<img src="<%= @images[ic].local_path %>" alt="" id="<%= "image#{ic+1}" %>" class="thum-img" style=" opacity: 0.8;" image_size="<%= @images[ic].size %>" name="<%= @images[ic].image_name %>" />
+				         			<% end %>
 								<% end %>
 								<!-- end -->
 
@@ -222,12 +239,23 @@
 	for (var i = 0; i < number_of_codes; i++) {
 		columns_data[0].push($($($(".codes_boxes")[i]).children()[1]).text())
 	};
-	var column_value = 0
+	// var column_value = 0
 	var dates = $("#date-box input")
-	
+	var column_values = []
+	var column_codes = []
+
 	for (var i = 1; i <= number_of_images; i++) {
-		column_value = parseInt($("#ratios #v"+i).attr("value"))
-		columns_data.push([ dates[i-1].name,column_value, 6,4,2,5])
+		// column_value = parseInt($("#ratios #v"+i).attr("value"))
+		column_values = [ dates[i-1].name]
+		column_codes = $("#row_c"+i).children()
+
+		for (var z = 0; z < number_of_codes; z++) {
+			column_values.push(parseFloat($(column_codes[z]).attr("value")))
+		};
+		columns_data.push(column_values)
+		console.log(column_values)
+		column_values = []
+		column_codes = []
 	};
 
 	var codes = $(".codes_boxes span")

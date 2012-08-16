@@ -158,14 +158,18 @@ $(document).ready(function () {
     $("#skip_coding").click(function () {
         var currrent_img = $("#images_section div.active img")
         var image_hidden_fields = $("div[image_name="+ currrent_img.attr("name") +"]")
-        if ($("#"+image_hidden_fields.attr("id") +"_ha1_code_id").attr("value") != "-1") {
+        // if ($("#"+image_hidden_fields.attr("id") +"_ha1_code_id").attr("value") != "-1") {
+        if ($(image_hidden_fields[0]).children()[1].value != "-1") {
+            
             clearHighlightedArea()
             
-            $("#"+image_hidden_fields.attr("id") +"_ha1").attr("value","1");
+            // $("#"+image_hidden_fields.attr("id") +"_ha1").attr("value","1");
+            $(image_hidden_fields[0]).children()[0].value = "1"
             
-            setHighlightingAreaValues("_ha1", 1, 1, '0', '0', currrent_img.width(), currrent_img.height());
+            setHighlightingAreaValues($(image_hidden_fields[0]).attr("id"), 1, 1, '0', '0', currrent_img.width(), currrent_img.height());
             
-            $("#"+image_hidden_fields.attr("id") +"_ha1_code_id").attr("value","-1");
+            // $("#"+image_hidden_fields.attr("id") +"_ha1_code_id").attr("value","-1");
+            $(image_hidden_fields[0]).children()[1].value = "-1"
             
             $("#high_area1").css("top", $("#myCarousel").position().top);
 
@@ -396,6 +400,8 @@ function clearHighlightedArea () {
     
     $("#high_area2").css("top","0px");
     $("#high_area2").css("width","0px");
+
+    $("#status").attr("value","1")
 }
 
 function progressBarPercentage () {

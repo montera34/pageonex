@@ -7,14 +7,14 @@ class CodingController < ApplicationController
     @highlighted_areas = []
 
     # add only the hightlighted area related to existing images
-    # @thread.highlighted_areas.each do |ha|
-    #   @highlighted_areas << ha if @thread.images.include? ha.image
-    # end
-    @highlighted_areas = @thread.highlighted_areas
+    @thread.highlighted_areas.each do |ha|
+      @highlighted_areas << ha if @thread.images.include? ha.image
+    end
+    # @highlighted_areas = @thread.highlighted_areas
 
     @images = @thread.images.sort do |img1, img2|
       img1.publication_date <=> img2.publication_date
-    end
+    end 
     # render json: @images.to_json
 
   end
@@ -59,12 +59,12 @@ class CodingController < ApplicationController
     @codes = @thread.codes
     
 
-    
+    @highlighted_areas = []
     # add only the hightlighted area related to existing images
-    # @thread.highlighted_areas.each do |ha|
-    #   @highlighted_areas << ha if @thread.images.include? ha.image
-    # end
-    @highlighted_areas = @thread.highlighted_areas
+    @thread.highlighted_areas.each do |ha|
+      @highlighted_areas << ha if @thread.images.include? ha.image
+    end
+    # @highlighted_areas = @thread.highlighted_areas
 
     
     # sort highlighted areas by the image name
@@ -79,6 +79,8 @@ class CodingController < ApplicationController
 
     @high_areas_per = {}
     
+    @codes_high_areas = {}
+
     @ratios = {}
 
     images_per_row = @thread.images.length / @thread.media.length
@@ -93,6 +95,14 @@ class CodingController < ApplicationController
 
     1.upto(images_per_row) do |c|
       @ratios["#{c}"] = 0
+    end
+
+    1.upto(images_per_row) do |c|
+      @codes_high_areas["c#{c}"] = {}
+      @codes.each do |code|
+        @codes_high_areas["c#{c}"]["code_#{code.id}"] = 0.0
+      end
+      
     end
 
     @sorted_images = @thread.images.sort do |img1, img2|
@@ -111,34 +121,52 @@ class CodingController < ApplicationController
       end
     end
 
-    @images_columns .each do |cr,imgs|
-      
+    # @images_columns.each do |cr,imgs|
+    #   imgs.each do |img|
+    #     img.highlighted_areas.each do |ha|
+    #       if @codes.include? ha.code
+    #         highlighted_area = ha.areas[0]["height"].to_f * ha.areas[0]["width"].to_f
+    #         image_area = ha.image.size.split("x")[0].to_f * ha.image.size.split("x")[1].to_f
+    #         ratio = (highlighted_area / image_area) * 100
+    #         @high_areas_per[cr] << ratio.ceil
+    #       end # if
+    #     end # img.highlighted areas
+    #   end # img.each
+    # end # @images_colums.each
+
+    # c = 0.0
+    # @high_areas_per.each do |cr,rs|
+    #   rs.each do |r|
+    #     c += r.to_i
+    #   end
+    #   @ratios[cr[1..cr.length]] = c / @thread.media.length
+    #   c = 0.0
+    # end
+
+    @images_columns.each do |cr,imgs|
       imgs.each do |img|
-        
         img.highlighted_areas.each do |ha|
           if @codes.include? ha.code
             highlighted_area = ha.areas[0]["height"].to_f * ha.areas[0]["width"].to_f
             image_area = ha.image.size.split("x")[0].to_f * ha.image.size.split("x")[1].to_f
             ratio = (highlighted_area / image_area) * 100
-            @high_areas_per[cr] << ratio.ceil
-          end
-        end
+            @codes_high_areas[cr]["code_#{ha.code.id}"] += ratio.ceil
+         end
+        end 
+      end 
+    end 
 
+    number_of_rows = @thread.media.length
+    @codes_high_areas.each do |column,codes|
+      codes.each do |code_id, value|
+        @codes_high_areas[column][code_id] = value/number_of_rows
       end
-
     end
 
-    c = 0.0
-    @high_areas_per.each do |cr,rs|
-      rs.each do |r|
-        c += r.to_i
-      end
-      @ratios[cr[1..cr.length]] = c / @thread.media.length
-      c = 0.0
-    end
+
     # end of the calculating and store the results in @ratios hash
 
-    # render json: @ratios
+    # render json: @codes_high_areas
 
 
   end
