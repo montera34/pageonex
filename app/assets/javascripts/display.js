@@ -6,7 +6,7 @@ $(function () {
 		var image_box = $(".images .span1")
 		var number_of_images = parseInt($("#number_of_column").attr("value"))// images.length/parseInt($("#number_of_rows").attr("value"))
 		// var row_width = $("div.images").width() - 225;	
-		var row_width = $(".img_box").width() 
+		var row_width = $(".img_box").width()
 
 		for (var i = 0; i < images.length; i++) {
 			var curr_img = $(images[i])

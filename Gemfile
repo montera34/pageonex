@@ -41,9 +41,11 @@ group :test do
   gem 'launchy'
 end
 
-gem "rmagick"
+# gem "rmagick"
 
-# gem "image_science"
+# gem "image_sorcery"
+
+# gem 'acts-as-taggable-on', '~> 2.3.1'
 
 gem 'jquery-rails'
 
