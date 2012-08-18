@@ -20,9 +20,9 @@
         <h2>Thread Name:</h2>
         <h3><%= @thread.thread_display_name.capitalize %></h3>
         <hr>
-        <h3>Current Image Number:</h3>
+<!--         <h3>Current Image Number:</h3>
         <h3 id="image_number" style="font-weight:normal"></h3>
-        <hr>
+        <hr> -->
         <h3>Topics coded:</h3>
             <% @thread.codes.each do |code| %>
                 <!-- <div id="code<%= code.id %>" style="background-color:<%= code.color %>;color:black" class="code"></div> -->
@@ -44,7 +44,8 @@
 
         <hr>
         <h3>Source of image</h3>
-        <a href="http://Kiosko.net">Kiosko.net</a>
+        <!-- <a id="source_of_image"  href="#">Original image form - Kiosko.net</a> -->
+        <input id="source_of_image" type="text" class="span2" value="#" rel="tooltip" title="Copy + Paste">
     </div>
     <div id="images_section" class="span7">
         <div id="myCarousel" class="carousel slide" >
@@ -151,7 +152,8 @@
                 </div>
 
                 <div class="pull-right">
-                    <%= submit_tag "Save", :id=>"save", class: "btn btn-primary "%>
+                    <%= submit_tag "Save", class: "save btn btn-primary "%>
+                    <%= submit_tag "Save and Display", class: "save btn btn-info"%>
                     <a href="/" class="btn ">Cancel</a>
                 </div>
             </div>
@@ -206,7 +208,7 @@ $(function (argument) {
 
     };
 
-    $("#save").click(function (e) {
+    $(".save").click(function (e) {
         $("#status").attr("value","0")
 
     })

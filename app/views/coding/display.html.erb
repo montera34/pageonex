@@ -253,7 +253,7 @@
 			column_values.push(parseFloat($(column_codes[z]).attr("value")))
 		};
 		columns_data.push(column_values)
-		console.log(column_values)
+		
 		column_values = []
 		column_codes = []
 	};
@@ -263,7 +263,7 @@
 	for (var i = 0; i < codes.length; i+=2) {
 		codes_colors.push($(codes[i]).css("background-color"))
 	};
-	console.log(columns_data)
+	
 	function drawChart() {
 		var data = google.visualization.arrayToDataTable(columns_data);
 

@@ -43,7 +43,11 @@ class CodingController < ApplicationController
 
     end
 
-    redirect_to "/users/#{current_user.username.split(' ').join('_')}/threads/#{@thread.thread_name}"
+    if params[:commit] == "Save"
+      redirect_to :back #"/users/#{current_user.username.split(' ').join('_')}/threads/#{@thread.thread_name}/coding/"
+    else
+      redirect_to "/users/#{current_user.username.split(' ').join('_')}/threads/#{@thread.thread_name}"
+    end
     # render json: params.to_json
   end
 
