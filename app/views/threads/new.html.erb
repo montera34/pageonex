@@ -1,3 +1,4 @@
+<!-- include the jquery miniColor lib -->
 <%= javascript_include_tag "jquery.miniColors.js" %>
 <%= stylesheet_link_tag "jquery.miniColors.css" %>
 
@@ -12,6 +13,7 @@
 
 <hr>
 <%= form_for @thread, :url => { :controller => :threads, :action => :create}, :class => "form-horizontal" do |f| %>
+  <!-- errors box for, showing the validtion errors -->
   <div id="errors">
     <% if @thread.errors.any? %>
       <div class="alert alert-error">
@@ -37,6 +39,7 @@
     <a id="open_thread" class="btn btn-primary status" rel="popover"  data-content="In case of selecting this option, this means each day PageOneX, will scrape the latest newspapers front pages related to the thread automatically" data-original-title="Opened Thread" >Opened</a>
     <a id="close_thread" class="btn btn-inverse active status" rel="popover"  data-content="In case of selecting this option, this means the created thread will not be updated and PageOneX will not scrape any newspapers front pages automatically" data-original-title="Closed Thread" >Closed</a>
   </div>
+  <!-- the status value is closed by default but if you change it to open it will change this value -->
   <%= hidden_field_tag :status,"closed" %>
   <br>
   <div class="date_errors">
@@ -67,15 +70,12 @@
   	<%= label_tag :media, nil, :id => "media_label1" %>
   	<%= select_tag :media, options_from_collection_for_select(@media, "id", "name"),  :multiple => true ,"rel" => "popover", "data-content"  => "To select multiple newspapers: Hold Ctrl + select the newspaper, release the Ctrl with scrolling and hold it again before any other selection", "data-original-title" => "Select Multiple Newspapers" , style: "height: 300px;width: 300px;", :class=>"js_validate" %>
   	<br>
-
+    <!-- a list of all selected newspapers -->
     <%= hidden_field_tag :selected_newspapers, params["media"] %>
   </div>
+  <!-- used to clear the highlighted areas selection -->
   <a id="clear_media" class="btn">Clear all choices</a>
-  <% #label_tag :media1, nil, :id => "media_label1" %>
-  <% #select_tag :media1, options_from_collection_for_select(@media, "id", "name"),  :multiple => true%>
 
-	<!-- <a id="add_media" class="btn">Add Another Newspaper</a> -->
-	<% #hidden_field_tag :media_count, 1 %>
 
 	<hr>
 	<h2>Coding info</h2><br>
@@ -113,7 +113,7 @@
     
     
     <br>
-
+    <!-- if there was another topics, it will be displayed -->
     <% if params["topic_count"].to_i >  1 %>
       <% 2.upto(params["topic_count"].to_i) do |c| %>
         <div id=<%= "topic_#{c}" %> class="well">
@@ -129,6 +129,7 @@
       <% end %>
     <% end %>
 
+    <!-- used to add another topic box -->
     <a id="add_topic" class="btn">Add Another Code/Topic</a>
     <% if params[:topic_count].to_i > 1 %>
       <%= hidden_field_tag :topic_count, params[:topic_count].to_i %>
@@ -143,10 +144,12 @@
 	</div>
 <% end %>
 
+<!-- hold a false value as long as there was no problems -->
 <%= hidden_field_tag :validation_error, "false"  %>
 <%= hidden_field_tag :empty_topic, params[:empty_topic] %>
 <%= hidden_field_tag :empty_media, params[:empty_media] %>
 
+<!-- this is the template for the topic box, which is cloned for each new added topic -->
 <div id="topic" class="well"  style="display:none">
       <%= label_tag "topic_name", nil, :id => "topic_name_label" %>
       <%= text_field_tag "topic_name",nil,placeholder: "Code/Topic name" %> 
@@ -158,6 +161,8 @@
       <%= text_area_tag "topic_description",nil,:rows => "5",placeholder: "Some Info about that topic" %> 
 </div>
 
+
+<!-- and this is the message box, that appears after submitting the form -->
 <div class="modal hide" id="scraping">
   <div class="modal-header">
     <h3>Scraping</h3>
@@ -171,8 +176,5 @@
   </div>
 </div>
 
+<!-- including the script for validation -->
 <%= javascript_include_tag "new_thread_validation" %>
-<script type="text/javascript">
-
-</script>
-

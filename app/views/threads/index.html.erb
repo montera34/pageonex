@@ -1,3 +1,4 @@
+<!-- displaying the error message if the user was not permitted for editing a thread -->
 <% if flash[:thread_name_error] %>
 	<div class="alert alert-error">
 		<a type="button" class="close" data-dismiss="alert">×</a>
@@ -5,6 +6,7 @@
 	</div>
 <% end %>
 
+<!-- this condition is used to distinguish listing all threads from listing the owned threads -->
 <% if params[:a] == "t" %>
 	<% @threads = Threadx.all %>
 <% else %>
@@ -61,6 +63,7 @@
 
 <script type="text/javascript">
 $(function () {
+	// if the user tried to delete a thread, there will be a prompt box to confirm first
 	$(".delete").click(function (event) {
 		event.preventDefault()
 		if (confirm("Are you sure?")) {
