@@ -12,7 +12,7 @@ class ThreadsController < ApplicationController
 		@media = []
 		@thread = Threadx.new
 		Media.all.each do |newspaper|
-			# for each media object it change it's name on fly(with actually effecting the object in the db) and it to the @media array
+			# for each media object it changes its name on fly(with actually effecting the object in the db) and it to the @media array
 			newspaper.name = "#{newspaper.country} - #{newspaper.display_name}"
 			@media << newspaper
 		end
@@ -46,7 +46,7 @@ class ThreadsController < ApplicationController
 			
 			# this array is made to passed to Scraper.get_issues method, because this method accept the specific format of newspapers names as the following
 			# {"es" => ["elpais", "abc"], "de" => ["faz", "bild"], "fr" => ["lemonde", "lacroix"], "it" => ["corriere_della_sera", "ilmessaggero"], "uk" => ["the_times", ],"us" => ["wsj", "newyork_times", "usa_today"]}
-			# city attribute holds the country code like {"es", "de", ...}
+			# city attribute holds the country code which is the second column in the kisoko.csv file, and the city attribute should be changed to country_code instead like {"es", "de", ...} 
 			# name attribute holds the name of the newspaper {"elpais", "abc", ...}
 			newspapers_names = {}
 
@@ -79,9 +79,11 @@ class ThreadsController < ApplicationController
 			images = []
 
 			# passes dates and formated newspapers_names array, and the return is a hash contains info about each images(publication_date, media, local_path)
+			# in the future, if we want to add the feature for choosing between multiple scraper, so it will be here, by passing another argument to the scraper to choose the source for scraping
 			newspapers_images = Scraper.get_issues(@thread.start_date, @thread.end_date, newspapers_names)
 
 			# after the scraper finishes, it return hash of the scraped images
+			# this returned hash contains the images name which is in this format [newspaper_name-publication_date], the url, and the media id
 			newspapers_images.each do |image_name, image_info|
 				# search if the image dose not exsit, it create an object for this image 
 				if ( (image = Image.find_by_image_name image_name) == nil)
@@ -98,12 +100,14 @@ class ThreadsController < ApplicationController
 						# end
 					else
 						image_size="750x951"
+						# this part is comment for heroku beta
 						# change the default values
 						# image_info[:publication_date]
 						# image_info["image_name"]
 					end
 
 					# create a new image object if there is was no exsiting image object for the scraped image, because image objects is global for all the threads
+					# we are storing the image url in the local_path attribute for the heroku deployment, but for the future deployment on the server, we will store the path of the image on the server in the local_path and the url in the a url attribute
 					image = Image.create!({ image_name: image_info["image_name"],publication_date: image_info[:publication_date], local_path: image_info[:local_path], media_id: media.id, size: image_size})
 					
 					images << image
@@ -115,21 +119,23 @@ class ThreadsController < ApplicationController
 				end
 			end
 
-			# save the thread to the db
+			# save the thread to the db, and assign an id to the thread
 			@thread.save
 
 			# add reference to the scraped images to the thread
 			@thread.images << images
 
 			# add the highlighted areas, the thread
+			# there is a limitation in this version which is; it supports two highlighted areas for each image
+			# we can in the future add loop to add any number of highlighted areas
 			@thread.images.each do |img|
-				highlighted_area1 = HighlightedArea.create!({:name => "image#{img.id}_ha1" ,:image => img, user: current_user,  threadx: @thread })
 
+				highlighted_area1 = HighlightedArea.create!({:name => "image#{img.id}_ha1" ,:image => img, user: current_user, threadx: @thread })
 				Area.create({highlighted_area: highlighted_area1})
 
 				highlighted_area2 = HighlightedArea.create!({:name => "image#{img.id}_ha2" ,:image => img, user: current_user,threadx: @thread })
+    		Area.create({highlighted_area: highlighted_area2})
 
-          		Area.create({highlighted_area: highlighted_area2})
 			end
 
 			# add the codes to thread
@@ -309,6 +315,7 @@ class ThreadsController < ApplicationController
 for opened thread:
 	each time a user open the thread, check first if the status is opened, if so:
 		- check if the end date is the same as today, if not change the date
+		- and also checks if the thread length exceeds 90 days, if so it will not update the thread
 		- and run the scraper again to update the thread
 
 =end		

@@ -1,7 +1,9 @@
 class CodingController < ApplicationController
   before_filter :authenticate_user!, :except => :display
 
+  # render the coding view
   def process_images
+    # set the @thread variable with the request thread
     @thread = Threadx.find_by_thread_name params[:thread_name]
     @image_counter = @thread.images.length
     @highlighted_areas = []
@@ -10,47 +12,50 @@ class CodingController < ApplicationController
     @thread.highlighted_areas.each do |ha|
       @highlighted_areas << ha if @thread.images.include? ha.image
     end
-    # @highlighted_areas = @thread.highlighted_areas
 
+    # sort the images by their publication_date
     @images = @thread.images.sort do |img1, img2|
       img1.publication_date <=> img2.publication_date
     end 
-    # render json: @images.to_json
 
   end
 
+  # process the submitted highlighted area from the coding view, and redirect to the display
   def process_highlighted_areas
     @thread = Threadx.find_by_thread_name params[:thread_name]
+    # sort the images
     @images = @thread.images.sort do |img1, img2|
       img1.publication_date <=> img2.publication_date
     end
 
     @image_counter = @thread.images.length
 
+    # set the highlighted areas values
     @thread.highlighted_areas.each do |ha|
+      # if the status of highlighted areas is "1" it means this highlighted areas have changed
       if params["#{ha.name}_status"] == "1"
+        # if the highlighted areas is "0" thats mean this highlighted areas have changed is cleared
         if params["#{ha.name}"] == "0"
           ha.update_attribute("code_id",0)          
           ha.areas[0].update_attributes({x1:0, y1:0, x2:0, y2:0 , width:0, height:0})
         else
           code_id = params["#{ha.name}_code_id"]
-
           ha.update_attribute("code_id",code_id.to_i)
-
           ha.areas[0].update_attributes({x1: params["#{ha.name}_x1"].to_i, y1: params["#{ha.name}_y1"].to_i, x2: params["#{ha.name}_x2"].to_i, y2: params["#{ha.name}_y2"].to_i, width: params["#{ha.name}_width"].to_i, height: params["#{ha.name}_height"].to_i})
         end
       end
 
     end
 
+    # if the user clicked "Save" button, so it will redirect the user to the coding view again, otherwise it will redirect to the coding
     if params[:commit] == "Save"
       redirect_to :back #"/users/#{current_user.username.split(' ').join('_')}/threads/#{@thread.thread_name}/coding/"
     else
       redirect_to "/users/#{current_user.username.split(' ').join('_')}/threads/#{@thread.thread_name}"
     end
-    # render json: params.to_json
   end
 
+  # render display view
   def display
     @thread = Threadx.find_by_thread_name params[:thread_name]
     
@@ -68,11 +73,8 @@ class CodingController < ApplicationController
     @thread.highlighted_areas.each do |ha|
       @highlighted_areas << ha if @thread.images.include? ha.image
     end
-    # @highlighted_areas = @thread.highlighted_areas
-
     
     # sort highlighted areas by the image name
-    # change this
     @highlighted_areas.sort! do |ha1,ha2|
     	ha1.name.split('_')[0][5..100].to_i <=> ha2.name.split('_')[0][5..100].to_i
     end
@@ -124,29 +126,6 @@ class CodingController < ApplicationController
         @images_columns["c#{cr}"] << img
       end
     end
-
-    # @images_columns.each do |cr,imgs|
-    #   imgs.each do |img|
-    #     img.highlighted_areas.each do |ha|
-    #       if @codes.include? ha.code
-    #         highlighted_area = ha.areas[0]["height"].to_f * ha.areas[0]["width"].to_f
-    #         image_area = ha.image.size.split("x")[0].to_f * ha.image.size.split("x")[1].to_f
-    #         ratio = (highlighted_area / image_area) * 100
-    #         @high_areas_per[cr] << ratio.ceil
-    #       end # if
-    #     end # img.highlighted areas
-    #   end # img.each
-    # end # @images_colums.each
-
-    # c = 0.0
-    # @high_areas_per.each do |cr,rs|
-    #   rs.each do |r|
-    #     c += r.to_i
-    #   end
-    #   @ratios[cr[1..cr.length]] = c / @thread.media.length
-    #   c = 0.0
-    # end
-
     @images_columns.each do |cr,imgs|
       imgs.each do |img|
         img.highlighted_areas.each do |ha|
@@ -166,12 +145,6 @@ class CodingController < ApplicationController
         @codes_high_areas[column][code_id] = value/number_of_rows
       end
     end
-
-
-    # end of the calculating and store the results in @ratios hash
-
-    # render json: @codes_high_areas
-
 
   end
 end

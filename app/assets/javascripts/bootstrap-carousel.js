@@ -146,6 +146,7 @@
   }
 
   $.fn.carousel.defaults = {
+    // because there was a problem with sliding interval in the carousel, which is get re-set to the default value which was 5 sec, so I was have to override this value in the library it self with a huge number
     interval: 500000000
   , pause: 'hover'
   }

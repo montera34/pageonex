@@ -7,6 +7,7 @@
 <% end %>
 
 <!-- this condition is used to distinguish listing all threads from listing the owned threads -->
+<!-- "t" for all threads -->
 <% if params[:a] == "t" %>
 	<% @threads = Threadx.all %>
 <% else %>
@@ -66,7 +67,7 @@ $(function () {
 	// if the user tried to delete a thread, there will be a prompt box to confirm first
 	$(".delete").click(function (event) {
 		event.preventDefault()
-		if (confirm("Are you sure?")) {
+		if (confirm("Are you sure you want to delete this thread?")) {
 			event.click()
 		};
 		return false

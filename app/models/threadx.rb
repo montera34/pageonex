@@ -17,6 +17,7 @@ class Threadx < ActiveRecord::Base
 
 	validates :thread_display_name, :start_date, :end_date, :description , :category, :presence => true
 	
+	# this validation runs when a user create a thread, and checks if the user has a thread with same name or not
 	validate :existing_thread, :on => :create
 
 	def existing_thread
