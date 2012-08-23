@@ -6,7 +6,6 @@
 <% end %>
 
 
-
 <h3>Coding Progress: You Have Coded [<span id="remain"></span>] from [<span id="total"></span>]</h3>
 <div class="progress progress-striped">
   <div class="bar" style="width: 0%;"></div>
@@ -44,8 +43,10 @@
 
         <hr>
         <h3>Source of image</h3>
+        <h4>From <a href="http://kiosko.net" title="">"kiosko.net"</a></h4>
         <!-- <a id="source_of_image"  href="#">Original image form - Kiosko.net</a> -->
         <input id="source_of_image" type="text" class="span2" value="#" rel="tooltip" title="Copy + Paste">
+
     </div>
     <div id="images_section" class="span7">
         <div id="myCarousel" class="carousel slide" >
@@ -196,25 +197,21 @@
 <script type="text/javascript">
 $(function (argument) {
     $(".breadcrumb li").filter("li.active").attr("class"," ");
-    // $("#code").attr("class", "active");
     $("#coding").css("font-weight","bold")
     $("#coding").css("color","#fff")
     $("#coding").attr("class", "btn btn-info");
 
     if ($("#target_image").attr("value") != null) {
-    var t_image = $("#target_image").attr("value")
-    $("#images_section div.active img").parent().attr("class", "item")
-    $("#images_section div img[name='"+t_image+"']").parent().attr("class", "active item")
-
+        var t_image = $("#target_image").attr("value")
+        $("#images_section div.active img").parent().attr("class", "item")
+        $("#images_section div img[name='"+t_image+"']").parent().attr("class", "active item")
     };
 
     $(".save").click(function (e) {
         $("#status").attr("value","0")
-
     })
 
 })
-
 
 window.onbeforeunload = function(e,s) {
     if ($("#status").attr("value") == "1") { 

@@ -70,9 +70,6 @@ $(function () {
     topic_color_element.attr("id","topic_color_"+topic_count)
     topic_color_element.attr("name","topic_color_"+topic_count)
     
-    random_color = getRandomColor();
-    topic_color_element.attr("value","#FEE"+random_color)
-
     topic_color_label_element.attr("id","topic_color_label_"+topic_count)
     topic_color_label_element.attr("for","topic_color_"+topic_count)
     topic_color_label_element.text("topic_color_"+topic_count)
@@ -92,7 +89,7 @@ $(function () {
         $("div#topic_"+topic_count+" .miniColors-trigger").css("background-color",hex)
       }
     });
-
+    // this is the default color for the new generated topic
     $("div#topic_"+topic_count+" .miniColors").attr("value","#FF0000")  
     $("div#topic_"+topic_count+" .miniColors-trigger").attr("style","margin-bottom:9px;width: 214px;height: 26px;display: block;").css("background-color", $("div#topic_"+topic_count+" .miniColors").attr("value"))
 
@@ -102,16 +99,6 @@ $(function () {
   });
   
   
-  // generate random number for creating random colors
-  function getRandomColor () {
-    random_color = Math.ceil(Math.random(topic_count)*1000)
-    if (random_color >= 100 && random_color != undefined) {
-      return random_color;
-    } else {
-      getRandomColor();
-    }
-  }
-
   // when the "strat_coding" button clicked, the message box will appears, untill the scraping finishes
   // to add any calculation or progress bar it will be added here
   $("#strat_coding").on("click",function () {
@@ -172,17 +159,6 @@ $(function () {
     // check if there was an error with media or the topic, if so it will display the error message
     if (errors_box.children().length >= 1 || empty_topic.attr('value') == 'true' || empty_media.attr('value') == 'true') {
      
-      if (errors_box.children().length == 0) {
-        $("#errors").append('<div class="alert alert-error"></div>')
-        
-        if (empty_topic.attr('value') == 'true' ) {
-          $('.alert-error').append('<li id="topic_name_message" style="display:none">Topic name cannot be empty</li>')
-        };
-        if (empty_media.attr('value') == 'true') {
-          $('.alert-error').append('<li id="media_message" style="display:none">You must at least select one newspaper</li>')
-        };
-      };
-      
       // runs the media validatior, and if there was an error it display the error message
       if (mediaValidator()) {
         $("#errors").find("#media_message").css("display","list-item")

@@ -1,5 +1,6 @@
 require "fileutils"
 require "open-uri"
+# RMagick gem is used to convert pdf file into images in the elpais scraper, to get the images size for the other scraper
 # require "RMagick"
 
 
@@ -14,10 +15,6 @@ class Scraper
 		#newspapers_issues_paths = Scraper.build_elpais_issues(year, month, start_day, end_day)
 
 		Scraper.scrape newspapers_issues_paths
-
-		# puts "Scraping is done"
-
-		# newspapers_issues_paths
 
 		@@newspapers_images
 	end
@@ -61,36 +58,7 @@ class Scraper
 		dates = (start_date..end_date).map do |d|
 			d.to_formatted_s(:scraper)
 		end
-
-
-		# day = start_day
-		# days = []
-
-		# # assume that at least the number of issues is on
-		# number_of_issues = 1
-
-		# # calculate the number of issues
-		# number_of_issues = end_day - start_day + 1 unless end_day == 0 
-
-		# number_of_issues.times do 
-		# 	if day < 10 
-		# 		f_day = String("0" + day.to_s)
-		# 	else
-		# 		f_day = day.to_s
-		# 	end
-
-		# 	if month < 10
-		# 		# formating the dates part of the images name 
-		# 		days << "#{year}/" + "0#{month}/" + f_day	
-		# 	else
-		# 		days << "#{year}/" + "#{month}/" + f_day
-		# 	end
-			
-
-		# 	day += 1
-		# end
-		# days
-
+		
 	end
 
 	# building the URIs of the issues based on the passed dates
@@ -235,8 +203,5 @@ class Scraper
 	end
 
 end
-
-#FileUtils.mkdir "public/pics" unless File.directory? "public/pics"
-#Scraper.get_issues	
 
 

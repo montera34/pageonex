@@ -1,11 +1,13 @@
 <div id="fb-root"></div>
-<script>(function(d, s, id) {
-  var js, fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) return;
-  js = d.createElement(s); js.id = id;
-  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=234164799951470";
-  fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));</script>
+<script>
+	(function(d, s, id) {
+	  var js, fjs = d.getElementsByTagName(s)[0];
+	  if (d.getElementById(id)) return;
+	  js = d.createElement(s); js.id = id;
+	  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=234164799951470";
+	  fjs.parentNode.insertBefore(js, fjs);
+	}(document, 'script', 'facebook-jssdk'));
+</script>
 
 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
 
@@ -50,7 +52,7 @@
 	<div class="span2">
 		<h3>Topics coded:</h3>
 			<% @thread.codes.each do |code| %>
-        		<!-- <div id="code-<%= code.id %>" style="background-color:<%= code.color %>; margin-left: 7px; float: left;color:black" class="codes"></div> -->
+        		
         		<h3 class="codes_boxes" style="display: inline;cursor: no-drop;" rel="popover"  data-content="<%= code.code_description %>" data-original-title="Description">
                     <span id="code_<%= code.id %>" style="background-color:<%= code.color %>;color: <%= code.color %>">CL</span>
                     <span><%= code.code_text.split("_").join(" ") %></span>
@@ -228,24 +230,30 @@
 
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script type="text/javascript">
-  	// $("#chart_div").css("width",$(".img_box").width())
+  // $("#chart_div").css("width",$(".img_box").width())
+
+  // initialize the visualization
 	google.load("visualization", "1", {packages:["corechart"]});
 	google.setOnLoadCallback(drawChart);
 	
+
 	var number_of_images = parseInt($("#number_of_column").attr("value"))
 	var number_of_codes = $(".codes_boxes").children().length/2
 
+	// this is an array of arrays which will store the columns dates, and the first array will be the header
 	var columns_data = [['Dates']]
+
+	// add the codes names in the first array
 	for (var i = 0; i < number_of_codes; i++) {
 		columns_data[0].push($($($(".codes_boxes")[i]).children()[1]).text())
 	};
-	// var column_value = 0
+
 	var dates = $("#date-box input")
 	var column_values = []
 	var column_codes = []
 
+	// iterates over the ratios stored in hidden fields and load them into the arrays
 	for (var i = 1; i <= number_of_images; i++) {
-		// column_value = parseInt($("#ratios #v"+i).attr("value"))
 		column_values = [ dates[i-1].name]
 		column_codes = $("#row_c"+i).children()
 
@@ -259,6 +267,7 @@
 	};
 
 	var codes = $(".codes_boxes span")
+	// load the codes colors in the codes_colors array to pass this array in the initialization function later, to set to the codes colors
 	var codes_colors = []
 	for (var i = 0; i < codes.length; i+=2) {
 		codes_colors.push($(codes[i]).css("background-color"))
@@ -266,7 +275,6 @@
 	
 	function drawChart() {
 		var data = google.visualization.arrayToDataTable(columns_data);
-
 		var options = {
 		  hAxis: { textPosition: 'out',	textStyle: { fontSize: 9} },
 		  vAxis: {title: 'Surfaces percentage', titleTextStyle: {color: '#FF0000'}, format:'#,##%', gridlines: {count: 1}}, 
@@ -279,6 +287,7 @@
 		// to be used after adding twitter
 		// var chart = new google.visualization.ComboChart(document.getElementById('chart_div'));	
 		
+		// start the drawing of the visualization
 		chart.draw(data, options);
 	}
 </script>
@@ -287,7 +296,6 @@
 <script type="text/javascript">
 $(function (argument) {
     $(".breadcrumb li").filter("li.active").attr("class"," ");
-    // $("#display").attr("class", "active");
     $("#disp").css("font-weight","bold")
     $("#disp").css("color","#fff")
     $("#disp").attr("class", "btn btn-info");
@@ -304,8 +312,6 @@ $(function (argument) {
 
 <style type="text/css">
 .span1{
-	/*margin-right: 20px;*/
-	/*margin-left:  0;*/
 	margin-left: 0;
 }
 </style>
