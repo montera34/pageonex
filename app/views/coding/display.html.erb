@@ -14,7 +14,7 @@
 
 <% @title = "PageOneX - Thread: #{@thread.thread_display_name.capitalize}" %>
 <h1>Display: <%= @thread.thread_display_name.capitalize %> </h1>
-<h3>Create by: <%= @thread.owner.username %></h3>
+<h3>Created by: <%= @thread.owner.username %></h3>
 
 <% if @thread.owner == current_user %>
 	<!-- <a class="btn btn-mini btn-danger" href="">Delete this thread</a> -->
@@ -97,6 +97,7 @@
 
 
 	<div id="ratios">
+		<!-- for each column we create a div contains set of hidden fields each on represent a code percentage -->
 		<% @codes_high_areas.each do |column, codes| %>
 			<div id="<%= "row_#{column}" %>">
 					<% codes.each do |code_id,value| %>
@@ -190,6 +191,7 @@
 	  <% end %>
   </div>
 
+<!-- other library we were using for the column chart, it's comment just in case we want to reuse it again -->
 <!-- "d3.min.js", "d3.layout.min.js", "rickshaw.min.js", -->
 <%= javascript_include_tag "display.js" %>
 
@@ -265,7 +267,7 @@
 		column_values = []
 		column_codes = []
 	};
-
+	
 	var codes = $(".codes_boxes span")
 	// load the codes colors in the codes_colors array to pass this array in the initialization function later, to set to the codes colors
 	var codes_colors = []

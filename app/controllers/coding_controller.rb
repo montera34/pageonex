@@ -13,6 +13,21 @@ class CodingController < ApplicationController
       @highlighted_areas << ha if @thread.images.include? ha.image
     end
 
+    
+=begin
+
+There is a problem in sorting; which is the images is scraped and sorted by the media name, and then we sort them by their publication date, but there is the get sorted a weird order in the carrousel for example:
+
+  It should make it: 
+  Date n: newspapers a b c d. 
+  Date n+1: newspapers a b c d.
+
+  Now it is making:
+  Date n: newspapers a b c d. 
+  Date n+1: newspapers d c b a. 
+
+So the following sorting method should be modified
+=end
     # sort the images by their publication_date
     @images = @thread.images.sort do |img1, img2|
       img1.publication_date <=> img2.publication_date

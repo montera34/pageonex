@@ -16,7 +16,7 @@ $(document).ready(function () {
     
         // initializing jQuery UI draggable plugin to give the user the ability to change the highlighted areas position
         $(".high_area").draggable({
-            // attach the is callback for the stop event, so if the user drag the highlighted area to a differnt position, it will set the new values to image related hidden fields
+            // attach a callback for the stop event, so if the user drag the highlighted area to a differnt position, it will set the new values to image related hidden fields
             stop: function (event, ui) {
                 var carousel_position = $('.carousel').position()
                 var y1 =  ui.position.top - carousel_position.top
@@ -33,7 +33,7 @@ $(document).ready(function () {
             containment:'#myCarousel',
             handles: "se, ne",
             aspectRatio: false,
-            // attach the is callback for the resize event, so if the user change the size of the highlighted area to a differnt size, it will set the new values to image related hidden fields
+            // attach a callback for the resize event, so if the user change the size of the highlighted area to a differnt size, it will set the new values to image related hidden fields
             resize: function(e, ui) {
                 var ha = "_ha" + $(this).attr("id").substr(9);
                 image_hidden_fields.find("#"+image_hidden_fields.attr("id").split('_')[0]+ha+"_width").attr("value",ui.size.width);
@@ -128,7 +128,7 @@ $(document).ready(function () {
         $("#image_number").text(currrent_img.attr("id").substr(5,100))
     });
 
-    // if the user have zoomed out or zoomed in, it will reload the images again
+    // if the user have zoomed out or zoomed in, it will reload the highlighted areas again
     $(window).resize(function() {
         clearHighlightedArea();
         if ( $("#high_area1").css("top") == "0px") {
@@ -319,7 +319,8 @@ function setHighlightingAreaValues (ha, x1, y1, x2, y2, width, height) {
     image_hidden_fields.find("#"+ha+"_width").attr("value",width);
     image_hidden_fields.find("#"+ha+"_height").attr("value",height);
     image_hidden_fields.find("#"+ha+"_status").attr("value","1");
-    $("#status").attr("value","1")
+    // set the status to "1" to prevent the user from leaving the page without saving
+    $("#status").attr("value","1") 
 }
 
 // cancel the selection when the user done

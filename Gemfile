@@ -47,6 +47,8 @@ end
 
 # gem 'acts-as-taggable-on', '~> 2.3.1'
 
+# gem install imgkit
+
 gem 'jquery-rails'
 
 gem 'awesome_print'

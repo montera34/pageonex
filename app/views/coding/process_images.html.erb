@@ -44,11 +44,15 @@
         <hr>
         <h3>Source of image</h3>
         <h4>From <a href="http://kiosko.net" title="">"kiosko.net"</a></h4>
+
+        <!-- we are not using the direct link, because if you redirect from the same domain to kiosko, it will render the 300px image instead of the 750px -->
         <!-- <a id="source_of_image"  href="#">Original image form - Kiosko.net</a> -->
+
         <input id="source_of_image" type="text" class="span2" value="#" rel="tooltip" title="Copy + Paste">
 
     </div>
     <div id="images_section" class="span7">
+        <!-- Starting of the image slider (carousel) -->
         <div id="myCarousel" class="carousel slide" >
           <!-- Carousel items -->
           <div class="carousel-inner">
@@ -82,6 +86,8 @@
             <%end%>
           </div>
           <!-- Carousel nav -->
+
+        <!-- in case that we need to add a new highlighted area, we'll have to add another div here -->
         <a class="carousel-control left"  style="z-index: 200;" href="#myCarousel" data-slide="prev">&lsaquo;</a>
         <a class="carousel-control right" style="z-index: 200;" href="#myCarousel" data-slide="next">&rsaquo;</a>
         </div>
@@ -189,6 +195,8 @@
     
 </div>
 
+<!-- if the user in the display view, clicked any image we'll assign the "i" variable to the name of this image, and direct the user to the coding view -->
+<!-- and then set the "target_image" hidden field with the image name -->
 <% if params[:i] != nil %>
     <%= hidden_field_tag "target_image", params[:i]  %>
 <% end %>
@@ -201,12 +209,14 @@ $(function (argument) {
     $("#coding").css("color","#fff")
     $("#coding").attr("class", "btn btn-info");
 
+    // check if the "target_image" field contains any image name, if so, it will find this image, remove the active class from the current active image and assign this class to this image
     if ($("#target_image").attr("value") != null) {
         var t_image = $("#target_image").attr("value")
         $("#images_section div.active img").parent().attr("class", "item")
         $("#images_section div img[name='"+t_image+"']").parent().attr("class", "active item")
     };
 
+    // when the user click save, it will set the status to "0", to allow the form to be submitted
     $(".save").click(function (e) {
         $("#status").attr("value","0")
     })
