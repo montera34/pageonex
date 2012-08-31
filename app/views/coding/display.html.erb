@@ -40,10 +40,10 @@
 
 <div class="row">
 	<div class="span2">
-		<h3>Name:</h3> <p><%= @thread.thread_display_name %></p>
-		<h3>Description:</h3><p> <%= @thread.description %></p>
-		<h3>Category:</h3> <p><%= @thread.category %></p>
-		<h3>Status:</h3> <p><%= @thread.status %></p>
+		<!--<h5>Name:</h5>--> <h2><%= @thread.thread_display_name %></h2>
+		<h5>Description:</h5><p> <%= @thread.description %></p>
+		<h5>Category:</h5> <p><%= @thread.category %></p>
+		<h5>Status:</h5> <p><%= @thread.status %></p>
 	</div>
 	<div class="span2">
 		<p><h3>From:</h3> <%= @thread.start_date.inspect %></p>
@@ -62,7 +62,7 @@
     </div>
 </div> 
 <br>
-<h3>Share:</h3>
+<!--<h3>Share:</h3>-->
 <div class="row">
 
 

@@ -14,19 +14,24 @@
 	<% @threads = current_user.owned_threads %>
 <% end %>
 
-<div class="row">
+<div class="span8">
 <% if @threads != [] %>
 	<% @threads.each do |thread| %>
 		<div class="thumbnail">
+		<!--<div class="thumbnail">-->
 		<!--  <img src="<%= "/assets#{thread.images[0].local_path}"%>" style="height: 130px;" alt=""> -->
 		
 		<!-- for heroku -->
-		<img src="<%= "#{thread.images[0].local_path}"%>" style="height: 130px;" alt="">
+		<a href="<%= "/users/#{thread.owner.username.split(' ').join('_')}/threads/#{thread.thread_name}/" %>">
+			<img src="<%= "#{thread.images[0].local_path}"%>" style="height: 130px;" alt="">
+			<img src="<%= "#{thread.images[1].local_path}"%>" style="height: 130px;" alt="">
+			<img src="<%= "#{thread.images[2].local_path}"%>" style="height: 130px;" alt="">
+		</a> 
 		<!-- end -->
 
 		  <div class="caption">
-		    <h5 style="text-align:center"><%= thread.thread_display_name.capitalize %></h5>
-		    <hr>
+		    <h3><%= thread.thread_display_name.capitalize %></h3>
+		   <!-- <hr> -->
 		    <p><%= thread.description %></p>
 		    <div class="row">
 		    	<div class="span2">
@@ -58,7 +63,7 @@
 		<br>
 	<% end %>
 <% else %>
-<h2>There is no threads</h2>
+<h2>There are no threads.</h2>
 <% end %>
 </div>
 

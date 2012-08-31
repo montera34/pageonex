@@ -36,32 +36,32 @@
   <br>
   <%= f.label :status %>
   <div class="btn-group" data-toggle="buttons-radio">
-    <a id="open_thread" class="btn btn-primary status" rel="popover"  data-content="In case of selecting this option, this means each day PageOneX, will scrape the latest newspapers front pages related to the thread automatically" data-original-title="Opened Thread" >Opened</a>
-    <a id="close_thread" class="btn btn-inverse active status" rel="popover"  data-content="In case of selecting this option, this means the created thread will not be updated and PageOneX will not scrape any newspapers front pages automatically" data-original-title="Closed Thread" >Closed</a>
+    <a id="open_thread" class="btn btn-primary status" rel="popover"  data-content="In case of selecting this option, PageOneX will update with the latest newspapers front pages automatically" data-original-title="Opened Thread" >Opened</a>
+    <a id="close_thread" class="btn btn-inverse active status" rel="popover"  data-content="In case of selecting this option, PageOneX will create a thread with fixed dates" data-original-title="Closed Thread" >Closed</a>
   </div>
   <!-- the status value is closed by default but if you change it to open it will change this value -->
   <%= hidden_field_tag :status,"closed" %>
   <br>
   <div class="date_errors">
   <%= f.label :start_date %>
-  <%= f.text_field :start_date, placeholder: "DD/MM/YYYY", :class => "dates js_validate datepicker","rel" => "popover", "data-content"  => "Scraping is done from Kiosko.net, so there is some dates limitations which: available years is [2008, 2009, 2010, 2011, 2012], and most of newspaper issues exist starting from 2010", "data-original-title" => "Limitations of Sources" %>
+  <%= f.text_field :start_date, placeholder: "DD/MM/YYYY", :class => "dates js_validate datepicker","rel" => "popover", "data-content"  => "Scraping is done from Kiosko.net, so there are some limitations for the years 2008, 2009, 2010, 2011, 2012. Most of newspaper exist starting from 2010", "data-original-title" => "Limitations of Sources" %>
   </div>
 
 
   <div class="date_errors">
   <%= f.label :end_date %>
-  <%= f.text_field :end_date, placeholder: "DD/MM/YYYY", :class => "dates js_validate datepicker","rel" => "popover", "data-content"  => "There is limit on the end data in this beta version, which is: the year and the month of end date must be the same as in starting date", "data-original-title" => "End date limitation" %>
+  <%= f.text_field :end_date, placeholder: "DD/MM/YYYY", :class => "dates js_validate datepicker","rel" => "popover", "data-content"  => "For the alpha version, don't choose more than 90 days threads", "data-original-title" => "End date limitation" %>
   </div>
   
 
   <div>
     <%= f.label :category %>
-    <%= f.text_field :category, placeholder: "International, national, Occupy", :class => "server_validation" %>
+    <%= f.text_field :category, placeholder: "Social, Crisis, Country", :class => "server_validation" %>
   </div>
   
   <div>
     <%= f.label :description %>
-    <%= f.text_area :description, :rows => "10", placeholder: "Few words to descripe what going on this thread", :class => "server_validation"%>
+    <%= f.text_area :description, :rows => "10", placeholder: "Explain what this thread is about", :class => "server_validation"%>
   </div>
 
 	<hr>

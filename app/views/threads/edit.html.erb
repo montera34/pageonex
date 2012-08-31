@@ -22,13 +22,13 @@
   <%= f.label :status %>
   <% if @thread.status  == "closed" %>
     <div class="btn-group" data-toggle="buttons-radio">
-      <a id="open_thread" class="btn btn-primary status" rel="popover"  data-content="In case of selecting this option, this means each day PageOneX, will scrape the latest newspapers front pages related to the thread automatically" data-original-title="Opened Thread" >Opened</a>
-      <a id="close_thread" class="btn btn-inverse active status" rel="popover"  data-content="In case of selecting this option, this means the created thread will not be updated and PageOneX will not scrape any newspapers front pages automatically" data-original-title="Closed Thread" >Closed</a>
+      <a id="open_thread" class="btn btn-primary status" rel="popover"  data-content="In case of selecting this option, PageOneX will update with the latest newspapers front pages automatically" data-original-title="Opened Thread" >Opened</a>
+      <a id="close_thread" class="btn btn-inverse active status" rel="popover"  data-content="In case of selecting this option, PageOneX will create a thread with fixed dates" data-original-title="Closed Thread" >Closed</a>
     </div>
   <% else %>
     <div class="btn-group" data-toggle="buttons-radio">
-      <a id="open_thread" class="btn btn-primary status active" rel="popover"  data-content="In case of selecting this option, this means each day PageOneX, will scrape the latest newspapers front pages related to the thread automatically" data-original-title="Opened Thread" >Opened</a>
-      <a id="close_thread" class="btn btn-inverse  status" rel="popover"  data-content="In case of selecting this option, this means the created thread will not be updated and PageOneX will not scrape any newspapers front pages automatically" data-original-title="Closed Thread" >Closed</a>
+      <a id="open_thread" class="btn btn-primary status active" rel="popover"  data-content="In case of selecting this option, PageOneX will update with the latest newspapers front pages automatically" data-original-title="Opened Thread" >Opened</a>
+      <a id="close_thread" class="btn btn-inverse  status" rel="popover"  data-content="In case of selecting this option, PageOneX will create a thread with fixed dates" data-original-title="Closed Thread" >Closed</a>
     </div>
   <% end %>
   <%= hidden_field_tag :status, @thread.status %>
