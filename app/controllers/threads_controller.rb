@@ -19,7 +19,7 @@ class ThreadsController < ApplicationController
 		
 	end
 
-	# create action is responsible of processing the submited new form, and create the thread object in the database and handel the validation
+	# create action is responsible of processing the submited new form, and create the thread object in the database and handle the validation
 	def create
 		# create a new threadx object with the submit params related the threadx
 		@thread = Threadx.new(params[:threadx])
@@ -30,47 +30,48 @@ class ThreadsController < ApplicationController
 		# set the owner of the thread to the current logged in user
 		@thread.owner_id = current_user.id
 
-		# set the thread status with submitted thread
+		# set the thread status with submitted thread status
 		@thread.status = params[:status]
 		
-		# if the thread is opened, set the last date with today date and update the thread each time it displayed
+		# if the thread is opened, sets the last date with today's dates and update the thread each time it's displayed.
+		# Now it works only when the Threah is save. Make if work when the thread is opened.
 		if @thread.status == "opened"
 			@thread.end_date = Date.today
 		end
 				 
-		# any submitted new thread, it should pass the following conditons to be saved to the db
+		# For any submitted new thread, it should pass the following conditons to be saved to the db
 		# (@thread.valid?) this conditions is used to check if the instantiated thread, is passing the validations in the threadx model class
-		# (params[:media] != nil) and this condtions to be sure that the thread is submitted with a more than newspaper selected
-		# (params["topic_name_1"] != "" ) this condition is to be sure the thread at least submitted with on topic
+		# (params[:media] != nil) and this condtions to be sure that the thread is submitted with more than one newspaper selected
+		# (params["topic_name_1"] != "" ) this condition is to be sure the thread has at least one topic
 		if @thread.valid? && params[:media] != nil && params["topic_name_1"] != "" 
 			
-			# this array is made to passed to Scraper.get_issues method, because this method accept the specific format of newspapers names as the following
+			# this array is made to be passed to Scraper.get_issues method, because this method accepts the specific format of newspapers names as the following
 			# {"es" => ["elpais", "abc"], "de" => ["faz", "bild"], "fr" => ["lemonde", "lacroix"], "it" => ["corriere_della_sera", "ilmessaggero"], "uk" => ["the_times", ],"us" => ["wsj", "newyork_times", "usa_today"]}
-			# city attribute holds the country code which is the second column in the kisoko.csv file, and the city attribute should be changed to country_code instead like {"es", "de", ...} 
+			# 'city attribute' holds the 'country code' which is the second column in the kisoko.csv file. The 'city attribute' should be changed to 'country_code' instead like {"es", "de", ...} 
 			# name attribute holds the name of the newspaper {"elpais", "abc", ...}
 			newspapers_names = {}
 
 			# the value of the media will be an array of the media ids, like [23,522,12,4]
 			media = params[:media]
 
-			# formating the newspapers_names hash as mentioned above
+			# formatting the newspapers_names hash as mentioned above
 			media.each do |m|
 				_media = Media.find(m)
 				@thread.media << _media
-				# for each media city(code like  {"es", "de", ...}) it dose append the newspapers
+				# for each media city(code like  {"es", "de", ...}) it appends the newspapers [here city should be changed to country]
 				if newspapers_names[_media.city] != nil
 					newspapers_names[_media.city] << _media.name 
-				# but if the city is array is empty, it will create a new array
+				# but if the city array is empty, it will create a new array
 				else
 					newspapers_names[_media.city] = []
 					newspapers_names[_media.city] << _media.name
 				end
 			end
 
-			# create object for each code submited
+			# create object for each code (topic) submited
 			codes = []
 			number_of_topics = params[:topic_count].to_i
-			# iterating over the submitted topics, and create a code object for each on and add this object to the codes array to assign it the thread 
+			# iterating over the submitted topics, and create a code object for each one. Then add this object to the codes array to assign it to the thread 
 			1.upto(number_of_topics) do |n|
 				codes << Code.create!({:code_text => params["topic_name_#{n}"], :code_description => params["topic_description_#{n}"],:color => params["topic_color_#{n}"]})
 			end
@@ -78,14 +79,14 @@ class ThreadsController < ApplicationController
 			# array of object refers to scraped images
 			images = []
 
-			# passes dates and formated newspapers_names array, and the return is a hash contains info about each images(publication_date, media, local_path)
-			# in the future, if we want to add the feature for choosing between multiple scraper, so it will be here, by passing another argument to the scraper to choose the source for scraping
+			# passes dates and formated newspapers_names array. It returns a hash that contains info about evry image: publication_date, media, local_path 
+			# in the future, if we want to add the feature for choosing between multiple scraper, it will be here, by passing another argument to the scraper to choose the source for scraping
 			newspapers_images = Scraper.get_issues(@thread.start_date, @thread.end_date, newspapers_names)
 
-			# after the scraper finishes, it return hash of the scraped images
-			# this returned hash contains the images name which is in this format [newspaper_name-publication_date], the url, and the media id
+			# after the scraper finishes, it returns a hash of the scraped images
+			# this returned hash contains the image names which are in this format [newspaper_name-publication_date], the url, and the media id
 			newspapers_images.each do |image_name, image_info|
-				# search if the image dose not exsit, it create an object for this image 
+				# search if the image dose not exist, it creates an object for this image 
 				if ( (image = Image.find_by_image_name image_name) == nil)
 					image_info["image_name"] = image_name
 					media = Media.find_by_name(image_info[:media])
@@ -106,26 +107,26 @@ class ThreadsController < ApplicationController
 						# image_info["image_name"]
 					end
 
-					# create a new image object if there is was no exsiting image object for the scraped image, because image objects is global for all the threads
+					# creates a new image object if there is no exsiting image object for the scraped image, because the image objects is global for all the threads
 					# we are storing the image url in the local_path attribute for the heroku deployment, but for the future deployment on the server, we will store the path of the image on the server in the local_path and the url in the a url attribute
 					image = Image.create!({ image_name: image_info["image_name"],publication_date: image_info[:publication_date], local_path: image_info[:local_path], media_id: media.id, size: image_size})
 					
 					images << image
 
-				# otherwise it finds the image, and add it to the images array
+				# otherwise it finds the image, and adds it to the images array
 				else
 					image = Image.find_by_image_name(image_name)
 					images << image
 				end
 			end
 
-			# save the thread to the db, and assign an id to the thread
+			# It saves the thread to the db, and assign an id to the thread
 			@thread.save
 
-			# add reference to the scraped images to the thread
+			# It adds a reference to the scraped images to the thread
 			@thread.images << images
 
-			# add the highlighted areas, the thread
+			# It adds the highlighted areas, the thread
 			# there is a limitation in this version which is; it supports two highlighted areas for each image
 			# we can in the future add loop to add any number of highlighted areas
 			@thread.images.each do |img|
@@ -146,14 +147,15 @@ class ThreadsController < ApplicationController
 
 		# otherwise, the new form will rendered again with the error messages
 		else
-			# we should load the names of the media again
+			# we should load the names of the media again. 
+			# A method should be created to make a DRY code. don't repeat!
 			@media = []
 			Media.all.each do |newspaper|
 				newspaper.name = "#{newspaper.country} - #{newspaper.display_name}"
 				@media << newspaper
 			end
 
-			# send some params back to the view, to till the user about what is missing
+			# send some params back to the view, to tell the user about what is missing
 			if params["topic_name_1"] == ""
 				params[:empty_topic] = "true"
 			end
@@ -172,12 +174,12 @@ class ThreadsController < ApplicationController
 	def edit
 		# set the @thread object with the thread from the user owned threads
 		@thread = current_user.owned_threads.find_by_thread_name params[:id]
-		# and if the user wasn't the owner, it redirect the user to the threads index, flash a message to the user to notify him, that he/she don't have a premission to modify this thread
+		# and if the user is not the owner, it redirects the user to the threads index, flash a message to the user to notify him, that he/she doesn't have permission to modify that thread
 		if @thread == nil
 			flash[:thread_name_error] = "You don't have premission to edit this thread"
 			redirect_to "/threads/"
 		end
-
+		# A method should be created to make a DRY code. don't repeat!
 		@media = []
 		Media.all.each do |newspaper|
 			newspaper.name = "#{newspaper.country} - #{newspaper.display_name}"
@@ -192,7 +194,7 @@ class ThreadsController < ApplicationController
 	end
 
 
-	# the update action is responsible for the processing the submitted request, it's pretty much the same as the create action
+	# the update action is responsible for processing the submitted request, it's pretty much the same as the create action. DRY this!
 	def update
 		@thread = current_user.owned_threads.find_by_thread_name params[:id]
 		@thread.thread_name = params[:threadx]["thread_display_name"].split(' ').join('_').downcase
@@ -288,7 +290,7 @@ class ThreadsController < ApplicationController
 			# and then redirect the user to the display view
 			redirect_to "/users/#{current_user.username.split(' ').join('_')}/threads/#{@thread.thread_name}"
 		else
-
+			# A method should be created to make a DRY code. don't repeat!
 			@media = []
 			Media.all.each do |newspaper|
 				newspaper.name = "#{newspaper.country} - #{newspaper.display_name}"
@@ -309,11 +311,11 @@ class ThreadsController < ApplicationController
 	def show
 		@thread = Threadx.find_by_thread_name params[:id]
 
-		# I think I've forget to finish this part, so I'll do it first thing tomorrw after the meeting!
+		# 
 =begin
 	
 for opened thread:
-	each time a user open the thread, check first if the status is opened, if so:
+	each time a user opens the thread, check first if the status is opened, if so:
 		- check if the end date is the same as today, if not change the date
 		- and also checks if the thread length exceeds 90 days, if so it will not update the thread
 		- and run the scraper again to update the thread
@@ -323,7 +325,7 @@ for opened thread:
 		redirect_to "/users/#{current_user.username.split(' ').join('_')}/threads/#{@thread.thread_name}"
 	end
 
-	# the destroy actions, is for deleting threads 
+	# the destroy actions, is for deleting a thread
 	def destroy
 		@thread = Threadx.find_by_thread_name params[:id]
 		@thread.codes.each do |code|
