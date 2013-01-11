@@ -97,10 +97,10 @@ class ThreadsController < ApplicationController
 						# image_size = "#{image_size.columns}x#{image_size.rows}"
 
 						# for the online heroku beta
-							image_size="750x951"
+							image_size="750x951" #!!this value of pixels is 'hard coded' so it gives wrong values for long newspapers
 						# end
 					else
-						image_size="750x951"
+						image_size="750x951" #!!this value of pixels is 'hard coded' so it gives wrong values for long newspapers
 						# this part is comment for heroku beta
 						# change the default values
 						# image_info[:publication_date]
@@ -237,10 +237,10 @@ class ThreadsController < ApplicationController
 							# image_size = "#{image_size.columns}x#{image_size.rows}"
 
 							# for the online heroku beta
-							image_size="750x951"
+							image_size="750x951" #!!this value of pixels is 'hard coded' so it gives wrong values for long newspapers
 							# end
 						else
-							image_size="750x951"
+							image_size="750x951" #!!this value of pixels is 'hard coded' so it gives wrong values for long newspapers
 							# change the default values
 							# image_info[:publication_date]
 							# image_info["image_name"]

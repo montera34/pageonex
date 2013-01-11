@@ -145,8 +145,8 @@ So the following sorting method should be modified
       imgs.each do |img|
         img.highlighted_areas.each do |ha|
           if @codes.include? ha.code
-            highlighted_area = ha.areas[0]["height"].to_f * ha.areas[0]["width"].to_f
-            image_area = ha.image.size.split("x")[0].to_f * ha.image.size.split("x")[1].to_f
+            highlighted_area = ha.areas[0]["height"].to_f * ha.areas[0]["width"].to_f #"to_f" returns number as a float.
+            image_area = ha.image.size.split("x")[0].to_f * ha.image.size.split("x")[1].to_f #takes the values from the threads_controler.rb " image_size="750x951" " that's causing the error in the visualization for tabloids format. it gives approx good measures for "spanish" format newspapers 
             ratio = (highlighted_area / image_area) * 100
             @codes_high_areas[cr]["code_#{ha.code.id}"] += ratio.ceil
          end
