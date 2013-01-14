@@ -6,8 +6,8 @@ namespace :scraping do
 	
 	# The csv file is scraped by the the following script which wrote by "rporres" (https://metacpan.org/author/RPORRES) 
 	# https://gist.github.com/2970558
-	desc "Load kiosko newspapers names from kiosko.cvs file"
-	task :kiosko_names_cvs => :environment do
+	desc "Load kiosko newspapers names from kiosko.csv file"
+	task :kiosko_names_csv => :environment do
 		csv_file = File.read("public/kiosko.csv")
 		csv = CSV.parse(csv_file,:headers=>true)
 
