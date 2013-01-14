@@ -22,7 +22,7 @@
 		<!--  <img src="<%= "/assets#{thread.images[0].local_path}"%>" style="height: 130px;" alt=""> -->
 		
 		<!-- for heroku -->
-		<a href="<%= "/users/#{thread.owner.username.split(' ').join('_')}/threads/#{thread.thread_name}/" %>">
+		<a href="<%= "/#{thread.owner.username.split(' ').join('_')}/#{thread.thread_name}/" %>">
 			<img src="<%= "#{thread.images[0].local_path}"%>" style="height: 130px;" alt="">
 			<img src="<%= "#{thread.images[1].local_path}"%>" style="height: 130px;" alt="">
 			<img src="<%= "#{thread.images[2].local_path}"%>" style="height: 130px;" alt="">
@@ -52,7 +52,7 @@
 		    	</div>
 		    </div>
 
-		    <p><a href="<%= "/users/#{thread.owner.username.split(' ').join('_')}/threads/#{thread.thread_name}/" %>" class="btn btn-primary">Show</a> 
+		    <p><a href="<%= "/#{thread.owner.username.split(' ').join('_')}/#{thread.thread_name}/" %>" class="btn btn-primary">Show</a> 
 		    <% if thread.owner == current_user %>
 			    <%= link_to "Delete", "/threads/#{thread.thread_name}" ,:method=>"delete" , :class => "btn btn-danger delete" %>
 			    <a href="<%= "/threads/#{thread.thread_name}/edit/" %>" class="btn">Edit</a>

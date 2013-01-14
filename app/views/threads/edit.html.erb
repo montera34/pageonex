@@ -96,7 +96,7 @@
 
   <hr>
   <%= f.submit "Update Thread", :class => "btn" %>
-  <!-- <a class="btn btn-primary" href='<%="/users/#{current_user.username}/threads/#{@thread.thread_name}"%>' >Cancel</a> -->
+  <!-- <a class="btn btn-primary" href='<%="/#{current_user.username}/#{@thread.thread_name}"%>' >Cancel</a> -->
   <a class="btn btn-primary" href='<%="/threads/"%>' >Cancel</a>
 <% end %>
 

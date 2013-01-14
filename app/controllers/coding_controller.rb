@@ -64,9 +64,9 @@ So the following sorting method should be modified
 
     # if the user clicked "Save" button, so it will redirect the user to the coding view again, otherwise it will redirect to the coding
     if params[:commit] == "Save"
-      redirect_to :back #"/users/#{current_user.username.split(' ').join('_')}/threads/#{@thread.thread_name}/coding/"
+      redirect_to :back #"/#{current_user.username.split(' ').join('_')}/#{@thread.thread_name}/coding/"
     else
-      redirect_to "/users/#{current_user.username.split(' ').join('_')}/threads/#{@thread.thread_name}"
+      redirect_to "/#{current_user.username.split(' ').join('_')}/#{@thread.thread_name}"
     end
   end
 

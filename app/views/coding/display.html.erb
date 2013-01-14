@@ -130,7 +130,7 @@
 					<% if @images[ic].media == m  %>
 						<div id="<%= "image_box#{ic+1}" %>" style="margin-bottom: 4px" class="span1 <%= "thum_image#{ic+1}" %>" image_name="<%= @images[ic].image_name %>">
 
-			          		<a href='<%= "/users/#{@thread.owner.username.split(' ').join('_')}/threads/#{@thread.thread_name}/coding/?i=#{@images[ic].image_name}" %>' title="">
+			          		<a href='<%= "/#{@thread.owner.username.split(' ').join('_')}/#{@thread.thread_name}/coding/?i=#{@images[ic].image_name}" %>' title="">
 				          		
 				          		<% #image_tag "/assets#{@thread.images[ic].local_path}", id: "image#{ic+1}", style: " opacity: 0.8;", image_size: @images[ic].size%>
 									

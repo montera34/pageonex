@@ -143,7 +143,7 @@ class ThreadsController < ApplicationController
 			@thread.codes << codes
 
 			# if all the above goes without any problem, the user will be redirected to the coding action
-			redirect_to "/users/#{current_user.username.split(' ').join('_')}/threads/#{@thread.thread_name}/coding"
+			redirect_to "/#{current_user.username.split(' ').join('_')}/#{@thread.thread_name}/coding"
 
 		# otherwise, the new form will rendered again with the error messages
 		else
@@ -288,7 +288,7 @@ class ThreadsController < ApplicationController
 			end
 
 			# and then redirect the user to the display view
-			redirect_to "/users/#{current_user.username.split(' ').join('_')}/threads/#{@thread.thread_name}"
+			redirect_to "/#{current_user.username.split(' ').join('_')}/#{@thread.thread_name}"
 		else
 			# A method should be created to make a DRY code. don't repeat!
 			@media = []
@@ -322,7 +322,7 @@ for opened thread:
 
 =end		
 
-		redirect_to "/users/#{current_user.username.split(' ').join('_')}/threads/#{@thread.thread_name}"
+		redirect_to "/#{current_user.username.split(' ').join('_')}/#{@thread.thread_name}"
 	end
 
 	# the destroy actions, is for deleting a thread
