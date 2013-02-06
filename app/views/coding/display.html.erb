@@ -1,3 +1,4 @@
+<% @title = "#{@thread.thread_display_name.capitalize} - PageOneX" %>
 <div id="fb-root"></div>
 <script>
 	(function(d, s, id) {
@@ -12,7 +13,6 @@
 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
 
 
-<% @title = "PageOneX - Thread: #{@thread.thread_display_name.capitalize}" %>
 <h1>Display: <%= @thread.thread_display_name.capitalize %> </h1>
 <h3>Created by: <%= @thread.owner.username %></h3>
 
