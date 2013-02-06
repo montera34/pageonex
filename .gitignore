@@ -16,3 +16,5 @@
 
 /app/assets/images/kiosko
 
+# Ignore OS X image cache
+.DS_Store
