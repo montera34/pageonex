@@ -24,9 +24,9 @@
 		
 		<!-- for heroku -->
 		<a href="<%= "/#{thread.owner.username.split(' ').join('_')}/#{thread.thread_name}/" %>">
-			<img src="<%= "#{thread.images[0].local_path}"%>" style="height: 130px;" alt="">
-			<img src="<%= "#{thread.images[1].local_path}"%>" style="height: 130px;" alt="">
-			<img src="<%= "#{thread.images[2].local_path}"%>" style="height: 130px;" alt="">
+			<% thread.images[0,3].each do |image| %>
+				<img src="<%= "#{image.local_path}"%>" style="height: 130px;" alt="">
+			<% end %>
 		</a> 
 		<!-- end -->
 
