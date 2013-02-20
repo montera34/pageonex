@@ -10,9 +10,6 @@ class Threadx < ActiveRecord::Base
 
 	has_many :codes
 
-	has_many :threadx_images
-	has_many :images, :through => :threadx_images
-	
 	has_many :highlighted_areas
 
 	validates :thread_display_name, :start_date, :end_date, :description , :category, :presence => true
@@ -30,5 +27,8 @@ class Threadx < ActiveRecord::Base
 			end
 		end
 	end
-
+	
+	def images
+		Image.by_media(medium_ids).by_date(start_date..end_date)
+	end
 end

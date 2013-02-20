@@ -20,7 +20,11 @@
 	<% @threads.each do |thread| %>
 		<div class="thumbnail">
 		<!--<div class="thumbnail">-->
-		<!--  <img src="<%= "/assets#{thread.images[0].local_path}"%>" style="height: 130px;" alt=""> -->
+		<!--
+			<% thread.images[0,1].each do |image| %>
+				<img src="<%= "/assets#{image.local_path}"%>" style="height: 130px;" alt="">
+			<% end %>
+		-->
 		
 		<!-- for heroku -->
 		<a href="<%= "/#{thread.owner.username.split(' ').join('_')}/#{thread.thread_name}/" %>">

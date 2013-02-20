@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120717230420) do
+ActiveRecord::Schema.define(:version => 20130220214404) do
 
   create_table "areas", :force => true do |t|
     t.integer  "x1"
@@ -81,14 +81,6 @@ ActiveRecord::Schema.define(:version => 20120717230420) do
   create_table "threadx_collaborators", :force => true do |t|
     t.integer  "threadx_id"
     t.integer  "user_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-  end
-
-  create_table "threadx_images", :force => true do |t|
-    t.integer  "threadx_id"
-    t.integer  "image_id"
-    t.integer  "code_id"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end

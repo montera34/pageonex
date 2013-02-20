@@ -110,13 +110,6 @@ class ThreadsController < ApplicationController
 					# creates a new image object if there is no exsiting image object for the scraped image, because the image objects is global for all the threads
 					# we are storing the image url in the local_path attribute for the heroku deployment, but for the future deployment on the server, we will store the path of the image on the server in the local_path and the url in the a url attribute
 					image = Image.create!({ image_name: image_info["image_name"],publication_date: image_info[:publication_date], local_path: image_info[:local_path], media_id: media.id, size: image_size})
-					
-					images << image
-
-				# otherwise it finds the image, and adds it to the images array
-				else
-					image = Image.find_by_image_name(image_name)
-					images << image
 				end
 			end
 
@@ -209,7 +202,6 @@ class ThreadsController < ApplicationController
 			end
 
 			if true
-				images = []
 				newspapers_names = {}
 				@thread.media = []
 
@@ -247,18 +239,8 @@ class ThreadsController < ApplicationController
 						end
 
 						image = Image.create!({ image_name: image_info["image_name"],publication_date: image_info[:publication_date], local_path: image_info[:local_path], media_id: media.id, size: image_size})
-						
-						images << image
-
-					# otherwise it find the image, and add to the array
-					else
-						image = Image.find_by_image_name(image_name)
-						images << image
 					end
 				end
-				
-				@thread.images = []
-				@thread.images << images
 			end
 			if true
 				@thread.codes.to_enum.with_index.each do |code,index|
