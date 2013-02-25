@@ -21,12 +21,12 @@ end
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
   gem 'coffee-rails', '~> 3.2.1'
-
-  # See https://github.com/sstephenson/execjs#readme for more supported runtimes
-  # gem 'therubyracer'
+  gem 'therubyracer'  # See https://github.com/sstephenson/execjs#readme for more supported runtimes
+  gem 'less-rails'
   gem 'uglifier', '>= 1.0.3'
 end 
 gem "twitter-bootstrap-rails"
+gem "jquery-rails"
 gem "jquery-ui-rails"
 
 group :development, :test do
@@ -48,8 +48,6 @@ end
 # gem 'acts-as-taggable-on', '~> 2.3.1'
 
 # gem install imgkit
-
-gem 'jquery-rails'
 
 gem 'awesome_print'
 

@@ -36,21 +36,21 @@
 //= require jquery.ui.datepicker-en-AU
 // require jquery.ui.progressbar
 
-// require jquery.effects.all
-//= require jquery.effects.core
-// require jquery.effects.blind
-// require jquery.effects.bounce
-// require jquery.effects.clip
-// require jquery.effects.drop
-// require jquery.effects.explode
-// require jquery.effects.fade
-// require jquery.effects.fold
-// require jquery.effects.highlight
-// require jquery.effects.pulsate
-// require jquery.effects.scale
-// require jquery.effects.shake
-// require jquery.effects.slide
-// require jquery.effects.transfer
+// require jquery.ui.effect.all
+//= require jquery.ui.effect
+// require jquery.ui.effect-blind
+// require jquery.ui.effect-bounce
+// require jquery.ui.effect-clip
+// require jquery.ui.effect-drop
+// require jquery.ui.effect-explode
+// require jquery.ui.effect-fade
+// require jquery.ui.effect-fold
+// require jquery.ui.effect-highlight
+// require jquery.ui.effect-pulsate
+// require jquery.ui.effect-scale
+// require jquery.ui.effect-shake
+// require jquery.ui.effect-slide
+// require jquery.ui.effect-transfer
 
 //= require twitter/bootstrap/bootstrap-transition
 //= require twitter/bootstrap/bootstrap-alert
