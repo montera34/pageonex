@@ -12,60 +12,65 @@
 
 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
 
-
-<h1>Display: <%= @thread.thread_display_name.capitalize %> </h1>
-<h3>Created by: <%= @thread.owner.username %></h3>
-
-<% if @thread.owner == current_user %>
-	<!-- <a class="btn btn-mini btn-danger" href="">Delete this thread</a> -->
-	<%= link_to "Delete", "/threads/#{@thread.thread_name}" ,:method=>"delete" , :class => "btn btn-danger btn-mini delete" %>
-	<br>
-	<a href="<%= "/threads/#{@thread.thread_name}/edit"%>" class="btn  btn-mini" style="margin-top: 4px;">Edit</a> 
-<% end %>
-
-<div class="btn-group pull-right" style="margin-top: -36px;">
-    <button class="btn btn-large" disabled="disabled">Export to image</button>
-    <button class="btn btn-large dropdown-toggle" disabled="disabled" data-toggle="dropdown"><span class="caret"></span></button>
-    <ul class="dropdown-menu">
-      <li><a href="#">Download as [.svg]</a></li>
-      <li><a href="#">Download as [.csv]</a></li>
-      <li><a href="#">Download as [.ods]</a></li>
-      <li><a href="#">Download as [.png]</a></li>
-      <li class="divider"></li>
-      <li><a href="#">Download as [.pdf]</a></li>
-    </ul>
+<div class="row">
+	<div class="span8">
+		<h1><%= @thread.thread_display_name.capitalize %> </h1>
+		<h3>User: <%= @thread.owner.username %></h3>	
+	</div>
+	<div class="span2">
+		<% if @thread.owner == current_user %>
+		<!-- <a class="btn btn-mini btn-danger" href="">Delete this thread</a> -->
+		<a href="<%= "/threads/#{@thread.thread_name}/edit"%>" class="btn" style="margin-top: 4px;">Edit</a> 
+		<!--  <%=  link_to "Delete", "/threads/#{@thread.thread_name}" ,:method=>"delete" , :class => "btn btn-danger delete" %>-->
+		<% end %>
+	</div>
+	<div class="span2">
+		<div class="btn-group pull-right">
+		    <button class="btn btn-large" disabled="disabled">Export to image</button>
+		    <button class="btn btn-large dropdown-toggle" disabled="disabled" data-toggle="dropdown"><span class="caret"></span></button>
+		    <ul class="dropdown-menu">
+		      <li><a href="#">Download as [.svg]</a></li>
+		      <li><a href="#">Download as [.csv]</a></li>
+		      <li><a href="#">Download as [.ods]</a></li>
+		      <li><a href="#">Download as [.png]</a></li>
+		      <li class="divider"></li>
+		      <li><a href="#">Download as [.pdf]</a></li>
+		    </ul>
+		</div>
+	</div>
 </div>
 
-<hr>
+
+
+
 
 <div class="row">
+	<div class="span5">
+		<h4>Description</h4><p> <%= @thread.description %></p>
+	</div>
 	<div class="span2">
-		<!--<h5>Name:</h5>--> <h2><%= @thread.thread_display_name %></h2>
-		<h5>Description:</h5><p> <%= @thread.description %></p>
+		<h4>From:</h4> <p><%= @thread.start_date.inspect %></p>
+		<h4>To:</h4> <p><%= @thread.end_date.inspect %></p>
+	</div>
+	<div class="span2">
+		<h4>Topics</h4>
+			<% @thread.codes.each do |code| %>
+			<h3 class="codes_boxes" style="display: inline;cursor: no-drop;" rel="popover"  data-content="<%= code.code_description %>" data-original-title="Description">
+			    <span id="code_<%= code.id %>" style="background-color:<%= code.color %>;color: <%= code.color %>">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+			    <span><%= code.code_text.split("_").join(" ") %></span>
+		        </h3>
+			<br>
+	       		<% end %>
+    	</div>
+	<div class="span3">
 		<h5>Category:</h5> <p><%= @thread.category %></p>
 		<h5>Status:</h5> <p><%= @thread.status %></p>
 	</div>
-	<div class="span2">
-		<p><h3>From:</h3> <%= @thread.start_date.inspect %></p>
-		<p><h3>To:</h3> <%= @thread.end_date.inspect %></p>
-	</div>
-	<div class="span2">
-		<h3>Topics coded:</h3>
-			<% @thread.codes.each do |code| %>
-        		
-        		<h3 class="codes_boxes" style="display: inline;cursor: no-drop;" rel="popover"  data-content="<%= code.code_description %>" data-original-title="Description">
-                    <span id="code_<%= code.id %>" style="background-color:<%= code.color %>;color: <%= code.color %>">CL</span>
-                    <span><%= code.code_text.split("_").join(" ") %></span>
-                </h3> 
-                <br>
-       <% end %>
-    </div>
+	
 </div> 
-<br>
-<!--<h3>Share:</h3>-->
+
+<!--Share -->
 <div class="row">
-
-
 	<div class="span2">
 		<a href="https://twitter.com/share" class="twitter-share-button" data-via="PageOneX" data-hashtags="PageOneX" data-dnt="true">Tweet</a>
 	</div>
@@ -73,9 +78,7 @@
 	<div class="span4" style="margin-left: -71px;">
 		<div class="fb-like" data-send="true" data-layout="button_count" data-width="460" data-show-faces="true" data-action="recommend" data-font="verdana"></div>
 	</div>
-
 </div>
-<hr>
 
 	<div class="row">
 		<div class="span3" style="width: 195px; ">
@@ -194,7 +197,19 @@
 <!-- other library we were using for the column chart, it's comment just in case we want to reuse it again -->
 <!-- "d3.min.js", "d3.layout.min.js", "rickshaw.min.js", -->
 <%= javascript_include_tag "display.js" %>
-
+<div class="row">
+	<div class="offset2 span8">
+		<h2><%= @thread.thread_display_name %> </h2>
+		<p><%= @thread.start_date.inspect %> - <%= @thread.end_date.inspect %></p>
+		<% @thread.codes.each do |code| %>
+			<div class="codes_boxes" style="display: inline;cursor: no-drop;" rel="popover"  data-content="<%= code.code_description %>" data-original-title="Description">
+			    <span id="code_<%= code.id %>" style="background-color:<%= code.color %>;color: <%= code.color %>">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+			    <span><%= code.code_text.split("_").join(" ") %></span>
+		        </div>
+	       		<% end %>
+	</div>	
+	</div>
+</div>
 <script>
 
 	// var data = [ { x: 0, y: 40 }, { x: 1, y: 49 }, { x: 2, y: 17 }, { x: 3, y: 42 } ];
