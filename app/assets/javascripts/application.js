@@ -32,7 +32,7 @@
 // require jquery.ui.dialog
 // require jquery.ui.slider
 // require jquery.ui.tabs
-// require jquery.ui.datepicker
+//= require jquery.ui.datepicker
 //= require jquery.ui.datepicker-en-AU
 // require jquery.ui.progressbar
 
