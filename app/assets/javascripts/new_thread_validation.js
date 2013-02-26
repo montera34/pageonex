@@ -19,7 +19,7 @@ $(function () {
   $('#media').popover();
   $(".field_with_errors").attr("class", "field_with_errors control-group error");
   // gets the value in the "selected_newspapers" hidden field which is a string of number like this "23 35 114" and convert it to array, and store it in the "media" hidden field
-  $("#media").val($("#selected_newspapers").attr("value").split(" "));
+  $("#media").val($("#selected_newspapers").val().split(" "));
   validates();
   
   // for all the classes with "server_validation" class, whenever thier value changes, it will apply the error classes and run the validator to check the new values
