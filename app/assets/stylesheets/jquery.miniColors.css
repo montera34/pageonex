@@ -1,7 +1,7 @@
 .miniColors-trigger {
 	height: 22px;
 	width: 22px;
-	background: url(images/trigger.png) center no-repeat;
+	/* background: url(images/trigger.png) center no-repeat; */
 	vertical-align: middle;
 	margin: 0 .25em;
 	display: inline-block;
