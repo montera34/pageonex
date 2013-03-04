@@ -9,8 +9,7 @@ class Threadx < ActiveRecord::Base
 	has_many :users, :through => :threadx_collaborators
 
 	has_many :codes
-
-	has_many :highlighted_areas
+	has_many :highlighted_areas, :through => :codes
 
 	validates :thread_display_name, :start_date, :end_date, :description , :category, :presence => true
 	
@@ -30,5 +29,21 @@ class Threadx < ActiveRecord::Base
 	
 	def images
 		Image.by_media(medium_ids).by_date(start_date..end_date)
+	end
+	
+	def self.edtest
+		237
+	end
+	
+	def edtest2
+		238
+	end
+	
+	def highlighted_areas_for_image(image)
+		HighlightedArea.by_threadx(self).by_image(image)
+	end
+	
+	def image_coded?(image)
+		HighlightedArea.by_threadx(self).by_image(image).length > 0
 	end
 end

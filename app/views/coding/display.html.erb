@@ -138,8 +138,7 @@
 								<% if @images[ic].local_path == "404.jpg" %>
 									<img src="/assets/404.jpg" alt="" id="<%= "image#{ic+1}" %>" style=" opacity: 0.7;" image_size="<%= @images[ic].size %>" />
 				         		<% else %>
-				         			<% ha = HighlightedArea.where(:threadx_id=>@thread.id, :image_id=>@images[ic].id)[0] %>
-				         			<% if ha.code != nil %>
+				         			<% if @thread.image_coded? @images[ic] %>
 					         			<img src="<%= @images[ic].local_path %>" alt="" id="<%= "image#{ic+1}" %>" class="thum-img" style=" opacity: 0.4;" image_size="<%= @images[ic].size %>" name="<%= @images[ic].image_name %>" />
 				         			<% else %>
 				         				<img src="<%= @images[ic].local_path %>" alt="" id="<%= "image#{ic+1}" %>" class="thum-img" style=" opacity: 0.8;" image_size="<%= @images[ic].size %>" name="<%= @images[ic].image_name %>" />
@@ -169,27 +168,25 @@
 </div>
 
 	<div id="high_areas">
-		<% @highlighted_areas.each do |ha| %>
-		<% image_number = ha.name.split('_')[0].slice(5,ha.name.split('_')[0].length) %>
-	    <div id="image<%= image_number %>">
-	        <%= hidden_field_tag ha.name,"1" %>
-	        <% if ha.code != nil %>
-              	<%= hidden_field_tag "#{ha.name}_code_id", "#{ha.code.id}" %>
-          	<% else %>
-            	<%= hidden_field_tag "#{ha.name}_code_id", "#{ha.code_id}" %>
-            <% end %>
-
-            <%= hidden_field_tag "#{ha.name}_image_name", ha.image.image_name %>
-
-	        <%= hidden_field_tag "#{ha.name}_x1", ha.areas[0].x1 %>
-	        <%= hidden_field_tag "#{ha.name}_y1",ha.areas[0].y1 %>
-	        <%= hidden_field_tag "#{ha.name}_x2",ha.areas[0].x2 %>
-	        <%= hidden_field_tag "#{ha.name}_y2",ha.areas[0].y2 %>
-	        <%= hidden_field_tag "#{ha.name}_width", ha.areas[0].width%>
-	        <%= hidden_field_tag "#{ha.name}_height", ha.areas[0].height%>
-	    </div>
-	  <% end %>
-  </div>
+		<% @thread.images.each_with_index do |image, index| %>
+		    <div id="ha_group_<%= image.image_name %>">
+			<% @thread.highlighted_areas_for_image(image).each do |ha| %>
+			    <div id="<%= "#{image.image_name}_#{index}" %>">
+				<%= hidden_field_tag "ha_name[]", "#{image.image_name}_#{index}" %>
+				<%= hidden_field_tag "img_id_#{image.image_name}_#{index}", "#{image.image_name}" %>
+				<%= hidden_field_tag "id_#{image.image_name}_#{index}", "#{ha.id}" %>
+				<%= hidden_field_tag "code_id_#{image.image_name}_#{index}", "#{ha.code_id}" %>
+				<%= hidden_field_tag "x1_#{image.image_name}_#{index}", "#{ha.areas.first.x1}" %>
+				<%= hidden_field_tag "y1_#{image.image_name}_#{index}", "#{ha.areas.first.y1}" %>
+				<%= hidden_field_tag "x2_#{image.image_name}_#{index}", "#{ha.areas.first.x2}" %>
+				<%= hidden_field_tag "y2_#{image.image_name}_#{index}", "#{ha.areas.first.y2}" %>
+				<%= hidden_field_tag "width_#{image.image_name}_#{index}", "#{ha.areas.first.width}" %>
+				<%= hidden_field_tag "height_#{image.image_name}_#{index}", "#{ha.areas.first.height}" %>
+			    </div>
+			<% end %>
+		    </div>
+	        <% end %>
+	</div>
 
 <!-- other library we were using for the column chart, it's comment just in case we want to reuse it again -->
 <!-- "d3.min.js", "d3.layout.min.js", "rickshaw.min.js", -->

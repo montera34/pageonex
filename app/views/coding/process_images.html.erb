@@ -92,10 +92,7 @@
         <a class="carousel-control right" style="z-index: 200;" href="#myCarousel" data-slide="next">&rsaquo;</a>
         </div>
 
-
-        <div id="high_area2" style="opacity: 0.5;position: absolute; overflow: hidden; z-index: 0; left: 0px; top: 0px; width: 0px; height: 0px; display: block; " class="high_area"></div>
-
-        <div id="high_area1" style="opacity: 0.5;position: absolute; overflow: hidden; z-index: 0; left: 0px; top: 0px; width: 0px; height: 0px; display: block; " class="high_area"></div>
+        <div id="high_area_template" style="opacity: 0.5;position: absolute; overflow: hidden; z-index: 0; left: 0px; top: 0px; width: 0px; height: 0px; display: block; " class="high_area"></div>
 
         
 
@@ -114,41 +111,28 @@
           </div>
         </div>
 
-        <%= form_tag "/#{current_user.username}/#{@thread.thread_name}/process_highlighted_areas" do %> 
+        <%= form_tag "/#{current_user.username}/#{@thread.thread_name}/process_highlighted_areas" do %>
+	    <%= hidden_field_tag "status", "0", :id => 'status' %>
             <div id="high_images">
-                <% un_high_ares_counter = []  %>
-                <% 1.upto(@image_counter) {|ic| un_high_ares_counter << "image#{ic}_ha#{1}"; un_high_ares_counter << "image#{ic}_ha#{2}";  } %>
-
-                <% if @highlighted_areas != [] %>
-                    <% @highlighted_areas.each do |ha| %>
-
-
-                        <div id="<%= ha.name %>" image_name="<%= ha.image.image_name %>">
-                            <% if ha.code  == nil %>
-                                <%= hidden_field_tag ha.name,"0" %>
-                            <% else %>
-                                <%= hidden_field_tag ha.name,"1" %>
-                            <% end %>
-                            <!-- This condition for the "nothing to code here", because in this case the code id will be -1 which is not an actual code id -->
-                            <% if ha.code != nil %>
-                                <%= hidden_field_tag "#{ha.name}_code_id", "#{ha.code.id}" %>
-                            <% else %>
-                                <%= hidden_field_tag "#{ha.name}_code_id", "#{ha.code_id}" %>
-                            <% end %>
-
-                            <%= hidden_field_tag "#{ha.name}_image_name", ha.image.image_name %>
-
-                            <%= hidden_field_tag "#{ha.name}_x1", ha.areas[0].x1 %>
-                            <%= hidden_field_tag "#{ha.name}_y1",ha.areas[0].y1 %>
-                            <%= hidden_field_tag "#{ha.name}_x2",ha.areas[0].x2 %>
-                            <%= hidden_field_tag "#{ha.name}_y2",ha.areas[0].y2 %>
-                            <%= hidden_field_tag "#{ha.name}_width", ha.areas[0].width%>
-                            <%= hidden_field_tag "#{ha.name}_height", ha.areas[0].height%>
-
-                            <%= hidden_field_tag "#{ha.name}_status","0", :class=>"ha_status" %>
-                        </div>
-                    <% end %>
-                <% end %>
+		<% @thread.images.each do |image| %>
+		    <div id="ha_group_<%= image.image_name %>">
+			<% @thread.highlighted_areas_for_image(image).each_with_index do |ha, index| %>
+			    <div id="<%= "#{image.image_name}_#{index}" %>">
+				<%= hidden_field_tag "ha_name[]", "#{image.image_name}_#{index}" %>
+				<%= hidden_field_tag "img_id_#{image.image_name}_#{index}", "#{image.image_name}" %>
+				<%= hidden_field_tag "id_#{image.image_name}_#{index}", "#{ha.id}" %>
+				<%= hidden_field_tag "code_id_#{image.image_name}_#{index}", "#{ha.code_id}" %>
+				<%= hidden_field_tag "x1_#{image.image_name}_#{index}", "#{ha.areas.first.x1}" %>
+				<%= hidden_field_tag "y1_#{image.image_name}_#{index}", "#{ha.areas.first.y1}" %>
+				<%= hidden_field_tag "x2_#{image.image_name}_#{index}", "#{ha.areas.first.x2}" %>
+				<%= hidden_field_tag "y2_#{image.image_name}_#{index}", "#{ha.areas.first.y2}" %>
+				<%= hidden_field_tag "width_#{image.image_name}_#{index}", "#{ha.areas.first.width}" %>
+				<%= hidden_field_tag "height_#{image.image_name}_#{index}", "#{ha.areas.first.height}" %>
+				<%= hidden_field_tag "deleted_#{image.image_name}_#{index}" %>
+			    </div>
+			<% end %>
+		    </div>
+	        <% end %>
                 <%= hidden_field_tag "status", "0" %>
             </div>
         <% if @thread.owner == current_user %>
@@ -224,7 +208,7 @@ $(function (argument) {
 })
 
 window.onbeforeunload = function(e,s) {
-    if ($("#status").attr("value") == "1") { 
+    if (isModified()) { 
         return "If you leave this page without saving you will lose your work";
     };
 }

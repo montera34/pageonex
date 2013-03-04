@@ -119,19 +119,6 @@ class ThreadsController < ApplicationController
 			# It adds a reference to the scraped images to the thread
 			@thread.images << images
 
-			# It adds the highlighted areas, the thread
-			# there is a limitation in this version which is; it supports two highlighted areas for each image
-			# we can in the future add loop to add any number of highlighted areas
-			@thread.images.each do |img|
-
-				highlighted_area1 = HighlightedArea.create!({:name => "image#{img.id}_ha1" ,:image => img, user: current_user, threadx: @thread })
-				Area.create({highlighted_area: highlighted_area1})
-
-				highlighted_area2 = HighlightedArea.create!({:name => "image#{img.id}_ha2" ,:image => img, user: current_user,threadx: @thread })
-    		Area.create({highlighted_area: highlighted_area2})
-
-			end
-
 			# add the codes to thread
 			@thread.codes << codes
 
@@ -310,10 +297,8 @@ for opened thread:
 	# the destroy actions, is for deleting a thread
 	def destroy
 		@thread = Threadx.find_by_thread_name params[:id]
-		@thread.codes.each do |code|
-			code.highlighted_areas.destroy_all
-			code.destroy
-		end
+		@thread.codes.destroy_all
+		@thread.highlighted_areas.destroy_all
 		@thread.destroy
 		redirect_to "/threads/"
 	end
