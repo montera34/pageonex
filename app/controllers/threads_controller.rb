@@ -9,14 +9,8 @@ class ThreadsController < ApplicationController
 
 	# new action render the new form, with the an array of all the media in the db, but before that it do change the name of the media, by formating it, as "#{newspaper.country} - #{newspaper.display_name}" to be sorted by country name in the view
 	def new
-		@media = []
+		@media = Media.all
 		@thread = Threadx.new
-		Media.all.each do |newspaper|
-			# for each media object it changes its name on fly(with actually effecting the object in the db) and it to the @media array
-			newspaper.name = "#{newspaper.country} - #{newspaper.display_name}"
-			@media << newspaper
-		end
-		
 	end
 
 	# create action is responsible of processing the submited new form, and create the thread object in the database and handle the validation
@@ -25,7 +19,7 @@ class ThreadsController < ApplicationController
 		@thread = Threadx.new(params[:threadx])
 		
 		# format the thread name, by replace spaces with underscores
-		@thread.thread_name = params[:threadx]["thread_display_name"].split(' ').join('_').downcase
+		@thread.thread_name = Threadx.url_safe_name params[:threadx]["thread_display_name"]
 		
 		# set the owner of the thread to the current logged in user
 		@thread.owner_id = current_user.id

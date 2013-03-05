@@ -69,7 +69,7 @@
 	<h2>Newspapers info</h2><br>
 	<div id="media_box">
   	<%= label_tag :media, nil, :id => "media_label1" %>
-  	<%= select_tag :media, options_from_collection_for_select(@media, "id", "name"),  :multiple => true ,"rel" => "popover", "data-content"  => "To select multiple newspapers: Hold Ctrl + select the newspaper, release the Ctrl with scrolling and hold it again before any other selection", "data-original-title" => "Select Multiple Newspapers" , style: "height: 300px;width: 300px;", :class=>"js_validate" %>
+  	<%= select_tag :media, options_from_collection_for_select(@media, "id", "name_with_country"),  :multiple => true ,"rel" => "popover", "data-content"  => "To select multiple newspapers: Hold Ctrl + select the newspaper, release the Ctrl with scrolling and hold it again before any other selection", "data-original-title" => "Select Multiple Newspapers" , style: "height: 300px;width: 300px;", :class=>"js_validate" %>
   	<br>
     <!-- a list of all selected newspapers -->
     <%= hidden_field_tag :selected_newspapers, params["media"] %>

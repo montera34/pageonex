@@ -31,4 +31,9 @@ class Threadx < ActiveRecord::Base
 	def images
 		Image.by_media(medium_ids).by_date(start_date..end_date)
 	end
+
+	def self.url_safe_name display_name
+		display_name.parameterize.underscore
+	end
+
 end
