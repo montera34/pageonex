@@ -70,3 +70,8 @@
 //= require spin.min
 
 // require_tree .
+
+$(function() {
+  // initialize any and all popovers on the page
+  $('[rel="popover"]').popover({trigger:'hover'});
+})

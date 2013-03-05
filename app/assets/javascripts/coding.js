@@ -220,9 +220,6 @@ $(document).ready(function () {
 
     progressBarPercentage()
 
-    // initializing the popover message of the code
-    $(".codes_boxes").popover()
-
 });
 
 // the imgAreaSelect callback for the event onSelectEnd, which handles setting the values for the highlighted areas divs
