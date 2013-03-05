@@ -166,12 +166,8 @@ class ThreadsController < ApplicationController
 			flash[:thread_name_error] = "You don't have premission to edit this thread"
 			redirect_to "/threads/"
 		end
-		# A method should be created to make a DRY code. don't repeat!
-		@media = []
-		Media.all.each do |newspaper|
-			newspaper.name = "#{newspaper.country} - #{newspaper.display_name}"
-			@media << newspaper
-		end
+
+		@media = Media.all
 
 		params["media"] = []
 		@thread.media.each do |m|

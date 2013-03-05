@@ -57,7 +57,7 @@
   <h2>Newspapers info</h2><br>
   <div id="media_box">
     <%= label_tag :media, nil, :id => "media_label1" %>
-    <%= select_tag :media, options_from_collection_for_select(@media, "id", "name"),  :multiple => true , style: "height: 300px;width: 300px;", :class=>"js_validate" %>
+    <%= select_tag :media, options_from_collection_for_select(@media, "id", "name_with_country"),  :multiple => true , style: "height: 300px;width: 300px;", :class=>"js_validate" %>
     <br>
 
     <%= hidden_field_tag :org_media, params["media"] %>
