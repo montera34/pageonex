@@ -318,4 +318,9 @@ for opened thread:
 		redirect_to "/threads/"
 	end
 
+	def new_topic
+		render :partial => 'topic_form', :locals => {
+			:index => params[:index], :name => nil, :color => nil, :description => nil}
+	end
+
 end

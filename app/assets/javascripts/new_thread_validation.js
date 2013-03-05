@@ -1,16 +1,4 @@
 $(function () {
-  // initializing the color picker for topic_color_1 textbox 
-  $("#topic_color_1").miniColors({
-    change: function (hex,rgb) {
-      // for any changes in the value of the color, it should update the color of the box beneath the textbox
-      $("div#topic_1 .miniColors-trigger").css("background-color",hex);
-      }
-    });
-
-  // setting the defualt color as #FF0000
-  $("div#topic_1 .miniColors").attr("value","#FF0000");
-  // set the color of the box beneath the textbox with current color 
-  $("div#topic_1 .miniColors-trigger").attr("style","margin-bottom:9px;width: 214px;height: 26px;display: block;").css("background-color", $("div#topic_1 .miniColors").attr("value"));
 
   // initializing the datepicker, and the popover object
   $('.datepicker').datepicker();
@@ -35,73 +23,30 @@ $(function () {
     }else{
       $("#validation_error").attr("value","false");
     }
-  })
+  });
 
   // the same as the "server_validation" class
   $(".js_validate").change(function () {
     validates();
-  })
-
-
-  // adding a new topic
-  topic_count = parseInt($("#topic_count").attr("value"))
-  $("#add_topic").on("click",function () {
-    
-    // cloning the "topic" div, and modify the cloned version, and then append it to the page
-    var topic_element = $("#topic").clone();
-    var topic_name_element = topic_element.find("#topic_name");
-    var topic_name_label_element = topic_element.find("#topic_name_label");
-
-    var topic_color_element = topic_element.find("#topic_color");
-    var topic_color_label_element = topic_element.find("#topic_color_label");
-
-    var topic_description_element = topic_element.find("#topic_description");
-    var topic_description_label_element = topic_element.find("#topic_description_label");
-
-    topic_element.attr("style","display:block");
-    topic_element.attr("id","topic_"+ ++topic_count);
-
-    topic_name_element.attr("id","topic_name_"+topic_count);
-    topic_name_element.attr("name","topic_name_"+topic_count);
-    topic_name_label_element.attr("id","topic_name_label_"+topic_count);
-    topic_name_label_element.attr("for","topic_name_"+topic_count);
-    topic_name_label_element.text("topic_name_"+topic_count);
-
-    topic_color_element.attr("id","topic_color_"+topic_count);
-    topic_color_element.attr("name","topic_color_"+topic_count);
-    
-    topic_color_label_element.attr("id","topic_color_label_"+topic_count);
-    topic_color_label_element.attr("for","topic_color_"+topic_count);
-    topic_color_label_element.text("topic_color_"+topic_count);
-
-    topic_description_element.attr("id","topic_description_"+topic_count);
-    topic_description_element.attr("name","topic_description_"+topic_count);
-    topic_description_label_element.attr("id","topic_description_label_"+topic_count);
-    topic_description_label_element.attr("for","topic_description_"+topic_count);
-    topic_description_label_element.text("topic_description_"+topic_count);
-
-    // insert the new topic before the button for creating topics
-    $(topic_element).insertBefore("#add_topic");
-
-    // initializing the color picker for topic_color_topic_count textbox 
-    $("#topic_color_"+topic_count).miniColors({
-      change: function (hex,rgb) {
-        $("div#topic_"+topic_count+" .miniColors-trigger").css("background-color",hex);
-      }
-    });
-    // this is the default color for the new generated topic
-    $("div#topic_"+topic_count+" .miniColors").attr("value","#FF0000");
-    $("div#topic_"+topic_count+" .miniColors-trigger").attr("style","margin-bottom:9px;width: 214px;height: 26px;display: block;").css("background-color", $("div#topic_"+topic_count+" .miniColors").attr("value"));
-
-
-    $("<br/>").insertBefore('#add_topic');
-    $("#topic_count").attr("value", topic_count);
   });
   
+  // lets you add new topics via Ajax request
+  $('#add_topic').click(function() { 
+    var newTopicCount = parseInt($("#topic_count").val())+1;
+    $.get('/threads/new_topic/'+newTopicCount, function(data) {   
+      $('#topic-list').append(data);
+      $("#topic_color_"+$("#topic_count").val()).minicolors({ defaultValue: '#FF0000' });
+      $("#topic_count").val(newTopicCount);
+    });
+  });
+  // add the first topic option dynamically if there are none
+  if($("#topic_count").val()==0){
+    $("#add_topic").click();
+  }
   
-  // when the "strat_coding" button clicked, the message box will appears, untill the scraping finishes
+  // when the "start_coding" button clicked, the message box will appears, untill the scraping finishes
   // to add any calculation or progress bar it will be added here
-  $("#strat_coding").on("click",function () {
+  $("#start_coding").on("click",function () {
     // trigger the modal box
     $('#scraping').modal('show');
     var wait_box = $(".modal-body");
@@ -138,7 +83,7 @@ $(function () {
   })
 
   // this event should be combined with the above on line 117, and what is this method do is, preventing the "start_coding" button from submitting the form and check if there was any validation error first, if so it will scroll the user up to the error messages, if not it will submit the form
-  $("#strat_coding").click(function (event) {
+  $("#start_coding").click(function (event) {
     event.preventDefault()
     if ($("#validation_error").attr("value") == "false"){
       $("#new_threadx").submit();

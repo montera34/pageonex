@@ -82,65 +82,29 @@
 	<h2>Coding info</h2><br>
 
   <div class="well">
-    <div id="topic_1" class="well">
-      <div id="topic_name_box">
-        <%= label_tag "topic_name_1", nil, :id => "topic_label_1" %>
-
-        <% if params["topic_name_1"] == "" %>
-          <%= text_field_tag "topic_name_1",nil,placeholder: "Code/Topic name", :class=>"topic_name js_validate" %> 
-        <% else %>
-          <%= text_field_tag "topic_name_1",params["topic_name_1"],placeholder: "Code/Topic name", :class=>"topic_name js_validate" %> 
-        <% end %>
-      </div>
-
-      <div class="topic_color_box ">
-        <%= label_tag "topic_color_1", nil, :id => "topic_color_label_1" %>
-
-        <% if params["topic_color_1"] == "" %>
-          <%= text_field_tag "topic_color_1",nil,placeholder: "#FF0000", :class=>"topic_color js_validate" %> 
-        <% else %>
-          <%= text_field_tag "topic_color_1",params["topic_color_1"],placeholder: "#FF0000",:class=>"topic_color js_validate" %> 
-        <% end %>
-      </div>
-
-      <%= label_tag "topic_description_1", nil, :id => "topic_description_label_1" %>
-
-      <% if params["topic_description_1"] == "" %>
-        <%= text_area_tag "topic_description_1",nil,:rows => "5",placeholder: "Some Info about that topic" %> 
-      <% else %>
-        <%= text_area_tag "topic_description_1",params["topic_description_1"],:rows => "5",placeholder: "Some Info about that topic" %> 
-      <% end %>
+    
+    <% # if there were other topics already, they will be displayed %>
+    <div id="topic-list">
+      <% 
+      if params["topic_count"].to_i >  0 
+        1.upto(params["topic_count"].to_i) do |c|
+      %><%= render :partial => "topic_form", :locals => {
+            :index => c, :name => params["topic_name_#{c}"] , :color => params["topic_color_#{c}"],
+            :description => params["topic_description_#{c}"]
+          } %><%
+        end
+      end
+      %>
     </div>
-    
-    
-    <br>
-    <!-- if there was another topics, it will be displayed -->
-    <% if params["topic_count"].to_i >  1 %>
-      <% 2.upto(params["topic_count"].to_i) do |c| %>
-        <div id=<%= "topic_#{c}" %> class="well">
-          <%= label_tag "topic_name_#{c}", nil, :id => "topic_name_label_#{c}" %>
-          <%= text_field_tag "topic_name_#{c}",params["topic_name_#{c}"],placeholder: "Code/Topic name" %> 
 
-          <%= label_tag "topic_color_#{c}", nil, :id => "topic_color_label_#{c}" %>
-          <%= text_field_tag "topic_color_#{c}",params["topic_color_#{c}"],placeholder: "#FF0000",:class=>"js_validate" %> 
-
-          <%= label_tag "topic_description_#{c}", nil, :id => "topic_description_label_#{c}" %>
-          <%= text_area_tag "topic_description_#{c}",params["topic_description_#{c}"],:rows => "5",placeholder: "Some Info about that topic" %> 
-        </div>
-      <% end %>
-    <% end %>
-
-    <!-- used to add another topic box -->
     <a id="add_topic" class="btn">Add Another Code/Topic</a>
-    <% if params[:topic_count].to_i > 1 %>
-      <%= hidden_field_tag :topic_count, params[:topic_count].to_i %>
-    <% else %>
-      <%= hidden_field_tag :topic_count, 1 %>
-    <% end %>
+
+    <%= hidden_field_tag :topic_count, params[:topic_count].to_i %>
+
   </div> 
 	
 	<div class="form-actions">
-		<%= f.submit "Start Coding »", :class => "btn btn-primary", id: "strat_coding" %>
+		<%= f.submit "Start Coding »", :class => "btn btn-primary", id: "start_coding" %>
 		<a class="btn" href="/">Cancel</a>
 	</div>
 <% end %>
@@ -149,19 +113,6 @@
 <%= hidden_field_tag :validation_error, "false"  %>
 <%= hidden_field_tag :empty_topic, params[:empty_topic] %>
 <%= hidden_field_tag :empty_media, params[:empty_media] %>
-
-<!-- this is the template for the topic box, which is cloned for each new added topic -->
-<div id="topic" class="well"  style="display:none">
-      <%= label_tag "topic_name", nil, :id => "topic_name_label" %>
-      <%= text_field_tag "topic_name",nil,placeholder: "Code/Topic name" %> 
-
-      <%= label_tag "topic_color", nil, :id => "topic_color_label" %>
-      <%= text_field_tag "topic_color",nil,placeholder: "#FF0000",:class=>"js_validate" %> 
-
-      <%= label_tag "topic_description", nil, :id => "topic_description_label" %>
-      <%= text_area_tag "topic_description",nil,:rows => "5",placeholder: "Some Info about that topic" %> 
-</div>
-
 
 <!-- and this is the message box, that appears after submitting the form -->
 <div class="modal hide" id="scraping">

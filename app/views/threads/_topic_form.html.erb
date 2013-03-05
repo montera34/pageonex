@@ -1,0 +1,36 @@
+
+<%
+=begin
+Locals:
+  index - integer index of the topic
+  name - name of the topic
+  color - hex color for the topic
+  description - text describing the topic
+=end
+%>
+
+<div id=<%= "topic_#{index}" %>>
+  
+  <div id="topic_name_box">
+    <%= label_tag "topic_name_#{index}", nil, :id => "topic_name_label_#{index}" %>
+    <%= text_field_tag "topic_name_#{index}",name,placeholder: "Code/Topic name",:class=>"topic_name js_validate" %> 
+  </div>
+  
+  <div class="topic_color_box">
+    <%= label_tag "topic_color_#{index}", nil, :id => "topic_color_label_#{index}" %>
+    <%= text_field_tag "topic_color_#{index}",color,placeholder: "#FF0000",:class=>"topic_color js_validate" %> 
+  </div>
+  
+  <div class="topic_description_box">
+    <%= label_tag "topic_description_#{index}", nil, :id => "topic_description_label_#{index}" %>
+    <%= text_area_tag "topic_description_#{index}",description,:rows => "5",placeholder: "Some Info about that topic" %> 
+  </div>
+</div>
+
+<script type="text/javascript">
+$(function() {
+  $("#topic_color_<%=index%>").minicolors({ defaultValue: '#FF0000' });
+});
+</script>
+
+<hr>

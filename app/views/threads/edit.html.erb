@@ -67,29 +67,18 @@
   <hr>
   <h2>Coding info</h2><br>
 
-  <% @thread.codes.to_enum.with_index.each do |code,index| %>
-    <div class="well">
-      <div id=<%= "topic_#{index+1}" %> class="well">
-        <div id="topic_name_box">
-          <%= label_tag "topic_name_#{index+1}", nil, :id => "topic_label_1" %>
-
-          <%= text_field_tag "topic_name_#{index+1}",code.code_text,placeholder: "Code/Topic name", :class=>"topic_name js_validate" %> 
-          
-        </div>
-
-        <div class="topic_color_box ">
-          <%= label_tag "topic_color_#{index+1}", nil, :id => "topic_color_label_#{index+1}" %>
-
-          <%= text_field_tag "topic_color_#{index+1}",code.color,placeholder: "#FF0000", :class=>"js_validate" %> 
-          
-        </div>
-
-        <%= label_tag "topic_description_#{index+1}", nil, :id => "topic_description_label_#{index+1}" %>
-
-        <%= text_area_tag "topic_description_#{index+1}",code.code_description,:rows => "5",placeholder: "Some Info about that topic" %> 
-      </div>
+  <div class="well">
+    <div id="topic-list">
+      <% 
+      @thread.codes.to_enum.with_index.each do |code,index| %>
+        <%= render :partial => "topic_form", :locals => {
+            :index => index, :name => code.code_text , :color => code.color, :description => code.code_description
+          } %><%
+      end
+      %>
     </div>
-  <% end %>
+  </div> 
+
   <label class="checkbox">
     <!-- <input id="clean_high_areas" type="checkbox">  -->
     <%= check_box_tag "clean_high_areas" %> Keep all highlighted areas that you have done, even which is related to deleted images
@@ -103,30 +92,21 @@
 
 <script type="text/javascript">
 $(function () {
-  $("#media").val($("#org_media").attr("value").split(" "));
-
-  $(".topic_color").miniColors({
-    change: function (hex,rgb) {
-      $(".miniColors-trigger").css("background-color",hex)
-      }
-    });
-
-  $(".miniColors-trigger").attr("style","margin-bottom:9px;width: 214px;height: 26px;display: block;").css("background-color", $(".miniColors").attr("value"))
+  $("#media").val($("#org_media").val().split(" "));
 
   $('.datepicker').datepicker();
 
   $("#open_thread").click(function () {
-    $("label[for='threadx_end_date']").hide()
-    $("#threadx_end_date").hide()
-    $("#status").attr("value","opened")
-  })
+    $("label[for='threadx_end_date']").hide();
+    $("#threadx_end_date").hide();
+    $("#status").val("opened");
+  });
 
   $("#close_thread").click(function () {
-    $("label[for='threadx_end_date']").show()
-    $("#threadx_end_date").show()
-    $("#status").attr("value","closed")
-  })
-
+    $("label[for='threadx_end_date']").show();
+    $("#threadx_end_date").show();
+    $("#status").val("closed");
+  });
 
 })
 </script>
