@@ -19,7 +19,7 @@ class ThreadsController < ApplicationController
 		@thread = Threadx.new(params[:threadx])
 		
 		# format the thread name, by replace spaces with underscores
-		@thread.thread_name = Threadx.url_safe_name params[:threadx]["thread_display_name"]
+		@thread.thread_name = Threadx.url_safe_name @thread.thread_display_name
 		
 		# set the owner of the thread to the current logged in user
 		@thread.owner_id = current_user.id
@@ -180,7 +180,7 @@ class ThreadsController < ApplicationController
 	# the update action is responsible for processing the submitted request, it's pretty much the same as the create action. DRY this!
 	def update
 		@thread = current_user.owned_threads.find_by_thread_name params[:id]
-		@thread.thread_name = params[:threadx]["thread_display_name"].split(' ').join('_').downcase
+		# don't change the thread_name property (ie. the url) even if the display name changes
 		media = params[:media]
 
 
