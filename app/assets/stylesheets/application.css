@@ -33,3 +33,11 @@
  * require jquery.ui.progressbar
  */
 
+#login-info {
+  margin-top: 3px;
+  margin-left: 10px;
+}
+#login-info h5 {
+  line-height: 16px;
+  margin: 0px;
+}

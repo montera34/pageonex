@@ -57,8 +57,8 @@
 		<li><%= link_to "Report Bugs", "http://bit.ly/pageonextest"  %></li>      
           </ul>
           <% if user_signed_in? %>
-            <div class="pull-right" style="padding: 0px 5px 0px 5px;">
-              <h5 style="margin-bottom: -6px;"><%= current_user.username %></h5>
+            <div class="pull-right" id="login-info">
+              <h5><%= current_user.username %></h5>
               <%= link_to "Sign out", destroy_user_session_path, :method => :delete  %>
             </div>
           <% end %>
