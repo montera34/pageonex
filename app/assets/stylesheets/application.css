@@ -41,3 +41,10 @@
   line-height: 16px;
   margin: 0px;
 }
+.box_legend {
+  width: 26px;
+  height: 26px;
+  display: block;
+  margin: 0 4px 4px;
+  float:left;
+}

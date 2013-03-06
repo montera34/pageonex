@@ -14,29 +14,27 @@
 
 <div class="row">
 	<div class="span8">
-		<h1><%= @thread.thread_display_name.capitalize %> </h1>
-		<h3>User: <%= @thread.owner.username %></h3>	
-	</div>
-	<div class="span2">
-		<% if @thread.owner == current_user %>
-		<!-- <a class="btn btn-mini btn-danger" href="">Delete this thread</a> -->
-		<a href="<%= "/threads/#{@thread.thread_name}/edit"%>" class="btn" style="margin-top: 4px;">Edit</a> 
-		<!--  <%=  link_to "Delete", "/threads/#{@thread.thread_name}" ,:method=>"delete" , :class => "btn btn-danger delete" %>-->
-		<% end %>
+		<h2><%= @thread.thread_display_name.capitalize %></h2>
 	</div>
 	<div class="span2">
 		<div class="btn-group pull-right">
-		    <button class="btn btn-large" disabled="disabled">Export to image</button>
-		    <button class="btn btn-large dropdown-toggle" disabled="disabled" data-toggle="dropdown"><span class="caret"></span></button>
+		    <button class="btn btn-small" disabled="">Export to image</button>
+		    <button class="btn btn-small dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
 		    <ul class="dropdown-menu">
-		      <li><a href="#">Download as [.svg]</a></li>
-		      <li><a href="#">Download as [.csv]</a></li>
-		      <li><a href="#">Download as [.ods]</a></li>
-		      <li><a href="#">Download as [.png]</a></li>
+		      <li><a href="#">Download as  .svg </a></li>
+		      <li><a href="#">Download as  .csv </a></li>
+		      <li><a href="#">Download as  .ods </a></li>
+		      <li><a href="#">Download as  .png </a></li>
 		      <li class="divider"></li>
-		      <li><a href="#">Download as [.pdf]</a></li>
+		      <li><a href="#">Download as  .pdf </a></li>
 		    </ul>
 		</div>
+	</div>
+	<div class="span2">
+		<% if @thread.owner == current_user %>
+		<%=  link_to "Delete", "/threads/#{@thread.thread_name}" ,:method=>"delete" , :class => "btn btn-danger delete" %>
+		<a href="<%= "/threads/#{@thread.thread_name}/edit"%>" class="btn">Edit</a> 
+		<% end %>
 	</div>
 </div>
 
@@ -47,21 +45,23 @@
 <div class="row">
 	<div class="span5">
 		<h4>Description</h4><p> <%= @thread.description %></p>
+		<h4>Author/s</h4> <%= @thread.owner.username %>
 	</div>
+	<div class="span2">
+		<h4>Topics</h4>
+		  <ul class="nav nav-list">
+			<% @thread.codes.each do |code| %>
+			<li>
+				<div id="code_<%= code.id %>" class="box_legend" style="background-color:<%= code.color %>;"> </div>
+				<h4 class="codes_boxes" rel="popover"  data-content="<%= code.code_description %>" data-original-title="Description"><%= code.code_text %></h4>
+			</li>
+	       		<% end %>
+		  </ul>
+    	</div>
 	<div class="span2">
 		<h4>From:</h4> <p><%= @thread.start_date.inspect %></p>
 		<h4>To:</h4> <p><%= @thread.end_date.inspect %></p>
 	</div>
-	<div class="span2">
-		<h4>Topics</h4>
-			<% @thread.codes.each do |code| %>
-			<h3 class="codes_boxes" style="display: inline;cursor: no-drop;" rel="popover"  data-content="<%= code.code_description %>" data-original-title="Description">
-			    <span id="code_<%= code.id %>" style="background-color:<%= code.color %>;color: <%= code.color %>">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-			    <span><%= code.code_text.split("_").join(" ") %></span>
-		        </h3>
-			<br>
-	       		<% end %>
-    	</div>
 	<div class="span3">
 		<h5>Category:</h5> <p><%= @thread.category %></p>
 		<h5>Status:</h5> <p><%= @thread.status %></p>
@@ -69,22 +69,21 @@
 	
 </div> 
 
-<!--Share -->
+<!--Share buttons-->
 <div class="row">
-	<div class="span2">
+	<div class="span1">
 		<a href="https://twitter.com/share" class="twitter-share-button" data-via="PageOneX" data-hashtags="PageOneX" data-dnt="true">Tweet</a>
 	</div>
-
-	<div class="span4" style="margin-left: -71px;">
+	<div class="span4">
 		<div class="fb-like" data-send="true" data-layout="button_count" data-width="460" data-show-faces="true" data-action="recommend" data-font="verdana"></div>
 	</div>
 </div>
-
+<!--End Share buttons-->
 	<div class="row">
 		<div class="span3" style="width: 195px; ">
 			<!-- <h2>Surfaces percentage:</h2> -->
 		</div>
-		<div class="span6" style="/*width: 644px;*/">
+		<div class="" style="/*width: 644px;*/">
 			<!-- <div id="chart" style="margin-left: 218px;"></div> -->
 			<div id="chart_div" style="margin-left: 82px;width: 1210px; margin-bottom: -30px;"></div>
 		</div>
@@ -131,7 +130,7 @@
 				<% images_counter = @thread.images.length %>
 				<% 0.upto(images_counter-1) do |ic| %>
 					<% if @images[ic].media == m  %>
-						<div id="<%= "image_box#{ic+1}" %>" style="margin-bottom: 4px" class="span1 <%= "thum_image#{ic+1}" %>" image_name="<%= @images[ic].image_name %>">
+						<div id="<%= "image_box#{ic+1}" %>" style="margin-bottom: 4px;margin-left: 0 !important;" class="span1 <%= "thum_image#{ic+1}" %>" image_name="<%= @images[ic].image_name %>">
 
 			          		<a href='<%= "/#{@thread.owner.username.split(' ').join('_')}/#{@thread.thread_name}/coding/?i=#{@images[ic].image_name}" %>' title="">
 				          		
@@ -199,14 +198,18 @@
 <%= javascript_include_tag "display.js" %>
 <div class="row">
 	<div class="offset2 span8">
-		<h2><%= @thread.thread_display_name %> </h2>
+		<h3><%= @thread.thread_display_name %> </h3>
 		<p><%= @thread.start_date.inspect %> - <%= @thread.end_date.inspect %></p>
+		<ul class="inline">
 		<% @thread.codes.each do |code| %>
-			<div class="codes_boxes" style="display: inline;cursor: no-drop;" rel="popover"  data-content="<%= code.code_description %>" data-original-title="Description">
-			    <span id="code_<%= code.id %>" style="background-color:<%= code.color %>;color: <%= code.color %>">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-			    <span><%= code.code_text.split("_").join(" ") %></span>
+		  <li >
+			<div rel="popover"  data-content="<%= code.code_description %>" data-original-title="Description">
+			    <div id="code_<%= code.id %>" style="background-color:<%= code.color %>;" class="box_legend"></div>
+			     <%= code.code_text  %> 
 		        </div>
-	       		<% end %>
+		  </li>
+	       	<% end %>
+		</ul>
 	</div>	
 	</div>
 </div>
@@ -326,10 +329,3 @@ $(function (argument) {
 	})
 })
 </script>
-
-<style type="text/css">
-.span1{
-	margin-left: 0;
-}
-</style>
-
