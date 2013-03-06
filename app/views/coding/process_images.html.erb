@@ -113,6 +113,12 @@
 
         <%= form_tag "/#{current_user.username}/#{@thread.thread_name}/process_highlighted_areas" do %>
 	    <%= hidden_field_tag "status", "0", :id => 'status' %>
+	    <div id="coded_pages">
+		<% @thread.images.each do |image| %>
+		    <%= hidden_field_tag 'image_name[]', image.image_name %>
+		    <%= hidden_field_tag "nothing_to_code_#{image.image_name}", @thread.coded_pages.for_image(image).for_user(current_user).length %>
+		<% end %>
+	    </div>
             <div id="high_images">
 		<% @thread.images.each do |image| %>
 		    <div id="ha_group_<%= image.image_name %>">

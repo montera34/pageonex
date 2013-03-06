@@ -10,6 +10,8 @@ class Threadx < ActiveRecord::Base
 
 	has_many :codes
 	has_many :highlighted_areas, :through => :codes
+	
+	has_many :coded_pages
 
 	validates :thread_display_name, :start_date, :end_date, :description , :category, :presence => true
 	

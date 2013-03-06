@@ -4,17 +4,10 @@ $(document).ready(function () {
     
     // checks if the this user is owner, if so, it will initialize the imgAreaSelect plugin which is used for highlighting
     if ($("#allow_coding").attr("value") == "true") {
-        
-        // get the object of image selection plugin
-        var currrent_img = $("#images_section div.active img")
-
         // initializing imgAreaSelect plugin for the current active (displayed image)
-        var currrent_img_area_select = $('#images_section div.active img').imgAreaSelect({instance: true, handles: true,onSelectEnd: highlightingArea});
-
-        // initializing jQuery UI draggable plugin to give the user the ability to change the highlighted areas position
-        renderHighlightedAreas();
-        enableDragging($(".high_area"));
+        $('#images_section div.active img').imgAreaSelect({instance: true, handles: true,onSelectEnd: highlightingArea});
     };
+    renderHighlightedAreas();
 
     // setting the value for each image
     $("#publication_date").text($("#images_section div.active img").attr("pub_date"));
@@ -45,7 +38,6 @@ $(document).ready(function () {
             }else{
                 currrent_img_area_select = $('#images_section div.active img').imgAreaSelect({instance: true, handles: true,onSelectEnd: highlightingArea});
             }
-            enableDragging($('.high_area'));
         }
 
         currrent_img = $("#images_section div.active img");
@@ -77,7 +69,6 @@ $(document).ready(function () {
         ha.code_id = $("#codes").attr("value");
         saveHighlightedArea(ha);
         renderHighlightedAreas();
-        enableDragging($('.high_area'));
     });
 
     // it will set the highlighted areas to zero 
@@ -88,29 +79,17 @@ $(document).ready(function () {
 
     // this used to for "nothing to code here"
     $("#skip_coding").click(function () {
-        var currrent_img = $("#images_section div.active img")
-        var image_hidden_fields = $("div[image_name="+ currrent_img.attr("name") +"]")
-
-        // this condition to prevent from duplicate the work if it was already done
-        if ($(image_hidden_fields[0]).children()[1].value != "-1") {
-            clearHighlightedArea()
-            $(image_hidden_fields[0]).children()[0].value = "1"
-            setHighlightingAreaValues($(image_hidden_fields[0]).attr("id"), 1, 1, '0', '0', currrent_img.width(), currrent_img.height());
-            $(image_hidden_fields[0]).children()[1].value = "-1"
-            $("#high_area1").css("top", $("#myCarousel").position().top);
-            $("#high_area1").css("left", $("#myCarousel").position().left);
-            $("#high_area1").css("width",currrent_img.width());
-            $("#high_area1").css("height",currrent_img.height()); 
-            $("#high_area1").css("opacity","0.9");
-            $("#high_area1").css("background-color","#eee");
-        };
-        progressBarPercentage()
+        var current_img = getCurrentImage();
+        // Clear existing areas
+        deleteHighlightedAreas(getCurrentImageId());
+        nothingToCode(getCurrentImageId());
+        renderHighlightedAreas();
+        progressBarPercentage();
     })
     
     // call the loadHighlightingAreas after loading all the images
     window.onload = function() {
         renderHighlightedAreas();
-        enableDragging($('.high_area'));
     }
 
     // this part used for the heroku deployment, which is replacing the url of an image to the 404.jpg image if the image doesn't exist
@@ -125,10 +104,14 @@ $(document).ready(function () {
 
 });
 
-// Return the id of the current image
+// Return the current image
+
+function getCurrentImage () {
+    return $("#images_section div.active img");
+}
+
 function getCurrentImageId () {
-    var current_img = $("#images_section div.active img");
-    return current_img.attr("name");
+    return getCurrentImage().attr("name");
 }
 
 // Enable dragging and resizing functionality on a jquery result set
@@ -172,13 +155,22 @@ function isModified () {
     return ($("#status").attr("value") == '1');
 }
 
+function clearNothingToCode (img_id) {
+    var nothing_to_code = $('[name="nothing_to_code_' + img_id + '"]');
+    nothing_to_code.val('0');
+}
+
+function nothingToCode (img_id) {
+    var nothing_to_code = $('[name="nothing_to_code_' + img_id + '"]');
+    nothing_to_code.val('1');
+}
+
 // Interface for highlighted areas
 // addHighlightedArea() - Add a single highlighted area to the current page
 // saveHighightedArea() - Save a highlighted area
 // deleteHighlightedAreas() - Delete all highlighted areas for the current page
 // getHighlightedArea() - Get data for a single highlighted area
 // getHighlightedAreas() - Get a list of highlighted areas
-// noHighlightedAreas() - Mark the current page as having no highlighted areas
 // clearHighlightedAreas() - Clear all rendered highlighted areas
 // renderHighlightedArea() - Render a single highlighted area
 // renderHighlightedAreas() - Re-render the highlighted areas for the current page
@@ -203,6 +195,7 @@ function addHighlightedArea (img_id, code_id, selection) {
     $(tag).attr('name', 'height_'+cssid).val(selection.height).appendTo(ha_elt);
     $(tag).attr('name', 'deleted_'+cssid).appendTo(ha_elt);
     setModified();
+    clearNothingToCode(img_id);
     return getHighlightedArea(cssid);
 }
 
@@ -222,12 +215,13 @@ function saveHighlightedArea (ha) {
 }
 
 function deleteHighlightedAreas (img_id) {
-    ha_list = getHighlightedAreas(getCurrentImageId());
+    ha_list = getHighlightedAreas(img_id);
     var i;
     for (i = 0; i < ha_list.length; i++) {
         ha_list[i].deleted = '1';
         saveHighlightedArea(ha_list[i]);
     }
+    clearNothingToCode(img_id);
     setModified();
     renderHighlightedAreas();
 }
@@ -261,10 +255,6 @@ function clearHighlightedAreas () {
     $('.high_area.clone').remove();
 }
 
-function noHighlightedAreas () {
-    
-}
-
 function renderHighlightedArea (ha) {
     // If the area is deleted, don't render
     if (ha.deleted == 1) {
@@ -280,8 +270,31 @@ function renderHighlightedArea (ha) {
     ha_elt.css("top", (parseInt(img_pos.top) + parseInt(ha.y1)) + 'px');
     ha_elt.css("left", (parseInt(img_pos.left) + parseInt(ha.x1)) + 'px');
     ha_elt.css("height", ha.height + 'px');
-    ha_elt.css("width", ha.width + 'px'); 
+    ha_elt.css("width", ha.width + 'px');
     ha_elt.css("background-color", $("#code_"+ha.code_id).css("background-color"));
+}
+
+function renderNothingToCode () {
+    // Check whether the current image has nothing to code
+    var img_id = getCurrentImageId();
+    var nothing_to_code = $('[name="nothing_to_code_' + img_id + '"]');
+    if (nothing_to_code.val() == 0) {
+        return;
+    }
+    // Create a new highlighted area by cloning a template DOM element
+    var ha_elt = $('#high_area_template').clone();
+    ha_elt.attr('id', 'ha_' + ha.cssid);
+    ha_elt.addClass('clone');
+    ha_elt.addClass('no_code');
+    $('#high_area_template').after(ha_elt);
+    // Position and style the new highlighted area
+    img_pos = $("#myCarousel").position();
+    ha_elt.css("top", parseInt(img_pos.top) + 'px');
+    ha_elt.css("left", parseInt(img_pos.left) + 'px');
+    ha_elt.css("width", getCurrentImage().width() + 'px');
+    ha_elt.css("height", getCurrentImage().height() + 'px');
+    ha_elt.css("background-color", "#eee");
+    ha_elt.css("opacity", "0.9");
 }
 
 function renderHighlightedAreas () {
@@ -290,6 +303,11 @@ function renderHighlightedAreas () {
     var i;
     for (i = 0; i < ha_list.length; i++) {
         renderHighlightedArea(ha_list[i]);
+    }
+    renderNothingToCode();
+    // Enable dragging if the user is allowed to edit this thread
+    if ($("#allow_coding").attr("value") == "true") {
+        enableDragging($('.high_area').not('.no_code'));
     }
 }
 
@@ -375,6 +393,17 @@ function progressBarPercentage () {
     $("#total").text($("#total_images_number").attr("value"))
     var images_counter = parseInt($("#total").text())
     var remain_counter = 0
+    
+    // Go through each image div
+    $("#images_section div.item").each(function () {
+        img_id = $(this).find('img').attr('name');
+        ha_list = getHighlightedAreas(img_id);
+        var i;
+        for (i = 0; i < ha_list.length; i++) {
+            // TODO - check for non-deleted highlighted images
+        }
+    });
+    
     // get all the highlighted areas
     var high_areas = $("#high_images").children()
     // iterates over all the highligted areas 

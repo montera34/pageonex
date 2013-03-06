@@ -34,17 +34,25 @@ So the following sorting method should be modified
     @thread = Threadx.find_by_thread_name params[:thread_name]
     @images = @thread.images
     
+    # Look for images with nothing to code
+    params[:image_name].each do |image_name|
+      image = Image.find_by_image_name(image_name)
+      @thread.coded_pages.for_user(current_user).for_image(image).delete_all
+      if params["nothing_to_code_#{image_name}"] == '1'
+	@thread.coded_pages.create(:user_id => current_user.id, :image_id => image.id)
+      end
+    end
     # Go through each submitted highlighted area
     params[:ha_name].each do |ha_name|
-      if params["id_#{ha_name}"] == '0'
+      image = Image.find_by_image_name(params["img_id_#{ha_name}"])
+      if params["id_#{ha_name}"].to_i == 0
 	# This is a new area
-	image = Image.find_by_image_name(params["img_id_#{ha_name}"])
-	code = Code.find(params["code_id_#{ha_name}"].to_i)
+	code = Code.find params["code_id_#{ha_name}"]
 	ha = code.highlighted_areas.create(image_id:image.id, code_id:code.id)
 	area = Area.create(highlighted_area_id: ha.id, x1: params["x1_#{ha_name}"].to_i, y1: params["y1_#{ha_name}"].to_i, x2: params["x2_#{ha_name}"].to_i, y2: params["y2_#{ha_name}"].to_i, width: params["width_#{ha_name}"].to_i, height: params["height_#{ha_name}"].to_i)
       else
-	ha = @thread.highlighted_areas.find(params["id_#{ha_name}"])
 	# Updating an existing area
+	ha = @thread.highlighted_areas.find(params["id_#{ha_name}"])
 	if params["deleted_#{ha_name}"] == '1'
 	  ha.areas[0].destroy
 	  ha.destroy
