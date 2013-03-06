@@ -30,7 +30,7 @@
   </head>
   <body>
 
-    <div class="navbar navbar-fixed-top">
+    <div class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-inner">
           <div class="container">
           <a class="btn btn-navbar" data-target=".nav-collapse" data-toggle="collapse">
@@ -50,11 +50,11 @@
                 <li><a href="/threads/?a=t" title="">All Threads</a></li>
               </ul>
             </li>
-		<li><%= link_to "Blog", "http://montera34.org/pageonex/"  %></li>
-		<li><%= link_to "Help", "/home/help"  %></li>
-		<li><%= link_to "About", "/home/about"  %></li>
-		<li><a href="/home/credits" title="">Credits</a></li>	
-		<li><%= link_to "Report Bugs", "http://bit.ly/pageonextest"  %></li>      
+	    <li><%= link_to "Blog", "http://montera34.org/pageonex/"  %></li>
+	    <li><%= link_to "Help", "/home/help"  %></li>
+	    <li><%= link_to "About", "/home/about"  %></li>
+	    <li><a href="/home/credits" title="">Credits</a></li>	
+	    <li><%= link_to "Report Bugs", "http://bit.ly/pageonextest"  %></li>      
           </ul>
           <% if user_signed_in? %>
             <div class="pull-right" id="login-info">

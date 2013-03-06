@@ -59,12 +59,12 @@
 		  </ul>
     	</div>
 	<div class="span2">
-		<h4>From:</h4> <p><%= @thread.start_date.inspect %></p>
-		<h4>To:</h4> <p><%= @thread.end_date.inspect %></p>
+		<h4>From</h4> <p><%= @thread.start_date.inspect %></p>
+		<h4>To </h4> <p><%= @thread.end_date.inspect %></p>
 	</div>
 	<div class="span3">
-		<h5>Category:</h5> <p><%= @thread.category %></p>
-		<h5>Status:</h5> <p><%= @thread.status %></p>
+		<h5>Category</h5> <span class="label"><%= @thread.category %></span>
+		<h5>Status</h5> <p><%= @thread.status %></p>
 	</div>
 	
 </div> 
