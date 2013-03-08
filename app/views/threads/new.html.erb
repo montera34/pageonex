@@ -7,13 +7,13 @@
 
 <div class="alert">
   <button class="close" data-dismiss="alert">×</button>
-  <strong>Warning!</strong> The resources available by Heroku is limited, so try to create medium or small threads.
+  <strong>Warning!</strong> The resources available by Heroku are limited, so try to create medium or small threads.
 </div>
 
 <h1>New Thread</h1>
 
 <hr>
-<%= form_for @thread, :url => { :controller => :threads, :action => :create}, :class => "form-horizontal" do |f| %>
+<%= form_for @thread, :url => { :controller => :threads, :action => :create}, :html => { :class => "form-horizontal" }  do |f| %>
   <!-- errors box for, showing the validtion errors -->
   <div id="errors">
     <% if @thread.errors.any? %>
@@ -29,62 +29,79 @@
     <% end %>
   </div>
   
-	<h2>Basic info</h2><br>
-  <div>
-  	<%= f.label :thread_display_name, "Thread Name" %>
-  	<%= f.text_field :thread_display_name, placeholder: "For example Occupy, Arab Spring", :class => "server_validation" %>
+  <!--<h2>Basic info</h2>-->
+  <div class="control-group">
+    <%= f.label :thread_display_name, "Thread Name", :class => "control-label" %>
+    <div class="controls">
+      <%= f.text_field :thread_display_name, placeholder: "For example Occupy, Arab Spring", :class => "server_validation" %>
+    </div>
   </div>
-  <br>
-  <%= f.label :status %>
-  <div class="btn-group" data-toggle="buttons-radio">
-    <a id="open_thread" class="btn btn-primary status" rel="popover" data-content="In case of selecting this option, PageOneX will update with the latest newspapers front pages automatically" data-original-title="Opened Thread" >Opened</a>
-    <a id="close_thread" class="btn btn-inverse active status" rel="popover"  data-content="In case of selecting this option, PageOneX will create a thread with fixed dates" data-original-title="Closed Thread" >Closed</a>
-  </div>
+  <div class="control-group">
+    <%= f.label :status, :class => "control-label"  %>
+    <div class="controls">
+      <div class="btn-group" data-toggle="buttons-radio">
+        <a id="open_thread" class="btn btn-primary status" rel="popover" data-content="In case of selecting this option, PageOneX will update with the latest newspapers front pages automatically" data-original-title="Opened Thread" >Opened</a>
+        <a id="close_thread" class="btn btn-inverse active status" rel="popover"  data-content="In case of selecting this option, PageOneX will create a thread with fixed dates" data-original-title="Closed Thread" >Closed</a>
+     </div>
   <!-- the status value is closed by default but if you change it to open it will change this value -->
+    </div>
+  </div>
   <%= hidden_field_tag :status,"closed" %>
-  <br>
   <div class="date_errors">
-  <%= f.label :start_date %>
-  <%= f.text_field :start_date, placeholder: "DD/MM/YYYY", :class => "dates js_validate datepicker","rel" => "popover", "data-content"  => "Scraping is done from Kiosko.net, so there are some limitations for the years 2008, 2009, 2010, 2011, 2012. Most of newspaper exist starting from 2010", "data-original-title" => "Limitations of Sources" %>
+    <div class="control-group">
+      <%= f.label :start_date, :class => "control-label"  %>
+      <div class="controls">
+        <%= f.text_field :start_date, placeholder: "DD/MM/YYYY", :class => "dates js_validate datepicker","rel" => "popover", "data-content"  => "Scraping is done from Kiosko.net, so there are some limitations for the years 2008, 2009, 2010, 2011, 2012. Most of newspaper exist starting from 2010", "data-original-title" => "Limitations of Sources" %>
+      </div>
+    </div>
   </div>
 
 
   <div class="date_errors">
-  <%= f.label :end_date %>
-  <%= f.text_field :end_date, placeholder: "DD/MM/YYYY", :class => "dates js_validate datepicker","rel" => "popover", "data-content"  => "For the alpha version, don't choose more than 90 days threads", "data-original-title" => "End date limitation" %>
+    <div class="control-group">
+      <%= f.label :end_date, :class => "control-label"  %>
+      <div class="controls">
+        <%= f.text_field :end_date, placeholder: "DD/MM/YYYY", :class => "dates js_validate datepicker","rel" => "popover", "data-content"  => "For the alpha version, don't choose more than 90 days threads", "data-original-title" => "End date limitation" %>
+      </div>
+    </div>
   </div>
-  
 
-  <div>
-    <%= f.label :category %>
+  <div class="control-group">
+    <%= f.label :category, :class => "control-label"   %>
+    <div class="controls">
     <%= f.text_field :category, placeholder: "Social, Crisis, Country", :class => "server_validation" %>
+    </div>
   </div>
   
-  <div>
-    <%= f.label :description %>
+  <div class="control-group">
+    <%= f.label :description, :class => "control-label"   %>
+    <div class="controls">
     <%= f.text_area :description, :rows => "10", placeholder: "Explain what this thread is about", :class => "server_validation"%>
+    </div>
   </div>
-
-	<hr>
-	<h2>Newspapers info</h2><br>
+  <!--h3>Newspapers</h3-->
+  <div class="control-group">
 	<div id="media_box">
-  	<%= label_tag :media, nil, :id => "media_label1" %>
-  	<%= select_tag :media, options_from_collection_for_select(@media, "id", "name_with_country"),  :multiple => true ,"rel" => "popover", "data-content"  => "To select multiple newspapers: Hold Ctrl + select the newspaper, release the Ctrl with scrolling and hold it again before any other selection", "data-original-title" => "Select Multiple Newspapers" , style: "height: 300px;width: 300px;", :class=>"js_validate" %>
-  	<br>
-    <!-- a list of all selected newspapers -->
+  	<%= label_tag :media, "Select newspapers", :id => "media_label1", :class => "control-label" %>
+	  <div class="controls">
+  	    <%= select_tag :media, options_from_collection_for_select(@media, "id", "name_with_country"),  :multiple => true ,"rel" => "popover", "data-content"  => "To select multiple newspapers: Hold Ctrl + select the newspaper, release the Ctrl with scrolling and hold it again before any other selection", "data-original-title" => "Select Multiple Newspapers" , style: "height: 300px;width: 300px;", :class=>"js_validate" %>
+          </div>
+	  <div class="controls">
+	    <a id="clear_media" class="btn">Clear all choices</a>
+          </div>
+          <!-- a list of all selected newspapers -->
     <%= hidden_field_tag :selected_newspapers, params["media"] %>
+	<!-- used to clear the highlighted areas selection -->
+       </div>
   </div>
-  <!-- used to clear the highlighted areas selection -->
-  <a id="clear_media" class="btn">Clear all choices</a>
 
+  <h3>Coding information</h3>
+  <p>Create one or multiple categories you want to use in the analysis.
 
-	<hr>
-	<h2>Coding info</h2><br>
-
-  <div class="well">
+  <div class="span6">
     
     <% # if there were other topics already, they will be displayed %>
-    <div id="topic-list">
+    <div id="topic-list" >
       <% 
       if params["topic_count"].to_i >  0 
         1.upto(params["topic_count"].to_i) do |c|
@@ -96,17 +113,20 @@
       end
       %>
     </div>
+    <div class="control-group">
+      <div class="controls">
+        <a id="add_topic" class="btn">Add Another Code/Topic</a>
+          <%= hidden_field_tag :topic_count, params[:topic_count].to_i %>
+      </div>
+    </div>
 
-    <a id="add_topic" class="btn">Add Another Code/Topic</a>
 
-    <%= hidden_field_tag :topic_count, params[:topic_count].to_i %>
-
-  </div> 
-	
-	<div class="form-actions">
-		<%= f.submit "Start Coding »", :class => "btn btn-primary", id: "start_coding" %>
-		<a class="btn" href="/">Cancel</a>
-	</div>
+  <div class="form-actions control-group">
+ 
+      <%= f.submit "Submit and Start Coding »", :class => "btn btn-primary btn-large", id: "start_coding" %>
+      <a class="btn btn-large" href="/">Cancel</a>
+ 
+  </div>
 <% end %>
 
 <!-- hold a false value as long as there was no problems -->

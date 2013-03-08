@@ -9,21 +9,27 @@ Locals:
 =end
 %>
 
-<div id=<%= "topic_#{index}" %>>
+<div id=<%= "topic_#{index}" %> class="thumbnail">
   
-  <div id="topic_name_box">
-    <%= label_tag "topic_name_#{index}", nil, :id => "topic_name_label_#{index}" %>
+  <div id="topic_name_box" class="control-group">
+    <%= label_tag "topic_name_#{index}", nil, :id => "topic_name_label_#{index}", :class => "control-label"  %>
+    <div class="controls">
     <%= text_field_tag "topic_name_#{index}",name,placeholder: "Code/Topic name",:class=>"topic_name js_validate" %> 
+    </div>
   </div>
   
-  <div class="topic_color_box">
-    <%= label_tag "topic_color_#{index}", nil, :id => "topic_color_label_#{index}" %>
+  <div class="topic_color_box" class="control-group">
+    <%= label_tag "topic_color_#{index}", nil, :id => "topic_color_label_#{index}", :class => "control-label"  %>
+    <div class="controls">
     <%= text_field_tag "topic_color_#{index}",color,placeholder: "#FF0000",:class=>"topic_color js_validate" %> 
+    </div>
   </div>
   
-  <div class="topic_description_box">
-    <%= label_tag "topic_description_#{index}", nil, :id => "topic_description_label_#{index}" %>
+  <div class="topic_description_box" class="control-group">
+    <%= label_tag "topic_description_#{index}", nil, :id => "topic_description_label_#{index}", :class => "control-label"  %>
+    <div class="controls">
     <%= text_area_tag "topic_description_#{index}",description,:rows => "5",placeholder: "Some Info about that topic" %> 
+    </div>
   </div>
 </div>
 
@@ -33,4 +39,4 @@ $(function() {
 });
 </script>
 
-<hr>
+<br>
