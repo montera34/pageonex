@@ -1,4 +1,4 @@
-country,city,display_name,name
+country,country_code,display_name,name
 Argentina,ar,Clarín,ar_clarin
 Argentina,ar,La Nación,nacion
 Argentina,ar,El Día de la Plata,ar_eldia

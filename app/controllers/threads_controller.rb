@@ -41,7 +41,6 @@ class ThreadsController < ApplicationController
 			
 			# this array is made to be passed to Scraper.get_issues method, because this method accepts the specific format of newspapers names as the following
 			# {"es" => ["elpais", "abc"], "de" => ["faz", "bild"], "fr" => ["lemonde", "lacroix"], "it" => ["corriere_della_sera", "ilmessaggero"], "uk" => ["the_times", ],"us" => ["wsj", "newyork_times", "usa_today"]}
-			# 'city attribute' holds the 'country code' which is the second column in the kisoko.csv file. The 'city attribute' should be changed to 'country_code' instead like {"es", "de", ...} 
 			# name attribute holds the name of the newspaper {"elpais", "abc", ...}
 			newspapers_names = {}
 
@@ -52,13 +51,13 @@ class ThreadsController < ApplicationController
 			media.each do |m|
 				_media = Media.find(m)
 				@thread.media << _media
-				# for each media city(code like  {"es", "de", ...}) it appends the newspapers [here city should be changed to country]
-				if newspapers_names[_media.city] != nil
-					newspapers_names[_media.city] << _media.name 
-				# but if the city array is empty, it will create a new array
+				# for each media country_code(code like  {"es", "de", ...}) it appends the newspapers
+				if newspapers_names[_media.country_code] != nil
+					newspapers_names[_media.country_code] << _media.name 
+				# but if the country_code array is empty, it will create a new array
 				else
-					newspapers_names[_media.city] = []
-					newspapers_names[_media.city] << _media.name
+					newspapers_names[_media.country_code] = []
+					newspapers_names[_media.country_code] << _media.name
 				end
 			end
 
@@ -198,11 +197,11 @@ class ThreadsController < ApplicationController
 				media.each do |m|
 					_media = Media.find(m)
 					@thread.media << _media
-					if newspapers_names[_media.city] != nil
-						newspapers_names[_media.city] << _media.name 
+					if newspapers_names[_media.country_code] != nil
+						newspapers_names[_media.country_code] << _media.name 
 					else
-						newspapers_names[_media.city] = []
-						newspapers_names[_media.city] << _media.name
+						newspapers_names[_media.country_code] = []
+						newspapers_names[_media.country_code] << _media.name
 					end
 				end
 				

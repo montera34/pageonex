@@ -25,7 +25,7 @@ namespace :scraping do
 
 		countries = {}
 
-		cities = {}
+		country_codes = {}
 
 		newspapers = []
 
@@ -33,13 +33,13 @@ namespace :scraping do
 		  puts countries[a.content] = "http://en.kiosko.net" + a.attributes["href"].value
 		  #links << a.attributes["href"].value 
 		end
-		countries_newspapaer = {}
+		countries_newspaper = {}
 
 		countries.each do |value, key| 
 		  country_page = Nokogiri::HTML(open(key))
 		  country_page.css(".line li a img").each do |img|
 		    puts img.attributes["alt"].value
-		    countries_newspapaer[value] = img.attributes["alt"].value
+		    countries_newspaper[value] = img.attributes["alt"].value
 		  end
 		end
 
