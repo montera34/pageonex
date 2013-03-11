@@ -1,5 +1,7 @@
 class Threadx < ActiveRecord::Base
 
+	MAX_IMAGES = 500
+
 	has_many :media_threadxes
 	has_many :media, :through => :media_threadxes
 
@@ -16,6 +18,17 @@ class Threadx < ActiveRecord::Base
 	
 	# this validation runs when a user create a thread, and checks if the user has a thread with same name or not
 	validate :existing_thread, :on => :create
+
+	validate :not_too_many_images
+
+	# workaround for bug #59
+	def not_too_many_images
+		media_count = media.length
+		days = end_date - start_date
+		if ((media_count * days) > MAX_IMAGES)
+			errors.add(:start_date, "This range is too big.  Your number of days times your number newspapers must be below "+MAX_IMAGES.to_s)
+		end
+	end
 
 	def existing_thread
 		current_user = User.find owner_id

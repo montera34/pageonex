@@ -32,6 +32,20 @@ class ThreadsController < ApplicationController
 		if @thread.status == "opened"
 			@thread.end_date = Date.today
 		end
+
+		# the value of the media will be an array of the media ids, like [23,522,12,4]
+		media = params[:media]
+
+		# formatting the newspapers_names hash as mentioned above
+		media.each do |m|
+			_media = Media.find(m)
+			@thread.media << _media
+		end
+		# this array is made to be passed to Scraper.get_issues method, because this method accepts the specific format of newspapers names as the following
+		# {"es" => ["elpais", "abc"], "de" => ["faz", "bild"], "fr" => ["lemonde", "lacroix"], "it" => ["corriere_della_sera", "ilmessaggero"], "uk" => ["the_times", ],"us" => ["wsj", "newyork_times", "usa_today"]}
+		# name attribute holds the name of the newspaper {"elpais", "abc", ...}
+		newspapers_names = Media.get_names_from_list @thread.media
+
 				 
 		# For any submitted new thread, it should pass the following conditons to be saved to the db
 		# (@thread.valid?) this conditions is used to check if the instantiated thread, is passing the validations in the threadx model class
@@ -39,28 +53,6 @@ class ThreadsController < ApplicationController
 		# (params["topic_name_1"] != "" ) this condition is to be sure the thread has at least one topic
 		if @thread.valid? && params[:media] != nil && params["topic_name_1"] != "" 
 			
-			# this array is made to be passed to Scraper.get_issues method, because this method accepts the specific format of newspapers names as the following
-			# {"es" => ["elpais", "abc"], "de" => ["faz", "bild"], "fr" => ["lemonde", "lacroix"], "it" => ["corriere_della_sera", "ilmessaggero"], "uk" => ["the_times", ],"us" => ["wsj", "newyork_times", "usa_today"]}
-			# name attribute holds the name of the newspaper {"elpais", "abc", ...}
-			newspapers_names = {}
-
-			# the value of the media will be an array of the media ids, like [23,522,12,4]
-			media = params[:media]
-
-			# formatting the newspapers_names hash as mentioned above
-			media.each do |m|
-				_media = Media.find(m)
-				@thread.media << _media
-				# for each media country_code(code like  {"es", "de", ...}) it appends the newspapers
-				if newspapers_names[_media.country_code] != nil
-					newspapers_names[_media.country_code] << _media.name 
-				# but if the country_code array is empty, it will create a new array
-				else
-					newspapers_names[_media.country_code] = []
-					newspapers_names[_media.country_code] << _media.name
-				end
-			end
-
 			# create object for each code (topic) submited
 			codes = []
 			number_of_topics = params[:topic_count].to_i
@@ -182,7 +174,13 @@ class ThreadsController < ApplicationController
 		# don't change the thread_name property (ie. the url) even if the display name changes
 		media = params[:media]
 
-
+		@thread.media = []
+		media.each do |m|
+			_media = Media.find(m)
+			@thread.media << _media
+		end
+		newspaper_names = Media.get_names_from_list @thread.media
+		
 		if @thread.update_attributes(params[:threadx])
 			
 			@thread.status = params[:status]
@@ -191,20 +189,6 @@ class ThreadsController < ApplicationController
 			end
 
 			if true
-				newspapers_names = {}
-				@thread.media = []
-
-				media.each do |m|
-					_media = Media.find(m)
-					@thread.media << _media
-					if newspapers_names[_media.country_code] != nil
-						newspapers_names[_media.country_code] << _media.name 
-					else
-						newspapers_names[_media.country_code] = []
-						newspapers_names[_media.country_code] << _media.name
-					end
-				end
-				
 				newspapers_images = Scraper.get_issues(@thread.start_date, @thread.end_date, newspapers_names)
 
 				newspapers_images.each do |image_name, image_info|
