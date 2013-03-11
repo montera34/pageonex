@@ -29,11 +29,11 @@ $(function () {
   
   // lets you add new topics via Ajax request
   $('#add_topic').click(function() { 
-    var newTopicCount = parseInt($("#topic_count").val())+1;
-    $.get('/threads/new_topic/'+newTopicCount, function(data) {   
+    var existingTopicCount = parseInt($("#topic_count").val());
+    $.get('/threads/new_topic/'+existingTopicCount, function(data) {   
       $('#topic-list').append(data);
       $("#topic_color_"+$("#topic_count").val()).minicolors({ defaultValue: '#FF0000' });
-      $("#topic_count").val(newTopicCount);
+      $("#topic_count").val(existingTopicCount+1);
     });
   });
   // add the first topic option dynamically if there are none

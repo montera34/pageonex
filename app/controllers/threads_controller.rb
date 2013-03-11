@@ -65,7 +65,7 @@ class ThreadsController < ApplicationController
 			codes = []
 			number_of_topics = params[:topic_count].to_i
 			# iterating over the submitted topics, and create a code object for each one. Then add this object to the codes array to assign it to the thread 
-			1.upto(number_of_topics) do |n|
+			number_of_topics.times do |n|
 				codes << Code.create!({:code_text => params["topic_name_#{n}"], :code_description => params["topic_description_#{n}"],:color => params["topic_color_#{n}"]})
 			end
 
@@ -233,7 +233,7 @@ class ThreadsController < ApplicationController
 			end
 			if true
 				@thread.codes.to_enum.with_index.each do |code,index|
-					code.update_attributes({code_text: params["topic_name_#{index+1}"], color: params["topic_color_#{index+1}"], code_description: params["topic_description_#{index}"]})
+					code.update_attributes({code_text: params["topic_name_#{index}"], color: params["topic_color_#{index}"], code_description: params["topic_description_#{index}"]})
 				end
 			end
 
