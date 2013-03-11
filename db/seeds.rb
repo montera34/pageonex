@@ -5,3 +5,5 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+Threadx.create(thread_name: 'thread_social movement',thread_display_name: 'Social movement in front pages', start_date: '2013-02-01', end_date: '2013-02-15', description: 'the best description ever', category: 'social', status: 'closed', owner_id: '1')
+
