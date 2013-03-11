@@ -121,7 +121,7 @@ class ThreadsController < ApplicationController
 				Area.create({highlighted_area: highlighted_area1})
 
 				highlighted_area2 = HighlightedArea.create!({:name => "image#{img.id}_ha2" ,:image => img, user: current_user,threadx: @thread })
-    		Area.create({highlighted_area: highlighted_area2})
+    				Area.create({highlighted_area: highlighted_area2})
 
 			end
 
