@@ -179,7 +179,7 @@ class ThreadsController < ApplicationController
 			_media = Media.find(m)
 			@thread.media << _media
 		end
-		newspaper_names = Media.get_names_from_list @thread.media
+		newspapers_names = Media.get_names_from_list @thread.media
 		
 		if @thread.update_attributes(params[:threadx])
 			
