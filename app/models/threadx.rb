@@ -25,8 +25,9 @@ class Threadx < ActiveRecord::Base
 	def not_too_many_images
 		media_count = media.length
 		days = end_date - start_date
+		number_of_images = media_count * days
 		if ((media_count * days) > MAX_IMAGES)
-			errors.add(:start_date, "This range is too big.  Your number of days times your number newspapers must be below "+MAX_IMAGES.to_s)
+			errors.add(:start_date, "This range is too big.  Your number of total images must be below " + MAX_IMAGES.to_s + ". Your thread has now " + number_of_images.to_i.to_s + " images ( "+ days.to_i.to_s + " days * " + media_count.to_s + " newspapers). Make a shorter range or use less newspapers.")
 		end
 	end
 
