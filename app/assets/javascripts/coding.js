@@ -74,6 +74,7 @@ $(document).ready(function () {
     // it will set the highlighted areas to zero 
     $("#clear_highlighting").click(function () {
         deleteHighlightedAreas(getCurrentImageId());
+        renderHighlightedAreas();
         progressBarPercentage();
     })  
 
@@ -105,11 +106,9 @@ $(document).ready(function () {
 });
 
 // Return the current image
-
 function getCurrentImage () {
     return $("#images_section div.active img");
 }
-
 function getCurrentImageId () {
     return getCurrentImage().attr("name");
 }
@@ -150,105 +149,22 @@ function enableDragging(elt) {
 function setModified () {
     $("#status").attr("value","1");
 }
-
 function isModified () {
     return ($("#status").attr("value") == '1');
 }
 
+// API for nothing to code button
 function clearNothingToCode (img_id) {
     var nothing_to_code = $('[name="nothing_to_code_' + img_id + '"]');
     nothing_to_code.val('0');
 }
-
 function nothingToCode (img_id) {
     var nothing_to_code = $('[name="nothing_to_code_' + img_id + '"]');
     nothing_to_code.val('1');
 }
-
-// Interface for highlighted areas
-// addHighlightedArea() - Add a single highlighted area to the current page
-// saveHighightedArea() - Save a highlighted area
-// deleteHighlightedAreas() - Delete all highlighted areas for the current page
-// getHighlightedArea() - Get data for a single highlighted area
-// getHighlightedAreas() - Get a list of highlighted areas
-// clearHighlightedAreas() - Clear all rendered highlighted areas
-// renderHighlightedArea() - Render a single highlighted area
-// renderHighlightedAreas() - Re-render the highlighted areas for the current page
-
-function addHighlightedArea (img_id, code_id, selection) {
-    // Get div containing highlighted area info for the specified image
-    var ha_group = $("#ha_group_" + img_id);
-    var count = ha_group.children().length;
-    var cssid = img_id + '_' + (count+1);
-    // Create hidden fields to contain data
-    var ha_elt = $('<div>').attr('id', cssid).appendTo(ha_group);
-    var tag = '<input type="hidden"/>';
-    $(tag).attr('name', 'ha_name[]').val(cssid).appendTo(ha_elt);
-    $(tag).attr('name', 'img_id_'+cssid).val(img_id).appendTo(ha_elt);
-    $(tag).attr('name', 'id_'+cssid).val(0).appendTo(ha_elt);
-    $(tag).attr('name', 'code_id_'+cssid).val(code_id).appendTo(ha_elt);
-    $(tag).attr('name', 'x1_'+cssid).val(selection.x1).appendTo(ha_elt);
-    $(tag).attr('name', 'y1_'+cssid).val(selection.y1).appendTo(ha_elt);
-    $(tag).attr('name', 'x2_'+cssid).val(selection.x2).appendTo(ha_elt);
-    $(tag).attr('name', 'y2_'+cssid).val(selection.y2).appendTo(ha_elt);
-    $(tag).attr('name', 'width_'+cssid).val(selection.width).appendTo(ha_elt);
-    $(tag).attr('name', 'height_'+cssid).val(selection.height).appendTo(ha_elt);
-    $(tag).attr('name', 'deleted_'+cssid).appendTo(ha_elt);
-    setModified();
-    clearNothingToCode(img_id);
-    return getHighlightedArea(cssid);
-}
-
-function saveHighlightedArea (ha) {
-    // Get element containing hidden fields and update their values
-    cssid = ha.cssid;
-    var ha_elt = $('#' + cssid);
-    $("[name='code_id_"+cssid+"']").val(ha.code_id);
-    $("[name='x1_"+cssid+"']").val(ha.x1);
-    $("[name='x2_"+cssid+"']").val(ha.x2);
-    $("[name='y1_"+cssid+"']").val(ha.y1);
-    $("[name='y2_"+cssid+"']").val(ha.y2);
-    $("[name='width_"+cssid+"']").val(ha.width);
-    $("[name='height_"+cssid+"']").val(ha.height);
-    $("[name='deleted_"+cssid+"']").val(ha.deleted);
-    setModified();
-}
-
-function deleteHighlightedAreas (img_id) {
-    ha_list = getHighlightedAreas(img_id);
-    var i;
-    for (i = 0; i < ha_list.length; i++) {
-        ha_list[i].deleted = '1';
-        saveHighlightedArea(ha_list[i]);
-    }
-    clearNothingToCode(img_id);
-    setModified();
-    renderHighlightedAreas();
-}
-
-function getHighlightedArea (cssid) {
-    ha = {}
-    ha.cssid = cssid;
-    ha.id = $("[name='id_"+cssid+"']").val();
-    ha.code_id = $("[name='code_id_"+cssid+"']").val();
-    ha.x1 = $("[name='x1_"+cssid+"']").val();
-    ha.x2 = $("[name='x2_"+cssid+"']").val();
-    ha.y1 = $("[name='y1_"+cssid+"']").val();
-    ha.y2 = $("[name='y2_"+cssid+"']").val();
-    ha.width = $("[name='width_"+cssid+"']").val();
-    ha.height = $("[name='height_"+cssid+"']").val();
-    ha.deleted = $("[name='deleted_"+cssid+"']").val();
-    return ha;
-}
-
-function getHighlightedAreas (img_id) {
-    // Get div containing highlighted area info for the specified image.
-    // Then load the highlighted area for each child element.
-    var ha_list = [];
-    $("#ha_group_" + img_id).children().each(function () {
-        ha_list.push(getHighlightedArea($(this).attr('id')));
-    });
-    return ha_list;
+function hasNothingToCode (img_id) {
+    var nothing_to_code = $('[name="nothing_to_code_' + img_id + '"]');
+    return (nothing_to_code.val() == '1');    
 }
 
 function clearHighlightedAreas () {
@@ -274,6 +190,7 @@ function renderHighlightedArea (ha) {
     ha_elt.css("background-color", $("#code_"+ha.code_id).css("background-color"));
 }
 
+// Display highlighted areas
 function renderNothingToCode () {
     // Check whether the current image has nothing to code
     var img_id = getCurrentImageId();
@@ -391,33 +308,28 @@ function clearHighlightedArea () {
 function progressBarPercentage () {
     // set the total number of images
     $("#total").text($("#total_images_number").attr("value"))
-    var images_counter = parseInt($("#total").text())
-    var remain_counter = 0
+    var image_count = parseInt($("#total").text())
+    var coded_count = 0;
     
     // Go through each image div
     $("#images_section div.item").each(function () {
         img_id = $(this).find('img').attr('name');
-        ha_list = getHighlightedAreas(img_id);
-        var i;
-        for (i = 0; i < ha_list.length; i++) {
-            // TODO - check for non-deleted highlighted images
+        if (hasNothingToCode(img_id)) {
+            coded_count++;
+        } else {
+            ha_list = getHighlightedAreas(img_id);
+            var i;
+            for (i = 0; i < ha_list.length; i++) {
+                if (ha_list[i].deleted != 1) {
+                    coded_count++;
+                    break;
+                }
+            }
         }
     });
-    
-    // get all the highlighted areas
-    var high_areas = $("#high_images").children()
-    // iterates over all the highligted areas 
-    for (var i = 0; i < high_areas.length; i++) {
-        ha=$("input#"+high_areas[i].id).attr("value")
-        // if the highlighted area is set to "1" and it was the first highlighted area, we increment the counter
-        if (ha != "1" && high_areas[i].id.split('_')[1] == "ha1") {
-            remain_counter += 1
-        };
-    };
     // calculate percentage of the bar
-    var percentage = 100 - ((remain_counter/images_counter) * 100)
-    
+    var percentage = Math.ceil((coded_count/image_count) * 100)
     // set the value in percentage form "%"
     $(".bar").css("width",Math.ceil(percentage)+"%")
-    $("#remain").text(images_counter-remain_counter)
+    $("#remain").text(coded_count);
 }

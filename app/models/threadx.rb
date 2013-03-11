@@ -33,19 +33,13 @@ class Threadx < ActiveRecord::Base
 		Image.by_media(medium_ids).by_date(start_date..end_date)
 	end
 	
-	def self.edtest
-		237
-	end
-	
-	def edtest2
-		238
-	end
-	
 	def highlighted_areas_for_image(image)
 		HighlightedArea.by_threadx(self).by_image(image)
 	end
 	
 	def image_coded?(image)
-		HighlightedArea.by_threadx(self).by_image(image).length > 0
+		area_count = HighlightedArea.by_threadx(self).by_image(image).length
+		skipped = coded_pages.for_image(image).length
+		area_count > 0 or skipped > 0
 	end
 end
