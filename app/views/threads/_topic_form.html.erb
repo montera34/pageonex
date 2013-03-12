@@ -19,17 +19,24 @@ human_topic_number = (Integer(index) + 1).to_s
     </div>
   </div>
   
-  <div class="topic_color_box" class="control-group">
+  <div class="topic_color_box control-group">
     <%= label_tag "topic_color_#{index}", "Topic #{human_topic_number} Color", :id => "topic_color_label_#{index}", :class => "control-label"  %>
     <div class="controls">
     <%= text_field_tag "topic_color_#{index}",color,placeholder: "#FF0000",:class=>"topic_color js_validate" %> 
     </div>
   </div>
   
-  <div class="topic_description_box" class="control-group">
+  <div class="topic_description_box control-group">
     <%= label_tag "topic_description_#{index}", "Topic #{human_topic_number} Description", :id => "topic_description_label_#{index}", :class => "control-label"  %>
     <div class="controls">
     <%= text_area_tag "topic_description_#{index}",description,:rows => "5",placeholder: "Some Info about that topic" %> 
+    </div>
+  </div>
+  
+  <div class="control-group">
+    <div class="controls">
+      <%= hidden_field_tag "topic_deleted_#{index}" %>
+      <a id="delete_topic_<%= index %>" class="btn delete_topic">Delete Code/Topic</a>
     </div>
   </div>
 </div>
