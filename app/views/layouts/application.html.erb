@@ -30,7 +30,7 @@
   </head>
   <body>
 
-    <div class="navbar navbar-fixed-top">
+    <div class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-inner">
           <div class="container">
           <a class="btn btn-navbar" data-target=".nav-collapse" data-toggle="collapse">
@@ -50,24 +50,24 @@
                 <li><a href="/threads/?a=t" title="">All Threads</a></li>
               </ul>
             </li>
-		<li><%= link_to "Blog", "http://montera34.org/pageonex/"  %></li>
-		<li><%= link_to "Help", "/home/help"  %></li>
-		<li><%= link_to "About", "/home/about"  %></li>
-		<li><a href="/home/credits" title="">Credits</a></li>	
-		<li><%= link_to "Report Bugs", "http://bit.ly/pageonextest"  %></li>      
+	    <li><%= link_to "Blog", "http://montera34.org/pageonex/"  %></li>
+	    <li><%= link_to "Help", "/home/help"  %></li>
+	    <li><%= link_to "About", "/home/about"  %></li>
+	    <li><a href="/home/credits" title="">Credits</a></li>	
+	    <li><%= link_to "Report Bugs", "http://bit.ly/pageonextest"  %></li>      
           </ul>
-          
+          <% if user_signed_in? %>
+            <div class="pull-right" id="login-info">
+              <h5><%= current_user.username %></h5>
+              <%= link_to "Sign out", destroy_user_session_path, :method => :delete  %>
+            </div>
+          <% end %>
 
           
           <form class="navbar-search pull-right">
             <input type="text" class="search-query" placeholder="Search">
           </form>
-          <% if user_signed_in? %>
-            <div class="pull-right" style="border-radius: 4px;padding: 0px 5px 0px 5px;box-shadow: 0px 0px 1px 2px #424242; margin-top: 5px;margin-right: 8px;">
-              <h5 style="margin-bottom: -6px;"><%= current_user.username.capitalize %></h5>
-              <%= link_to "Sign out", destroy_user_session_path, :method => :delete  %>
-            </div>
-          <% end %>
+          
           </div><!--/.nav-collapse -->
         </div>
       </div>
@@ -89,19 +89,23 @@
                 <p><%= alert %></p>
               </div>
             <% end %>
+		<%= yield %>
             <% if (params[:controller] == "threads" || params[:controller] == "coding")&&(params[:action] != "index"  && params[:action] != "new" && params[:action] != "create")%>
-              <div style="text-align:center; font-size:20px ;list-style: none;" class="">
-                 
-                  <a href="<%= "/#{@thread.owner.username.split(' ').join('_')}/#{@thread.thread_name}/coding"%>" class="btn " id="coding" rel="popover"  data-content="Coding images, by highlighting the related news" data-original-title="Code" style="border-radius: 0px 0px 0px 0px;">Code</a> 
 
-                  <span style="margin: 0 100px 0 100px" class="divider"> - </span>
+              <div style="text-align:center; font-size:20px ;list-style: none;" class="row">
+			<div class="span12">&nbsp;
+			</div>
+                 	<div class="span12">
+		          	<a href="<%= "/#{@thread.owner.username.split(' ').join('_')}/#{@thread.thread_name}/coding"%>" class="btn " id="coding" rel="popover"  data-content="Coding images, by highlighting the related news" data-original-title="Code">Code</a> 
 
-                  <a href="<%= "/#{@thread.owner.username.split(' ').join('_')}/#{@thread.thread_name}"%>" class="btn " id="disp" rel="popover"  data-content="Displaying the images matrix with bar chart of the ratios" data-original-title="Display" style="border-radius: 0px 0px 0px 0px;">Display</a>
-                <hr>
+		          	<span style="margin: 0 100px 0 100px" class="divider"> - </span>
+
+		          	<a href="<%= "/#{@thread.owner.username.split(' ').join('_')}/#{@thread.thread_name}"%>" class="btn " id="disp" rel="popover"  data-content="Displaying the images matrix with bar chart of the ratios" data-original-title="Display">Display</a>
+                	</div>
               </div>
             <% end %>
 
-            <%= yield %>
+            
             </div>
             <div class="span2" style="display:none">
               

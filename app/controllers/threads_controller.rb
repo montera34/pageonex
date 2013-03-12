@@ -9,14 +9,8 @@ class ThreadsController < ApplicationController
 
 	# new action render the new form, with the an array of all the media in the db, but before that it do change the name of the media, by formating it, as "#{newspaper.country} - #{newspaper.display_name}" to be sorted by country name in the view
 	def new
-		@media = []
+		@media = Media.all
 		@thread = Threadx.new
-		Media.all.each do |newspaper|
-			# for each media object it changes its name on fly(with actually effecting the object in the db) and it to the @media array
-			newspaper.name = "#{newspaper.country} - #{newspaper.display_name}"
-			@media << newspaper
-		end
-		
 	end
 
 	# create action is responsible of processing the submited new form, and create the thread object in the database and handle the validation
@@ -25,7 +19,7 @@ class ThreadsController < ApplicationController
 		@thread = Threadx.new(params[:threadx])
 		
 		# format the thread name, by replace spaces with underscores
-		@thread.thread_name = params[:threadx]["thread_display_name"].split(' ').join('_').downcase
+		@thread.thread_name = Threadx.url_safe_name @thread.thread_display_name
 		
 		# set the owner of the thread to the current logged in user
 		@thread.owner_id = current_user.id
@@ -47,7 +41,6 @@ class ThreadsController < ApplicationController
 			
 			# this array is made to be passed to Scraper.get_issues method, because this method accepts the specific format of newspapers names as the following
 			# {"es" => ["elpais", "abc"], "de" => ["faz", "bild"], "fr" => ["lemonde", "lacroix"], "it" => ["corriere_della_sera", "ilmessaggero"], "uk" => ["the_times", ],"us" => ["wsj", "newyork_times", "usa_today"]}
-			# 'city attribute' holds the 'country code' which is the second column in the kisoko.csv file. The 'city attribute' should be changed to 'country_code' instead like {"es", "de", ...} 
 			# name attribute holds the name of the newspaper {"elpais", "abc", ...}
 			newspapers_names = {}
 
@@ -58,13 +51,13 @@ class ThreadsController < ApplicationController
 			media.each do |m|
 				_media = Media.find(m)
 				@thread.media << _media
-				# for each media city(code like  {"es", "de", ...}) it appends the newspapers [here city should be changed to country]
-				if newspapers_names[_media.city] != nil
-					newspapers_names[_media.city] << _media.name 
-				# but if the city array is empty, it will create a new array
+				# for each media country_code(code like  {"es", "de", ...}) it appends the newspapers
+				if newspapers_names[_media.country_code] != nil
+					newspapers_names[_media.country_code] << _media.name 
+				# but if the country_code array is empty, it will create a new array
 				else
-					newspapers_names[_media.city] = []
-					newspapers_names[_media.city] << _media.name
+					newspapers_names[_media.country_code] = []
+					newspapers_names[_media.country_code] << _media.name
 				end
 			end
 
@@ -72,7 +65,7 @@ class ThreadsController < ApplicationController
 			codes = []
 			number_of_topics = params[:topic_count].to_i
 			# iterating over the submitted topics, and create a code object for each one. Then add this object to the codes array to assign it to the thread 
-			1.upto(number_of_topics) do |n|
+			number_of_topics.times do |n|
 				codes << Code.create!({:code_text => params["topic_name_#{n}"], :code_description => params["topic_description_#{n}"],:color => params["topic_color_#{n}"]})
 			end
 
@@ -159,12 +152,8 @@ class ThreadsController < ApplicationController
 			flash[:thread_name_error] = "You don't have premission to edit this thread"
 			redirect_to "/threads/"
 		end
-		# A method should be created to make a DRY code. don't repeat!
-		@media = []
-		Media.all.each do |newspaper|
-			newspaper.name = "#{newspaper.country} - #{newspaper.display_name}"
-			@media << newspaper
-		end
+
+		@media = Media.all
 
 		params["media"] = []
 		@thread.media.each do |m|
@@ -177,7 +166,7 @@ class ThreadsController < ApplicationController
 	# the update action is responsible for processing the submitted request, it's pretty much the same as the create action. DRY this!
 	def update
 		@thread = current_user.owned_threads.find_by_thread_name params[:id]
-		@thread.thread_name = params[:threadx]["thread_display_name"].split(' ').join('_').downcase
+		# don't change the thread_name property (ie. the url) even if the display name changes
 		media = params[:media]
 
 
@@ -195,11 +184,11 @@ class ThreadsController < ApplicationController
 				media.each do |m|
 					_media = Media.find(m)
 					@thread.media << _media
-					if newspapers_names[_media.city] != nil
-						newspapers_names[_media.city] << _media.name 
+					if newspapers_names[_media.country_code] != nil
+						newspapers_names[_media.country_code] << _media.name 
 					else
-						newspapers_names[_media.city] = []
-						newspapers_names[_media.city] << _media.name
+						newspapers_names[_media.country_code] = []
+						newspapers_names[_media.country_code] << _media.name
 					end
 				end
 				
@@ -231,7 +220,7 @@ class ThreadsController < ApplicationController
 			end
 			if true
 				@thread.codes.to_enum.with_index.each do |code,index|
-					code.update_attributes({code_text: params["topic_name_#{index+1}"], color: params["topic_color_#{index+1}"], code_description: params["topic_description_#{index}"]})
+					code.update_attributes({code_text: params["topic_name_#{index}"], color: params["topic_color_#{index}"], code_description: params["topic_description_#{index}"]})
 				end
 			end
 
@@ -301,6 +290,11 @@ for opened thread:
 		@thread.highlighted_areas.destroy_all
 		@thread.destroy
 		redirect_to "/threads/"
+	end
+
+	def new_topic
+		render :partial => 'topic_form', :locals => {
+			:index => params[:index], :name => nil, :color => nil, :description => nil}
 	end
 
 end

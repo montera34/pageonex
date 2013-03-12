@@ -52,6 +52,19 @@
 
     </div>
     <div id="images_section" class="span7">
+	  <% if @thread.owner == current_user %>
+            <div class="row btn-toolbar" style="text-align:center">
+                <div class="pull-right btn-group">
+                    <a id="clear_highlighting" class="btn  btn-danger">Clear Highlighted Areas</a>
+                    <a id="skip_coding" class="btn btn-inverse">Nothing to Code</a>
+                </div>
+            </div>
+        <% else %>
+            <div class="form-actions" style="text-align:center">
+                <a href="<%= "/#{@thread.owner.username}/#{@thread.thread_name}/" %>" class="btn btn-inverse">Go to Display</a>
+                <a href="/" class="btn ">Cancel</a>
+            </div>
+        <% end %>
         <!-- Starting of the image slider (carousel) -->
         <div id="myCarousel" class="carousel slide" >
           <!-- Carousel items -->
@@ -143,15 +156,18 @@
             </div>
         <% if @thread.owner == current_user %>
             <div class="form-actions" style="text-align:center">
-                <div class="pull-left">
+                <div class="pull-left btn-group">
                     <a id="clear_highlighting" class="btn  btn-danger">Clear Highlighted Areas</a>
                     <a id="skip_coding" class="btn btn-inverse">Nothing to Code</a>
                 </div>
 
                 <div class="pull-right">
-                    <%= submit_tag "Save", class: "save btn btn-primary "%>
-                    <%= submit_tag "Save and Display", class: "save btn btn-info"%>
-                    <a href="/" class="btn ">Cancel</a>
+			<div class="btn-group">
+		            <%= submit_tag "Save", class: "save btn btn-primary "%>
+		            <%= submit_tag "Save and Display", class: "save btn btn-info"%>
+			<a href="/" class="btn ">Cancel</a>
+			</div>
+                    
                 </div>
             </div>
         <% else %>

@@ -1,132 +1,143 @@
-<% @title = "Editing: #{@thread.thread_display_name.capitalize} - PageOneX" %>
 <!-- include the jquery miniColor lib -->
 <%= javascript_include_tag "jquery.miniColors.js" %>
 <%= stylesheet_link_tag "jquery.miniColors.css" %>
 
-<%= form_for @thread, :url=> { :controller => :threads, :action => :update}, method: "PUT" do |f| %>
-  <div id="errors">
-    <% if @thread.errors.any? %>
-      <div class="alert alert-error">
-        <% @thread.errors.full_messages.each do |msg| %>
+<% @title = "Editing: #{@thread.thread_display_name.capitalize} - PageOneX" %>
+
+<%= form_for @thread, :url=> { :controller => :threads, :action => :update}, :html => { :class => "form-horizontal" }, method: "PUT" do |f|  %>
+<div id="errors">
+  <% if @thread.errors.any? %>
+    <div class="alert alert-error">
+      <% @thread.errors.full_messages.each do |msg| %>
             <li><%= msg %></li>
         <% end %>
             <li id="date_message" style="display:none">End date must be greater than start date</li>
             <li id="media_message" style="display:none">You must at least select one newspaper</li>
             <li id="topic_name_message" style="display:none">Topic name cannot be empty</li>
             <li id="topic_color_message" style="display:none">Topic color cannot be empty</li>
+    </div>
+    <% end %>
+</div>
+  <div class="control-group">
+  <%= f.label :thread_display_name, "Thread Name", :class => "control-label" %>
+    <div class="controls">
+    <%= f.text_field :thread_display_name %> 
+    </div>
+  </div>
+  <div class="control-group">
+  <%= f.label :status, :class => "control-label"  %>
+    <div class="controls">
+    <% if @thread.status  == "closed" %>
+      <div class="btn-group control-group" data-toggle="buttons-radio">
+        <a id="open_thread" class="btn btn-primary status" rel="popover"  data-content="In case of selecting this option, PageOneX will update with the latest newspapers front pages automatically" data-original-title="Opened Thread" >Opened</a>
+        <a id="close_thread" class="btn btn-inverse active status" rel="popover"  data-content="In case of selecting this option, PageOneX will create a thread with fixed dates" data-original-title="Closed Thread" >Closed</a>
+      </div>
+    <% else %>
+      <div class="btn-group" data-toggle="buttons-radio">
+        <a id="open_thread" class="btn btn-primary status active" rel="popover"  data-content="In case of selecting this option, PageOneX will update with the latest newspapers front pages automatically" data-original-title="Opened Thread" >Opened</a>
+        <a id="close_thread" class="btn btn-inverse  status" rel="popover"  data-content="In case of selecting this option, PageOneX will create a thread with fixed dates" data-original-title="Closed Thread" >Closed</a>
       </div>
     <% end %>
+    </div>
   </div>
-  <%= f.label :thread_display_name, "Thread Name" %>
-  <%= f.text_field :thread_display_name %><br />
-  
-  <%= f.label :status %>
-  <% if @thread.status  == "closed" %>
-    <div class="btn-group" data-toggle="buttons-radio">
-      <a id="open_thread" class="btn btn-primary status" rel="popover"  data-content="In case of selecting this option, PageOneX will update with the latest newspapers front pages automatically" data-original-title="Opened Thread" >Opened</a>
-      <a id="close_thread" class="btn btn-inverse active status" rel="popover"  data-content="In case of selecting this option, PageOneX will create a thread with fixed dates" data-original-title="Closed Thread" >Closed</a>
-    </div>
-  <% else %>
-    <div class="btn-group" data-toggle="buttons-radio">
-      <a id="open_thread" class="btn btn-primary status active" rel="popover"  data-content="In case of selecting this option, PageOneX will update with the latest newspapers front pages automatically" data-original-title="Opened Thread" >Opened</a>
-      <a id="close_thread" class="btn btn-inverse  status" rel="popover"  data-content="In case of selecting this option, PageOneX will create a thread with fixed dates" data-original-title="Closed Thread" >Closed</a>
-    </div>
-  <% end %>
   <%= hidden_field_tag :status, @thread.status %>
   <br>
-
-  <%= f.label :start_date %>
-	<%= f.text_field :start_date, :class => "datepicker"%>
-
-  <% if @thread.status  == "closed" %>
-    <%= f.label :end_date %>
-    <%= f.text_field :end_date , :class => "datepicker"%>
-  <% else %>
-    <%= f.label :end_date, :style=>"display:none"%>
-    <%= f.text_field :end_date , :class => "datepicker" , :style=>"display:none"%>
-  <% end %>
-
-
-
-  <%= f.label :category %>
-  <%= f.text_field :category %><br>
-
-  <%= f.label :description %>
-	<%= f.text_area :description, :rows => "10"%><br>
-
-  <h2>Newspapers info</h2><br>
-  <div id="media_box">
-    <%= label_tag :media, nil, :id => "media_label1" %>
-    <%= select_tag :media, options_from_collection_for_select(@media, "id", "name"),  :multiple => true , style: "height: 300px;width: 300px;", :class=>"js_validate" %>
-    <br>
-
-    <%= hidden_field_tag :org_media, params["media"] %>
+  <div class="control-group">
+  <%= f.label :start_date, :class => "control-label" %>
+    <div class="controls">
+    <%= f.text_field :start_date, :class => "datepicker"%>
+    </div>
   </div>
 
-
-  <hr>
-  <h2>Coding info</h2><br>
-
-  <% @thread.codes.to_enum.with_index.each do |code,index| %>
-    <div class="well">
-      <div id=<%= "topic_#{index+1}" %> class="well">
-        <div id="topic_name_box">
-          <%= label_tag "topic_name_#{index+1}", nil, :id => "topic_label_1" %>
-
-          <%= text_field_tag "topic_name_#{index+1}",code.code_text,placeholder: "Code/Topic name", :class=>"topic_name js_validate" %> 
-          
-        </div>
-
-        <div class="topic_color_box ">
-          <%= label_tag "topic_color_#{index+1}", nil, :id => "topic_color_label_#{index+1}" %>
-
-          <%= text_field_tag "topic_color_#{index+1}",code.color,placeholder: "#FF0000", :class=>"js_validate" %> 
-          
-        </div>
-
-        <%= label_tag "topic_description_#{index+1}", nil, :id => "topic_description_label_#{index+1}" %>
-
-        <%= text_area_tag "topic_description_#{index+1}",code.code_description,:rows => "5",placeholder: "Some Info about that topic" %> 
-      </div>
+  <div class="control-group">
+  <% if @thread.status  == "closed" %>
+    <%= f.label :end_date, :class => "control-label" %>
+    <div class="controls">
+    <%= f.text_field :end_date , :class => "datepicker"%>
+    </div>
+  <% else %>
+    <%= f.label :end_date, :style=>"display:none", :class => "control-label" %>
+    <div class="controls">
+    <%= f.text_field :end_date , :class => "datepicker" , :style=>"display:none"%>
     </div>
   <% end %>
+  </div>
+
+  <div class="control-group">
+  <%= f.label :category, :class => "control-label"  %>
+    <div class="controls">
+      <%= f.text_field :category %> 
+    </div>
+  </div>
+
+  <div class="control-group">
+  <%= f.label :description, :class => "control-label"  %>
+    <div class="controls">
+      <%= f.text_area :description, :rows => "10"%> 
+    </div>
+  </div>
+
+  <div id="media_box" class="control-group">
+    <%= label_tag :media, "Select newspapers", :id => "media_label1", :class => "control-label"  %>
+    <div class="controls">
+    <%= select_tag :media, options_from_collection_for_select(@media, "id", "name_with_country"),  :multiple => true , style: "height: 300px;width: 300px;", :class=>"js_validate" %>
+    </div>
+  </div>
+
+    <%= hidden_field_tag :org_media, params["media"] %>
+
+
+
+  <h3>Coding information</h3>
+  <p>Create one or multiple categories you want to use in the analysis.</p>
+
+  <div class="span6">
+    <div id="topic-list">
+      <% 
+      @thread.codes.to_enum.with_index.each do |code,index| %>
+        <%= render :partial => "topic_form", :locals => {
+            :index => index, :name => code.code_text , :color => code.color, :description => code.code_description
+          } %><%
+      end
+      %>
+    </div>
+    <div class="control-group">
+      <div class="controls">
+        <a id="add_topic" class="btn">Add Another Code/Topic</a>
+	<!-- adding a topic from the edit thread will not work until changes in threads?controller.rb are made -->
+          <%= hidden_field_tag :topic_count, params[:topic_count].to_i %>
+      </div>
+    </div>
+
   <label class="checkbox">
     <!-- <input id="clean_high_areas" type="checkbox">  -->
     <%= check_box_tag "clean_high_areas" %> Keep all highlighted areas that you have done, even which is related to deleted images
   </label>
 
   <hr>
-  <%= f.submit "Update Thread", :class => "btn" %>
-  <!-- <a class="btn btn-primary" href='<%="/#{current_user.username}/#{@thread.thread_name}"%>' >Cancel</a> -->
-  <a class="btn btn-primary" href='<%="/threads/"%>' >Cancel</a>
+  <div class="form-actions control-group">
+       <%= f.submit "Update Thread", :class => "btn btn-primary btn-large", id: "start_coding" %>
+      <a class="btn btn-large" href="/threads/">Cancel</a>
+  </div>
 <% end %>
 
 <script type="text/javascript">
 $(function () {
-  $("#media").val($("#org_media").attr("value").split(" "));
-
-  $(".topic_color").miniColors({
-    change: function (hex,rgb) {
-      $(".miniColors-trigger").css("background-color",hex)
-      }
-    });
-
-  $(".miniColors-trigger").attr("style","margin-bottom:9px;width: 214px;height: 26px;display: block;").css("background-color", $(".miniColors").attr("value"))
+  $("#media").val($("#org_media").val().split(" "));
 
   $('.datepicker').datepicker();
 
   $("#open_thread").click(function () {
-    $("label[for='threadx_end_date']").hide()
-    $("#threadx_end_date").hide()
-    $("#status").attr("value","opened")
-  })
+    $("label[for='threadx_end_date']").hide();
+    $("#threadx_end_date").hide();
+    $("#status").val("opened");
+  });
 
   $("#close_thread").click(function () {
-    $("label[for='threadx_end_date']").show()
-    $("#threadx_end_date").show()
-    $("#status").attr("value","closed")
-  })
-
+    $("label[for='threadx_end_date']").show();
+    $("#threadx_end_date").show();
+    $("#status").val("closed");
+  });
 
 })
 </script>

@@ -1,7 +1,7 @@
-country,city,display_name,name
-Argentina,ar,Clarín,ar_clarin
-Argentina,ar,La Nación,nacion
-Argentina,ar,El Día de la Plata,ar_eldia
+country,country_code,display_name,name
+Argentina,ar,Clarín,ar_clarin,http://www.clarin.com/
+Argentina,ar,La Nación,nacion,http://www.lanacion.com.ar/
+Argentina,ar,El Día de la Plata,ar_eldia,http://www.eldia.com.ar/
 Argentina,ar,La Razón,ar_razon
 Argentina,ar,La Voz del Interior,ar_voz_interior
 Argentina,ar,Los Andes – Mendoza,ar_losandes

@@ -42,4 +42,9 @@ class Threadx < ActiveRecord::Base
 		skipped = coded_pages.for_image(image).length
 		area_count > 0 or skipped > 0
 	end
+
+	def self.url_safe_name display_name
+		display_name.parameterize.underscore
+	end
+
 end
