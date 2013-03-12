@@ -253,18 +253,6 @@ class ThreadsController < ApplicationController
 				end
 			end
 
-			@thread.images.each do |img|
-				if img.highlighted_areas.find_by_threadx_id(@thread.id) == nil
-					highlighted_area1 = HighlightedArea.create!({:name => "image#{img.id}_ha1" ,:image => img, user: current_user,  threadx: @thread })
-
-					Area.create({highlighted_area: highlighted_area1})
-
-					highlighted_area2 = HighlightedArea.create!({:name => "image#{img.id}_ha2" ,:image => img, user: current_user,threadx: @thread })
-
-	          		Area.create({highlighted_area: highlighted_area2})
-	          	end
-			end
-
 			# and then redirect the user to the display view
 			redirect_to "/#{current_user.username.split(' ').join('_')}/#{@thread.thread_name}"
 		else
