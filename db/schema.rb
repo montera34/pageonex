@@ -25,6 +25,14 @@ ActiveRecord::Schema.define(:version => 20130309271421) do
     t.integer  "height"
   end
 
+  create_table "coded_pages", :force => true do |t|
+    t.integer  "threadx_id"
+    t.integer  "user_id"
+    t.integer  "image_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
   create_table "codes", :force => true do |t|
     t.string   "code_text"
     t.integer  "threadx_id"
@@ -37,11 +45,10 @@ ActiveRecord::Schema.define(:version => 20130309271421) do
   create_table "highlighted_areas", :force => true do |t|
     t.integer  "image_id"
     t.integer  "user_id"
-    t.integer  "code_id"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
     t.string   "name"
-    t.integer  "threadx_id"
+    t.integer  "code_id"
   end
 
   create_table "images", :force => true do |t|

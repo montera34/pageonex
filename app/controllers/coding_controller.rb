@@ -6,13 +6,7 @@ class CodingController < ApplicationController
     # set the @thread variable with the request thread
     @thread = Threadx.find_by_thread_name params[:thread_name]
     @image_counter = @thread.images.length
-    @highlighted_areas = []
-
-    # add only the hightlighted area related to existing images
-    @thread.highlighted_areas.each do |ha|
-      @highlighted_areas << ha if @thread.images.include? ha.image
-    end
-
+    @highlighted_areas = @thread.highlighted_areas
     
 =begin
 
@@ -38,11 +32,36 @@ So the following sorting method should be modified
   # process the submitted highlighted area from the coding view, and redirect to the display
   def process_highlighted_areas
     @thread = Threadx.find_by_thread_name params[:thread_name]
-    # sort the images
-    @images = @thread.images.sort do |img1, img2|
-      img1.publication_date <=> img2.publication_date
+    @images = @thread.images
+    
+    # Look for images with nothing to code
+    params[:image_name].each do |image_name|
+      image = Image.find_by_image_name(image_name)
+      @thread.coded_pages.for_user(current_user).for_image(image).delete_all
+      if params["nothing_to_code_#{image_name}"] == '1'
+	@thread.coded_pages.create(:user_id => current_user.id, :image_id => image.id)
+      end
     end
-
+    # Go through each submitted highlighted area
+    params[:ha_name].each do |ha_name|
+      image = Image.find_by_image_name(params["img_id_#{ha_name}"])
+      if params["id_#{ha_name}"].to_i == 0
+	# This is a new area
+	code = Code.find params["code_id_#{ha_name}"]
+	ha = code.highlighted_areas.create(image_id:image.id, code_id:code.id)
+	area = Area.create(highlighted_area_id: ha.id, x1: params["x1_#{ha_name}"].to_i, y1: params["y1_#{ha_name}"].to_i, x2: params["x2_#{ha_name}"].to_i, y2: params["y2_#{ha_name}"].to_i, width: params["width_#{ha_name}"].to_i, height: params["height_#{ha_name}"].to_i)
+      else
+	# Updating an existing area
+	ha = @thread.highlighted_areas.find(params["id_#{ha_name}"])
+	if params["deleted_#{ha_name}"] == '1'
+	  ha.areas[0].destroy
+	  ha.destroy
+	else
+	  ha.update_attribute('code_id', params["code_id_#{ha_name}"].to_i)
+	  ha.areas[0].update_attributes(x1: params["x1_#{ha_name}"].to_i, y1: params["y1_#{ha_name}"].to_i, x2: params["x2_#{ha_name}"].to_i, y2: params["y2_#{ha_name}"].to_i, width: params["width_#{ha_name}"].to_i, height: params["height_#{ha_name}"].to_i)
+	end
+      end
+    end
     @image_counter = @thread.images.length
 
     # set the highlighted areas values
@@ -88,12 +107,6 @@ So the following sorting method should be modified
     @thread.highlighted_areas.each do |ha|
       @highlighted_areas << ha if @thread.images.include? ha.image
     end
-    
-    # sort highlighted areas by the image name
-    @highlighted_areas.sort! do |ha1,ha2|
-    	ha1.name.split('_')[0][5..100].to_i <=> ha2.name.split('_')[0][5..100].to_i
-    end
-
 
     # This part is used to calculate the highlighted areas percentages vertically 
     @images_columns = {}

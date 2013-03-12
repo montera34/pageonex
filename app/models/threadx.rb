@@ -11,8 +11,9 @@ class Threadx < ActiveRecord::Base
 	has_many :users, :through => :threadx_collaborators
 
 	has_many :codes
-
-	has_many :highlighted_areas
+	has_many :highlighted_areas, :through => :codes
+	
+	has_many :coded_pages
 
 	validates :thread_display_name, :start_date, :end_date, :description , :category, :presence => true
 	
@@ -44,6 +45,16 @@ class Threadx < ActiveRecord::Base
 	
 	def images
 		Image.by_media(medium_ids).by_date(start_date..end_date)
+	end
+	
+	def highlighted_areas_for_image(image)
+		HighlightedArea.by_threadx(self).by_image(image)
+	end
+	
+	def image_coded?(image)
+		area_count = HighlightedArea.by_threadx(self).by_image(image).length
+		skipped = coded_pages.for_image(image).length
+		area_count > 0 or skipped > 0
 	end
 
 	def self.url_safe_name display_name

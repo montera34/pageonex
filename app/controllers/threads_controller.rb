@@ -53,6 +53,31 @@ class ThreadsController < ApplicationController
 		# (params["topic_name_1"] != "" ) this condition is to be sure the thread has at least one topic
 		if @thread.valid? && params[:media] != nil && params["topic_name_1"] != "" 
 			
+<<<<<<< HEAD
+=======
+			# this array is made to be passed to Scraper.get_issues method, because this method accepts the specific format of newspapers names as the following
+			# {"es" => ["elpais", "abc"], "de" => ["faz", "bild"], "fr" => ["lemonde", "lacroix"], "it" => ["corriere_della_sera", "ilmessaggero"], "uk" => ["the_times", ],"us" => ["wsj", "newyork_times", "usa_today"]}
+			# name attribute holds the name of the newspaper {"elpais", "abc", ...}
+			newspapers_names = {}
+
+			# the value of the media will be an array of the media ids, like [23,522,12,4]
+			media = params[:media]
+
+			# formatting the newspapers_names hash as mentioned above
+			media.each do |m|
+				_media = Media.find(m)
+				@thread.media << _media
+				# for each media country_code(code like  {"es", "de", ...}) it appends the newspapers
+				if newspapers_names[_media.country_code] != nil
+					newspapers_names[_media.country_code] << _media.name 
+				# but if the country_code array is empty, it will create a new array
+				else
+					newspapers_names[_media.country_code] = []
+					newspapers_names[_media.country_code] << _media.name
+				end
+			end
+
+>>>>>>> issue67
 			# create object for each code (topic) submited
 			codes = []
 			number_of_topics = params[:topic_count].to_i
@@ -104,6 +129,7 @@ class ThreadsController < ApplicationController
 			# It adds a reference to the scraped images to the thread
 			@thread.images << images
 
+<<<<<<< HEAD
 			# It adds the highlighted areas, the thread
 			# there is a limitation in this version which is; it supports two highlighted areas for each image
 			# we can in the future add loop to add any number of highlighted areas
@@ -117,6 +143,8 @@ class ThreadsController < ApplicationController
 
 			end
 
+=======
+>>>>>>> issue67
 			# add the codes to thread
 			@thread.codes << codes
 
@@ -189,6 +217,20 @@ class ThreadsController < ApplicationController
 			end
 
 			if true
+				newspapers_names = {}
+				@thread.media = []
+
+				media.each do |m|
+					_media = Media.find(m)
+					@thread.media << _media
+					if newspapers_names[_media.country_code] != nil
+						newspapers_names[_media.country_code] << _media.name 
+					else
+						newspapers_names[_media.country_code] = []
+						newspapers_names[_media.country_code] << _media.name
+					end
+				end
+				
 				newspapers_images = Scraper.get_issues(@thread.start_date, @thread.end_date, newspapers_names)
 
 				newspapers_images.each do |image_name, image_info|
@@ -283,10 +325,8 @@ for opened thread:
 	# the destroy actions, is for deleting a thread
 	def destroy
 		@thread = Threadx.find_by_thread_name params[:id]
-		@thread.codes.each do |code|
-			code.highlighted_areas.destroy_all
-			code.destroy
-		end
+		@thread.codes.destroy_all
+		@thread.highlighted_areas.destroy_all
 		@thread.destroy
 		redirect_to "/threads/"
 	end
