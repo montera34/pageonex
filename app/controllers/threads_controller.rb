@@ -240,7 +240,11 @@ class ThreadsController < ApplicationController
 			end
 			if true
 				@thread.codes.to_enum.with_index.each do |code,index|
-					code.update_attributes({code_text: params["topic_name_#{index}"], color: params["topic_color_#{index}"], code_description: params["topic_description_#{index}"]})
+					if params["topic_deleted_#{index}"] == '1'
+						code.destroy()
+					else
+						code.update_attributes({code_text: params["topic_name_#{index}"], color: params["topic_color_#{index}"], code_description: params["topic_description_#{index}"]})
+					end
 				end
 			end
 
