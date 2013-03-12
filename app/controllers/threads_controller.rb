@@ -53,8 +53,6 @@ class ThreadsController < ApplicationController
 		# (params["topic_name_1"] != "" ) this condition is to be sure the thread has at least one topic
 		if @thread.valid? && params[:media] != nil && params["topic_name_1"] != "" 
 			
-<<<<<<< HEAD
-=======
 			# this array is made to be passed to Scraper.get_issues method, because this method accepts the specific format of newspapers names as the following
 			# {"es" => ["elpais", "abc"], "de" => ["faz", "bild"], "fr" => ["lemonde", "lacroix"], "it" => ["corriere_della_sera", "ilmessaggero"], "uk" => ["the_times", ],"us" => ["wsj", "newyork_times", "usa_today"]}
 			# name attribute holds the name of the newspaper {"elpais", "abc", ...}
@@ -77,7 +75,6 @@ class ThreadsController < ApplicationController
 				end
 			end
 
->>>>>>> issue67
 			# create object for each code (topic) submited
 			codes = []
 			number_of_topics = params[:topic_count].to_i
@@ -129,22 +126,6 @@ class ThreadsController < ApplicationController
 			# It adds a reference to the scraped images to the thread
 			@thread.images << images
 
-<<<<<<< HEAD
-			# It adds the highlighted areas, the thread
-			# there is a limitation in this version which is; it supports two highlighted areas for each image
-			# we can in the future add loop to add any number of highlighted areas
-			@thread.images.each do |img|
-
-				highlighted_area1 = HighlightedArea.create!({:name => "image#{img.id}_ha1" ,:image => img, user: current_user, threadx: @thread })
-				Area.create({highlighted_area: highlighted_area1})
-
-				highlighted_area2 = HighlightedArea.create!({:name => "image#{img.id}_ha2" ,:image => img, user: current_user,threadx: @thread })
-    				Area.create({highlighted_area: highlighted_area2})
-
-			end
-
-=======
->>>>>>> issue67
 			# add the codes to thread
 			@thread.codes << codes
 
