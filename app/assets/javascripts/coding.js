@@ -66,7 +66,7 @@ $(document).ready(function () {
     $("#set_code").on("click",function () {
         var ha_cssid = $("#current_high_area").attr("value")
         ha = getHighlightedArea(ha_cssid);
-        ha.code_id = $("#codes").attr("value");
+        ha.code_id = $("#codes").val();
         saveHighlightedArea(ha);
         renderHighlightedAreas();
     });
