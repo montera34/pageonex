@@ -29,51 +29,21 @@ class ThreadsController < ApplicationController
 		
 		# if the thread is opened, sets the last date with today's dates and update the thread each time it's displayed.
 		# Now it works only when the Threah is save. Make if work when the thread is opened.
-		if @thread.status == "opened"
-			@thread.end_date = Date.today
-		end
-
-		# the value of the media will be an array of the media ids, like [23,522,12,4]
-		media = params[:media]
+		@thread.end_date = Date.today if @thread.status == "opened"
 
 		# formatting the newspapers_names hash as mentioned above
-		media.each do |m|
-			_media = Media.find(m)
-			@thread.media << _media
-		end
+		@thread.media = params[:media].collect { |media_id| Media.find(media_id) }
+
 		# this array is made to be passed to Scraper.get_issues method, because this method accepts the specific format of newspapers names as the following
 		# {"es" => ["elpais", "abc"], "de" => ["faz", "bild"], "fr" => ["lemonde", "lacroix"], "it" => ["corriere_della_sera", "ilmessaggero"], "uk" => ["the_times", ],"us" => ["wsj", "newyork_times", "usa_today"]}
 		# name attribute holds the name of the newspaper {"elpais", "abc", ...}
 		newspapers_names = Media.get_names_from_list @thread.media
 
-				 
 		# For any submitted new thread, it should pass the following conditons to be saved to the db
 		# (@thread.valid?) this conditions is used to check if the instantiated thread, is passing the validations in the threadx model class
 		# (params[:media] != nil) and this condtions to be sure that the thread is submitted with more than one newspaper selected
 		# (params["topic_name_1"] != "" ) this condition is to be sure the thread has at least one topic
 		if @thread.valid? && params[:media] != nil && params["topic_name_1"] != "" 
-			
-			# this array is made to be passed to Scraper.get_issues method, because this method accepts the specific format of newspapers names as the following
-			# {"es" => ["elpais", "abc"], "de" => ["faz", "bild"], "fr" => ["lemonde", "lacroix"], "it" => ["corriere_della_sera", "ilmessaggero"], "uk" => ["the_times", ],"us" => ["wsj", "newyork_times", "usa_today"]}
-			# name attribute holds the name of the newspaper {"elpais", "abc", ...}
-			newspapers_names = {}
-
-			# the value of the media will be an array of the media ids, like [23,522,12,4]
-			media = params[:media]
-
-			# formatting the newspapers_names hash as mentioned above
-			media.each do |m|
-				_media = Media.find(m)
-				@thread.media << _media
-				# for each media country_code(code like  {"es", "de", ...}) it appends the newspapers
-				if newspapers_names[_media.country_code] != nil
-					newspapers_names[_media.country_code] << _media.name 
-				# but if the country_code array is empty, it will create a new array
-				else
-					newspapers_names[_media.country_code] = []
-					newspapers_names[_media.country_code] << _media.name
-				end
-			end
 
 			# create object for each code (topic) submited
 			codes = []
@@ -183,68 +153,45 @@ class ThreadsController < ApplicationController
 		# don't change the thread_name property (ie. the url) even if the display name changes
 		media = params[:media]
 
-		@thread.media = []
-		media.each do |m|
-			_media = Media.find(m)
-			@thread.media << _media
-		end
+		@thread.media = params[:media].collect { |media_id| Media.find(media_id) }
 		newspapers_names = Media.get_names_from_list @thread.media
 		
 		if @thread.update_attributes(params[:threadx])
 			
 			@thread.status = params[:status]
-			if @thread.status == "opened"
-				@thread.update_attribute(:end_date, Date.today)
-			end
+			@thread.update_attribute(:end_date, Date.today) if @thread.status == "opened"
 
-			if true
-				newspapers_names = {}
-				@thread.media = []
+			newspapers_images = Scraper.get_issues(@thread.start_date, @thread.end_date, newspapers_names)
 
-				media.each do |m|
-					_media = Media.find(m)
-					@thread.media << _media
-					if newspapers_names[_media.country_code] != nil
-						newspapers_names[_media.country_code] << _media.name 
+			newspapers_images.each do |image_name, image_info|
+				# search if the image dose not exsit, it create an object for this image 
+				if ( (image = Image.find_by_image_name image_name) == nil)
+					image_info["image_name"] = image_name
+					media = Media.find_by_name(image_info[:media])
+
+					if image_info[:local_path] != "404.jpg"
+						# image_size = Magick::ImageList.new("app/assets/images" + image_info[:local_path])[0]
+						# image_size = "#{image_size.columns}x#{image_size.rows}"
+
+						# for the online heroku beta
+						image_size="750x951" #!!this value of pixels is 'hard coded' so it gives wrong values for long newspapers
+						# end
 					else
-						newspapers_names[_media.country_code] = []
-						newspapers_names[_media.country_code] << _media.name
+						image_size="750x951" #!!this value of pixels is 'hard coded' so it gives wrong values for long newspapers
+						# change the default values
+						# image_info[:publication_date]
+						# image_info["image_name"]
 					end
-				end
-				
-				newspapers_images = Scraper.get_issues(@thread.start_date, @thread.end_date, newspapers_names)
 
-				newspapers_images.each do |image_name, image_info|
-					# search if the image dose not exsit, it create an object for this image 
-					if ( (image = Image.find_by_image_name image_name) == nil)
-						image_info["image_name"] = image_name
-						media = Media.find_by_name(image_info[:media])
-
-						if image_info[:local_path] != "404.jpg"
-							# image_size = Magick::ImageList.new("app/assets/images" + image_info[:local_path])[0]
-							# image_size = "#{image_size.columns}x#{image_size.rows}"
-
-							# for the online heroku beta
-							image_size="750x951" #!!this value of pixels is 'hard coded' so it gives wrong values for long newspapers
-							# end
-						else
-							image_size="750x951" #!!this value of pixels is 'hard coded' so it gives wrong values for long newspapers
-							# change the default values
-							# image_info[:publication_date]
-							# image_info["image_name"]
-						end
-
-						image = Image.create!({ image_name: image_info["image_name"],publication_date: image_info[:publication_date], local_path: image_info[:local_path], media_id: media.id, size: image_size})
-					end
+					image = Image.create!({ image_name: image_info["image_name"],publication_date: image_info[:publication_date], local_path: image_info[:local_path], media_id: media.id, size: image_size})
 				end
 			end
-			if true
-				@thread.codes.to_enum.with_index.each do |code,index|
-					if params["topic_deleted_#{index}"] == '1'
-						code.destroy()
-					else
-						code.update_attributes({code_text: params["topic_name_#{index}"], color: params["topic_color_#{index}"], code_description: params["topic_description_#{index}"]})
-					end
+
+			@thread.codes.to_enum.with_index.each do |code,index|
+				if params["topic_deleted_#{index}"] == '1'
+					code.destroy()
+				else
+					code.update_attributes({code_text: params["topic_name_#{index}"], color: params["topic_color_#{index}"], code_description: params["topic_description_#{index}"]})
 				end
 			end
 
@@ -275,7 +222,6 @@ class ThreadsController < ApplicationController
 		end
 
 	end
-
 
 	# the show action, is for displaying a thread
 	def show
