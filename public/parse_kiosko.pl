@@ -38,13 +38,10 @@ my @a_tags = $tree->look_down(
 # Exclude geo links as we will get it afterwards looking into the country pages
 my %uniq;
 my @country_pages = 
-    grep { ! $uniq{$_}++ } 
-        sort grep { ! m:/geo/: } map { $_->attr('href') } @a_tags;
+    grep { ! $uniq{$_}++ } grep { ! m:/geo/: } map { $_->attr('href') } @a_tags;
 
 # @ouput array of arrays
-my @output = (
-    [qw(Country Country_code Newspaper_name Newspaper_code Newspaper_url)]
-);
+my @output;
 
 for my $country_page (@country_pages) {
     my $p_uri = URI->new_abs($country_page, $kiosko_url);
@@ -84,11 +81,9 @@ for my $country_page (@country_pages) {
 # we stringify the array refs as they will be printed to
 # compare entries.
 %uniq = ();
-my @output_sorted = 
-    grep { ! $uniq{$_}++ } 
-    map  { join ',', @$_ }
-    @output;
+my @output_sorted = sort grep { ! $uniq{$_}++ } map { join ',', @$_ } @output;
 
+print join(',', qw|Country Country_code Newspaper_name Newspaper_code Newspaper_url|), "\n";
 print "$_\n" for @output_sorted;
 
 sub usage {
