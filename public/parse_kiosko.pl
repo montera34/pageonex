@@ -6,7 +6,6 @@ use utf8;
 use LWP::UserAgent;
 use HTML::TreeBuilder 5 -weak;
 use URI;
-use Data::Dump qw/pp/;
 
 use constant LANG => qw(en es fr);
 
@@ -19,13 +18,6 @@ my ($lang) = @ARGV;
 grep { $_ eq $lang } (LANG) or usage();
 
 my $kiosko_url = "http://$lang.kiosko.net";
-
-# Regexps to get countries
-my %regexp = (
-    es => q|Periódicos de (.+?)\. Toda la prensa de hoy|,
-    en => q|Newspapers in (.+?)\. Today's press covers|,
-    fr => q|Les Unes des journaux de (.+?)\. Toute la presse d'aujourd'hui|,
-);
 
 # top page
 my $tree = HTML::TreeBuilder->new_from_url($kiosko_url);
@@ -49,8 +41,7 @@ my @country_pages =
     grep { ! $uniq{$_}++ } 
         sort grep { ! m:/geo/: } map { $_->attr('href') } @a_tags;
 
-#@country_pages = '/ar/';
-
+# @ouput array of arrays
 my @output = (
     [qw(Country Country_code Newspaper_name Newspaper_code Newspaper_url)]
 );
@@ -69,8 +60,8 @@ for my $country_page (@country_pages) {
 
     push @output, get_thcover_data($p_uri, @tit_ppal);
 
-    # Search also in all geo papers in the class auxCol. Then sort as we may have
-    # duplicates with those fetched in the titPpal class 
+    # Search also in all geo papers in the class auxCol. We will remove
+    # duplicates afterwards
     my $aux_col = $p_tree->look_down(
         '_tag', 'div', sub {
             defined $_[0]->attr('class') && 
@@ -107,7 +98,7 @@ sub usage {
 sub get_thcover_data {
     my ($p_uri, @elements) = @_;
 
-    my @output;
+    my @thcover_data;
     for my $e (@elements) {
         my $a_top = $e->look_down('_tag', 'a', sub { defined $_[0]->attr('href') } );
         defined $a_top or next;
@@ -126,7 +117,6 @@ sub get_thcover_data {
             }
         );
 
-
         for my $a (@a_tags) {
             my $n_uri = URI->new_abs($a->attr('href'), $kiosko_url);
             my $n_tree = HTML::TreeBuilder->new_from_url($n_uri->as_string);
@@ -140,8 +130,8 @@ sub get_thcover_data {
             my $country;
             if ($n_title_tag->as_text =~ /
                 (?:Periódico|Newspaper|Journal)\s
-                ( [^(]+ )\s
-                \( ( [^)]+ ) \) \.
+                ( [^(]+ )\s                         # Newspaper name
+                \( ( [^)]+ ) \) \.                  # Country
             /x) {
                 $n_name  = $1;
                 $country = $2;
@@ -183,18 +173,18 @@ sub get_thcover_data {
                 );
             }
 
-            my $newspaper_url;
+            my $n_url;
             if (defined $url_ent) {
-                $newspaper_url = $url_ent->attr('href');
-                $newspaper_url =~ s/"//g; # remove quotes from the url
+                $n_url = $url_ent->attr('href');
+                $n_url =~ s/"//g; # remove quotes from the url
             }
             else {
-                $newspaper_url = 'UNKNOWN';
+                $n_url = 'UNKNOWN';
             }
                 
-            push @output, [$country, $country_page, $n_name, $n_code, $newspaper_url];
+            push @thcover_data, [$country, $country_page, $n_name, $n_code, $n_url];
         }
     }
 
-    return @output;
+    return @thcover_data;
 }
