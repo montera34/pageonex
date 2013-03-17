@@ -79,6 +79,9 @@
 	</div>
 </div>
 <!--End Share buttons-->
+<div class="row">
+	<div id="chart_div" style="margin-left: 110px;width: 1210px; margin-bottom: -30px;"></div><!--div to display bar chart-->
+</div>
 <!-- <div id="ratios"> -->
 	<% @ratios.each do |v,r|  %>
 		<% hidden_field_tag "v#{v}", r %>
@@ -242,14 +245,14 @@
 	
 
 	var number_of_images = parseInt($("#number_of_column").attr("value"))
-	var number_of_codes = $(".codes_boxes").children().length/2
+	var number_of_codes = $(".codes_boxes").length 
 
 	// this is an array of arrays which will store the columns dates, and the first array will be the header
 	var columns_data = [['Dates']]
 
 	// add the codes names in the first array
 	for (var i = 0; i < number_of_codes; i++) {
-		columns_data[0].push($($($(".codes_boxes")[i]).children()[1]).text())
+		columns_data[0].push($($(".codes_boxes")[i]).text())
 	};
 
 	var dates = $("#date-box input")
@@ -270,10 +273,10 @@
 		column_codes = []
 	};
 	
-	var codes = $(".codes_boxes span")
+	var codes = $(".box_legend") 
 	// load the codes colors in the codes_colors array to pass this array in the initialization function later, to set to the codes colors
 	var codes_colors = []
-	for (var i = 0; i < codes.length; i+=2) {
+	for (var i = 0; i < codes.length; i++) {
 		codes_colors.push($(codes[i]).css("background-color"))
 	};
 	
@@ -281,12 +284,11 @@
 		var data = google.visualization.arrayToDataTable(columns_data);
 		var options = {
 		  hAxis: { textPosition: 'out',	textStyle: { fontSize: 9} },
-		  vAxis: {title: 'Percentage of total newspapers area', titleTextStyle: {color: '#000000'}, format:'#,##%', gridlines: {count: 1}}, 
+		  vAxis: {title: 'Percentage of total newspapers area', titleTextStyle: {color:'#666', italic: false}, format:'#,##%', gridlines: {color: '#ddd',count: 3},textStyle:{fontSize:'10'}}, 
 		  bar:{groupWidth:'51%'}, 
 		  legend:{position: 'none'}, 
-		  colors: codes_colors,
+		  colors: codes_colors
 		};
-		  
 		var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));	
 		// to be used after adding twitter
 		// var chart = new google.visualization.ComboChart(document.getElementById('chart_div'));	
