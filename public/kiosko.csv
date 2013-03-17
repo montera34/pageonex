@@ -1,4 +1,4 @@
-Country,Country_code,Newspaper_name,Newspaper_code,Newspaper_url
+country,country_code,display_name,name,url
 Argentina,ar,Buenos Aires Económico,buenosaires_economico,http://www.diariobae.com/
 Argentina,ar,Buenos Aires Herald,buenos_aires_herald,http://www.buenosairesherald.com/
 Argentina,ar,Clarín,ar_clarin,http://www.clarin.com/
