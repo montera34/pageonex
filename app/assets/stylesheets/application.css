@@ -51,3 +51,12 @@
 #datavis .images .span1{
 	margin-left: 0;
 }
+.thumb-img-coded { 
+	opacity: 0.3;
+}
+.thumb-img-no-coded { 
+	opacity: 0.7;
+}
+.legend_text {
+	min-width:150px;
+}

@@ -1,12 +1,15 @@
 $(function () {
 
-	// this method is for resizing the images to the appropriate size
+	// this method is for resizing the images to the appropriate size in the array of images
 	function imagesResizing () {
 		
 		var images = $(".images img")
 		var image_box = $(".images .span1")
 		var number_of_images = parseInt($("#number_of_column").attr("value"))
 		var row_width = $(".img_box").width()
+		var margin_between_images  = 3 //margin between images in the array
+		var displayed_img_width = 670 // the carousel width, if we change the size of the carousel we should change this value also
+		var width_of_image_in_display = row_width/number_of_images //with of the row divided by number of images
 
 		// iterates over all the images
 		for (var i = 0; i < images.length; i++) {
@@ -16,25 +19,21 @@ $(function () {
 			// for the images with direct links from kisoko
 			var original_img_width = $(images[i]).width() 
 
-			// the carousel width, if we change the size of the carousel we should change this value also
-			var displayed_img_width = 670
-
 			// for the images with direct links from kisoko
 			var original_img_height = $(images[i]).height() 
 
 			// calculated based on the displayed width
 			var displayed_img_height = (original_img_height / (original_img_width/displayed_img_width) )
 
-			// we can change "0" at the end of the expression with any number which is the margin between images
-			var image_down_size_ratio = (displayed_img_width / (row_width/number_of_images - 0))
+			// ratio between original image and image in display
+			var image_down_size_ratio = (displayed_img_width / (width_of_image_in_display - margin_between_images))
 
-			// the number in this case "0" at the end of this expression should be the same as the line 29
-			curr_img.width((row_width/number_of_images - 0))
-
+			// sets width and height of images in array
+			curr_img.width((width_of_image_in_display - margin_between_images))
 			curr_img.height((displayed_img_height/image_down_size_ratio))
 
 			// set the the width of the div containing the image and it's highlighted areas
-			curr_img_box.css("width",(row_width/number_of_images))
+			curr_img_box.css("width",(width_of_image_in_display))
 
 		};
 	}

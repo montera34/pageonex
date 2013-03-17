@@ -128,12 +128,12 @@
 							<% #image_tag "/assets#{@thread.images[ic].local_path}", id: "image#{ic+1}", style: " opacity: 0.8;", image_size: @images[ic].size%>
 							<!-- display live version form kiosko, just for the online beta version on heroku -->
 							<% if @images[ic].local_path == "404.jpg" %>
-								<img src="/assets/404.jpg" alt="" id="<%= "image#{ic+1}" %>" style=" opacity: 0.7;" image_size="<%= @images[ic].size %>" />
+								<img src="/assets/404.jpg" alt="" id="<%= "image#{ic+1}" %>" class="thumb-img" image_size="<%= @images[ic].size %>" />
 							<% else %>
 								<% if @thread.image_coded? @images[ic] %> 
-									<img src="<%= @images[ic].local_path %>" alt="" id="<%= "image#{ic+1}" %>" class="thum-img" style=" opacity: 0.3;" image_size="<%= @images[ic].size %>" name="<%= @images[ic].image_name %>" />
+									<img src="<%= @images[ic].local_path %>" alt="" id="<%= "image#{ic+1}" %>" class="thumb-img-coded" image_size="<%= @images[ic].size %>" name="<%= @images[ic].image_name %>" />
 								<% else %> 
-									<img src="<%= @images[ic].local_path %>" alt="" id="<%= "image#{ic+1}" %>" class="thum-img" style=" opacity: 0.7;" image_size="<%= @images[ic].size %>" name="<%= @images[ic].image_name %>" />
+									<img src="<%= @images[ic].local_path %>" alt="" id="<%= "image#{ic+1}" %>" class="thumb-img-no-coded" image_size="<%= @images[ic].size %>" name="<%= @images[ic].image_name %>" />
 								<% end %>
 							<% end %>
 							<!-- end -->
@@ -189,11 +189,9 @@
 		<p><%= @thread.start_date.inspect %> - <%= @thread.end_date.inspect %></p>
 		<ul class="inline">
 		<% @thread.codes.each do |code| %>
-		  <li >
-			<div rel="popover"  data-content="<%= code.code_description %>" data-original-title="Description">
+		  <li rel="popover"  data-content="<%= code.code_description %>" data-original-title="Description" >
 			    <div id="code_<%= code.id %>" style="background-color:<%= code.color %>;" class="box_legend"></div>
-			     <%= code.code_text  %> 
-		        </div>
+			    <div class="legend_text"> <%= code.code_text  %> </div>
 		  </li>
 	       	<% end %>
 		</ul>
