@@ -18,9 +18,6 @@ class ThreadsController < ApplicationController
 		# create a new threadx object with the submit params related the threadx
 		@thread = Threadx.new(params[:threadx])
 		
-		# format the thread name, by replace spaces with underscores
-		@thread.thread_name = Threadx.url_safe_name @thread.thread_display_name
-		
 		# set the owner of the thread to the current logged in user
 		@thread.owner_id = current_user.id
 
@@ -150,7 +147,7 @@ class ThreadsController < ApplicationController
 	# the update action is responsible for processing the submitted request, it's pretty much the same as the create action. DRY this!
 	def update
 		@thread = current_user.owned_threads.find_by_thread_name params[:id]
-		# don't change the thread_name property (ie. the url) even if the display name changes
+
 		media = params[:media]
 
 		@thread.media = params[:media].collect { |media_id| Media.find(media_id) }
@@ -186,18 +183,17 @@ class ThreadsController < ApplicationController
 					image = Image.create!({ image_name: image_info["image_name"],publication_date: image_info[:publication_date], local_path: image_info[:local_path], media_id: media.id, size: image_size})
 				end
 			end
-			codes = []
+
 			#it should iterate through the recently created codes
 			@thread.codes.to_enum.with_index.each do |code,index|
 				if params["topic_deleted_#{index}"] == '1'
 					code.destroy()
 				else #To Do: it should save the new codes created
-					codes << Code.update_attributes({code_text: params["topic_name_#{index}"], color: params["topic_color_#{index}"], code_description: params["topic_description_#{index}"]})
+					code.update_attributes({code_text: params["topic_name_#{index}"], color: params["topic_color_#{index}"], code_description: params["topic_description_#{index}"]})
 				end
 			end
 
 			@thread.save	
-			@thread.codes << codes
 
 			# if the user did not select the option for keeping the highlighted areas of the removed images, they will be deleted
 			if params["clean_high_areas"] != "1"

@@ -15,12 +15,19 @@ class Threadx < ActiveRecord::Base
 	
 	has_many :coded_pages
 
-	validates :thread_display_name, :start_date, :end_date, :description , :category, :presence => true
+	validates :thread_name, :thread_display_name, :start_date, :end_date, :description , :category, :presence => true
 	
 	# this validation runs when a user create a thread, and checks if the user has a thread with same name or not
 	validate :existing_thread, :on => :create
 
 	validate :not_too_many_images
+
+	validates :thread_name, :uniqueness=>true
+
+	before_validation { |t| 
+		t.thread_name = t.thread_display_name if t.thread_name.nil? or t.thread_name.empty?
+		t.thread_name = t.thread_name.to_url 
+	}
 
 	# workaround for bug #59
 	def not_too_many_images
@@ -55,10 +62,6 @@ class Threadx < ActiveRecord::Base
 		area_count = HighlightedArea.by_threadx(self).by_image(image).length
 		skipped = coded_pages.for_image(image).length
 		area_count > 0 or skipped > 0
-	end
-
-	def self.url_safe_name display_name
-		display_name.parameterize.underscore
 	end
 
 end
