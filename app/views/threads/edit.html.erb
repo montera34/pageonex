@@ -104,14 +104,14 @@
     <div class="control-group">
       <div class="controls">
         <a id="add_topic" class="btn">Add Another Code/Topic</a>
-	<!-- adding a topic from the edit thread will not work until changes in threads?controller.rb are made -->
-          <%= hidden_field_tag :topic_count, params[:topic_count].to_i %>
+	<!-- the hidden field stores the number of codes of the thread and provides this data to the javacript that generates more topics. The first field is id and name, the second is the value. To Do: to save the values in threads_controller.rb  in the update method  -->
+          <%= hidden_field_tag :topic_count, @thread.codes.length %>
       </div>
     </div>
 
   <label class="checkbox">
     <!-- <input id="clean_high_areas" type="checkbox">  -->
-    <%= check_box_tag "clean_high_areas" %> Keep all highlighted areas that you have done, even which is related to deleted images
+    <%= check_box_tag "clean_high_areas" %> Keep all highlighted areas that you have done, even the ones from the relaated to deleted images
   </label>
 
   <hr>
@@ -139,6 +139,16 @@ $(function () {
     $("label[for='threadx_end_date']").show();
     $("#threadx_end_date").show();
     $("#status").val("closed");
+  });
+
+  // lets you add new topics via Ajax request
+  $('#add_topic').click(function() { 
+    var existingTopicCount = parseInt($("#topic_count").val());
+    $.get('/threads/new_topic/'+existingTopicCount, function(data) {   
+      $('#topic-list').append(data);
+      $("#topic_color_"+$("#topic_count").val()).minicolors({ defaultValue: '#FF0000' });
+      $("#topic_count").val(existingTopicCount+1);
+    });
   });
 
 })

@@ -46,7 +46,7 @@ class ThreadsController < ApplicationController
 		if @thread.valid? && params[:media] != nil && params["topic_name_1"] != "" 
 
 			# create object for each code (topic) submited
-			codes = []
+			codes = [] #creates empty array to store all the codes of the thread
 			number_of_topics = params[:topic_count].to_i
 			# iterating over the submitted topics, and create a code object for each one. Then add this object to the codes array to assign it to the thread 
 			number_of_topics.times do |n|
@@ -186,18 +186,20 @@ class ThreadsController < ApplicationController
 					image = Image.create!({ image_name: image_info["image_name"],publication_date: image_info[:publication_date], local_path: image_info[:local_path], media_id: media.id, size: image_size})
 				end
 			end
-
+			codes = []
+			#it should iterate through the recently created codes
 			@thread.codes.to_enum.with_index.each do |code,index|
 				if params["topic_deleted_#{index}"] == '1'
 					code.destroy()
-				else
-					code.update_attributes({code_text: params["topic_name_#{index}"], color: params["topic_color_#{index}"], code_description: params["topic_description_#{index}"]})
+				else #To Do: it should save the new codes created
+					codes << Code.update_attributes({code_text: params["topic_name_#{index}"], color: params["topic_color_#{index}"], code_description: params["topic_description_#{index}"]})
 				end
 			end
 
 			@thread.save	
+			@thread.codes << codes
 
-			# if the user did not select the option for keeping the highlighted areas of the removed images, so they will be deleted
+			# if the user did not select the option for keeping the highlighted areas of the removed images, they will be deleted
 			if params["clean_high_areas"] != "1"
 				@thread.highlighted_areas.each do |ha|
 					ha.destroy unless @thread.images.include? ha.image
@@ -250,7 +252,7 @@ for opened thread:
 		redirect_to "/threads/"
 	end
 
-	def new_topic
+	def new_topic #we should be consitent and use code or topic
 		render :partial => 'topic_form', :locals => {
 			:index => params[:index], :name => nil, :color => nil, :description => nil}
 	end
