@@ -27,20 +27,6 @@ $(function () {
     validates();
   });
   
-  // lets you add new topics via Ajax request
-  $('#add_topic').click(function() { 
-    var existingTopicCount = parseInt($("#topic_count").val());
-    $.get('/threads/new_topic/'+existingTopicCount, function(data) {   
-      $('#topic-list').append(data);
-      $("#topic_color_"+$("#topic_count").val()).minicolors({ defaultValue: '#FF0000' });
-      $("#topic_count").val(existingTopicCount+1);
-    });
-  });
-  // add the first topic option dynamically if there are none
-  if($("#topic_count").val()==0){
-    $("#add_topic").click();
-  }
-  
   // when the "start_coding" button clicked, the message box will appears, untill the scraping finishes
   // to add any calculation or progress bar it will be added here
   $("#start_coding").on("click",function () {
