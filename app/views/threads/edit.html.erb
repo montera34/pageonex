@@ -25,6 +25,12 @@
     </div>
   </div>
   <div class="control-group">
+  <%= f.label :thread_name, "URL-Safe Name", :class => "control-label" %>
+    <div class="controls">
+    <%= f.text_field :thread_name, :rel=>"popover", 'data-content'=>"This will be used to create urls for the Thread.  If you include any letters that don't work in URLs, we will automatically fix it when you save." %> 
+    </div>
+  </div>
+  <div class="control-group">
   <%= f.label :status, :class => "control-label"  %>
     <div class="controls">
     <% if @thread.status  == "closed" %>
