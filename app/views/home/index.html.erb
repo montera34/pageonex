@@ -22,12 +22,13 @@
 		</div>
 	</div>
 	<div class="span5 offset1">
-		<% if !user_signed_in? %>
-			<a class="btn btn-info btn-large" href="<%= new_user_session_path %>">Sign in</a>
-			<a class="btn btn-success btn-large" href="<%= new_user_registration_path %>">Sign up</a>
-		<% else %>
+		<% if user_signed_in? %>
 			<a class="btn btn-info btn-large" href="/threads/new">New Thread</a>
-			<a class="btn btn-success btn-large" href="/threads/">Show Threads</a>
+			<a class="btn btn-success btn-large" href="/threads/">Show Threads</a> 
+		<% else %>	
+			<%= link_to 'Sign in', new_user_session_path, :class => "btn btn-info btn-large" %> 
+			<%= link_to 'Sign up', new_user_registration_path, :class => "btn btn-success btn-large" %> 
+			
 		<% end %>
 		<h3>Last threads</h3>
 		<% if @threads != [] %>
