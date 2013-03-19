@@ -9,9 +9,8 @@ Pageonex::Application.routes.draw do
   match ':username/:thread_name/process_highlighted_areas' => 'coding#process_highlighted_areas'
   match ':username/:thread_name' => 'coding#display'
 
-  match '/home/about' => 'home#about'
-  match '/home/help' => 'home#help'
-  match '/home/credits' => 'home#credits'
+  match '/about' => 'home#about'
+  match '/help' => 'home#help'
 
   root :to => "home#index"
 

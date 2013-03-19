@@ -50,10 +50,9 @@
                 <li><a href="/threads/?a=t" title="">All Threads</a></li>
               </ul>
             </li>
+	    <li><%= link_to "About", "/about"  %></li>
+	    <li><%= link_to "Documentation", "/help"  %></li>
 	    <li><%= link_to "Blog", "http://montera34.org/pageonex/"  %></li>
-	    <li><%= link_to "Help", "/home/help"  %></li>
-	    <li><%= link_to "About", "/home/about"  %></li>
-	    <li><a href="/home/credits" title="">Credits</a></li>	
 	    <li><%= link_to "Report Bugs", "http://bit.ly/pageonextest"  %></li>      
           </ul>
           <% if user_signed_in? %>
@@ -114,7 +113,7 @@
       </div><!--/content-->
       <hr> 
       <footer>
-        <p>More info at <a href="http://montera34.org/pageonex/" title="Go to blog">PageOneX</a> + <a href="http://numeroteca.org/cat/frontpage-newspaper/" title="Go to blog">numeroteca</a></p>
+        <p>More info at <a href="http://montera34.org/pageonex/" title="Go to blog">PageOneX</a>. Check examples at <a href="http://numeroteca.org/cat/frontpage-newspaper/" title="Go to blog">numeroteca.org</a></p>
         <br>
       </footer>
 

@@ -3,6 +3,6 @@ class HomeController < ApplicationController
     @threads = Threadx.all
   end
   def about
-  	
+
   end
 end

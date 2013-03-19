@@ -1,21 +1,26 @@
 <% @title = "About - PageOneX" %>
 <div class="span6">
-	<h1>PageOneX About</h1>
-	<h3>Analyzing newspaper front pages</h3>
-	<br>
-	<p>PageOneX is an open source tool to code, analyze and visualize the evolution of stories on newspaper front pages. In the future it will allow to compare newspaper with social media coverage. Newspaper front pages are a key source of data about our media ecology. Newsrooms spend massive time and effort deciding what stories make it to the front page. PageOneX makes coding and visualizing newspaper front page content much easier, democratizing access to newspaper attention data.</p>
+	<h1>About PageOneX</h1>
+	<p><%= image_tag("detail-front-pages.png") %></p>
+	<p>PageOneX is an open source software tool designed to aid the coding, analysis, and visualization of front page newspaper coverage of major stories and media events. Newsrooms spend massive time and effort deciding what stories make it to the front page. Communication scholars have long used column-inches of print newspaper coverage as an important indicator of mass media attention. </p>
+	<p>In the past, this approach involved obtaining copies of newspapers, measurement by hand (with a physical ruler), and manual input of measurements into a spreadsheet or database, followed by calculation and analysis. Some of these steps can now be automated, while others can be simplified; some can be easily shared by distributed teams of investigators working with a common dataset hosted online.</p>
 
-	<p>Communication researchers have analyzed newspaper front pages for decades, using slow, laborious methods. PageOneX simplifies, digitizes, and distributes the process across the net.</p>
+	<p>You can find more information and examples at <a href="http://pageonex.com" title="PageOneX">pageonex.com</a></p>
 
-	<p>A semi-automated version of the tool has been tested, and we have produced several interesting examples: <a href="http://numeroteca.org/cat/frontpage-newspaper/" title="">http://numeroteca.org/cat/frontpage-newspaper/</a>. The first version of the tool, <a href="https://github.com/numeroteca/pageonex-processing" title="">https://github.com/numeroteca/pageonex-processing</a>, scrapes front pages from the web (<a href="kiosko.net" title="">kiosko.net</a>) and builds a matrix of images that must be manually coded in inkscape.</p>
-	<h3>More info</h3>
-	<p>Check for updates about the project at the blog <a href="http://montera34.org/pageonex/" title="">http://montera34.org/pageonex/</a> and in Twitter <a href="http://twitter.com/pageonex" title="">@pageonex</a>.</p>
-	<h3>Fork the project</h3>
-	<p>Get the code of the project at <a href="https://github.com/numeroteca/PageOneX-ruby" title="">https://github.com/numeroteca/PageOneX-ruby</a> </p>
+	<h3>Background</h3>
+	<p>The project has gone through different phases. </p>
+	<p><a href="http://civic.mit.edu/blog/pablo/analyzing-newspapers-front-pages">Initially</a>, this type of data visualization was made through a <strong>‘manual’ process</strong>: images of newspaper front pages were downloaded from the web and reorganized in a vector graphics program to draw rectangles on top of them to highlight certain stories.</p>
 
-	<h3>Report bugs</h3>
-	<p>Report bugs and suggestions at <a href="http://bit.ly/pageonextest" title="">http://bit.ly/pageonextest</a> or at pablo --at- basurama.org </p>
+	<p>The first version of an <strong>automated tool</strong> was a <a href="https://github.com/numeroteca/pageonex-processing" title="PageOneX earlier Processing script available">script written in Processing</a>, that downloaded newspapers front pages and generated an organized array of images ordered by date. </p>
 
-	<p>You can check <a href="http://pageonex.com" title="">http://pageonex.com</a> for all the info regarding the PageOneX project.</p>
+	<p>The <strong>second version</strong> is <a href="https://github.com/numeroteca/pageonex" title="PageOneX code available">this tool written in Ruby on Rails that you are using</a>. It is developed to be a web platform to provide a ready to use front page analysis tool for anyone with a connection to the Internet. The platform automates the process of newspaper selection, download, thread coding, and data visualization. The alpha version was developed by <a href="https://github.com/numeroteca" title="">Pablo Rey Mazón</a> with <a href="https://github.com/ahmdrefat" title="">Ahmd Refat</a>,  thanks to Google Summer of Code program (GSOC) and the Berkman Center as host institution in Summer 2012. You can test the alpha version at <a href="http://pageonextester6.herokuapp.com/" title="">PageOneXtester at Heroku</a>.</p>
 
+	<p>In Winter-Spring 2012, at the  <a href="http://civic.mit.edu/" title="">Center for Civic Media</a> at <a href="http://media.mit.edu" title="">MIT Media Lab</a>, we are developing the first beta version and preparing a stable deployment.</p>
+	<h3>Collaborators</h3>
+	<p>The project has many collaborators. The <a href=https://github.com/numeroteca/pageonex/contributors" title="Check all the commits">coders have been/are Ahmd Refat, Edward L Platt, Rahul Bhargava, Rafael Porres and Pablo Rey Mazón</a>. Sasha Costanza-Chock is giving advice and support from the Center for Civic Media; <a href="http://skotperez.net/" title="">Alfonso S&aacute;nchez Uz&aacute;bal</a> is providing tecnical support and <a href="http://montera34.com/" title="">Montera34</a> the server. Thanks to Jeff Warren for his advice and Rogelio L&oacute;pez for his testing.</p>
+	<h3>Join the project</h3>
+	<p>Join the mailing list <a href="http://mailman.mit.edu/mailman/listinfo/pageonexdev">for developers</a>, <a href="https://groups.google.com/forum/?fromgroups#!forum/pageonex">for users</a> or <a href="http://montera34.org/pageonex/newsletter/">subscribe to the newsletter</a> to get the last updates.</p>
 </div>
+
+
+
