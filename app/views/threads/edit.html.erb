@@ -102,7 +102,7 @@
       <% 
       @thread.codes.to_enum.with_index.each do |code,index| %>
         <%= render :partial => "topic_form", :locals => {
-            :index => index, :name => code.code_text , :color => code.color, :description => code.code_description
+            :index => index, :id => code.id, :name => code.code_text , :color => code.color, :description => code.code_description
           } %><%
       end
       %>
@@ -146,16 +146,5 @@ $(function () {
     $("#threadx_end_date").show();
     $("#status").val("closed");
   });
-
-  // lets you add new topics via Ajax request
-  $('#add_topic').click(function() { 
-    var existingTopicCount = parseInt($("#topic_count").val());
-    $.get('/threads/new_topic/'+existingTopicCount, function(data) {   
-      $('#topic-list').append(data);
-      $("#topic_color_"+$("#topic_count").val()).minicolors({ defaultValue: '#FF0000' });
-      $("#topic_count").val(existingTopicCount+1);
-    });
-  });
-
 })
 </script>

@@ -106,7 +106,7 @@
       if params["topic_count"].to_i >  0 
         1.upto(params["topic_count"].to_i) do |c|
       %><%= render :partial => "topic_form", :locals => {
-            :index => c, :name => params["topic_name_#{c}"] , :color => params["topic_color_#{c}"],
+            :index => c, :id => 1, :name => params["topic_name_#{c}"] , :color => params["topic_color_#{c}"],
             :description => params["topic_description_#{c}"]
           } %><%
         end

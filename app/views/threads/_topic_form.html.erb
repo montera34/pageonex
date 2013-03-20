@@ -3,6 +3,7 @@
 =begin
 Locals:
   index - integer index of the topic
+  id - database id of the code
   name - name of the topic
   color - hex color for the topic
   description - text describing the topic
@@ -11,6 +12,8 @@ human_topic_number = (Integer(index) + 1).to_s
 %>
 
 <div id=<%= "topic_#{index}" %> class="thumbnail">
+  
+  <%= hidden_field_tag "code_id[]", id %>
   
   <div id="topic_name_box" class="control-group">
     <%= label_tag "topic_name_#{index}", "Topic #{human_topic_number}", :id => "topic_name_label_#{index}", :class => "control-label"  %>

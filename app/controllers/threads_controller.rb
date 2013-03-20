@@ -185,9 +185,22 @@ class ThreadsController < ApplicationController
 					image = Image.create!({ image_name: image_info["image_name"],publication_date: image_info[:publication_date], local_path: image_info[:local_path], media_id: media.id, size: image_size})
 				end
 			end
-			number_of_topics = params[:topic_count]
 			
-			#it should iterate through the recently created codes 
+			#it should iterate through the recently created codes
+			params["code_id"].each_with_index do |id, index|
+				if id.empty?
+					@thread.codes.create({code_text: params["topic_name_#{index}"], color: params["topic_color_#{index}"], code_description: params["topic_description_#{index}"]})
+					# New code
+				else
+					# Fetch existing code from database by id and update
+					code = @thread.codes.find_by_id(id)
+					if params["topic_deleted_#{index}"] == '1'
+						code.destroy()
+					else
+						code.update_attributes({code_text: params["topic_name_#{index}"], color: params["topic_color_#{index}"], code_description: params["topic_description_#{index}"]})
+					end
+				end
+			end
 			@thread.codes.to_enum.with_index.each do |code,index|
 				if params["topic_deleted_#{index}"] == '1'
 					code.destroy()
@@ -253,7 +266,7 @@ for opened thread:
 
 	def new_topic #we should be consitent and use code or topic
 		render :partial => 'topic_form', :locals => {
-			:index => params[:index], :name => nil, :color => nil, :description => nil}
+			:index => params[:index], :id => nil, :name => nil, :color => nil, :description => nil}
 	end
 
 end
