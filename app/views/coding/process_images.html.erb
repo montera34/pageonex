@@ -17,35 +17,26 @@
 <hr>
 <div class="row">
     <div class="span2" >
-        <h5>Thread Name</h5>
         <h4><%= @thread.thread_display_name.capitalize %></h4	>
-        <hr>
 <!--         <h3>Current Image Number:</h3>
         <h3 id="image_number" style="font-weight:normal"></h3>
         <hr> -->
-        <h5>Topics coded</h5>
-            <% @thread.codes.each do |code| %>
-                <!-- <div id="code<%= code.id %>" style="background-color:<%= code.color %>;color:black" class="code"></div> -->
-                <h3 class="codes_boxes" style="display: inline;cursor: no-drop;" rel="popover"  data-content="<%= code.code_description %>" data-original-title="Description">
-                    <span id="code_<%= code.id %>" style="background-color:<%= code.color %>;color: <%= code.color %>">CL</span>
-                    <span><%= code.code_text.split("_").join(" ") %></span>
-                </h3> 
-                <br>
-        <% end %>
+        <h5>Topics</h5>
+        	<ul class="nav nav-list">
+			<% @thread.codes.each do |code| %>
+			<li>
+				<div id="code_<%= code.id %>" class="box_legend" style="background-color:<%= code.color %>;"> </div>
+				<h4 class="codes_boxes" rel="popover"  data-content="<%= code.code_description %>" data-original-title="Description"><%= code.code_text %></h4>
+			</li>
+	       		<% end %>
+		  </ul>
+	<hr>
 
-        <hr>
-        <h5>Newspaper</h5>
-        <!-- <a id="newspaper_name" href="#"> </a> -->
-        <p id="newspaper_name" style="font-weight:bold"></p>
-        
-        <h5>Publication Date</h5>
-        <!-- <a id="publication_date" href=""></a> -->
-        <p id="publication_date" style="font-weight:bold" href=""></p>
+	<a id="newspaper_name"></a>
+        <p id="publication_date" href=""></p>
+	<hr>
 
-        
-        <!--h5>Source of image</h5-->
-	<h3>Source of image</h3>
-        <h4>Image downloaded from <a href="http://kiosko.net" title="">kiosko.net</a></h4>
+        <p>Image downloaded from <a href="http://kiosko.net" title="">kiosko.net</a></p>
         <!-- we are not using the direct link, because if you redirect from the same domain to kiosko, it will render the 300px image instead of the 750px -->
         <!-- <a id="source_of_image"  href="#">Original image form - Kiosko.net</a> -->
         <input id="source_of_image" type="text" class="span2" value="#" rel="tooltip" title="Copy + Paste">
@@ -55,7 +46,8 @@
 	  <% if @thread.owner == current_user %>
             <div class="row btn-toolbar" style="text-align:center">
                 <div class="pull-right btn-group">
-                    <a id="clear_highlighting" class="btn  btn-danger">Clear Highlighted Areas</a>
+                    <!-- ToDo: The duplication of buttons creates malfunction-->
+		    <a id="clear_highlighting" class="btn  btn-danger">Clear Highlighted Areas</a>
                     <a id="skip_coding" class="btn btn-inverse">Nothing to Code</a>
                 </div>
             </div>
@@ -76,7 +68,7 @@
                 <% if @images[0].local_path == "404.jpg" %>
                     <img src="/assets/404.jpg" alt="" id="<%= "image1" %>" style="width: 670px;" image_size="<%= @images[0].size %>" media="<%= @images[0].media.display_name%>" pub_date="<%= @images[0].publication_date %>" name="<%= "#{@images[ic].media.name}_#{@images[0].publication_date.day}_#{@images[0].publication_date.month}" %>" />
                 <% else %>
-                    <img src="<%= @images[0].local_path %>" alt="" id="<%= "image1" %>" style="width: 670px;" image_size="<%= @images[0].size %>" media="<%= @images[0].media.display_name%>" pub_date="<%= @images[0].publication_date %>" name="<%= @images[0].image_name %>" />
+                    <img src="<%= @images[0].local_path %>" alt="" id="<%= "image1" %>" style="width: 670px;" image_size="<%= @images[0].size %>" media="<%= @images[0].media.display_name%>" url="<%= @images[0].media.url%>" pub_date="<%= @images[0].publication_date %>" name="<%= @images[0].image_name %>" />
                 <% end %>
                 <!-- end -->
                 
@@ -90,7 +82,7 @@
                     <% if @images[ic].local_path == "404.jpg" %>
                         <img src="/assets/404.jpg" alt="" id="<%= "image#{ic+1}" %>" style="width: 670px;" image_size="<%= @images[ic].size %>" media="<%= @images[ic].media.display_name%>" pub_date="<%= @images[ic].publication_date %>" name="<%= "#{@images[ic].media.name}_#{@images[ic].publication_date.day}_#{@images[ic].publication_date.month}" %>" />
                     <% else %>
-                        <img src="<%= @images[ic].local_path %>" alt="" id="<%= "image#{ic+1}" %>" style="width: 670px;" image_size="<%= @images[ic].size %>" media="<%= @images[ic].media.display_name%>" pub_date="<%= @images[ic].publication_date %>" name="<%= @images[ic].image_name %>" />
+                        <img src="<%= @images[ic].local_path %>" alt="" id="<%= "image#{ic+1}" %>" style="width: 670px;" image_size="<%= @images[ic].size %>" media="<%= @images[ic].media.display_name%>" url="<%= @images[ic].media.url%>" pub_date="<%= @images[ic].publication_date %>" name="<%= @images[ic].image_name %>" />
                         <!-- "#{@images[ic].media.name}_#{@images[ic].publication_date.day}_#{@images[ic].publication_date.month}"  -->
                     <% end %>
                     <!-- end -->
