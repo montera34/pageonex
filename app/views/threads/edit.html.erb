@@ -25,9 +25,9 @@
     </div>
   </div>
   <div class="control-group">
-  <%= f.label :thread_name, "URL-Safe Name", :class => "control-label" %>
+  <%= f.label :thread_name, "URL-Safe Name (slug)", :class => "control-label" %>
     <div class="controls">
-    <%= f.text_field :thread_name, :rel=>"popover", 'data-content'=>"This will be used to create urls for the Thread.  If you include any letters that don't work in URLs, we will automatically fix it when you save." %> 
+    <%= f.text_field :thread_name, :rel=>"popover", 'data-content'=>"This will be used to create the URL this Thread. If you include any letters or symbols that don't work in URLs, we will automatically substitute them. This field will generate: pageonex.com/your_thread_name from 'Your Thread Name'" %> 
     </div>
   </div>
   <div class="control-group">

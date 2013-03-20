@@ -152,6 +152,8 @@ class ThreadsController < ApplicationController
 
 		@thread.media = params[:media].collect { |media_id| Media.find(media_id) }
 		newspapers_names = Media.get_names_from_list @thread.media
+
+		#@thread.codes = params[:codes]
 		
 		if @thread.update_attributes(params[:threadx])
 			
@@ -183,8 +185,9 @@ class ThreadsController < ApplicationController
 					image = Image.create!({ image_name: image_info["image_name"],publication_date: image_info[:publication_date], local_path: image_info[:local_path], media_id: media.id, size: image_size})
 				end
 			end
-
-			#it should iterate through the recently created codes
+			number_of_topics = params[:topic_count]
+			
+			#it should iterate through the recently created codes 
 			@thread.codes.to_enum.with_index.each do |code,index|
 				if params["topic_deleted_#{index}"] == '1'
 					code.destroy()
