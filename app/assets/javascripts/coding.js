@@ -73,14 +73,14 @@ $(document).ready(function () {
     });
 
     // it will set the highlighted areas to zero 
-    $("#clear_highlighting").click(function () {
+    $(".clear_highlighting").click(function () {
         deleteHighlightedAreas(getCurrentImageId());
         renderHighlightedAreas();
         progressBarPercentage();
     })  
 
     // this used to for "nothing to code here"
-    $("#skip_coding").click(function () {
+    $(".skip_coding").click(function () {
         var current_img = getCurrentImage();
         // Clear existing areas
         deleteHighlightedAreas(getCurrentImageId());
