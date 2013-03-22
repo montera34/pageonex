@@ -11,7 +11,7 @@ class Scraper
 		Pageonex::Application.config.use_local_images
 	end
 
-	def self.create_images(start_date , end_date, media_list)
+	def self.scrape_images(start_date , end_date, media_list)
 
 		images = []
 

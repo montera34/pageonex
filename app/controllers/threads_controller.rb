@@ -50,7 +50,7 @@ class ThreadsController < ApplicationController
 				codes << Code.create!({:code_text => params["topic_name_#{n}"], :code_description => params["topic_description_#{n}"],:color => params["topic_color_#{n}"]})
 			end
 
-			images = Scraper.create_images(@thread.start_date, @thread.end_date, @thread.media)
+			images = Scraper.scrape_images(@thread.start_date, @thread.end_date, @thread.media)
 
 			# It saves the thread to the db, and assign an id to the thread
 			@thread.save
@@ -125,32 +125,7 @@ class ThreadsController < ApplicationController
 			@thread.status = params[:status]
 			@thread.update_attribute(:end_date, Date.today) if @thread.status == "opened"
 
-			newspapers_images = Scraper.get_issues(@thread.start_date, @thread.end_date, newspapers_names)
-
-			newspapers_images.each do |image_name, image_info|
-				# search if the image dose not exsit, it create an object for this image 
-				if ( (image = Image.find_by_image_name image_name) == nil)
-					image_info["image_name"] = image_name
-					media = Media.find_by_name(image_info[:media])
-
-					if image_info[:local_path] != "404.jpg"
-						if use_local_images
-							image_size = Magick::ImageList.new("app/assets/images" + image_info[:local_path])[0]
-							image_size = "#{image_size.columns}x#{image_size.rows}"
-						else
-							# for the online heroku beta
-							image_size="750x951" #!!this value of pixels is 'hard coded' so it gives wrong values for long newspapers
-						end
-					else
-						image_size="750x951" #!!this value of pixels is 'hard coded' so it gives wrong values for long newspapers
-						# change the default values
-						# image_info[:publication_date]
-						# image_info["image_name"]
-					end
-
-					image = Image.create!({ image_name: image_info["image_name"],publication_date: image_info[:publication_date], local_path: image_info[:local_path], media_id: media.id, size: image_size})
-				end
-			end
+			images = Scraper.scrape_images(@thread.start_date, @thread.end_date, @thread.media)
 			
 			#it should iterate through the recently created codes
 			params["code_id"].each_with_index do |id, index|
