@@ -126,7 +126,7 @@
 						<a href='<%= "/#{@thread.owner.username.split(' ').join('_')}/#{@thread.thread_name}/coding/?i=#{image.image_name}" %>' title="">
 						
 							<% if use_local_images %>
-								<% image_tag "/assets#{@thread.images[ic].local_path}", id: "image#{ic+1}", style: " opacity: 0.8;", image_size: @images[ic].size%>
+								<%= image_tag @thread.images[ic].local_path, id: "image#{ic+1}", style: " opacity: 0.8;", image_size: @images[ic].size%>
 							<% else %>
 								<!-- display live version form kiosko, just for the online beta version on heroku -->
 								<% if @images[ic].local_path == "404.jpg" %>

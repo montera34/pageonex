@@ -22,8 +22,4 @@ class Media < ActiveRecord::Base
     newspapers_names
   end
 
-  def local_image_dir
-    "app/assets/images/kiosko/" + self.name
-  end
-
 end

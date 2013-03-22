@@ -61,40 +61,26 @@
         <div id="myCarousel" class="carousel slide" >
           <!-- Carousel items -->
           <div class="carousel-inner">
-            <div class="active item">
 
-                <% if use_local_images %>
-                    <% image_tag "/assets#{@images[0].local_path}", :id => "image1", :style => "width: 670px;" , :media=>@images[0].media.display_name, image_size: @images[0].size %>
-                <% else %>
-                    <!-- display live version form kiosko, just for the online beta version on heroku -->
-                    <% if @images[0].local_path == "404.jpg" %>
-                        <img src="/assets/404.jpg" alt="" id="<%= "image1" %>" style="width: 670px;" image_size="<%= @images[0].size %>" media="<%= @images[0].media.display_name%>" pub_date="<%= @images[0].publication_date %>" name="<%= "#{@images[ic].media.name}_#{@images[0].publication_date.day}_#{@images[0].publication_date.month}" %>" />
-                    <% else %>
-                        <img src="<%= @images[0].local_path %>" alt="" id="<%= "image1" %>" style="width: 670px;" image_size="<%= @images[0].size %>" media="<%= @images[0].media.display_name%>" url="<%= @images[0].media.url%>" pub_date="<%= @images[0].publication_date %>" name="<%= @images[0].image_name %>" />
-                    <% end %>
-                    <!-- end -->
-                <% end %>
-                
-            </div>
-
-            <% 1.upto(@image_counter-1) do |ic| %>
-                <div class="item">
+            <% 0.upto(@image_counter-1) do |ic| %>
+                <div class="item <%= 'active' if ic==0%> ">
 
                     <% if use_local_images %>
-                        <% #image_tag "/assets#{@images[ic].local_path}", :id => "image#{ic+1}", :style => "width: 670px", :media=>@images[ic].media.display_name, image_size: @images[ic].size %>
+                        <%= image_tag @images[ic].local_path, :id => "image#{ic+1}", :style => "width: 670px", :media=>@images[ic].media.display_name, 
+                                        :image_size=>@images[ic].size, :pub_date=>@images[ic].publication_date, :name=>@images[ic].image_name %>
                     <% else %>
                         <!-- display live version form kiosko, just for the online beta version on heroku -->
                         <% if @images[ic].local_path == "404.jpg" %>
                             <img src="/assets/404.jpg" alt="" id="<%= "image#{ic+1}" %>" style="width: 670px;" image_size="<%= @images[ic].size %>" media="<%= @images[ic].media.display_name%>" pub_date="<%= @images[ic].publication_date %>" name="<%= "#{@images[ic].media.name}_#{@images[ic].publication_date.day}_#{@images[ic].publication_date.month}" %>" />
                         <% else %>
                             <img src="<%= @images[ic].local_path %>" alt="" id="<%= "image#{ic+1}" %>" style="width: 670px;" image_size="<%= @images[ic].size %>" media="<%= @images[ic].media.display_name%>" url="<%= @images[ic].media.url%>" pub_date="<%= @images[ic].publication_date %>" name="<%= @images[ic].image_name %>" />
-                            <!-- "#{@images[ic].media.name}_#{@images[ic].publication_date.day}_#{@images[ic].publication_date.month}"  -->
                         <% end %>
                         <!-- end -->
                     <% end %>
 
                 </div>
             <%end%>
+
           </div>
           <!-- Carousel nav -->
 

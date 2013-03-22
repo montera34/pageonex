@@ -20,7 +20,8 @@ class Scraper
 			kiosko_image_dir = "app/assets/images/kiosko"
 			FileUtils.mkdir kiosko_image_dir unless File.directory? kiosko_image_dir
 			media_list.each do |media|
-				FileUtils.mkdir media.local_image_dir unless File.directory? media.local_image_dir
+				local_image_dir = "app/assets/images/kiosko/" + media.name
+				FileUtils.mkdir local_image_dir unless File.directory? local_image_dir
 			end
 		end
 
@@ -35,9 +36,10 @@ class Scraper
 					img.media_id = media.id
 					img.image_name = media.name + "-" + img.publication_date.to_formatted_s(:file_datestamp)
 					if Scraper.use_local_images
-						img.local_path = media.local_image_dir + "/" + img.image_name
-						File.open(img.local_path, "wb") { |f| f.write(open(kiosko_url).read) }
-						size_info = Magick::ImageList.new(local_path)[0]
+						img.local_path = 'kiosko/' + media.name + "/" + img.image_name + ".jpg"
+						full_local_path = "app/assets/images/" + img.local_path
+						File.open(full_local_path, "wb") { |f| f.write(open(kiosko_url).read) }
+						size_info = Magick::ImageList.new(full_local_path)[0]
 						img.size = "#{size_info.columns}x#{size_info.rows}"
 					else
 						img.local_path = kiosko_url
