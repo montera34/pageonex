@@ -32,15 +32,13 @@ $(document).ready(function () {
         if ($("#allow_coding").attr("value") == "true") {
 
             // is the image was not found, it will not initialize the imgAreaSelect, and this not working in the heroku deployed version
-            if (currrent_img.attr("altr") == "Assets404") {
+            if (currrent_img.attr("alt") == "404") {
                 currrent_img_area_select = $('#images_section div.active img').imgAreaSelect({instance: true, handles: true,onSelectEnd: highlightingArea, disable:true});
             }else{
                 currrent_img_area_select = $('#images_section div.active img').imgAreaSelect({instance: true, handles: true,onSelectEnd: highlightingArea});
             }
         }
 
-        currrent_img = $("#images_section div.active img");
-        
         $("#high_area1").css("background-color","#000")
         $("#high_area2").css("background-color","#000")
 
@@ -49,10 +47,11 @@ $(document).ready(function () {
             loadHighlightingAreas();
         };
 
+        // update the sidebar meta-data about the image
+        var source_url = $("#images_section div.active img").attr('url');
         $("#publication_date").text(currrent_img.attr("pub_date"));
-        //$("#newspaper_name").text(currrent_img.attr("media"));
-	$("#newspaper_name").text(currrent_img.attr("media")).attr("href",$("#images_section div.active img").attr('url'));
-        $("#source_of_image").attr("value",$("#images_section div.active img").attr('url')).tooltip({placement:'bottom'})
+    	$("#newspaper_name").text(currrent_img.attr("media")).attr("href",source_url);
+        $("#source_of_image").attr("value",source_url).tooltip({placement:'bottom'})
         $("#image_number").text(currrent_img.attr("id").substr(5,100))
     });
 
