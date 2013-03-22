@@ -68,9 +68,7 @@ class Scraper
 
 	# first version paramters(year, month, start_day, end_day)
 	def self.issues_dates(start_date, end_date)
-		# add custom data format for the scraper
-		Date::DATE_FORMATS[:scraper]="%Y/%m/%d"
-		(start_date..end_date).map { |d| d.to_formatted_s(:scraper) }
+		(start_date..end_date).map { |d| d.to_formatted_s(:kiosko_frontpage_image) }
 	end
 
 	# building the URIs of the issues based on the passed dates
