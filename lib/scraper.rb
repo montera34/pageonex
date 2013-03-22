@@ -5,11 +5,21 @@ require "RMagick"
 
 class Scraper
 
+	KIOSKO_BASE_URL = "http://img.kiosko.net/"
+
 	def self.use_local_images
 		Pageonex::Application.config.use_local_images
 	end
 
 	def self.get_issues(start_date , end_date, newspapers_names)
+
+		# create any local caching dirs that you need to
+		FileUtils.mkdir "app/assets/images/kiosko" unless File.directory? "app/assets/images/kiosko" 
+		newspapers_names.each do |country, newspaper_list|
+			newspaper_list.each do |newspaper_name|
+				FileUtils.mkdir "app/assets/images/kiosko/#{newspaper_name}" unless File.directory? "app/assets/images/kiosko/#{newspaper_name}" 
+			end
+		end
 
 		@@newspapers_images = {}
 		# URIs of the issues 
@@ -58,54 +68,25 @@ class Scraper
 	def self.issues_dates(start_date, end_date)
 		# add custom data format for the scraper
 		Date::DATE_FORMATS[:scraper]="%Y/%m/%d"
-
-		dates = (start_date..end_date).map do |d|
-			d.to_formatted_s(:scraper)
-		end
-		
+		(start_date..end_date).map { |d| d.to_formatted_s(:scraper) }
 	end
 
 	# building the URIs of the issues based on the passed dates
 	# this script able to scrape back to 2008, 2009, and 2010 but most of the newspaper dosen't exsit in this years, and it also covers 2011, 2012 
 	# first version params
-	def self.build_kiosko_issues(start_date, end_date, newspapers_names)
+	def self.build_kiosko_issues(start_date, end_date, kiosko_newspapers)
 
-		FileUtils.mkdir "app/assets/images/kiosko" unless File.directory? "app/assets/images/kiosko" 
-
-		# sample of the countries and their newspapers form http://kiosko.net/
-=begin
-	es => Spain
-	de => Germany
-	fr => France
-	it => Italy
-	uk => United Kingdom
-	us => USA
-	. . . . . .
-=end
-
-		#kiosko_newspapers = {"es" => ["elpais", "abc"], "de" => ["faz", "bild"], "fr" => ["lemonde", "lacroix"], "it" => ["corriere_della_sera", "ilmessaggero"], "uk" => ["the_times", ],"us" => ["wsj", "newyork_times", "usa_today"]}
-		kiosko_newspapers = newspapers_names
-
-
-		domain = "http://img.kiosko.net/"
-
-		issues = Scraper.issues_dates start_date, end_date
+		issues = Scraper.issues_dates(start_date, end_date)
 
 		newspapers_issues = []
 		newspapers_issues_paths = []
 
-		# formating the images name by country name then the newspaper name with '.750.jpg' extention 
+		# constracting the full URI of each image
 		kiosko_newspapers.each do |country, newspaper|
 			newspaper.each do |_newspaper| 
-				newspapers_issues << "/#{country}/#{_newspaper}.750.jpg" 
-				FileUtils.mkdir "app/assets/images/kiosko/#{_newspaper}" unless File.directory? "app/assets/images/kiosko/#{_newspaper}" 
-			end
-		end
-
-		# constracting the full URI of each image
-		newspapers_issues.each do |newspaper|
-			issues.each do |issue| 
-				newspapers_issues_paths << domain + issue + newspaper
+				issues.each do |issue| 
+					newspapers_issues_paths << Scraper::KIOSKO_BASE_URL + issue + "/#{country}/#{_newspaper}.750.jpg"
+				end
 			end
 		end
 
