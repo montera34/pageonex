@@ -15,56 +15,54 @@ class Scraper
 
 		# create any local caching dirs that you need to
 		if Scraper.use_local_images
-			FileUtils.mkdir "app/assets/images/kiosko" unless File.directory? "app/assets/images/kiosko" 
+			kiosko_image_dir = "app/assets/images/kiosko"
+			FileUtils.mkdir kiosko_image_dir unless File.directory? kiosko_image_dir
 			newspapers_names.each do |country, newspaper_list|
 				newspaper_list.each do |newspaper_name|
-					FileUtils.mkdir "app/assets/images/kiosko/#{newspaper_name}" unless File.directory? "app/assets/images/kiosko/#{newspaper_name}" 
+					newspaper_local_image_dir = Media::local_image_path newspaper_name
+					FileUtils.mkdir newspaper_local_image_dir unless File.directory? newspaper_local_image_dir 
 				end
 			end
 		end
 
 		@@newspapers_images = {}
 		# URIs of the issues 
-		newspapers_issues_paths = Scraper.build_kiosko_issues(start_date, end_date, newspapers_names)
+		newspapers_issues_info = Scraper.build_kiosko_issues(start_date, end_date, newspapers_names)
 		#newspapers_issues_paths = Scraper.build_newyork_times_issues(year, month, start_day, end_day)
 		#newspapers_issues_paths = Scraper.build_elpais_issues(year, month, start_day, end_day)
 
-		Scraper.scrape newspapers_issues_paths
+		Scraper.scrape newspapers_issues_info
 
 		@@newspapers_images
 	end
 
 	# scrape method take the URIs of the issues and scrape them
-	def self.scrape(newspapers_issues_paths)
+	def self.scrape(newspapers_issues_info)
 
-		paths = newspapers_issues_paths
-
-		paths.each do |path|
+		newspapers_issues_info.each do |info|
 			begin
 				
 				if Scraper.use_local_images
 					open(path) do |source| 
 						# pass to save method the path of the issue and the issue it self
-						Scraper.save_kiosko_issues path, source
+						Scraper.save_kiosko_issues info
 						#Scraper.save_newyork_times_issues path, source
 						#Scraper.save_elpais_issues path, source
 					end
 				else
 					# live scraping for deployed version on heroku
-					Scraper.save_kiosko_issues path
+					Scraper.save_kiosko_issues info
 				end
 
 			rescue => e
-				newspaper_name = path.split('/').last
-				pub_date = "#{path.split('/')[-3]}-#{path.split('/')[-4]}-#{path.split('/')[-5]}"
+				newspaper_name = info[:newspaper_name]
+				pub_date = info[:date]
 				@@newspapers_images[newspaper_name.split(".")[0] +"-"+ pub_date] = { publication_date: pub_date, media: newspaper_name.split(".")[0], local_path: "404.jpg"}
 				puts e.message + " => " + path
 			end
 		end
 
 	end
-
-	# formating the issues date for Kiosko.net in "YYYY/MM/DD" based on the specified year, month, start day, and end day
 
 	# first version paramters(year, month, start_day, end_day)
 	def self.issues_dates(start_date, end_date)
@@ -79,26 +77,29 @@ class Scraper
 		issues = Scraper.issues_dates(start_date, end_date)
 
 		newspapers_issues = []
-		newspapers_issues_paths = []
+		newspapers_issues_info = []
 
 		# constracting the full URI of each image
-		kiosko_newspapers.each do |country, newspaper|
-			newspaper.each do |_newspaper| 
+		kiosko_newspapers.each do |country, newspaper_list|
+			newspaper_list.each do |newspaper_name| 
 				issues.each do |issue| 
-					newspapers_issues_paths << Scraper::KIOSKO_BASE_URL + issue + "/#{country}/#{_newspaper}.750.jpg"
+					newspapers_issues_info << { 
+						:url => Scraper::KIOSKO_BASE_URL + issue + "/#{country}/#{newspaper_name}.750.jpg",
+						:newspaper_name => newspaper_name,
+						:date => issue,
+						:country => country
+					}
 				end
 			end
 		end
 
-		newspapers_issues_paths
+		newspapers_issues_info
 	end
 
 	# save each image in it's place with name contains the date if the issue
-	def self.save_kiosko_issues(path) #, source)
+	def self.save_kiosko_issues(info)
 
-		newspaper_name = path.split('/').last
-
-		# resolution of the produced image  is [750x1072]
+		newspaper_name = info[:newspaper_name]
 
 		if Scraper.use_local_images
 			open("app/assets/images/kiosko/#{path.split("/")[-1].split(".")[0]}/" + "#{path.split('/')[-3]}-#{path.split('/')[-4]}-#{path.split('/')[-5]}-" + newspaper_name ,"wb") do |file|
@@ -109,9 +110,10 @@ class Scraper
 		 	end
 		else
 			# live scraping for deployed version on heroku
-			pub_date = "#{path.split('/')[-3]}-#{path.split('/')[-4]}-#{path.split('/')[-5]}"
-			@@newspapers_images[newspaper_name.split(".")[0] +"-"+ pub_date] = {publication_date: pub_date, media: newspaper_name.split(".")[0], local_path: "#{path}"}
-			puts "done => #{path.split('/')[-3]}-#{path.split('/')[-4]}-#{path.split('/')[-5]}-" + newspaper_name
+			# resolution of the produced image  is [750x1072]
+			pub_date = info[:date]
+			@@newspapers_images[newspaper_name.split(".")[0] +"-"+ pub_date] = {publication_date: pub_date, media: newspaper_name.split(".")[0], local_path: info[:url]}
+			puts "done => " + pub_date + "-" + newspaper_name
 		end
 
 	end
