@@ -45,10 +45,10 @@ ActiveRecord::Schema.define(:version => 20130309271421) do
   create_table "highlighted_areas", :force => true do |t|
     t.integer  "image_id"
     t.integer  "user_id"
+    t.integer  "code_id"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
     t.string   "name"
-    t.integer  "code_id"
   end
 
   create_table "images", :force => true do |t|
