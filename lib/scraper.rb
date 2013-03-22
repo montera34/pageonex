@@ -14,10 +14,12 @@ class Scraper
 	def self.get_issues(start_date , end_date, newspapers_names)
 
 		# create any local caching dirs that you need to
-		FileUtils.mkdir "app/assets/images/kiosko" unless File.directory? "app/assets/images/kiosko" 
-		newspapers_names.each do |country, newspaper_list|
-			newspaper_list.each do |newspaper_name|
-				FileUtils.mkdir "app/assets/images/kiosko/#{newspaper_name}" unless File.directory? "app/assets/images/kiosko/#{newspaper_name}" 
+		if Scraper.use_local_images
+			FileUtils.mkdir "app/assets/images/kiosko" unless File.directory? "app/assets/images/kiosko" 
+			newspapers_names.each do |country, newspaper_list|
+				newspaper_list.each do |newspaper_name|
+					FileUtils.mkdir "app/assets/images/kiosko/#{newspaper_name}" unless File.directory? "app/assets/images/kiosko/#{newspaper_name}" 
+				end
 			end
 		end
 
