@@ -67,12 +67,7 @@ class ThreadsController < ApplicationController
 		# otherwise, the new form will rendered again with the error messages
 		else
 			# we should load the names of the media again. 
-			# A method should be created to make a DRY code. don't repeat!
-			@media = []
-			Media.all.each do |newspaper|
-				newspaper.name = "#{newspaper.country} - #{newspaper.display_name}"
-				@media << newspaper
-			end
+			@media = Media.all.collect { |m| m.name_with_country }
 
 			# send some params back to the view, to tell the user about what is missing
 			if params["topic_name_1"] == ""
@@ -101,11 +96,8 @@ class ThreadsController < ApplicationController
 
 		@media = Media.all
 
-		params["media"] = []
-		@thread.media.each do |m|
-			params["media"] << m.id
-		end
-	
+		params["media"] = @thread.media.each.collect { |m| m.id }
+
 	end
 
 
@@ -163,11 +155,7 @@ class ThreadsController < ApplicationController
 			redirect_to "/#{current_user.username.split(' ').join('_')}/#{@thread.thread_name}"
 		else
 			# A method should be created to make a DRY code. don't repeat!
-			@media = []
-			Media.all.each do |newspaper|
-				newspaper.name = "#{newspaper.country} - #{newspaper.display_name}"
-				@media << newspaper
-			end
+			@media = Media.all.collect { |m| m.name_with_country }
 
 			@thread.media.each do |m|
 				params["media"] << "#{m.id}"
