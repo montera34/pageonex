@@ -32,7 +32,7 @@
             <!-- for heroku -->
             <a href="<%= "/#{thread.owner.username.split(' ').join('_')}/#{thread.thread_name}/" %>">
             <% thread.images[0,3].each do |image| %>
-              <img src="<%= "#{image.local_path}"%>" style="height: 110px;" alt="">
+              <img src="<%= "#{image.source_url}"%>" style="height: 110px;" alt="">
             <% end %>
             </a> 
             <!-- end heroku-->

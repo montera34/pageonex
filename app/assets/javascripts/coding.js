@@ -12,8 +12,7 @@ $(document).ready(function () {
     // setting the value for each image
     $("#publication_date").text($("#images_section div.active img").attr("pub_date"));
     $("#newspaper_name").text($("#images_section div.active img").attr("media")).attr("href",$("#images_section div.active img").attr('url'));
-    // $("#source_of_image").attr("href",$("#images_section div.active img").attr('src'))
-    $("#source_of_image").attr("value",$("#images_section div.active img").attr('src')).tooltip({placement:'bottom'})
+    $("#source_of_image").attr("value",$("#images_section div.active img").attr('url')).tooltip({placement:'bottom'})
     
     // attaching a callback for the slide event on the carousel, so it will clear all the highlighted areas when the user slide
     // "This event fires immediately when the slide instance method is invoked." from bootstrap documentation
@@ -53,8 +52,7 @@ $(document).ready(function () {
         $("#publication_date").text(currrent_img.attr("pub_date"));
         //$("#newspaper_name").text(currrent_img.attr("media"));
 	$("#newspaper_name").text(currrent_img.attr("media")).attr("href",$("#images_section div.active img").attr('url'));
-        // $("#source_of_image").attr("href",$("#images_section div.active img").attr('src'));
-        $("#source_of_image").attr("value",$("#images_section div.active img").attr('src')).tooltip({placement:'bottom'})
+        $("#source_of_image").attr("value",$("#images_section div.active img").attr('url')).tooltip({placement:'bottom'})
         $("#image_number").text(currrent_img.attr("id").substr(5,100))
     });
 

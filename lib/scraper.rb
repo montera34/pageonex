@@ -30,19 +30,23 @@ class Scraper
 
 				img = Image.find_by_media_id_and_publication_date(media.id, date)
 				if img==nil	# ensure only one entry per front page in the images table
-					kiosko_url = Scraper::KIOSKO_BASE_URL + date.to_formatted_s(:kiosko_file_datestamp) + "/#{media.country_code}/#{media.name}.750.jpg"
 					img = Image.new
+					img.source_url = Scraper::KIOSKO_BASE_URL + date.to_formatted_s(:kiosko_file_datestamp) + "/#{media.country_code}/#{media.name}.750.jpg"
 					img.publication_date = date
 					img.media_id = media.id
 					img.image_name = media.name + "-" + img.publication_date.to_formatted_s(:file_datestamp)
 					if Scraper.use_local_images
 						img.local_path = 'kiosko/' + media.name + "/" + img.image_name + ".jpg"
 						full_local_path = "app/assets/images/" + img.local_path
-						File.open(full_local_path, "wb") { |f| f.write(open(kiosko_url).read) }
-						size_info = Magick::ImageList.new(full_local_path)[0]
-						img.size = "#{size_info.columns}x#{size_info.rows}"
+						begin
+							File.open(full_local_path, "wb") { |f| f.write(open(img.source_url).read) }
+							size_info = Magick::ImageList.new(full_local_path)[0]
+							img.size = "#{size_info.columns}x#{size_info.rows}"
+						rescue
+							img.local_path = '404.jpg'
+							img.size = '750x951'
+						end
 					else
-						img.local_path = kiosko_url
 						img.size = '750x951' #!!this value of pixels is 'hard coded' so it gives wrong values for long newspapers
 					end
 					img.save
