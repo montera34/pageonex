@@ -3,4 +3,5 @@
 Pageonex::Application.config.use_local_images = false
 
 # date format used by kiosko to name their newspaper frontpage image files
-Date::DATE_FORMATS[:kiosko_frontpage_image]="%Y/%m/%d"
+Date::DATE_FORMATS[:kiosko_file_datestamp]="%Y/%m/%d"
+Time::DATE_FORMATS[:file_datestamp] = "%Y-%m-%d"

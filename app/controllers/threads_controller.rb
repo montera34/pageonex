@@ -50,43 +50,7 @@ class ThreadsController < ApplicationController
 				codes << Code.create!({:code_text => params["topic_name_#{n}"], :code_description => params["topic_description_#{n}"],:color => params["topic_color_#{n}"]})
 			end
 
-			# array of object refers to scraped images
-			images = []
-
-			# passes dates and formated newspapers_names array. It returns a hash that contains info about evry image: publication_date, media, local_path 
-			# in the future, if we want to add the feature for choosing between multiple scraper, it will be here, by passing another argument to the scraper to choose the source for scraping
-			newspapers_images = Scraper.get_issues(@thread.start_date, @thread.end_date, newspapers_names)
-
-			# after the scraper finishes, it returns a hash of the scraped images
-			# this returned hash contains the image names which are in this format [newspaper_name-publication_date], the url, and the media id
-			newspapers_images.each do |image_name, image_info|
-				# search if the image dose not exist, it creates an object for this image 
-				if ( (image = Image.find_by_image_name image_name) == nil)
-					image_info["image_name"] = image_name
-					media = Media.find_by_name(image_info[:media])
-
-					# I'll change this part, for the deployment on the server
-					if image_info[:local_path] != "404.jpg"
-						if use_local_images
-							image_size = Magick::ImageList.new("app/assets/images" + image_info[:local_path])[0]
-							image_size = "#{image_size.columns}x#{image_size.rows}"
-						else
-							# for the online heroku beta
-							image_size="750x951" #!!this value of pixels is 'hard coded' so it gives wrong values for long newspapers
-						end
-					else
-						image_size="750x951" #!!this value of pixels is 'hard coded' so it gives wrong values for long newspapers
-						# this part is comment for heroku beta
-						# change the default values
-						# image_info[:publication_date]
-						# image_info["image_name"]
-					end
-
-					# creates a new image object if there is no exsiting image object for the scraped image, because the image objects is global for all the threads
-					# we are storing the image url in the local_path attribute for the heroku deployment, but for the future deployment on the server, we will store the path of the image on the server in the local_path and the url in the a url attribute
-					image = Image.create!({ image_name: image_info["image_name"],publication_date: image_info[:publication_date], local_path: image_info[:local_path], media_id: media.id, size: image_size})
-				end
-			end
+			images = Scraper.create_images(@thread.start_date, @thread.end_date, @thread.media)
 
 			# It saves the thread to the db, and assign an id to the thread
 			@thread.save

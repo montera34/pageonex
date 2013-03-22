@@ -12,4 +12,5 @@ class Image < ActiveRecord::Base
 	def self.by_date(dates)
 		where(:publication_date => dates)
 	end
+
 end
