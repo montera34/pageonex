@@ -67,12 +67,13 @@ class ThreadsController < ApplicationController
 
 					# I'll change this part, for the deployment on the server
 					if image_info[:local_path] != "404.jpg"
-						# image_size = Magick::ImageList.new("app/assets/images" + image_info[:local_path])[0]
-						# image_size = "#{image_size.columns}x#{image_size.rows}"
-
-						# for the online heroku beta
+						if use_local_images
+							image_size = Magick::ImageList.new("app/assets/images" + image_info[:local_path])[0]
+							image_size = "#{image_size.columns}x#{image_size.rows}"
+						else
+							# for the online heroku beta
 							image_size="750x951" #!!this value of pixels is 'hard coded' so it gives wrong values for long newspapers
-						# end
+						end
 					else
 						image_size="750x951" #!!this value of pixels is 'hard coded' so it gives wrong values for long newspapers
 						# this part is comment for heroku beta
@@ -169,12 +170,13 @@ class ThreadsController < ApplicationController
 					media = Media.find_by_name(image_info[:media])
 
 					if image_info[:local_path] != "404.jpg"
-						# image_size = Magick::ImageList.new("app/assets/images" + image_info[:local_path])[0]
-						# image_size = "#{image_size.columns}x#{image_size.rows}"
-
-						# for the online heroku beta
-						image_size="750x951" #!!this value of pixels is 'hard coded' so it gives wrong values for long newspapers
-						# end
+						if use_local_images
+							image_size = Magick::ImageList.new("app/assets/images" + image_info[:local_path])[0]
+							image_size = "#{image_size.columns}x#{image_size.rows}"
+						else
+							# for the online heroku beta
+							image_size="750x951" #!!this value of pixels is 'hard coded' so it gives wrong values for long newspapers
+						end
 					else
 						image_size="750x951" #!!this value of pixels is 'hard coded' so it gives wrong values for long newspapers
 						# change the default values

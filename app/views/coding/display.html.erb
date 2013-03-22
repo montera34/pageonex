@@ -125,18 +125,21 @@
 						<div id="<%= "image_box#{ic+1}" %>" style="margin-bottom: 4px" class="span1 <%= "thum_image#{ic+1}" %>" image_name="<%= image.image_name %>">
 						<a href='<%= "/#{@thread.owner.username.split(' ').join('_')}/#{@thread.thread_name}/coding/?i=#{image.image_name}" %>' title="">
 						
-							<% #image_tag "/assets#{@thread.images[ic].local_path}", id: "image#{ic+1}", style: " opacity: 0.8;", image_size: @images[ic].size%>
-							<!-- display live version form kiosko, just for the online beta version on heroku -->
-							<% if @images[ic].local_path == "404.jpg" %>
-								<img src="/assets/404.jpg" alt="" id="<%= "image#{ic+1}" %>" class="thumb-img" image_size="<%= @images[ic].size %>" />
+							<% if use_local_images %>
+								<% image_tag "/assets#{@thread.images[ic].local_path}", id: "image#{ic+1}", style: " opacity: 0.8;", image_size: @images[ic].size%>
 							<% else %>
-								<% if @thread.image_coded? @images[ic] %> 
-									<img src="<%= @images[ic].local_path %>" alt="" id="<%= "image#{ic+1}" %>" class="thumb-img-coded" image_size="<%= @images[ic].size %>" name="<%= @images[ic].image_name %>" />
-								<% else %> 
-									<img src="<%= @images[ic].local_path %>" alt="" id="<%= "image#{ic+1}" %>" class="thumb-img-no-coded" image_size="<%= @images[ic].size %>" name="<%= @images[ic].image_name %>" />
+								<!-- display live version form kiosko, just for the online beta version on heroku -->
+								<% if @images[ic].local_path == "404.jpg" %>
+									<img src="/assets/404.jpg" alt="" id="<%= "image#{ic+1}" %>" class="thumb-img" image_size="<%= @images[ic].size %>" />
+								<% else %>
+									<% if @thread.image_coded? @images[ic] %> 
+										<img src="<%= @images[ic].local_path %>" alt="" id="<%= "image#{ic+1}" %>" class="thumb-img-coded" image_size="<%= @images[ic].size %>" name="<%= @images[ic].image_name %>" />
+									<% else %> 
+										<img src="<%= @images[ic].local_path %>" alt="" id="<%= "image#{ic+1}" %>" class="thumb-img-no-coded" image_size="<%= @images[ic].size %>" name="<%= @images[ic].image_name %>" />
+									<% end %>
 								<% end %>
+								<!-- end -->
 							<% end %>
-							<!-- end -->
 						</a>
 						<% @thread.highlighted_areas_for_image(image).each do |ha| %>
 							<div id="<%= "ha_#{ha.id}" %>" style="position: absolute; overflow: hidden; z-index: 0; left: 0px; top: 0px; width: 0px; height: 0px; display: block; opacity: 0.7;" class=""></div>

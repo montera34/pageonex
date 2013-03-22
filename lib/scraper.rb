@@ -1,10 +1,13 @@
 require "fileutils"
 require "open-uri"
 # RMagick gem is used to convert pdf file into images in the elpais scraper, to get the images size for the other scraper
-# require "RMagick"
-
+require "RMagick"
 
 class Scraper
+
+	def self.use_local_images
+		Pageonex::Application.config.use_local_images
+	end
 
 	def self.get_issues(start_date , end_date, newspapers_names)
 
@@ -26,17 +29,18 @@ class Scraper
 
 		paths.each do |path|
 			begin
-				# open(path) do |source| 
-
-				# 	# pass to save method the path of the issue and the issue it self
-				# 	Scraper.save_kiosko_issues path, source
-				# 	#Scraper.save_newyork_times_issues path, source
-				# 	#Scraper.save_elpais_issues path, source
-				# end
-
-				# live scraping for deployed version on heroku
-				Scraper.save_kiosko_issues path
-				# end
+				
+				if Scraper.use_local_images
+					open(path) do |source| 
+						# pass to save method the path of the issue and the issue it self
+						Scraper.save_kiosko_issues path, source
+						#Scraper.save_newyork_times_issues path, source
+						#Scraper.save_elpais_issues path, source
+					end
+				else
+					# live scraping for deployed version on heroku
+					Scraper.save_kiosko_issues path
+				end
 
 			rescue => e
 				newspaper_name = path.split('/').last
@@ -115,27 +119,19 @@ class Scraper
 
 		# resolution of the produced image  is [750x1072]
 
-		# open("app/assets/images/kiosko/#{path.split("/")[-1].split(".")[0]}/" + "#{path.split('/')[-3]}-#{path.split('/')[-4]}-#{path.split('/')[-5]}-" + newspaper_name ,"wb") do |file|
-		# 	file.write(source.read())
-
-		# 	pub_date = "#{path.split('/')[-3]}-#{path.split('/')[-4]}-#{path.split('/')[-5]}"
-			
-		# 	@@newspapers_images[newspaper_name.split(".")[0] +"-"+ pub_date] = {publication_date: pub_date, media: newspaper_name.split(".")[0], local_path: "/kiosko/#{path.split("/")[-1].split(".")[0]}/" + "#{pub_date}-" + newspaper_name}
-
-		# 	puts "done => #{path.split('/')[-3]}-#{path.split('/')[-4]}-#{path.split('/')[-5]}-" + newspaper_name
-		# end
-
-
-
-		# live scraping for deployed version on heroku
-		pub_date = "#{path.split('/')[-3]}-#{path.split('/')[-4]}-#{path.split('/')[-5]}"
-		
-		@@newspapers_images[newspaper_name.split(".")[0] +"-"+ pub_date] = {publication_date: pub_date, media: newspaper_name.split(".")[0], local_path: "#{path}"}
-
-		puts "done => #{path.split('/')[-3]}-#{path.split('/')[-4]}-#{path.split('/')[-5]}-" + newspaper_name
-		# end
-
-
+		if Scraper.use_local_images
+			open("app/assets/images/kiosko/#{path.split("/")[-1].split(".")[0]}/" + "#{path.split('/')[-3]}-#{path.split('/')[-4]}-#{path.split('/')[-5]}-" + newspaper_name ,"wb") do |file|
+		 		file.write(source.read())
+		 		pub_date = "#{path.split('/')[-3]}-#{path.split('/')[-4]}-#{path.split('/')[-5]}"
+				@@newspapers_images[newspaper_name.split(".")[0] +"-"+ pub_date] = {publication_date: pub_date, media: newspaper_name.split(".")[0], local_path: "/kiosko/#{path.split("/")[-1].split(".")[0]}/" + "#{pub_date}-" + newspaper_name}
+				puts "done => #{path.split('/')[-3]}-#{path.split('/')[-4]}-#{path.split('/')[-5]}-" + newspaper_name
+		 	end
+		else
+			# live scraping for deployed version on heroku
+			pub_date = "#{path.split('/')[-3]}-#{path.split('/')[-4]}-#{path.split('/')[-5]}"
+			@@newspapers_images[newspaper_name.split(".")[0] +"-"+ pub_date] = {publication_date: pub_date, media: newspaper_name.split(".")[0], local_path: "#{path}"}
+			puts "done => #{path.split('/')[-3]}-#{path.split('/')[-4]}-#{path.split('/')[-5]}-" + newspaper_name
+		end
 
 	end
 
