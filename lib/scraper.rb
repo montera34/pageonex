@@ -1,7 +1,7 @@
 require "fileutils"
 require "open-uri"
 # RMagick gem is used to convert pdf file into images in the elpais scraper, to get the images size for the other scraper
-require "RMagick"
+require "image_size"
 
 class Scraper
 
@@ -11,6 +11,8 @@ class Scraper
 		Pageonex::Application.config.use_local_images
 	end
 
+	# test like this in the rails console: 
+	#   Scraper::scrape_images(Date.today-1, Date.today, [Media.first])
 	def self.scrape_images(start_date , end_date, media_list)
 
 		images = []
@@ -40,8 +42,10 @@ class Scraper
 						full_local_path = "app/assets/images/" + img.local_path
 						begin
 							File.open(full_local_path, "wb") { |f| f.write(open(img.source_url).read) }
-							size_info = Magick::ImageList.new(full_local_path)[0]
-							img.size = "#{size_info.columns}x#{size_info.rows}"
+							File.open(full_local_path,"rb") do |f|
+								size_info = ImageSize.new(f.read).get_size
+								img.size = "#{size_info[0]}x#{size_info[1]}"
+							end
 						rescue
 							img.local_path = '404.jpg'
 							img.size = '750x951'

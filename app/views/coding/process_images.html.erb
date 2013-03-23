@@ -72,9 +72,9 @@
                     <% else %>
                         <!-- display live version form kiosko, just for the online beta version on heroku -->
                         <% if @images[ic].local_path == "404.jpg" %>
-                            <img src="/assets/404.jpg" alt="" id="<%= "image#{ic+1}" %>" style="width: 670px;" image_size="<%= @images[ic].size %>" media="<%= @images[ic].media.display_name%>" pub_date="<%= @images[ic].publication_date %>" name="<%= "#{@images[ic].media.name}_#{@images[ic].publication_date.day}_#{@images[ic].publication_date.month}" %>" />
+                            <img src="/assets/404.jpg" alt="404" id="<%= "image#{ic+1}" %>" style="width: 670px;" image_size="<%= @images[ic].size %>" media="<%= @images[ic].media.display_name%>" pub_date="<%= @images[ic].publication_date %>" name="<%= "#{@images[ic].media.name}_#{@images[ic].publication_date.day}_#{@images[ic].publication_date.month}" %>" />
                         <% else %>
-                            <img src="<%= @images[ic].source_url %>" alt="" id="<%= "image#{ic+1}" %>" style="width: 670px;" image_size="<%= @images[ic].size %>" media="<%= @images[ic].media.display_name%>" url="<%= @images[ic].media.url%>" pub_date="<%= @images[ic].publication_date %>" name="<%= @images[ic].image_name %>" />
+                            <img src="<%= @images[ic].source_url %>" alt="<%= @images[ic].image_name %>" id="<%= "image#{ic+1}" %>" style="width: 670px;" image_size="<%= @images[ic].size %>" media="<%= @images[ic].media.display_name%>" url="<%= @images[ic].media.url%>" pub_date="<%= @images[ic].publication_date %>" name="<%= @images[ic].image_name %>" />
                         <% end %>
                         <!-- end -->
                     <% end %>
