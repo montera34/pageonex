@@ -126,7 +126,11 @@
 						<a href='<%= "/#{@thread.owner.username.split(' ').join('_')}/#{@thread.thread_name}/coding/?i=#{image.image_name}" %>' title="">
 						
 							<% if use_local_images %>
-								<%= image_tag @thread.images[ic].local_path, id: "image#{ic+1}", style: " opacity: 0.8;", image_size: @images[ic].size%>
+								<% if @thread.image_coded? @images[ic] %> 
+									<%= image_tag @thread.images[ic].local_path, id: "image#{ic+1}", image_size: @images[ic].size, name: @images[ic].image_name, class: "thumb-img-coded"  %>
+								<% else %> 
+									<%= image_tag @thread.images[ic].local_path, id: "image#{ic+1}", image_size: @images[ic].size, name: @images[ic].image_name, class: "thumb-img-no-coded" %>
+								<% end %>
 							<% else %>
 								<!-- display live version form kiosko, just for the online beta version on heroku -->
 								<% if @images[ic].source_url == "404.jpg" %>
