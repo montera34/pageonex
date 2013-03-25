@@ -10,8 +10,11 @@ $(document).ready(function () {
     renderHighlightedAreas();
 
     // setting the value for each image
+    var source_url = $("#images_section div.active img").attr('url');
+    var media_url = $("#images_section div.active img").attr('media_url');
     $("#publication_date").text($("#images_section div.active img").attr("pub_date"));
-    $("#newspaper_name").text($("#images_section div.active img").attr("media")).attr("href",$("#images_section div.active img").attr('url'));
+    $("#newspaper_name").text($("#images_section div.active img").attr("media")).attr("href",media_url);
+    $("#original_image_url").text("Link to original image").attr("href",source_url);
     $("#source_of_image").attr("value",$("#images_section div.active img").attr('url')).tooltip({placement:'bottom'})
     
     // attaching a callback for the slide event on the carousel, so it will clear all the highlighted areas when the user slide
@@ -49,8 +52,10 @@ $(document).ready(function () {
 
         // update the sidebar meta-data about the image
         var source_url = $("#images_section div.active img").attr('url');
+	var media_url = $("#images_section div.active img").attr('media_url');
         $("#publication_date").text(currrent_img.attr("pub_date"));
-    	$("#newspaper_name").text(currrent_img.attr("media")).attr("href",source_url);
+    	$("#newspaper_name").text($("#images_section div.active img").attr("media")).attr("href",media_url);
+	$("#original_image_url").text("Link to original image").attr("href",source_url);
         $("#source_of_image").attr("value",source_url).tooltip({placement:'bottom'})
         $("#image_number").text(currrent_img.attr("id").substr(5,100))
     });

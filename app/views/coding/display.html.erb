@@ -121,10 +121,10 @@
 			</div>
 			<div class="img_box span10" >
 				<% @thread.images.each_with_index do |image, ic| %>
-					<% if @images[ic].media == m  %>  <!-- only images from that particular media-->
+					<% if @images[ic].media == m  %>  <!-- only displays images from that particular media-->
 						<div id="<%= "image_box#{ic+1}" %>" style="margin-bottom: 4px" class="span1 <%= "thum_image#{ic+1}" %>" image_name="<%= image.image_name %>">
 						<a href='<%= "/#{@thread.owner.username.split(' ').join('_')}/#{@thread.thread_name}/coding/?i=#{image.image_name}" %>' title="">
-						
+							<!-- display images stored locally -->
 							<% if use_local_images %>
 								<% if @thread.image_coded? @images[ic] %> 
 									<%= image_tag @thread.images[ic].local_path, id: "image#{ic+1}", image_size: @images[ic].size, name: @images[ic].image_name, class: "thumb-img-coded"  %>
@@ -132,17 +132,17 @@
 									<%= image_tag @thread.images[ic].local_path, id: "image#{ic+1}", image_size: @images[ic].size, name: @images[ic].image_name, class: "thumb-img-no-coded" %>
 								<% end %>
 							<% else %>
-								<!-- display live version form kiosko, just for the online beta version on heroku -->
-								<% if @images[ic].source_url == "404.jpg" %>
-									<img src="/assets/404.jpg" alt="" id="<%= "image#{ic+1}" %>" class="thumb-img" image_size="<%= @images[ic].size %>" />
-								<% else %>
-									<% if @thread.image_coded? @images[ic] %> 
-										<img src="<%= @images[ic].source_url %>" alt="" id="<%= "image#{ic+1}" %>" class="thumb-img-coded" image_size="<%= @images[ic].size %>" name="<%= @images[ic].image_name %>" />
-									<% else %> 
-										<img src="<%= @images[ic].source_url %>" alt="" id="<%= "image#{ic+1}" %>" class="thumb-img-no-coded" image_size="<%= @images[ic].size %>" name="<%= @images[ic].image_name %>" />
-									<% end %>
+							<!-- display live version form kiosko, just for the online beta version on heroku -->
+							<% if @images[ic].source_url == "404.jpg" %>
+								<img src="/assets/404.jpg" alt="" id="<%= "image#{ic+1}" %>" class="thumb-img" image_size="<%= @images[ic].size %>" />
+							<% else %>
+								<% if @thread.image_coded? @images[ic] %> 
+									<img src="<%= @images[ic].source_url %>" alt="" id="<%= "image#{ic+1}" %>" class="thumb-img-coded" image_size="<%= @images[ic].size %>" name="<%= @images[ic].image_name %>" />
+								<% else %> 
+									<img src="<%= @images[ic].source_url %>" alt="" id="<%= "image#{ic+1}" %>" class="thumb-img-no-coded" image_size="<%= @images[ic].size %>" name="<%= @images[ic].image_name %>" />
 								<% end %>
-								<!-- end -->
+							<% end %>
+							<!-- end -->
 							<% end %>
 						</a>
 						<% @thread.highlighted_areas_for_image(image).each do |ha| %>

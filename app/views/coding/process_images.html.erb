@@ -31,12 +31,15 @@
 	       		<% end %>
 		  </ul>
 	<hr>
-
+	<!--name and link to the newspaper -->
 	<a id="newspaper_name"></a>
         <p id="publication_date" href=""></p>
 	<hr>
 
-        <p>Image downloaded from <a href="http://kiosko.net" title="">kiosko.net</a></p>
+        <p><!-- link to the original source of the image -->
+		<a id="original_image_url"></a><br>
+		<small>Image downloaded from <a href="http://kiosko.net" title="">kiosko.net</a></small>
+	</p>
         <!-- we are not using the direct link, because if you redirect from the same domain to kiosko, it will render the 300px image instead of the 750px -->
         <!-- <a id="source_of_image"  href="#">Original image form - Kiosko.net</a> -->
         <input id="source_of_image" type="text" class="span2" value="#" rel="tooltip" title="Copy + Paste">
@@ -68,7 +71,7 @@
                     <% if use_local_images %>
                         <%= image_tag @images[ic].local_path, :id => "image#{ic+1}", :style => "width: 670px", :media=>@images[ic].media.display_name, 
                                         :image_size=>@images[ic].size, :pub_date=>@images[ic].publication_date, :name=>@images[ic].image_name,
-                                        :url=>@images[ic].source_url %>
+                                        :url=>@images[ic].source_url, :media_url=>@images[ic].media.url %>
                     <% else %>
                         <!-- display live version form kiosko, just for the online beta version on heroku -->
                         <% if @images[ic].local_path == "404.jpg" %>
