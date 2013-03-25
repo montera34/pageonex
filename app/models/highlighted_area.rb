@@ -15,4 +15,12 @@ class HighlightedArea < ActiveRecord::Base
 	def self.by_threadx(threadx)
 		where(:code_id => threadx.code_ids)
 	end
+	
+	def self.by_code(code)
+		where(:code_id => code.id)
+	end
+	
+	def area
+		areas.first.width * areas.first.height
+	end
 end

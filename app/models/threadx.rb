@@ -1,3 +1,5 @@
+require 'odf/spreadsheet'
+
 class Threadx < ActiveRecord::Base
 
 	MAX_IMAGES = 500
@@ -62,6 +64,62 @@ class Threadx < ActiveRecord::Base
 		area_count = HighlightedArea.by_threadx(self).by_image(image).length
 		skipped = coded_pages.for_image(image).length
 		area_count > 0 or skipped > 0
+	end
+	
+	def get_percent(code, medium, date)
+		image = images.by_media(medium.id).by_date(date).first
+		if not image.nil?
+			parts = image.size.match(/(\d+)x(\d+)/)
+			width = parts[1].to_f
+			height = parts[2].to_f
+			highlighted = highlighted_areas_for_image(image).by_code(code).inject(0) { |area, ha| area + ha.area }
+			return highlighted.to_f / (width * height)
+		end
+		return nil
+	end
+	
+	def results
+		res = []
+		images.publication_date.each do |date|
+			result = {:date => date, :media => []}
+			media.each do |m|
+				media_result = {:name => m.display_name, :codes => []}
+				codes.each do |code|
+					code_result = {:name => code.code_text}
+					code_result[:percent] = get_percent(code, m, date)
+					media_result[:codes] << code_result
+				end
+				result[:media] << media_result
+			end
+			res << result
+		end
+		res
+	end
+	
+	def results_as_ods
+		spreadsheet = ODF::Spreadsheet.new
+		media.each do |m|
+			table = spreadsheet.table m.display_name
+			row = table.row
+			cell = row.cell 'Date'
+			codes.each do |code|
+				cell = row.cell code.code_text
+			end
+			images.by_media(m.id).each do |image|
+				row = table.row
+				cell = row.cell image.publication_date
+				codes.each do |code|
+					cell = row.cell get_percent(code, m, image.publication_date)
+				end
+			end
+		end
+		# Create a temporary filepath
+		file = Tempfile.new(['export', '.ods']);
+		path = file.path
+		file.close
+		file.unlink
+		spreadsheet.write_to(path)
+		path
 	end
 
 end

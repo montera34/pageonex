@@ -142,6 +142,10 @@ GEM
     rdoc (3.12.2)
       json (~> 1.4)
     ref (1.0.3)
+    rodf (0.3.4)
+      activesupport (~> 3.0)
+      builder (~> 3.0)
+      rubyzip (~> 0.9.1)
     rspec (2.13.0)
       rspec-core (~> 2.13.0)
       rspec-expectations (~> 2.13.0)
@@ -221,6 +225,7 @@ DEPENDENCIES
   less-rails
   pg
   rails (= 3.2.11)
+  rodf
   rspec-rails
   sass-rails (~> 3.2.3)
   sqlite3

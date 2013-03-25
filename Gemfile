@@ -41,6 +41,8 @@ group :test do
   gem 'launchy'
 end
 
+gem 'rodf'
+
 # gem "rmagick"
 
 # gem "image_sorcery"

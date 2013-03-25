@@ -268,5 +268,19 @@ for opened thread:
 		render :partial => 'topic_form', :locals => {
 			:index => params[:index], :id => nil, :name => nil, :color => nil, :description => nil}
 	end
+	
+	def export
+		@thread = Threadx.find_by_thread_name params[:thread_name]
+		respond_to do |format|
+			format.html
+			format.json { render :json => @thread.results.to_json }
+			format.ods do
+				send_file @thread.results_as_ods,
+					:filename => 'export.ods',
+					:type => 'application/x-vnd.oasis.opendocument.spreadsheet',
+					:disposition => 'attachment'
+			end
+		end
+	end
 
 end

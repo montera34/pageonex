@@ -12,4 +12,8 @@ class Image < ActiveRecord::Base
 	def self.by_date(dates)
 		where(:publication_date => dates)
 	end
+	
+	def self.publication_date
+		select('publication_date').uniq.map { |elt| elt.publication_date }
+	end
 end

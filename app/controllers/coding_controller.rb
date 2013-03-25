@@ -43,7 +43,7 @@ So the following sorting method should be modified
       end
     end
     # Go through each submitted highlighted area
-    params[:ha_name].each do |ha_name|
+    params.fetch(:ha_name, []).each do |ha_name|
       image = Image.find_by_image_name(params["img_id_#{ha_name}"])
       if params["id_#{ha_name}"].to_i == 0
 	# This is a new area
