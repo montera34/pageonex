@@ -5,10 +5,12 @@
 <% thread = current_user.owned_threads.find_by_thread_display_name params[:threadx]["thread_display_name"] if params[:threadx] != nil  %>
 <% @title = "New Thread - PageOneX" %>
 
-<div class="alert">
-  <button class="close" data-dismiss="alert">×</button>
-  <strong>Warning!</strong> The resources available by Heroku are limited, so try to create medium or small threads.
-</div>
+<% if not use_local_images %>
+  <div class="alert">
+    <button class="close" data-dismiss="alert">×</button>
+    <strong>Warning!</strong> The resources available by Heroku are limited, so try to create medium or small threads.
+  </div>
+<% end %>
 
 <h1>New Thread</h1>
 

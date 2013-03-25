@@ -1,204 +1,66 @@
 require "fileutils"
 require "open-uri"
 # RMagick gem is used to convert pdf file into images in the elpais scraper, to get the images size for the other scraper
-# require "RMagick"
-
+require "image_size"
 
 class Scraper
 
-	def self.get_issues(start_date , end_date, newspapers_names)
+	KIOSKO_BASE_URL = "http://img.kiosko.net/"
 
-		@@newspapers_images = {}
-		# URIs of the issues 
-		newspapers_issues_paths = Scraper.build_kiosko_issues(start_date, end_date, newspapers_names)
-		#newspapers_issues_paths = Scraper.build_newyork_times_issues(year, month, start_day, end_day)
-		#newspapers_issues_paths = Scraper.build_elpais_issues(year, month, start_day, end_day)
-
-		Scraper.scrape newspapers_issues_paths
-
-		@@newspapers_images
+	def self.use_local_images
+		Pageonex::Application.config.use_local_images
 	end
 
-	# scrape method take the URIs of the issues and scrape them
-	def self.scrape(newspapers_issues_paths)
+	# test like this in the rails console: 
+	#   Scraper::scrape_images(Date.today-1, Date.today, [Media.first])
+	def self.scrape_images(start_date , end_date, media_list)
 
-		paths = newspapers_issues_paths
+		images = []
 
-		paths.each do |path|
-			begin
-				# open(path) do |source| 
-
-				# 	# pass to save method the path of the issue and the issue it self
-				# 	Scraper.save_kiosko_issues path, source
-				# 	#Scraper.save_newyork_times_issues path, source
-				# 	#Scraper.save_elpais_issues path, source
-				# end
-
-				# live scraping for deployed version on heroku
-				Scraper.save_kiosko_issues path
-				# end
-
-			rescue => e
-				newspaper_name = path.split('/').last
-				pub_date = "#{path.split('/')[-3]}-#{path.split('/')[-4]}-#{path.split('/')[-5]}"
-				@@newspapers_images[newspaper_name.split(".")[0] +"-"+ pub_date] = { publication_date: pub_date, media: newspaper_name.split(".")[0], local_path: "404.jpg"}
-				puts e.message + " => " + path
+		# create any local caching dirs that you need to
+		if Scraper.use_local_images
+			kiosko_image_dir = "app/assets/images/kiosko"
+			FileUtils.mkdir kiosko_image_dir unless File.directory? kiosko_image_dir
+			media_list.each do |media|
+				local_image_dir = "app/assets/images/kiosko/" + media.name
+				FileUtils.mkdir local_image_dir unless File.directory? local_image_dir
 			end
 		end
 
-	end
+		media_list.each do |media|
+			(start_date..end_date).map do |date|
 
-	# formating the issues date for Kiosko.net in "YYYY/MM/DD" based on the specified year, month, start day, and end day
+				img = Image.find_by_media_id_and_publication_date(media.id, date)
+				if img==nil	# ensure only one entry per front page in the images table
+					img = Image.new
+					img.source_url = Scraper::KIOSKO_BASE_URL + date.to_formatted_s(:kiosko_file_datestamp) + "/#{media.country_code}/#{media.name}.750.jpg"
+					img.publication_date = date
+					img.media_id = media.id
+					img.image_name = media.name + "-" + img.publication_date.to_formatted_s(:file_datestamp)
+					if Scraper.use_local_images
+						img.local_path = 'kiosko/' + media.name + "/" + img.image_name + ".jpg"
+						full_local_path = "app/assets/images/" + img.local_path
+						begin
+							File.open(full_local_path, "wb") { |f| f.write(open(img.source_url).read) }
+							File.open(full_local_path,"rb") do |f|
+								size_info = ImageSize.new(f.read).get_size
+								img.size = "#{size_info[0]}x#{size_info[1]}"
+							end
+						rescue
+							img.local_path = '404.jpg'
+							img.size = '750x951'
+						end
+					else
+						img.size = '750x951' #!!this value of pixels is 'hard coded' so it gives wrong values for long newspapers
+					end
+					img.save
+				end
+				images << img
 
-	# first version paramters(year, month, start_day, end_day)
-	def self.issues_dates(start_date, end_date)
-		# add custom data format for the scraper
-		Date::DATE_FORMATS[:scraper]="%Y/%m/%d"
-
-		dates = (start_date..end_date).map do |d|
-			d.to_formatted_s(:scraper)
-		end
-		
-	end
-
-	# building the URIs of the issues based on the passed dates
-	# this script able to scrape back to 2008, 2009, and 2010 but most of the newspaper dosen't exsit in this years, and it also covers 2011, 2012 
-	# first version params
-	def self.build_kiosko_issues(start_date, end_date, newspapers_names)
-
-		FileUtils.mkdir "app/assets/images/kiosko" unless File.directory? "app/assets/images/kiosko" 
-
-		# sample of the countries and their newspapers form http://kiosko.net/
-=begin
-	es => Spain
-	de => Germany
-	fr => France
-	it => Italy
-	uk => United Kingdom
-	us => USA
-	. . . . . .
-=end
-
-		#kiosko_newspapers = {"es" => ["elpais", "abc"], "de" => ["faz", "bild"], "fr" => ["lemonde", "lacroix"], "it" => ["corriere_della_sera", "ilmessaggero"], "uk" => ["the_times", ],"us" => ["wsj", "newyork_times", "usa_today"]}
-		kiosko_newspapers = newspapers_names
-
-
-		domain = "http://img.kiosko.net/"
-
-		issues = Scraper.issues_dates start_date, end_date
-
-		newspapers_issues = []
-		newspapers_issues_paths = []
-
-		# formating the images name by country name then the newspaper name with '.750.jpg' extention 
-		kiosko_newspapers.each do |country, newspaper|
-			newspaper.each do |_newspaper| 
-				newspapers_issues << "/#{country}/#{_newspaper}.750.jpg" 
-				FileUtils.mkdir "app/assets/images/kiosko/#{_newspaper}" unless File.directory? "app/assets/images/kiosko/#{_newspaper}" 
 			end
 		end
 
-		# constracting the full URI of each image
-		newspapers_issues.each do |newspaper|
-			issues.each do |issue| 
-				newspapers_issues_paths << domain + issue + newspaper
-			end
-		end
-
-		newspapers_issues_paths
-	end
-
-	# save each image in it's place with name contains the date if the issue
-	def self.save_kiosko_issues(path) #, source)
-
-		newspaper_name = path.split('/').last
-
-		# resolution of the produced image  is [750x1072]
-
-		# open("app/assets/images/kiosko/#{path.split("/")[-1].split(".")[0]}/" + "#{path.split('/')[-3]}-#{path.split('/')[-4]}-#{path.split('/')[-5]}-" + newspaper_name ,"wb") do |file|
-		# 	file.write(source.read())
-
-		# 	pub_date = "#{path.split('/')[-3]}-#{path.split('/')[-4]}-#{path.split('/')[-5]}"
-			
-		# 	@@newspapers_images[newspaper_name.split(".")[0] +"-"+ pub_date] = {publication_date: pub_date, media: newspaper_name.split(".")[0], local_path: "/kiosko/#{path.split("/")[-1].split(".")[0]}/" + "#{pub_date}-" + newspaper_name}
-
-		# 	puts "done => #{path.split('/')[-3]}-#{path.split('/')[-4]}-#{path.split('/')[-5]}-" + newspaper_name
-		# end
-
-
-
-		# live scraping for deployed version on heroku
-		pub_date = "#{path.split('/')[-3]}-#{path.split('/')[-4]}-#{path.split('/')[-5]}"
-		
-		@@newspapers_images[newspaper_name.split(".")[0] +"-"+ pub_date] = {publication_date: pub_date, media: newspaper_name.split(".")[0], local_path: "#{path}"}
-
-		puts "done => #{path.split('/')[-3]}-#{path.split('/')[-4]}-#{path.split('/')[-5]}-" + newspaper_name
-		# end
-
-
-
-	end
-
-	# building the URIs of the issues based on the passed dates
-	def self.build_newyork_times_issues(year, month, start_day, end_day)
-
-		FileUtils.mkdir "app/assets/images/newyork_times" unless File.directory? "app/assets/images/newyork_times" 
-
-		domain = "http://www.nytimes.com/images/"
-
-		newspapers_issues_paths = []
-
-		issues = Scraper.issues_dates year, month, start_day, end_day
-
-		issues.each do |issue| 
-			newspapers_issues_paths << domain + issue + "app/assets/images/nytfrontpage/scan.jpg"
-		end
-
-		newspapers_issues_paths
-	end
-
-	# save each image in it's place with name contains the date if the issue
-	def self.save_newyork_times_issues(path, source)
-
-		# resolution of the produced image  is [348x640]
-		open("app/assets/images/newyork_times/" + "#{path.split('/')[-3]}-#{path.split('/')[-4]}-#{path.split('/')[-5]}" ,"wb") do |file|
-			file.write(source.read())
-			puts "done => #{path.split('/')[-3]}-#{path.split('/')[-4]}-#{path.split('/')[-5]}"
-		end
-
-	end
-
-	# building the URIs of the issues based on the passed dates
-	def self.build_elpais_issues(year, month, start_day, end_day)
-
-		# scrape a pdf from http://elpais.com/ and convert it to png 
-		FileUtils.mkdir "app/assets/images/elpais" unless File.directory? "app/assets/images/elpais" 
-
-		# first issue available date is 2012/03/01
-		issues = Scraper.issues_dates year, month, start_day, end_day
-
-		newspapers_issues_paths = []
-
-		issues.each do |d| 
-			newspapers_issues_paths << "http://srv00.epimg.net/pdf/elpais/1aPagina/" + d[0..7] + "ep-" + d[0..3] + d[5..6] + d[8..11] + ".pdf"
-		end
-
-		newspapers_issues_paths
-	end
-
-	# convert each passed pdf file to jpg and save this image in it's place with name contains the date if the issue
-	def self.save_elpais_issues(path, source)
-
-		file_name = "#{path.split('/')[-3]}-#{path.split('/')[-2]}-#{path.split('/')[-1][9..10]}"
-
-		open("app/assets/images/elpais/" + file_name ,"w+b") do |file|
-			file.write(source.read())
-			issue_pdf = Magick::ImageList.new("app/assets/images/elpais/#{file_name}")
-			# resolution of the produced image  is [765x1133]
-			issue_pdf.write "app/assets/images/elpais/#{file_name}.jpg"
-			File.delete "app/assets/images/elpais/#{file_name}"
-			puts "done => #{file_name}"
-		end
+		images
 
 	end
 

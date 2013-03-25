@@ -50,42 +50,7 @@ class ThreadsController < ApplicationController
 				codes << Code.create!({:code_text => params["topic_name_#{n}"], :code_description => params["topic_description_#{n}"],:color => params["topic_color_#{n}"]})
 			end
 
-			# array of object refers to scraped images
-			images = []
-
-			# passes dates and formated newspapers_names array. It returns a hash that contains info about evry image: publication_date, media, local_path 
-			# in the future, if we want to add the feature for choosing between multiple scraper, it will be here, by passing another argument to the scraper to choose the source for scraping
-			newspapers_images = Scraper.get_issues(@thread.start_date, @thread.end_date, newspapers_names)
-
-			# after the scraper finishes, it returns a hash of the scraped images
-			# this returned hash contains the image names which are in this format [newspaper_name-publication_date], the url, and the media id
-			newspapers_images.each do |image_name, image_info|
-				# search if the image dose not exist, it creates an object for this image 
-				if ( (image = Image.find_by_image_name image_name) == nil)
-					image_info["image_name"] = image_name
-					media = Media.find_by_name(image_info[:media])
-
-					# I'll change this part, for the deployment on the server
-					if image_info[:local_path] != "404.jpg"
-						# image_size = Magick::ImageList.new("app/assets/images" + image_info[:local_path])[0]
-						# image_size = "#{image_size.columns}x#{image_size.rows}"
-
-						# for the online heroku beta
-							image_size="750x951" #!!this value of pixels is 'hard coded' so it gives wrong values for long newspapers
-						# end
-					else
-						image_size="750x951" #!!this value of pixels is 'hard coded' so it gives wrong values for long newspapers
-						# this part is comment for heroku beta
-						# change the default values
-						# image_info[:publication_date]
-						# image_info["image_name"]
-					end
-
-					# creates a new image object if there is no exsiting image object for the scraped image, because the image objects is global for all the threads
-					# we are storing the image url in the local_path attribute for the heroku deployment, but for the future deployment on the server, we will store the path of the image on the server in the local_path and the url in the a url attribute
-					image = Image.create!({ image_name: image_info["image_name"],publication_date: image_info[:publication_date], local_path: image_info[:local_path], media_id: media.id, size: image_size})
-				end
-			end
+			images = Scraper.scrape_images(@thread.start_date, @thread.end_date, @thread.media)
 
 			# It saves the thread to the db, and assign an id to the thread
 			@thread.save
@@ -102,12 +67,7 @@ class ThreadsController < ApplicationController
 		# otherwise, the new form will rendered again with the error messages
 		else
 			# we should load the names of the media again. 
-			# A method should be created to make a DRY code. don't repeat!
-			@media = []
-			Media.all.each do |newspaper|
-				newspaper.name = "#{newspaper.country} - #{newspaper.display_name}"
-				@media << newspaper
-			end
+			@media = Media.all.collect { |m| m.name_with_country }
 
 			# send some params back to the view, to tell the user about what is missing
 			if params["topic_name_1"] == ""
@@ -136,11 +96,8 @@ class ThreadsController < ApplicationController
 
 		@media = Media.all
 
-		params["media"] = []
-		@thread.media.each do |m|
-			params["media"] << m.id
-		end
-	
+		params["media"] = @thread.media.each.collect { |m| m.id }
+
 	end
 
 
@@ -160,31 +117,7 @@ class ThreadsController < ApplicationController
 			@thread.status = params[:status]
 			@thread.update_attribute(:end_date, Date.today) if @thread.status == "opened"
 
-			newspapers_images = Scraper.get_issues(@thread.start_date, @thread.end_date, newspapers_names)
-
-			newspapers_images.each do |image_name, image_info|
-				# search if the image dose not exsit, it create an object for this image 
-				if ( (image = Image.find_by_image_name image_name) == nil)
-					image_info["image_name"] = image_name
-					media = Media.find_by_name(image_info[:media])
-
-					if image_info[:local_path] != "404.jpg"
-						# image_size = Magick::ImageList.new("app/assets/images" + image_info[:local_path])[0]
-						# image_size = "#{image_size.columns}x#{image_size.rows}"
-
-						# for the online heroku beta
-						image_size="750x951" #!!this value of pixels is 'hard coded' so it gives wrong values for long newspapers
-						# end
-					else
-						image_size="750x951" #!!this value of pixels is 'hard coded' so it gives wrong values for long newspapers
-						# change the default values
-						# image_info[:publication_date]
-						# image_info["image_name"]
-					end
-
-					image = Image.create!({ image_name: image_info["image_name"],publication_date: image_info[:publication_date], local_path: image_info[:local_path], media_id: media.id, size: image_size})
-				end
-			end
+			images = Scraper.scrape_images(@thread.start_date, @thread.end_date, @thread.media)
 			
 			#it should iterate through the recently created codes
 			params["code_id"].each_with_index do |id, index|
@@ -222,11 +155,7 @@ class ThreadsController < ApplicationController
 			redirect_to "/#{current_user.username.split(' ').join('_')}/#{@thread.thread_name}"
 		else
 			# A method should be created to make a DRY code. don't repeat!
-			@media = []
-			Media.all.each do |newspaper|
-				newspaper.name = "#{newspaper.country} - #{newspaper.display_name}"
-				@media << newspaper
-			end
+			@media = Media.all.collect { |m| m.name_with_country }
 
 			@thread.media.each do |m|
 				params["media"] << "#{m.id}"

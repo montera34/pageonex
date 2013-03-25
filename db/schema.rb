@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130309271421) do
+ActiveRecord::Schema.define(:version => 20130322201029) do
 
   create_table "areas", :force => true do |t|
     t.integer  "x1"
@@ -45,10 +45,10 @@ ActiveRecord::Schema.define(:version => 20130309271421) do
   create_table "highlighted_areas", :force => true do |t|
     t.integer  "image_id"
     t.integer  "user_id"
+    t.integer  "code_id"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
     t.string   "name"
-    t.integer  "code_id"
   end
 
   create_table "images", :force => true do |t|
@@ -59,6 +59,7 @@ ActiveRecord::Schema.define(:version => 20130309271421) do
     t.datetime "created_at",       :null => false
     t.datetime "updated_at",       :null => false
     t.string   "image_name"
+    t.string   "source_url"
   end
 
   create_table "media", :force => true do |t|

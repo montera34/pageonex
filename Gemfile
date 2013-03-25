@@ -43,7 +43,7 @@ end
 
 gem 'rodf'
 
-# gem "rmagick"
+gem "imagesize"
 
 # gem "image_sorcery"
 
