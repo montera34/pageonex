@@ -18,15 +18,15 @@
 	</div>
 	<div class="span2">
 		<div class="btn-group pull-right">
-		    <button class="btn btn-small" disabled="">Export to image</button>
+		    <button class="btn btn-small">Export data</button>
 		    <button class="btn btn-small dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
 		    <ul class="dropdown-menu">
-		      <li><a href="#">Download as  .svg </a></li>
-		      <li><a href="#">Download as  .csv </a></li>
-		      <li><a href="#">Download as  .ods </a></li>
-		      <li><a href="#">Download as  .png </a></li>
+		      <!-- <li><a href="#">Download as  .svg </a></li>
+		      <li><a href="#">Download as  .csv </a></li>-->
+		      <li><a href="<%= "/#{@thread.owner.username.split(' ').join('_')}/#{@thread.thread_name}/export.ods" %>">Download as  .ods </a></li>
+		      <!-- <li><a href="#">Download as  .png </a></li>
 		      <li class="divider"></li>
-		      <li><a href="#">Download as  .pdf </a></li>
+		      <li><a href="#">Download as  .pdf </a></li>-->
 		    </ul>
 		</div>
 	</div>
