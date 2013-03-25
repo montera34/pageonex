@@ -23,7 +23,8 @@
 		    <ul class="dropdown-menu">
 		      <!-- <li><a href="#">Download as  .svg </a></li>
 		      <li><a href="#">Download as  .csv </a></li>-->
-		      <li><a href="<%= "/#{@thread.owner.username.split(' ').join('_')}/#{@thread.thread_name}/export.ods" %>">Download as  .ods </a></li>
+		      <li><a href="<%= "/#{@thread.owner.username.split(' ').join('_')}/#{@thread.thread_name}/export.ods" %>">Download as .ods</a></li>
+		      <li><a href="<%= "/#{@thread.owner.username.split(' ').join('_')}/#{@thread.thread_name}/export.json" %>">Download as .json</a></li>
 		      <!-- <li><a href="#">Download as  .png </a></li>
 		      <li class="divider"></li>
 		      <li><a href="#">Download as  .pdf </a></li>-->
