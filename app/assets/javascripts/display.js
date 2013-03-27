@@ -44,7 +44,7 @@ $(function () {
 		// Iterates over all images
 		$("#high_images .ha_group").each(function () {
 			var img_id = $(this).attr('id').substr(9);
-			ha_list = getHighlightedAreas(img_id);
+			ha_list = HighlightedAreas.gets(img_id);
 			var img = $('img[name='+img_id+']');
 			// Iterate over all highlighted areas for a single image
 			var i, ha;

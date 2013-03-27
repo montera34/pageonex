@@ -1,5 +1,6 @@
 <% @title = "Coding: #{@thread.thread_display_name.capitalize} - PageOneX" %>
-<% unless @thread.owner == current_user %>
+
+<% unless @allowed_to_code %>
 <div class="alert alert-block">
     <a type="button" class="close" data-dismiss="alert">×</a>
     <h3 class="" style="text-align: center;">You don't have a premission to code in this thread</h3>
@@ -11,8 +12,6 @@
 <div class="progress progress-striped">
   <div class="bar" style="width: 0%;"></div>
 </div>
-
-<%= hidden_field_tag "total_images_number", @thread.images.length %>
 
 <hr>
 <div class="row">
@@ -46,7 +45,7 @@
 
     </div>
     <div id="images_section" class="span7">
-	  <% if @thread.owner == current_user %>
+	  <% if @allowed_to_code %>
             <div class="row btn-toolbar" style="text-align:center">
                 <div class="pull-right btn-group">
                     <!-- ToDo: The duplication of buttons creates malfunction-->
@@ -65,7 +64,7 @@
           <!-- Carousel items -->
           <div class="carousel-inner">
 
-            <% 0.upto(@image_counter-1) do |ic| %>
+            <% 0.upto(@images.length-1) do |ic| %>
                 <div class="item <%= 'active' if ic==0%> ">
 
                     <% if use_local_images %>
@@ -142,7 +141,7 @@
 	        <% end %>
                 <%= hidden_field_tag "status", "0" %>
             </div>
-        <% if @thread.owner == current_user %>
+        <% if @allowed_to_code %>
             <div class="form-actions" style="text-align:center">
                 <div class="pull-left btn-group">
                     <a id="" class="btn  btn-danger clear_highlighting">Clear Highlighted Areas</a>
@@ -189,43 +188,43 @@
     
 </div>
 
-<!-- if the user in the display view, clicked any image we'll assign the "i" variable to the name of this image, and direct the user to the coding view -->
-<!-- and then set the "target_image" hidden field with the image name -->
-<% if params[:i] != nil %>
-    <%= hidden_field_tag "target_image", params[:i]  %>
-<% end %>
 <%= hidden_field_tag "help_closed" %>
 
 <script type="text/javascript">
-$(function (argument) {
+// store thead-specific variables needed by the JS code
+var pageData = {
+    totalImageCount: <%=@thread.images.length%>,
+    startImageName: "<%=params[:i]%>",   // support jumping to the image the user clicked on in the threadx display view
+    allowedToCode: <%= @allowed_to_code ? 'true' : 'false' %>
+}
+
+// initialize the page
+$(function() {
     $(".breadcrumb li").filter("li.active").attr("class"," ");
+
+    // indicate that we are on the coding page, ie. not the display page
     $("#coding").css("font-weight","bold")
     $("#coding").css("color","#fff")
     $("#coding").attr("class", "btn btn-info");
 
-    // check if the "target_image" field contains any image name, if so, it will find this image, remove the active class from the current active image and assign this class to this image
-    if ($("#target_image").attr("value") != null) {
-        var t_image = $("#target_image").attr("value")
+    // support auto-starting on the image the user clicked in the display view
+    if (pageData.startImageName.length != 0) {
         $("#images_section div.active img").parent().attr("class", "item")
-        $("#images_section div img[name='"+t_image+"']").parent().attr("class", "active item")
+        $("#images_section div img[name='"+pageData.startImageName+"']").parent().attr("class", "active item")
     };
 
     // when the user click save, it will set the status to "0", to allow the form to be submitted
-    $(".save").click(function (e) {
-        $("#status").attr("value","0")
-    })
+    $(".save").click(function (e) { setModified(0) })
 
 })
 
+// make sure the user doesn't lose their work by making sure they want to close the page
 window.onbeforeunload = function(e,s) {
     if (isModified()) { 
         return "If you leave this page without saving you will lose your work";
     };
 }
-</script>
 
-<% if @thread.owner == current_user %>
-    <%= hidden_field_tag :allow_coding, "true" %>
-<% end %>
+</script>
 
 <%= javascript_include_tag "jquery.imgareaselect", "highlighted_area", "coding" %>
