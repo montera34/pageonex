@@ -55,7 +55,11 @@ class Threadx < ActiveRecord::Base
 	def images
 		Image.by_media(medium_ids).by_date(start_date..end_date)
 	end
-	
+
+	def images_by_date
+		Image.by_date(start_date..end_date).by_media(medium_ids)
+	end
+
 	def highlighted_areas_for_image(image)
 		HighlightedArea.by_threadx(self).by_image(image)
 	end

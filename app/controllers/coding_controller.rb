@@ -3,30 +3,11 @@ class CodingController < ApplicationController
 
   # render the coding view
   def process_images
-    # set the @thread variable with the request thread
     @thread = Threadx.find_by_thread_name params[:thread_name]
-    @image_counter = @thread.images.length
     @highlighted_areas = @thread.highlighted_areas
-    
-=begin
-
-There is a problem in sorting; which is the images is scraped and sorted by the media name, and then we sort them by their publication date, but there is the get sorted a weird order in the carrousel for example:
-
-  It should make it: 
-  Date n: newspapers a b c d. 
-  Date n+1: newspapers a b c d.
-
-  Now it is making:
-  Date n: newspapers a b c d. 
-  Date n+1: newspapers d c b a. 
-
-So the following sorting method should be modified
-=end
-    # sort the images by their publication_date
-    @images = @thread.images.sort do |img1, img2|
-      img1.publication_date <=> img2.publication_date
-    end 
-
+    # while coding we want to go day by day, NOT media by media
+    @images = @thread.images_by_date
+    @image_counter = @images.length
   end
 
   # process the submitted highlighted area from the coding view, and redirect to the display
@@ -92,11 +73,9 @@ So the following sorting method should be modified
   # render display view
   def display
     @thread = Threadx.find_by_thread_name params[:thread_name]
-    
+
     # sort images by their publication date
-    @images = @thread.images.sort do |img1, img2|
-      img1.publication_date <=> img2.publication_date
-    end
+    @images = @thread.images
     
     @image_counter = @thread.images.length
     @codes = @thread.codes
@@ -139,13 +118,9 @@ So the following sorting method should be modified
       
     end
 
-    @sorted_images = @thread.images.sort do |img1, img2|
-      img1.publication_date <=> img2.publication_date
-    end
-
     cr = 1
-    d = @sorted_images.first.publication_date.day
-    @sorted_images.each do |img|
+    d = @images.first.publication_date.day
+    @images.each do |img|
       if img.publication_date.day == d
         @images_columns["c#{cr}"] << img
       else
