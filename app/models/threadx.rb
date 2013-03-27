@@ -83,19 +83,23 @@ class Threadx < ActiveRecord::Base
 	end
 	
 	def results
-		res = []
-		images.publication_date.each do |date|
-			result = {:date => date, :media => []}
+		res = {
+			:media => media.map {|m| m.display_name},
+			:codes => codes.map {|c| c.code_text},
+			:dates => start_date .. end_date,
+			:data => {}
+		}
+		(start_date..end_date).each do |date|
+			media_code = {}
 			media.each do |m|
-				media_result = {:name => m.display_name, :codes => []}
+				next if images.by_media(m.id).by_date(date).codeable.length == 0
+				code_percent = {} 
 				codes.each do |code|
-					code_result = {:name => code.code_text}
-					code_result[:percent] = get_percent(code, m, date)
-					media_result[:codes] << code_result
+					code_percent[code.code_text] = get_percent(code, m, date)
 				end
-				result[:media] << media_result
+				media_code[m.display_name] = code_percent
 			end
-			res << result
+			res[:data][date] = media_code
 		end
 		res
 	end

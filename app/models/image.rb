@@ -7,6 +7,10 @@ class Image < ActiveRecord::Base
 
 	before_save :check_if_missing
 	
+	def self.codeable
+		where("local_path != '404.jpg'")
+	end
+	
 	def self.by_media(media_ids)
 		where(:media_id => media_ids)
 	end
