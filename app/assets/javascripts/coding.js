@@ -207,7 +207,7 @@ function renderNothingToCode () {
     }
     // Create a new highlighted area by cloning a template DOM element
     var ha_elt = $('#high_area_template').clone();
-    ha_elt.attr('id', 'ha_' + ha.cssid);
+    ha_elt.attr('id', 'ha_' + nothing_to_code.attr('name'));
     ha_elt.addClass('clone');
     ha_elt.addClass('no_code');
     $('#high_area_template').after(ha_elt);
