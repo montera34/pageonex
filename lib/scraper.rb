@@ -1,6 +1,6 @@
 require "fileutils"
 require "open-uri"
-# RMagick gem is used to convert pdf file into images in the elpais scraper, to get the images size for the other scraper
+require "net/http"
 require "image_size"
 
 class Scraper
@@ -38,6 +38,7 @@ class Scraper
 					img.media_id = media.id
 					img.image_name = media.name + "-" + img.publication_date.to_formatted_s(:file_datestamp)
 					if Scraper.use_local_images
+						# download the image locally
 						img.local_path = 'kiosko/' + media.name + "/" + img.image_name + ".jpg"
 						full_local_path = "app/assets/images/" + img.local_path
 						begin
@@ -46,12 +47,20 @@ class Scraper
 								size_info = ImageSize.new(f.read).get_size
 								img.size = "#{size_info[0]}x#{size_info[1]}"
 							end
+							img.missing = false
 						rescue
+							# image doesn't exist on their server :-(
 							img.local_path = '404.jpg'
 							img.size = '750x951'
+							img.missing = true
 						end
 					else
+						# verify the url is there to see
+						url = URI.parse(img.source_url)
+						request = Net::HTTP.new(url.host, url.port)
+						response = request.request_head(url.path)
 						img.size = '750x951' #!!this value of pixels is 'hard coded' so it gives wrong values for long newspapers
+						img.missing = (response.code != "200")							 
 					end
 					img.save
 				end
