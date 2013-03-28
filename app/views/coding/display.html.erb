@@ -91,15 +91,25 @@
 <%= hidden_field_tag "number_of_column", @ratios.length %>
 <%= hidden_field_tag "number_of_rows", @thread.media.length %>
 
-
+	<!--
 	<div id="ratios">
-		<!-- for each column we create a div contains set of hidden fields each on represent a code percentage -->
 		<% @codes_high_areas.each do |column, codes| %>
 			<div id="<%= "row_#{column}" %>">
 					<% codes.each do |code_id,value| %>
 						<%= hidden_field_tag "#{code_id}", value %>
 					<% end %>
 				
+			</div>
+		<% end %>
+	</div>
+	-->
+	<div id="ratios">
+		<!-- for each column we create a div contains set of hidden fields each on represent a code percentage -->
+		<% @results[:dates].each_with_index do |date, index| %>
+			<div id="<%= "row_c#{index + 1}" %>">
+					<% @results[:codes].each_with_index do |code, index| %>
+						<%= hidden_field_tag "code_#{index}", @results[:data][date]['Total'][code] %>
+					<% end %>
 			</div>
 		<% end %>
 	</div>

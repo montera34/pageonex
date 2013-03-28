@@ -72,19 +72,11 @@ class CodingController < ApplicationController
   # render display view
   def display
     @thread = Threadx.find_by_thread_name params[:thread_name]
-
+    @results = @thread.results
     # sort images by their publication date
     @images = @thread.images
-    
     @image_counter = @thread.images.length
     @codes = @thread.codes
-    
-
-    @highlighted_areas = []
-    # add only the hightlighted area related to existing images
-    @thread.highlighted_areas.each do |ha|
-      @highlighted_areas << ha if @thread.images.include? ha.image
-    end
 
     # This part is used to calculate the highlighted areas percentages vertically 
     @images_columns = {}

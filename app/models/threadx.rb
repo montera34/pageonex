@@ -83,22 +83,44 @@ class Threadx < ActiveRecord::Base
 	end
 	
 	def results
+		# Create an ordered list of newspapers, codes, dates
 		res = {
 			:media => media.map {|m| m.display_name},
 			:codes => codes.map {|c| c.code_text},
 			:dates => start_date .. end_date,
 			:data => {}
 		}
+		# Create a tree: date->media->code->percentage
 		(start_date..end_date).each do |date|
 			media_code = {}
+			# Initialize totals
+			code_sum = {}
+			code_count = 0.0
+			codes.each do |code|
+				code_sum[code.code_text] = 0.0
+			end
+			# Caclulate percentage for each newspaper
 			media.each do |m|
 				next if images.by_media(m.id).by_date(date).codeable.length == 0
 				code_percent = {} 
 				codes.each do |code|
-					code_percent[code.code_text] = get_percent(code, m, date)
+					percent = get_percent(code, m, date)
+					code_percent[code.code_text] = percent
+					code_sum[code.code_text] += percent
 				end
 				media_code[m.display_name] = code_percent
+				code_count += 1.0
 			end
+			# Calculate totals
+			code_percent = {}
+			codes.each do |code|
+				if code_count > 0
+					code_percent[code.code_text] = code_sum[code.code_text] / code_count
+				elsif
+					code_percent[code.code_text] = 0.0
+				end
+			end
+			media_code['Total'] = code_percent
 			res[:data][date] = media_code
 		end
 		res
@@ -106,18 +128,45 @@ class Threadx < ActiveRecord::Base
 	
 	def results_as_ods
 		spreadsheet = ODF::Spreadsheet.new
+		# Calculate totals
+		table = spreadsheet.table 'Total'
+		row = table.row
+		row.cell 'Date'
+		codes.each do |c|
+			row.cell c.code_text
+		end
+		(start_date..end_date).each do |date|
+			row = table.row
+			row.cell date
+			codes.each do |c|
+				sum = 0.0;
+				count = 0.0;
+				media.each do |m|
+					next if images.by_media(m.id).by_date(date).codeable.length < 1
+					count += 1
+					sum += get_percent(c, m, date)
+				end
+				if count > 0.0
+					row.cell sum / count
+				else
+					row.cell 0.0
+				end
+			end
+		end
+		# Calculate percentages for each newspaper
 		media.each do |m|
 			table = spreadsheet.table m.display_name
 			row = table.row
-			cell = row.cell 'Date'
-			codes.each do |code|
-				cell = row.cell code.code_text
+			row.cell 'Date'
+			codes.each do |c|
+				row.cell c.code_text
 			end
-			images.by_media(m.id).each do |image|
+			(start_date..end_date).each do |date|
 				row = table.row
-				cell = row.cell image.publication_date
-				codes.each do |code|
-					cell = row.cell get_percent(code, m, image.publication_date)
+				row.cell date
+				next if images.by_media(m.id).by_date(date).codeable.length < 1
+				codes.each do |c|
+					row.cell get_percent(c, m, date)
 				end
 			end
 		end
