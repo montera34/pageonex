@@ -31,7 +31,7 @@ class ThreadsController < ApplicationController
 		# formatting the newspapers_names hash as mentioned above
 		@thread.media = params[:media].collect { |media_id| Media.find(media_id) }
 
-		# this array is made to be passed to Scraper.get_issues method, because this method accepts the specific format of newspapers names as the following
+		# this array is made to be passed to KioskoScraper.get_issues method, because this method accepts the specific format of newspapers names as the following
 		# {"es" => ["elpais", "abc"], "de" => ["faz", "bild"], "fr" => ["lemonde", "lacroix"], "it" => ["corriere_della_sera", "ilmessaggero"], "uk" => ["the_times", ],"us" => ["wsj", "newyork_times", "usa_today"]}
 		# name attribute holds the name of the newspaper {"elpais", "abc", ...}
 		newspapers_names = Media.get_names_from_list @thread.media
@@ -50,7 +50,7 @@ class ThreadsController < ApplicationController
 				codes << Code.create!({:code_text => params["topic_name_#{n}"], :code_description => params["topic_description_#{n}"],:color => params["topic_color_#{n}"]})
 			end
 
-			images = Scraper.scrape_images(@thread.start_date, @thread.end_date, @thread.media)
+			images = KioskoScraper.create_images(@thread.start_date, @thread.end_date, @thread.media)
 
 			# It saves the thread to the db, and assign an id to the thread
 			@thread.save
@@ -117,7 +117,7 @@ class ThreadsController < ApplicationController
 			@thread.status = params[:status]
 			@thread.update_attribute(:end_date, Date.today) if @thread.status == "opened"
 
-			images = Scraper.scrape_images(@thread.start_date, @thread.end_date, @thread.media)
+			images = KioskoScraper.create_images(@thread.start_date, @thread.end_date, @thread.media)
 			
 			#it should iterate through the recently created codes
 			params["code_id"].each_with_index do |id, index|

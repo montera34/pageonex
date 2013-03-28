@@ -24,7 +24,7 @@ Run the migration:
 > rake db:migrate
 
 Load the list of newspapers in the data base:
-> rake scraping:kiosko_names_csv
+> rake scraping:update_media['public/kiosko_scraped.csv']
 
 Run the server:
 > rails server
