@@ -57,13 +57,8 @@ $(document).ready(function () {
     });*/
 
     // when the user choose a code from the drop down menu, and click this button it will set the code of this highlighted area by this code
-    $("#set_code").on("click",function () {
-        var ha_cssid = $("#current_high_area").attr("value")
-        ha = HighlightedAreas.getByCssId(ha_cssid);
-        ha.code_id = $("#codes").val();
-        HighlightedAreas.save(ha);
-        console.log("SET_CODE");
-        renderHighlightedAreas();
+    $("#set_code").on("click",function() {
+        setCodeOnHighlightedArea(pageData.currentHighlightedArea);
     });
 
     // it will set the highlighted areas to zero 
@@ -96,6 +91,13 @@ $(document).ready(function () {
     progressBarPercentage()
 
 });
+
+function setCodeOnHighlightedArea(highlightedAreaCssId) {
+    ha = HighlightedAreas.getByCssId(highlightedAreaCssId);
+    ha.code_id = $("#codes").val();
+    HighlightedAreas.save(ha);
+    renderHighlightedAreas();
+}
 
 // Return the current image
 function getCurrentImage () {
@@ -227,9 +229,13 @@ function highlightingArea(img, selection) {
     img_id = getCurrentImageId();
     code_id = '';
     ha = HighlightedAreas.add(img_id, code_id, selection);
-    // display the coding box, to ask the user to choose a code
-    $('#coding_topics').modal({backdrop:false});
-    $("#current_high_area").attr("value",ha.cssid)
+    if( $("#codes option").length == 1) {   // if only one topic, default to that one
+        setCodeOnHighlightedArea( ha.cssid );
+    } else {
+        // display the coding box, to ask the user to choose a code
+        pageData.currentHighlightedArea = ha.cssid; // remember the current highlighted area id
+        $('#coding_topics').modal({backdrop:false});
+    }
     progressBarPercentage()
     highlighting_done();
 }

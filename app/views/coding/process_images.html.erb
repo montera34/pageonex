@@ -104,7 +104,6 @@
           <div class="modal-body">
             <p>Please select a topic:</p>
                 <%= select_tag :codes, options_from_collection_for_select(@thread.codes, "id", "code_text")%>
-            <input  id="current_high_area" type="hidden" value="1"/>
           </div>
           <div class="modal-footer">
             <a id="set_code" href="#" data-dismiss="modal" class="btn btn-primary">Okay</a>
@@ -195,7 +194,8 @@
 var pageData = {
     totalImageCount: <%=@thread.images.length%>,
     startImageName: "<%=params[:i]%>",   // support jumping to the image the user clicked on in the threadx display view
-    allowedToCode: <%= @allowed_to_code ? 'true' : 'false' %>
+    allowedToCode: <%= @allowed_to_code ? 'true' : 'false' %>,
+    currentHighlightedArea: 1   // used to pass in the current highlighted area id to the modal to choose a topic
 }
 
 // initialize the page
