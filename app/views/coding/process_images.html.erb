@@ -87,9 +87,8 @@
           </div>
           <!-- Carousel nav -->
 
-        <!-- in case that we need to add a new highlighted area, we'll have to add another div here -->
-        <a class="carousel-control left"  style="z-index: 200;" href="#myCarousel" data-slide="prev">&lsaquo;</a>
-        <a class="carousel-control right" style="z-index: 200;" href="#myCarousel" data-slide="next">&rsaquo;</a>
+        <a id="carouselPrevLink" class="carousel-control left"  style="z-index: 200;" href="#myCarousel" data-slide="prev">&lsaquo;</a>
+        <a id="carouselNextLink" class="carousel-control right" style="z-index: 200;" href="#myCarousel" data-slide="next">&rsaquo;</a>
         </div>
 
         <div id="high_area_template" style="opacity: 0.5;position: absolute; overflow: hidden; z-index: 0; left: 0px; top: 0px; width: 0px; height: 0px; display: block; " class="high_area"></div>
@@ -216,6 +215,9 @@ $(function() {
     // when the user click save, it will set the status to "0", to allow the form to be submitted
     $(".save").click(function (e) { setModified(0) })
 
+    $(document).bind('keydown', 'left', function(){ $('#carouselPrevLink').click() });
+    $(document).bind('keydown', 'right', function(){ $('#carouselNextLink').click() });
+    $(document).bind('keydown', 'n', markAsNothingToCode);
 })
 
 // make sure the user doesn't lose their work by making sure they want to close the page
@@ -227,4 +229,4 @@ window.onbeforeunload = function(e,s) {
 
 </script>
 
-<%= javascript_include_tag "jquery.imgareaselect", "highlighted_area", "coding" %>
+<%= javascript_include_tag "jquery.hotkeys", "jquery.imgareaselect", "highlighted_area", "coding" %>

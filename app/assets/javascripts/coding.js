@@ -69,14 +69,7 @@ $(document).ready(function () {
     })  
 
     // this used to for "nothing to code here"
-    $(".skip_coding").click(function () {
-        var current_img = getCurrentImage();
-        // Clear existing areas
-        HighlightedAreas.removeAllForImage(getCurrentImageId());
-        nothingToCode(getCurrentImageId());
-        renderHighlightedAreas();
-        progressBarPercentage();
-    })
+    $(".skip_coding").click(markAsNothingToCode)
     
     // render the highlighted areas after loading all the images
     window.onload = function() {
@@ -91,6 +84,15 @@ $(document).ready(function () {
     progressBarPercentage()
 
 });
+
+function markAsNothingToCode(){ 
+    var current_img = getCurrentImage();
+    // Clear existing areas
+    HighlightedAreas.removeAllForImage(getCurrentImageId());
+    nothingToCode(getCurrentImageId());
+    renderHighlightedAreas();
+    progressBarPercentage();
+}
 
 function setCodeOnHighlightedArea(highlightedAreaCssId) {
     ha = HighlightedAreas.getByCssId(highlightedAreaCssId);
