@@ -49,6 +49,14 @@ $(document).ready(function () {
         $("#original_image_url").text("Link to original image").attr("href",source_url);
         $("#source_of_image").attr("value",source_url).tooltip({placement:'bottom'})
         $("#image_number").text(currrent_img.attr("id").substr(5,100))
+
+        // alert when we get to first image
+        if ($("#images_section div img:first").first().attr('name') == $("#images_section div.active img").attr('name')){
+            $('#youHaveLoopedAlert').show();
+        } else {
+            $('#youHaveLoopedAlert').hide();
+        }
+
     });
 
     // this attemps to handle user zoom in/out, but doesn't play well with the highlighted area resizing code

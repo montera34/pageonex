@@ -45,12 +45,18 @@
 
     </div>
     <div id="images_section" class="span7">
-	  <% if @allowed_to_code %>
-            <div class="row btn-toolbar" style="text-align:center">
-                <div class="pull-right btn-group">
-                    <!-- ToDo: The duplication of buttons creates malfunction-->
-		    <a id="" class="btn  btn-danger clear_highlighting">Clear Highlighted Areas</a>
-                    <a id="" class="btn btn-inverse skip_coding">Nothing to Code</a>
+        <% if @allowed_to_code %>
+            <div class="row" id="aboveImageToolbar">
+                <div class="span7">
+                    <div class="btn-toolbar">
+                        <div class="pull-right btn-group">
+                            <a id="" class="btn btn-danger clear_highlighting">Clear Highlighted Areas</a>
+                            <a id="" class="btn btn-inverse skip_coding">Nothing to Code</a>
+                        </div>
+                    </div>
+                    <div id="youHaveLoopedAlert" class="alert alert-info" style="display:inline-block">
+                        You are looking at the first image
+                    </div>
                 </div>
             </div>
         <% else %>
