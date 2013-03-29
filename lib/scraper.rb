@@ -146,7 +146,7 @@ class KioskoScraper
 
 		# mark them all not working before updating
 		Media.update_all(:working=>false)
-		
+		i = 0
 		CSV.foreach(csv_file) do |row|
 			if first_row==false
 				first_row = true
@@ -159,7 +159,10 @@ class KioskoScraper
 				:url => row[4],
 				:working => true
 			})
+			i = i + 1		
+			puts 'row ' + i.to_s
 		end
+		puts 'Media update from '+csv_file+' finished'
 	end
 
 	private

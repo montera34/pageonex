@@ -33,7 +33,7 @@ The project has gone through different phases.
 
 The first version of an ***automated tool*** was a [script written in Processing](https://github.com/numeroteca/pageonex-processing)</a>, that downloaded newspapers front pages and generated an organized array of images ordered by date. 
 
-The ***second version*** is[this tool written in Ruby on Rails that you are using](https://github.com/numeroteca/pageonex). It is developed to be a web platform to provide a ready to use front page analysis tool for anyone with a connection to the Internet. The platform automates the process of newspaper selection, download, thread coding, and data visualization. The alpha version was developed by [Pablo Rey Mazón](https://github.com/numeroteca) with [Ahmd Refat](https://github.com/ahmdrefat), thanks to Google Summer of Code program 2012 (GSOC) and the Berkman Center as host institution in Summer 2012. You can test the alpha version at [PageOneXtester at Heroku](http://pageonextester6.herokuapp.com/).
+The ***second version*** is [this tool written in Ruby on Rails that you are using](https://github.com/numeroteca/pageonex). It is developed to be a web platform to provide a ready to use front page analysis tool for anyone with a connection to the Internet. The platform automates the process of newspaper selection, download, thread coding, and data visualization. The alpha version was developed by [Pablo Rey Mazón](https://github.com/numeroteca) with [Ahmd Refat](https://github.com/ahmdrefat), thanks to Google Summer of Code program 2012 (GSOC) and the Berkman Center as host institution in Summer 2012. You can test the alpha version at [PageOneXtester at Heroku](http://pageonextester6.herokuapp.com/).
 
 In Winter-Spring 2013, at the [MIT Center for Civic Media](http://civic.mit.edu/) at [MIT Media Lab](http://media.mit.edu), we are developing the first beta version and preparing a stable deployment.
 
@@ -41,8 +41,8 @@ In Winter-Spring 2013, at the [MIT Center for Civic Media](http://civic.mit.edu/
 Use
 ---
 Use keyboard shortcuts to make some actions while coding:
-← = previous image
-→ = next image 
-n = nothing to code
++ ← = previous image
++ → = next image 
++ n = nothing to code
 
 
