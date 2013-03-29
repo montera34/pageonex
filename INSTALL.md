@@ -3,9 +3,10 @@ Install PageOneX locally
 Download the files from https://github.com/numeroteca/pageonex
 
 ### Needs
-Install:
--ruby
--rails
+PageOnex runs in Ruby on Rails, so you'll ned to install:
++ [Ruby](http://www.ruby-lang.org/en/downloads/)
++ [RubyGems](http://docs.rubygems.org/)
++ [Rails](http://rubyonrails.org/download) (you might also want to install [RVM (Ruby Version Manager)](https://rvm.io/)
 
 Process
 -------------------------
@@ -20,7 +21,7 @@ Go to the directory
 Install the gems
 > bundle install
 
-Run the migration:
+Run the migration (this will create the database with its tables):
 > rake db:migrate
 
 Load the list of newspapers in the data base:
@@ -36,11 +37,11 @@ or
 > http://0.0.0.0:3000/
 
 ### Options
-When you have some problem with the dependencies of the gems there are some tricks.
+If you have problems with the dependencies of the gems check this tricks.
 
 **pg gem**
 
-The postgres gem is there for the production development. If you are not able to install it, you an run
+The postgres gem is there for the production development. If you are not able to install it, you can install the gems without the production environment:
 >bundle install --without production
 
 **problems with dependencies**

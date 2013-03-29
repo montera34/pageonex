@@ -1,16 +1,48 @@
 PageOneX in Ruby on Rails
 =========================
 
-*PageOneX is an open source tool to code, analyze and visualize the evolution of stories on newspaper front pages.* In the future it will allow to compare newspaper with social media coverage. Newspaper front pages are a key source of data about our media ecology. Newsrooms spend massive time and effort deciding what stories make it to the front page. PageOneX makes coding and visualizing newspaper front page content much easier, democratizing access to newspaper attention data.
+*PageOneX is an open source tool to code, analyze and visualize the evolution of stories on newspaper front pages.* PageOneX is an free software/open source software tool designed to aid the coding, analysis, and visualization of front page newspaper coverage of major stories and media events. Newsrooms spend massive time and effort deciding what stories make it to the front page.
+In the past, this approach involved obtaining copies of newspapers, measurement by hand (with a physical ruler), and manual input of measurements into a spreadsheet or database, followed by calculation and analysis. Some of these steps can now be automated, while others can be simplified; some can be easily shared by distributed teams of investigators working with a common dataset hosted online.
 
-*How is your project different from what already exists?*
-Communication researchers have analyzed newspaper front pages for decades, using slow, laborious methods. PageOneX simplifies, digitizes, and distributes the process across the net.
-
-Credits
--------
-This is a project by Pablo Rey Mazón, https://github.com/numeroteca. Ahmd Refat, https://github.com/ahmdrefat, has been coding thanks to GSOC during summer 2012; Sasha Costanza-Chock is giving advice and supporting from the Center for Civic Media at MIT Media Lab. Alfonso Sánchez and Jeff Warren have also provided technical help.  Rahul Bhargava and Ed Platt work on it at the Center for Civic Media
+*How is your project different from what already exists?* Communication scholars have long used column-inches of print newspaper coverage as an important indicator of mass media attention. PageOneX simplifies, digitizes, and distributes the process across the net.
 
 More Info
 ---------
-Check for updates about the project at http://montera34.org/pageonex/ and in Twitter @pageonex
-Check http://pageonex.com for all related links.
+
+You can find more information and examples at http://pageonex.com or at [the blog](http://montera34.org/pageonex/)
+
+
+
+Collaborators
+-------------
+
+The project has many collaborators. The coders have been/are [Ahmd Refat](https://github.com/ahmdrefat), [Edward L Platt](https://github.com/elplatt), [Rahul Bhargava](https://github.com/rahulbot), [Rafael Porres](https://github.com/rporres) and [Pablo Rey Mazón](https://github.com/numeroteca). Sasha Costanza-Chock is giving advice and support from the Center for Civic Media; [Alfonso Sánchez Uzábal](http://skotperez.net/) is providing tecnical support and [Montera34](http://montera34.com/) the server. Thanks to Jeff Warren for his advice and Rogelio López for his testing.
+
+
+Join the project
+----------------
+
+Join the [mailing list for developers](http://mailman.mit.edu/mailman/listinfo/pageonexdev), [for users](https://groups.google.com/forum/?fromgroups#!forum/pageonex) or [subscribe to the newsletter](http://montera34.org/pageonex/newsletter/) to get the last updates.
+
+
+Background
+----------
+
+The project has gone through different phases. 
+[Initially](http://civic.mit.edu/blog/pablo/analyzing-newspapers-front-pages), this type of data visualization was made through a ***‘manual’ process***: images of newspaper front pages were downloaded from the web and reorganized in a vector graphics program to draw rectangles on top of them to highlight certain stories.
+
+The first version of an ***automated tool*** was a [script written in Processing](https://github.com/numeroteca/pageonex-processing)</a>, that downloaded newspapers front pages and generated an organized array of images ordered by date. 
+
+The ***second version*** is[this tool written in Ruby on Rails that you are using](https://github.com/numeroteca/pageonex). It is developed to be a web platform to provide a ready to use front page analysis tool for anyone with a connection to the Internet. The platform automates the process of newspaper selection, download, thread coding, and data visualization. The alpha version was developed by [Pablo Rey Mazón](https://github.com/numeroteca) with [Ahmd Refat](https://github.com/ahmdrefat), thanks to Google Summer of Code program 2012 (GSOC) and the Berkman Center as host institution in Summer 2012. You can test the alpha version at [PageOneXtester at Heroku](http://pageonextester6.herokuapp.com/).
+
+In Winter-Spring 2013, at the [MIT Center for Civic Media](http://civic.mit.edu/) at [MIT Media Lab](http://media.mit.edu), we are developing the first beta version and preparing a stable deployment.
+
+
+Use
+---
+Use keyboard shortcuts to make some actions while coding:
+← = previous image
+→ = next image 
+n = nothing to code
+
+
