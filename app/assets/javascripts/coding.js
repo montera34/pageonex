@@ -22,6 +22,9 @@ $(document).ready(function () {
         // reset the highlighted areas values
         clearHighlightedAreas();
     });
+    
+    //hides alert message "first image of this thread". Prevents from appearing in the first image that is being coded.
+    $('#youHaveLoopedAlert').hide();
 
     // "This event is fired when the carousel has completed its slide transition." from bootstrap documentation
     carousel.on('slid',function(){
@@ -50,7 +53,7 @@ $(document).ready(function () {
         $("#source_of_image").attr("value",source_url).tooltip({placement:'bottom'})
         $("#image_number").text(currrent_img.attr("id").substr(5,100))
 
-        // alert when we get to first image
+        // alert when we get to the first image image of the thread
         if ($("#images_section div img:first").first().attr('name') == $("#images_section div.active img").attr('name')){
             $('#youHaveLoopedAlert').show();
         } else {
