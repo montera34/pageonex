@@ -152,7 +152,8 @@ class KioskoScraper
 				first_row = true
 				next
 			end
-			Media.find_or_create_by_name(row[3]).update_attributes({
+			# override default scope here to find even the non-working media
+			Media.unscoped.find_or_create_by_name(row[3]).update_attributes({
 				:country => row[0],
 				:country_code => row[1],
 				:display_name => row[2],
