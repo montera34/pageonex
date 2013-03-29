@@ -79,21 +79,25 @@ class KioskoScraper
 
 		puts "Scraping media info from "+KioskoScraper::KIOSKO_BASE_URL
 
+		# first grab all the drop-down menu items from the main nav bar - calling these "groups"
 		home_page = self.cached_get_url KioskoScraper::KIOSKO_BASE_URL
 		groups_urls = []
-
 		home_page.css("#menu a[title]").each do |menu_item| 
 			groups_urls << KioskoScraper::KIOSKO_BASE_URL + menu_item.attributes["href"].value
 		end
 
-		all_media = []
-		scraped_urls = []
-		scraped_media_names = []
+		# we will scrape greedily, ie. perhaps finding a newspaper on more than one page,
+		# so we want to track that we don't try to insert it twice.  we want to make sure
+		# we don't miss anything
+		all_media = []						# unsaved media objects filled in with info we scrape
+		scraped_urls = []					# unique URLs we have scraped
+		scraped_media_names = []	# unique media names we have scraped
 
+		# go through all the "group" pages we just found (greedily, to make sure we get everything)
 		groups_urls.each do |url|
 			group_page = self.cached_get_url url
-			region_links = group_page.css('.auxCol li.reg a')
 			
+			# first visit all the "category" pages (news, sports, etc)
 			group_page.css('.titPpal h2 a').each do |a_element|
 				category_url =  KioskoScraper::KIOSKO_BASE_URL + a_element.attributes['href'].value
 				category_page = self.cached_get_url category_url
@@ -106,6 +110,8 @@ class KioskoScraper
 				scraped_urls << category_url
 			end
 
+			# now visit all the "regions" - as listed in the left hand nav column
+			region_links = group_page.css('.auxCol li.reg a')
 			unless region_links.length==0
 				# visit each region page and grab papers
 				region_links.each do |region_link|
@@ -127,7 +133,7 @@ class KioskoScraper
 		# backwards compatability
 		all_media.sort_by! { |media| media.country+media.display_name }
 
-		# write a CSV
+		# write a CSV with the output (pipe this into update_media_from_csv to import/update in the DB)
 		CSV.open("public/kiosko_scraped.csv", "wb") do |csv|
   		csv << ['country','country_code','display_name','name','url']
   		all_media.each do |media|
