@@ -1,7 +1,7 @@
 require 'csv'
 require 'open-uri'
 require 'nokogiri'
-require 'scraper'
+require 'kiosko_scraper'
 
 namespace :scraping do
 	
