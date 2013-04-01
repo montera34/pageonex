@@ -29,7 +29,7 @@ $(document).ready(function () {
     // "This event is fired when the carousel has completed its slide transition." from bootstrap documentation
     carousel.on('slid',function(){
         // set the current image to the current active(displayed) image in the carousel
-        var currrent_img = $("#images_section div.active img")
+        var current_img = $("#images_section div.active img")
         
         renderHighlightedAreas();
 
@@ -37,7 +37,7 @@ $(document).ready(function () {
         if (pageData.allowedToCode) {
 
             // is the image was not found, it will not initialize the imgAreaSelect, and this not working in the heroku deployed version
-            if (currrent_img.attr("alt") == "404") {
+            if (current_img.attr("alt") == "404") {
                 $('#images_section div.active img').imgAreaSelect({handles: true,onSelectEnd: highlightingArea, disable:true});
             }else{
                 $('#images_section div.active img').imgAreaSelect({handles: true,onSelectEnd: highlightingArea});
@@ -47,11 +47,11 @@ $(document).ready(function () {
         // update the sidebar meta-data about the image
         var source_url = $("#images_section div.active img").attr('url');
         var media_url = $("#images_section div.active img").attr('media_url');
-        $("#publication_date").text(currrent_img.attr("pub_date"));
+        $("#publication_date").text(current_img.attr("pub_date"));
     	$("#newspaper_name").text($("#images_section div.active img").attr("media")).attr("href",media_url);
         $("#original_image_url").text("Link to original image").attr("href",source_url);
         $("#source_of_image").attr("value",source_url).tooltip({placement:'bottom'})
-        $("#image_number").text(currrent_img.attr("id").substr(5,100))
+        $("#image_number").text(current_img.attr("id").substr(5,100))
 
         // alert when we get to the first image image of the thread
         if ($("#images_section div img:first").first().attr('name') == $("#images_section div.active img").attr('name')){
@@ -127,12 +127,13 @@ function enableDragging(elt) {
         stop: function (event, ui) {
             // Get highlighted area, update and save
             cssid = $(this).attr('id').substr(3);
-            ha = HighlightedAreas.getByCssId(cssid);
+            ha = naturalToScreen(HighlightedAreas.getByCssId(cssid));
             // Get new position of dragged area
             carousel_position = $('.carousel').position();
             ha.y1 = ui.position.top - carousel_position.top;
             ha.x1 = ui.position.left - carousel_position.left;
-            HighlightedAreas.save(ha);
+            HighlightedAreas.save(screenToNatural(ha));
+            renderHighlightedAreas();
         },
     });
     elt.resizable({
@@ -140,11 +141,13 @@ function enableDragging(elt) {
         stop: function(e, ui) {
             // Get highlighted area, update and save
             cssid = $(this).attr('id').substr(3);
-            ha = HighlightedAreas.getByCssId(cssid);
+            ha = naturalToScreen(HighlightedAreas.getByCssId(cssid));
             // Get new position of dragged area
             ha.width = ui.size.width;
+            ha.x2 = ha.x1 + ha.width;
             ha.height = ui.size.height;
-            HighlightedAreas.save(ha);
+            ha.y2 = ha.y2 + ha.height;
+            HighlightedAreas.save(screenToNatural(ha));
             renderHighlightedAreas();
         }
     });
@@ -193,6 +196,7 @@ function clearHighlightedAreas () {
 }
 
 function renderHighlightedArea(ha) {
+    ha = naturalToScreen(ha);
     // If the area is deleted, don't render
     if (ha.deleted == 1) {
         return null;
@@ -241,7 +245,7 @@ function highlightingArea(img, selection) {
     // Create the highlighted area
     img_id = getCurrentImageId();
     code_id = '';
-    ha = HighlightedAreas.add(img_id, code_id, selection);
+    ha = HighlightedAreas.add(img_id, code_id, screenToNatural(selection));
     if( $("#codes option").length == 1) {   // if only one topic, default to that one
         setCodeOnHighlightedArea( ha.cssid );
     } else {
@@ -255,9 +259,9 @@ function highlightingArea(img, selection) {
 
 // cancel the selection when the user done
 function highlighting_done() {
-    var currrent_img = $("#images_section div.active img")
+    var current_img = $("#images_section div.active img")
     var currentImgSelectArea = null;
-    if (currrent_img.attr("altr") == "Assets404") {
+    if (current_img.attr("altr") == "Assets404") {
         currentImgSelectArea = $('#images_section div.active img').imgAreaSelect(
             {instance: true, handles: true, onSelectEnd: highlightingArea, disable:true});
     } else {
@@ -294,4 +298,33 @@ function progressBarPercentage () {
     // set the value in percentage form "%"
     $(".bar").css("width",Math.ceil(percentage)+"%")
     $("#remain").text(coded_count);
+}
+
+function screenToNatural (selection) {
+    scale = currentImgScale();
+    selection.x1 = selection.x1 / scale;
+    selection.y1 = selection.y1 / scale;
+    selection.x2 = selection.x2 / scale;
+    selection.y2 = selection.y2 / scale;
+    selection.width = selection.width / scale;
+    selection.height = selection.height / scale;
+    return selection;
+}
+
+function naturalToScreen (selection) {
+    scale = currentImgScale();
+    selection.x1 = selection.x1 * scale;
+    selection.y1 = selection.y1 * scale;
+    selection.x2 = selection.x2 * scale;
+    selection.y2 = selection.y2 * scale;
+    selection.width = selection.width * scale;
+    selection.height = selection.height * scale;
+    return selection;
+}
+
+function currentImgScale () {
+    var current_img = $("#images_section div.active img");
+    var clone = new Image();
+    clone.src = current_img.attr('src');
+    return current_img.width() / clone.width;
 }

@@ -70,6 +70,8 @@ var HighlightedAreas = {
         ha.y2 = $("[name='y2_"+cssid+"']").val();
         ha.width = $("[name='width_"+cssid+"']").val();
         ha.height = $("[name='height_"+cssid+"']").val();
+        ha.img_width = $("[name='img_width_"+cssid+"']").val();
+        ha.img_height = $("[name='img_height_"+cssid+"']").val();
         ha.deleted = $("[name='deleted_"+cssid+"']").val();
         return ha;
     },

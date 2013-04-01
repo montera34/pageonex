@@ -7,6 +7,15 @@ class Image < ActiveRecord::Base
 
 	before_save :check_if_missing
 	
+	def width
+		return size[0..(size.index('x'))].to_i
+	end
+	
+	def height
+		length = size.length - size.index('x') - 1;
+		return size[-1*length, length].to_i
+	end
+	
 	def self.codeable
 		where("local_path != '404.jpg'")
 	end

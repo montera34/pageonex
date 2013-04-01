@@ -53,8 +53,7 @@ $(function () {
 				ha = ha_list[i];
 				ha_div = $('#ha_' + ha.id);
 				// Calculate scaling
-				var dispalyed_img_size = 670;
-				var ratio = (dispalyed_img_size/img.width());
+				var ratio = (ha.img_width/img.width());
 				// Calculate geometry
 				var _top = ha.y1/ratio + img.position().top;
 				var _left = ha.x1/ratio + img.position().left;

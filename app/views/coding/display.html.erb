@@ -189,6 +189,8 @@
 			    <%= hidden_field_tag "y2_#{image.image_name}_#{index}", "#{ha.areas.first.y2}" %>
 			    <%= hidden_field_tag "width_#{image.image_name}_#{index}", "#{ha.areas.first.width}" %>
 			    <%= hidden_field_tag "height_#{image.image_name}_#{index}", "#{ha.areas.first.height}" %>
+			    <%= hidden_field_tag "img_width_#{image.image_name}_#{index}", "#{image.width}" %>
+			    <%= hidden_field_tag "img_height_#{image.image_name}_#{index}", "#{image.height}" %>
 			    <%= hidden_field_tag "deleted_#{image.image_name}_#{index}" %>
 			</div>
 		    <% end %>
