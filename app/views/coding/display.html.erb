@@ -300,7 +300,7 @@
 		var data = google.visualization.arrayToDataTable(columns_data);
 		var options = {
 		  hAxis: { textPosition: 'out',	textStyle: { fontSize: 9} },
-		  vAxis: {title: 'Percentage of total newspapers area', titleTextStyle: {color:'#666', italic: false}, format:'#,##%', gridlines: {color: '#ddd',count: 3},textStyle:{fontSize:'10'}}, 
+		  vAxis: {title: 'Percentage of total newspapers area', titleTextStyle: {color:'#666', italic: false}, format:'#,##%', gridlines: {color: '#ddd',count: 3},textStyle:{fontSize:'10'},viewWindow:{min:0}}, 
 		  bar:{groupWidth:'51%'}, 
 		  legend:{position: 'none'}, 
 		  colors: codes_colors
