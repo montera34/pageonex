@@ -11,10 +11,10 @@ namespace :scraping do
 		KioskoScraper::scrape_media_to_csv
 	end
 
-	# rake scraping:update_media['public/kiosko_scraped.csv']
+	# rake scraping:update_media
 	desc "Import/update media into the database from a CSV of media sources"
-	task :update_media, [:csv_file] => :environment do |t, args|
-		KioskoScraper::update_media_from_csv args.csv_file
+	task :update_media => :environment do |t, args|
+		KioskoScraper::update_media_from_csv
 	end
 
 end

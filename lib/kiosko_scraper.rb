@@ -164,33 +164,42 @@ class KioskoScraper
 
 	end
 
-	def self.update_media_from_csv csv_file
-		first_row = false
+	def self.update_media_from_csv
+		csv_file = KioskoScraper::CSV_MEDIA_FILE
+		
+		puts "Will update database from #{csv_file}"
 		unless File.exists? csv_file
-			puts 'ERROR: '+csv_file+' does not exists'
+			puts '  ERROR: '+csv_file+' does not exists'
 			exit
 		end
 
 		# mark them all not working before updating
 		Media.update_all(:working=>false)
-		i = 0
-		CSV.foreach(csv_file) do |row|
-			if first_row==false
-				first_row = true
-				next
-			end
+		i = 2
+		new_media_names = []
+		CSV.foreach(csv_file,{encoding: "UTF-8",:headers => true}) do |row|
 			# override default scope here to find even the non-working media
-			Media.unscoped.find_or_create_by_name(row[3]).update_attributes({
-				:country => row[0],
-				:country_code => row[1],
-				:display_name => row[2],
-				:url => row[4],
-				:working => true
-			})
-			i = i + 1		
-			puts 'row ' + i.to_s
+			m = Media.from_csv_row row
+			existing_media = Media.unscoped.find_by_name(m.name)
+			if existing_media.nil?
+				m.save
+				puts "  line #{i}: created #{m.name}"
+				new_media_names << m.name
+			else 
+				existing_media.update_attributes({
+					:country => m.country,
+					:country_code => m.country_code,
+					:display_name => m.display_name,
+					:url => m.url,
+					:working => true
+				})
+				puts "  line #{i}: updated #{m.name}"
+			end
+			i = i + 1
 		end
-		puts 'Media update from '+csv_file+' finished'
+		puts "Media update from #{csv_file} finished.  Created #{new_media_names.length} new media:"
+		new_media_names.each { |name| puts "  "+name }
+		puts "Done"
 	end
 
 	private
