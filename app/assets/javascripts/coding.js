@@ -302,29 +302,30 @@ function progressBarPercentage () {
 
 function screenToNatural (selection) {
     scale = currentImgScale();
-    selection.x1 = selection.x1 / scale;
-    selection.y1 = selection.y1 / scale;
-    selection.x2 = selection.x2 / scale;
-    selection.y2 = selection.y2 / scale;
-    selection.width = selection.width / scale;
-    selection.height = selection.height / scale;
-    return selection;
+    scaled = jQuery.extend(true, {}, selection);;
+    scaled.x1 = selection.x1 / scale;
+    scaled.y1 = selection.y1 / scale;
+    scaled.x2 = selection.x2 / scale;
+    scaled.y2 = selection.y2 / scale;
+    scaled.width = selection.width / scale;
+    scaled.height = selection.height / scale;
+    return scaled;
 }
 
 function naturalToScreen (selection) {
     scale = currentImgScale();
-    selection.x1 = selection.x1 * scale;
-    selection.y1 = selection.y1 * scale;
-    selection.x2 = selection.x2 * scale;
-    selection.y2 = selection.y2 * scale;
-    selection.width = selection.width * scale;
-    selection.height = selection.height * scale;
-    return selection;
+    scaled = jQuery.extend(true, {}, selection);;
+    scaled.x1 = selection.x1 * scale;
+    scaled.y1 = selection.y1 * scale;
+    scaled.x2 = selection.x2 * scale;
+    scaled.y2 = selection.y2 * scale;
+    scaled.width = selection.width * scale;
+    scaled.height = selection.height * scale;
+    return scaled;
 }
 
 function currentImgScale () {
-    var current_img = $("#images_section div.active img");
-    var clone = new Image();
-    clone.src = current_img.attr('src');
-    return current_img.width() / clone.width;
+    var originalWidth = $("#images_section div.active img").attr('image_size').split('x')[0];
+    var visibleWidth = $("#images_section div.active img").width();
+    return visibleWidth / originalWidth;
 }
