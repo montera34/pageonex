@@ -9,7 +9,7 @@ PageOnex runs in Ruby on Rails, so you'll ned to install:
 + [Rails](http://rubyonrails.org/download) (you might also want to install [RVM (Ruby Version Manager)](https://rvm.io/)
 
 Process
--------------------------
+-------
 You might want to clone the repository with git:
 > git clone git@github.com:numeroteca/pageonex.git
 
@@ -24,8 +24,8 @@ Install the gems
 Run the migration (this will create the database with its tables):
 > rake db:migrate
 
-Load the list of newspapers in the data base:
-> rake scraping:update_media['public/kiosko_scraped.csv']
+Load the list of newspapers into the data base:
+> rake scraping:update_media
 
 Run the server:
 > rails server
