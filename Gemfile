@@ -1,19 +1,10 @@
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.11'
+gem 'rails', '3.2.13'
 
-# Bundle edge Rails instead:
-# gem 'rails', :git => 'git://github.com/rails/rails.git'
-
-# gem 'mysql2'
-
-group :production do
+# HACK: this group holds gems we need for heroku
+group :heroku do 
   gem 'pg'
-  gem 'thin'
-end
-
-group :development do
-  gem 'sqlite3'
 end
 
 # Gems used only for assets and not required
@@ -25,11 +16,14 @@ group :assets do
   gem 'less-rails'
   gem 'uglifier', '>= 1.0.3'
 end 
+
+# GUI support libraries
 gem "twitter-bootstrap-rails"
 gem "jquery-rails"
 gem "jquery-ui-rails"
 
 group :development, :test do
+  gem 'sqlite3'
   gem 'rspec-rails'
   gem 'factory_girl_rails'
 end
@@ -41,35 +35,16 @@ group :test do
   gem 'launchy'
 end
 
+gem 'mysql2'
+
+# ODF generation for exporting results
 gem 'rodf'
 
+# save image size while scraping kiosko.net
 gem "imagesize"
 
-# gem "image_sorcery"
-
-# gem 'acts-as-taggable-on', '~> 2.3.1'
-
-# gem install imgkit
-
-gem 'awesome_print'
-
+# full management of user accounts
 gem 'devise'
 
-gem 'foreman'
-
+# smart generation of slugs for theadx objects
 gem 'stringex'
-
-# To use ActiveModel has_secure_password
-# gem 'bcrypt-ruby', '~> 3.0.0'
-
-# To use Jbuilder templates for JSON
-# gem 'jbuilder'
-
-# Use unicorn as the app server
-# gem 'unicorn'
-
-# Deploy with Capistrano
-# gem 'capistrano'
-
-# To use debugger
-# gem 'ruby-debug19', :require => 'ruby-debug'
