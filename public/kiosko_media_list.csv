@@ -6,9 +6,10 @@ Argentina,ar,Crónica,ar_cronica,http://www.cronica.com.ar/
 Argentina,ar,Diario Ambito Financiero,ar_ambito,http://www.ambitoweb.com/
 Argentina,ar,Diario El Liberal,ar_liberal,http://www.elliberal.com.ar/
 Argentina,ar,Diario El Libertador,ar_libertador,http://www.diarioellibertador.com.ar/
+Argentina,ar,Diario El Litoral,ar_litoral_sfe,http://www.ellitoral.com/
 Argentina,ar,Diario El Sureño,ar_sureno,http://www.surenio.com.ar/
-Argentina,ar,Diario Jornada en la Patagonia,ar_jornada,http://www.diariojornada.com.ar/
 Argentina,ar,Diario Jornada,jornada_mendoza,http://www.jornadaonline.com/
+Argentina,ar,Diario Jornada en la Patagonia,ar_jornada,http://www.diariojornada.com.ar/
 Argentina,ar,Diario La Arena,ar_arena,http://www.laarena.com.ar/
 Argentina,ar,Diario La Capital - Mar del Plata,la_capital,http://www.lacapitalmdp.com/
 Argentina,ar,Diario Popular,ar_diario_popular,http://www.popularonline.com.ar/
@@ -44,8 +45,8 @@ Asia-Pacific,asi,Gulf News,gulf_news,http://www.gulfnews.com/
 Asia-Pacific,asi,Manila Standard Today,manila_standard_today,http://www.manilastandardtoday.com/
 Australia,au,Herald Sun,herald_sun,http://www.news.com.au/heraldsun/
 Australia,au,Northern Territory News,northern_territory,http://www.ntnews.com.au/
-Australia,au,The Australian Financial Review,au_financial_review,http://www.afr.com/
 Australia,au,The Australian,au_australian,http://www.theaustralian.news.com.au/
+Australia,au,The Australian Financial Review,au_financial_review,http://www.afr.com/
 Australia,au,The Courier-Mail,courier_mail,http://www.news.com.au/couriermail/
 Australia,au,The Daily Telegraph,au_daily_telegraph,http://www.dailytelegraph.news.com.au/
 Australia,au,The Sydney Morning Herald,sydney_morning_herald,http://www.smh.com.au/
@@ -107,6 +108,7 @@ China,cn,China Daily,china_daily,http://www.chinadaily.com.cn/index.html
 China,cn,The Global Times,cn_global_times,http://www.globaltimes.cn/
 China,cn,人民网 - Renmin Ribao,cn_renmin_ribao,http://www.people.com.cn/
 China,cn,解放军报 - Jiefangjun Bao,cn_jiefangjun_bao,http://www.chinamil.com.cn/
+Colombia,co,Diario La Opinion,co_opinion,http://www.laopinion.com.co/
 Colombia,co,Diario de Otún,co_diario_otun,http://www.eldiario.com.co/
 Colombia,co,El Colombiano,co_elcolombiano,http://www.elcolombiano.com/
 Colombia,co,El Espectador,co_espectador,http://www.elespectador.com/
@@ -217,8 +219,8 @@ Guatemala,gt,Prensa Libre,gt_prensa_libre,http://www.prensalibre.com/
 Honduras,hn,Diez,diez,http://www.diez.hn/
 Honduras,hn,El Heraldo,hn_heraldo,http://www.elheraldo.hn/
 Honduras,hn,La Prensa,laprensa,http://www.laprensa.hn/
-Honduras,hn,La Tribuna Deportiva,latribuna_deportiva,http://www.latribuna.hn/web2.0/?cat=7
 Honduras,hn,La Tribuna,latribuna,http://www.latribuna.hn/
+Honduras,hn,La Tribuna Deportiva,latribuna_deportiva,http://www.latribuna.hn/web2.0/?cat=7
 Honduras,hn,Tiempo,tiempo,http://www.tiempo.hn/
 India,in,Ananda Bazar Patrika - আনন্দবাজার পত্রিকা,in_anandbazar_patrika,http://www.anandabazar.com/
 India,in,Eenadu - ఈనాడు,in_eenadu,http://www.eenadu.net/
@@ -317,20 +319,21 @@ Mexico,mx,Huasteca Hoy,huasteca_hoy,http://www.huastecahoy.com.mx/
 Mexico,mx,Imagen de Veracruz,mx_imagen_veracruz,http://www.imagendeveracruz.com.mx/
 Mexico,mx,La Crónica de Baja California,mx_cronica_baja_cal,http://www.lacronica.com/
 Mexico,mx,La Crónica de Hoy,mx_cronica,http://www.cronica.com.mx/
+Mexico,mx,La Jornada,mx_jornada,http://www.jornada.unam.mx/
 Mexico,mx,La Jornada de Guerrero,mx_jornada_guerrrero,http://www.lajornadaguerrero.com.mx/
 Mexico,mx,La Jornada de Jalisco,mx_jornada_jalisco,http://www.lajornadajalisco.com.mx/
 Mexico,mx,La Jornada de Michoacán,mx_jornada_michoacan,http://www.lajornadamichoacan.com.mx/
 Mexico,mx,La Jornada de San Luis,mx_jornada_sanluis,http://www.lajornadasanluis.com.mx/
-Mexico,mx,La Jornada,mx_jornada,http://www.jornada.unam.mx/
 Mexico,mx,La Prensa,mx_laprensa,http://www.la-prensa.com.mx/
-Mexico,mx,La Razón - Tampico,mx_razon_tampico,http://www.larazon.com.mx/
 Mexico,mx,La Razón,mx_razon,http://www.razon.com.mx/
+Mexico,mx,La Razón - Tampico,mx_razon_tampico,http://www.larazon.com.mx/
 Mexico,mx,La Voz de Michoacán,mx_voz_michoacan,http://www.vozdemichoacan.com.mx/
 Mexico,mx,La Voz de Quintana Roo,lavoz_quinatana_roo,http://www.lavozdequintanaroo.com.mx/
 Mexico,mx,La Voz de la Frontera,mx_voz_frontera,http://www.oem.com.mx/lavozdelafrontera
 Mexico,mx,Lider Informativo,mx_lider,http://liderinformativo.com/
 Mexico,mx,Meridiano de Nayarit,mx_meridiano,http://meridiano.nayaritpuntocom.com/
 Mexico,mx,Miled,miled,http://www.miled.com/abc/
+Mexico,mx,Milenio,mx_milenio,http://www.milenio.com/
 Mexico,mx,Milenio - Tampico,mx_milenio_tampico,http://impreso.milenio.com/Tampico/
 Mexico,mx,Milenio Novedades,milenio_novedades,http://sipse.com/milenio/
 Mexico,mx,Milenio de Estado de México,mx_milenio_edomex,http://impreso.milenio.com/Toluca
@@ -338,7 +341,6 @@ Mexico,mx,Milenio de León,mx_milenio_leon,http://impreso.milenio.com/Leon
 Mexico,mx,Milenio de Monterrey,mx_milenio_monterrey,http://impreso.milenio.com/Monterrey
 Mexico,mx,Milenio de Pachuca,mx_milenio_hidalgo,http://impreso.milenio.com/Pachuca
 Mexico,mx,Milenio de Puebla,mx_milenio_puebla,http://impreso.milenio.com/Puebla
-Mexico,mx,Milenio,mx_milenio,http://www.milenio.com/
 Mexico,mx,Novedades de Quintana Roo,novedades_quintana_roo,http://sipse.com/novedades/
 Mexico,mx,Novedades de Tabasco,mx_novedades_tabasco,http://www.novedadesdetabasco.com.mx/
 Mexico,mx,Opinión,mx_opinion_torreon,http://impreso.milenio.com/Torreon
@@ -347,9 +349,9 @@ Mexico,mx,Periódico Noroeste,mx_noroeste,http://www.noroeste.com.mx/
 Mexico,mx,Primera Hora de Sinaloa,primera_hora,http://www.primera-hora.com.mx/
 Mexico,mx,Provincia,mx_provincia,http://www.provincia.com.mx/
 Mexico,mx,Público,mx_publico,http://impreso.milenio.com/Guadalajara
+Mexico,mx,Record,mx_record,http://www.record.com.mx/
 Mexico,mx,Record - Guadalajara,mx_record_guadalajara,http://www.record.com.mx/
 Mexico,mx,Record - Monterrey,mx_record_monterrey,http://www.record.com.mx/
-Mexico,mx,Record,mx_record,http://www.record.com.mx/
 Mexico,mx,Reforma,mx_reforma,http://www.reforma.com/
 Mexico,mx,San Luis Hoy,san_luis_hoy,http://www.sanluishoy.com.mx/
 Mexico,mx,Tabasco Hoy,mx_tabasco_hoy,http://www.tabascohoy.com/
@@ -383,10 +385,10 @@ Paraguay,py,Última Hora,py_ultimahora,http://www.ultimahora.com/
 Peru,pe,Comercio,pe_comercio,http://www.elcomercioperu.com.pe/
 Peru,pe,Del País,del_pais,http://www.delpais.com.pe/
 Peru,pe,Depor,pe_depor,http://depor.pe/
+Peru,pe,Diario Correo,pe_correo,http://diariocorreo.pe/
 Peru,pe,Diario Correo - Arequipa,pe_correo_arequipa,http://diariocorreo.pe/edicion/arequipa
 Peru,pe,Diario Correo - Ayacucho,pe_correo_ayacucho,http://diariocorreo.pe/edicion/ayacucho
 Peru,pe,Diario Correo - Cusco,pe_correo_cusco,http://diariocorreo.pe/edicion/cusco
-Peru,pe,Diario Correo,pe_correo,http://diariocorreo.pe/
 Peru,pe,Diario Gestión,pe_gestion,http://gestion.pe/
 Peru,pe,Diario Noticias,diario_noticias,http://www.diarionoticias.com.pe/
 Peru,pe,Diario16,diario16,http://diario16.com.pe/
@@ -424,15 +426,16 @@ Spain,es,20 Minutos - Malaga,20minutos_malaga,http://www.20minutos.es/andalucia/
 Spain,es,20 Minutos - Sevilla,20minutos_sevilla,http://www.20minutos.es/sevilla/
 Spain,es,20 Minutos - Valencia,20minutos_valencia,http://www.20minutos.es/valencia/
 Spain,es,20 Minutos - Zaragoza,20minutos_zaragoza,http://www.20minutos.es/aragon/
-Spain,es,ABC - Sevilla,abc_sevilla,http://www.abcdesevilla.es/
 Spain,es,ABC,abc,http://www.abc.es/
+Spain,es,ABC - Sevilla,abc_sevilla,http://www.abcdesevilla.es/
+Spain,es,Alerta - El Diario de Cantabria,alerta,http://www.eldiarioalerta.com/
 Spain,es,Ara,ara,http://www.ara.cat/
 Spain,es,As,as,http://www.as.com/
 Spain,es,Atlántico Diario,atlantico_diario,http://www.atlantico.net/
 Spain,es,Berria,berria,http://www.berria.info/
+Spain,es,Canarias 7,canarias7,http://www.canarias7.es/
 Spain,es,Canarias 7 - Fuerteventura,canarias7_fuerteventura,http://www.canarias7.es/islanot.cfm?i=fv
 Spain,es,Canarias 7 - Lanzarote,canarias7_lanzarote,http://www.canarias7.es/islanot.cfm?i=lz
-Spain,es,Canarias 7,canarias7,http://www.canarias7.es/
 Spain,es,Cantabria - El Mundo,elmundo_cantabria,http://www.elmundo.es/elmundo/espana.html
 Spain,es,Castellón Al Día,castellon_al_dia,http://www.elmundo.es/elmundo/castellon.html
 Spain,es,Cinco Días,5dias,http://www.cincodias.es/
@@ -451,8 +454,8 @@ Spain,es,Diario de Almería,el_almeria,http://www.elalmeria.es/
 Spain,es,Diario de Burgos,diario_burgos,http://www.diariodeburgos.es/
 Spain,es,Diario de Cádiz,diario_cadiz,http://www.diariodecadiz.es/
 Spain,es,Diario de Ibiza,diario_ibiza,http://www.diariodeibiza.es/
-Spain,es,Diario de León - Bierzo,diario_leon_bierzo,http://www.diariodeleon.es/noticias/bierzo.asp
 Spain,es,Diario de León,diario_leon,http://www.diariodeleon.es/
+Spain,es,Diario de León - Bierzo,diario_leon_bierzo,http://www.diariodeleon.es/noticias/bierzo.asp
 Spain,es,Diario de Mallorca,diario_mallorca,http://www.diariodemallorca.es/
 Spain,es,Diario de Navarra,diario_navarra,http://www.diariodenavarra.es/
 Spain,es,Diario de Pontevedra,diario_pontevedra,http://diariodepontevedra.galiciae.com/
@@ -467,39 +470,39 @@ Spain,es,Diarios de Avisos,diario_avisos,http://www.diariodeavisos.es/
 Spain,es,EL Día de Castilla-La Mancha,eldia_clm,http://eldiadigital.es/
 Spain,es,El 9,el9,http://www.vilaweb.cat/
 Spain,es,El Adelantado de Segovia,adelantado_segovia,http://www.eladelantado.com/
+Spain,es,El Comercio,elcomercio,http://www.elcomerciodigital.com/
 Spain,es,El Comercio - Avilés,elcomercio_aviles,http://www.elcomerciodigital.com/aviles/local/
 Spain,es,El Comercio - Gijón,elcomercio_gijon,http://www.elcomerciodigital.com/gijon/local/
-Spain,es,El Comercio,elcomercio,http://www.elcomerciodigital.com/
+Spain,es,El Correo,elcorreo,http://www.elcorreo.com/
 Spain,es,El Correo - Guipuzcoa,elcorreo_guipuzcoa,http://www.elcorreodigital.com/vizcaya/local/guipuzcoa
 Spain,es,El Correo - Álava,elcorreo_alava,http://www.elcorreodigital.com/alava/
 Spain,es,El Correo Gallego,correo_gallego,http://www.elcorreogallego.es/
 Spain,es,El Correo de Andalucía,correo_andalucia,http://www.correoandalucia.es/
 Spain,es,El Correo de Burgos,elcorreo_burgos,http://www.elcorreodeburgos.com/
 Spain,es,El Correo de La Rioja,elcorreo_larioja,http://www.elcorreodigital.com/alava/local/la-rioja/
-Spain,es,El Correo,elcorreo,http://www.elcorreo.com/
 Spain,es,El Diario Montañés,diario_montanes,http://www.eldiariomontanes.es/
+Spain,es,El Día,eldia,http://www.eldia.es/
 Spain,es,El Día de Córdoba,eldia_cordoba,http://www.eldiadecordoba.es/
 Spain,es,El Día de Valladolid,eldia_valladolid,http://www.eldiadevalladolid.com/
-Spain,es,El Día,eldia,http://www.eldia.es/
 Spain,es,El Economista,eleconomista,http://www.eleconomista.es/
 Spain,es,El Faro de Ceuta,elfaro_ceuta,http://www.elfaroceutamelilla.es/
 Spain,es,El Faro de Melilla,elfaro_melilla,http://www.elfaroceutamelilla.es/
 Spain,es,El Faro de Vigo - Ourense,farovigo_ourense,http://www.farodevigo.es/portada-ourense/
 Spain,es,El Faro de Vigo - Pontevedra,farovigo_pontevedra,http://www.farodevigo.es/portada-pontevedra/
 Spain,es,El Ideal de Jaén,ideal_jaen,http://www.ideal.es/
-Spain,es,El Mundo Deportivo,mundodeportivo,http://www.mundodeportivo.com/
 Spain,es,El Mundo,elmundo,http://www.elmundo.es/
+Spain,es,El Mundo Deportivo,mundodeportivo,http://www.mundodeportivo.com/
 Spain,es,El País,elpais,http://www.elpais.com/
+Spain,es,El Periódico,elperiodico,http://www.elperiodico.com/
 Spain,es,El Periódico Mediterraneo,elperiodico_mediterraneo,http://www.elperiodicomediterraneo.com/
 Spain,es,El Periódico de Aragón,elperiodico_aragon,http://www.elperiodicodearagon.com/
 Spain,es,El Periódico de Catalunya,elperiodico_cat,http://www.elperiodico.cat/
 Spain,es,El Periódico de Extremadura,elperiodico_extremadura,http://www.elperiodicoextremadura.com/
-Spain,es,El Periódico,elperiodico,http://www.elperiodico.com/
 Spain,es,El Progreso,progreso,http://elprogreso.galiciae.com/
 Spain,es,El Pueblo de Ceuta,elpueblo_ceuta,http://www.elpueblodeceuta.es/
 Spain,es,El Punt - Valencia,elpunt_valencia,http://www.elpunt.cat/
-Spain,es,El Punt Avui - Girona,elpunt_girona,http://www.elpunt.cat/girona.html
 Spain,es,El Punt Avui,elpunt_avui,http://www.elpuntavui.cat/
+Spain,es,El Punt Avui - Girona,elpunt_girona,http://www.elpunt.cat/girona.html
 Spain,es,Europa Sur,europa_sur,http://www.europasur.es/
 Spain,es,Expansión,expansion,http://www.expansion.com/
 Spain,es,Faro de Vigo,farovigo,http://www.farodevigo.es/
@@ -519,13 +522,13 @@ Spain,es,Heraldo de Soria,heraldo_soria,http://www.heraldodesoria.es/
 Spain,es,Hoy - Badajoz,hoy_badajoz,http://www.hoy.es/local/badajoz/
 Spain,es,Hoy - Caceres,hoy_caceres,http://www.hoy.es/local/caceres/
 Spain,es,Huelva Información,huelva_informacion,http://www.huelvainformacion.es/
-Spain,es,Ideal Almeria,ideal_almeria,http://www.ideal.es/almeria/
 Spain,es,Ideal,ideal_granada,http://www.ideal.es/
+Spain,es,Ideal Almeria,ideal_almeria,http://www.ideal.es/almeria/
 Spain,es,La Crónica - León,cronica_leon,http://www.lacronicadeleon.es/
 Spain,es,La Gaceta,la_gaceta,http://www.intereconomia.com/la-gaceta
+Spain,es,La Nueva España,lanuevaespana,http://www.lne.es/
 Spain,es,La Nueva España - Avilés,lanuevaespana_aviles,http://www.lne.es/
 Spain,es,La Nueva España - Gijón,lanuevaespana_gijon,http://www.lne.es/
-Spain,es,La Nueva España,lanuevaespana,http://www.lne.es/
 Spain,es,La Opinión - El Correo de Zamora,opinion_zamora,http://www.laopiniondezamora.es/
 Spain,es,La Opinión de A Coruña,opinion_coruna,http://www.laopinioncoruna.es/
 Spain,es,La Opinión de Murcia,opinion_murcia,http://www.laopiniondemurcia.es/
@@ -538,8 +541,8 @@ Spain,es,La Rioja,larioja,http://www.larioja.com/
 Spain,es,La Trbuna de Albacete,latribuna_albacete,http://www.latribunadealbacete.es/
 Spain,es,La Trbuna de Toledo,latribuna_toledo,http://www.latribunadetoledo.es/
 Spain,es,La Tribuna de Ciudad Real,latribuna_ciudadreal,http://www.diariolatribuna.com/CIUDADREAL/portada.cfm
-Spain,es,La Vanguardia - Català,lavanguardia_cat,http://www.lavanguardia.cat/
 Spain,es,La Vanguardia,lavanguardia,http://www.lavanguardia.es/
+Spain,es,La Vanguardia - Català,lavanguardia_cat,http://www.lavanguardia.cat/
 Spain,es,La Verdad de Albacete,laverdad_albacete,http://www.laverdad.es/albacete/
 Spain,es,La Verdad de Alicante,laverdad_alicante,http://www.laverdad.es/alicante/
 Spain,es,La Verdad de Cartagena,laverdad_cartagena,http://www.laverdad.es/murcia/local/cartagena/
@@ -548,8 +551,8 @@ Spain,es,La Voz de Cádiz,lavoz,http://www.lavozdigital.es/
 Spain,es,La Voz de Galicia,vozgalicia,http://www.lavozdegalicia.es/
 Spain,es,Lanza,lanza,http://www.lanzadigital.com/
 Spain,es,Las Provincias,lasprovincias,http://www.lasprovincias.es/
-Spain,es,Levante de Castelló,levante_castello,http://www.levante-emv.es/
 Spain,es,Levante,levante,http://www.levante-emv.es/
+Spain,es,Levante de Castelló,levante_castello,http://www.levante-emv.es/
 Spain,es,Mallorca Zeitung,mallorca_zeitung,http://www.mallorcazeitung.es/
 Spain,es,Marca,marca,http://www.marca.es/
 Spain,es,Menorca - Diario Insular,diario_menorca,http://www.menorca.info/
@@ -572,9 +575,9 @@ Spain,es,Superdeporte,superdeporte,http://www.superdeporte.es/
 Spain,es,Viva Cadiz,viva_cadiz,http://www.andaluciainformacion.es/portada/?i=97
 Spain,es,Viva Huelva,viva_huelva,http://www.vivahuelva.es/
 Spain,es,Viva Jaén,viva_jaen,http://www.vivajaen.net/
+Spain,es,Última Hora,ultima_hora,http://ultimahora.es/
 Spain,es,Última Hora - Ibiza,ultima_hora_ibiza,http://ultimahora.es/
 Spain,es,Última Hora - Menorca,ultima_hora_menorca,http://ultimahora.es/
-Spain,es,Última Hora,ultima_hora,http://ultimahora.es/
 Sweden,se,Aftonbladet,aftonbladet,http://www.aftonbladet.se/
 Sweden,se,Dagens Nyheter,dagens_nyheter,http://www.dn.se/
 Sweden,se,Expressen,expressen,http://www.expressen.se/
