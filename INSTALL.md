@@ -39,11 +39,6 @@ or
 ### Options
 If you have problems with the dependencies of the gems check this tricks.
 
-**pg gem**
-
-The postgres gem is there for the production development. If you are not able to install it, you can install the gems without the production environment:
->bundle install --without production
-
 **problems with dependencies**
 
 Run the same commands with 'bundle exec' like
