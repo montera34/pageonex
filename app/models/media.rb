@@ -24,4 +24,18 @@ class Media < ActiveRecord::Base
     newspapers_names
   end
 
+  def self.from_csv_row row
+    m = Media.new
+    m.country = row[0]
+    m.country_code = row[1]
+    m.display_name = row[2]
+    m.name = row[3]
+    m.url = row[4]
+    m
+  end
+
+  def to_csv_row
+    [ self.country, self.country_code, self.display_name, self.name, self.url ]
+  end
+
 end
