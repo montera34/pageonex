@@ -24,26 +24,24 @@
 
     <li class="span3">
       <div class="thumbnail">
+          <a href="<%= "/#{thread.owner.username.split(' ').join('_')}/#{thread.thread_name}/" %>">
           <% if use_local_images %>
-            <% thread.images[0,1].each do |image| %>
-              <img src="<%= "/assets#{image.local_path}"%>" style="height: 110px;" alt="">
+            <% thread.images[0,3].each do |image| %>
+	      <%= image_tag "/assets#{image.local_path}", :size => "80x80", :class => "pull-left", :alt => "thread.thread_display_name" %>
             <% end %>
           <% else %>
             <!-- for heroku -->
-            <a href="<%= "/#{thread.owner.username.split(' ').join('_')}/#{thread.thread_name}/" %>">
             <% thread.images[0,3].each do |image| %>
-              <img src="<%= "#{image.source_url}"%>" style="height: 110px;" alt="">
+	      <%= image_tag "#{image.source_url}", :size => "80x80", :class => "pull-left" %>
             <% end %>
-            </a> 
             <!-- end heroku-->
           <% end %>
-
+          </a>
         <div class="caption">
-          <a href="<%= "/#{thread.owner.username.split(' ').join('_')}/#{thread.thread_name}/" %>"><h4><%= thread.thread_display_name.capitalize %></h4></a>
+          <h4><%= link_to thread.thread_display_name, "/#{thread.owner.username.split(' ').join('_')}/#{thread.thread_name}/" %></h4>
           <p><%= thread.description.truncate(100) %></p>
           <p>From <%= thread.start_date %> to <%= thread.end_date %></p>
           <!--<p>Status <%= thread.status %></p>-->
-          <!--<p><a href="<%= "/#{thread.owner.username.split(' ').join('_')}/#{thread.thread_name}/" %>" class="btn btn-small">Show</a> -->
           <% if thread.owner == current_user %>
   		      <%= link_to "Delete", "/threads/#{thread.thread_name}" ,:method=>"delete" , :class => "btn btn-small btn-danger delete" %>
   		      <%= link_to "Edit", "/threads/#{thread.thread_name}/edit/", :class => "btn btn-small" %>
