@@ -182,6 +182,7 @@ class KioskoScraper
 			m = Media.from_csv_row row
 			existing_media = Media.unscoped.find_by_name(m.name)
 			if existing_media.nil?
+				m.working = true
 				m.save
 				puts "  line #{i}: created #{m.name}"
 				new_media_names << m.name
