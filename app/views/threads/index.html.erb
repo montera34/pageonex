@@ -20,7 +20,7 @@
 <% if @threads != [] %>
   <div class="row">
 
-  <% @threads.each_with_index do |thread,i| %>
+  <% @threads.sort{|a,b| b.created_at <=> a.created_at }.each_with_index do |thread,i| %>
 
     <li class="span3">
       <div class="thumbnail">
