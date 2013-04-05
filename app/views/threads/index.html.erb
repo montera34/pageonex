@@ -8,8 +8,8 @@
 <% end %>
 
 <!-- this condition is used to distinguish listing all threads from listing the owned threads -->
-<!-- "t" for all threads -->
-<% if params[:a] == "t" %>
+<!-- "all" for all threads -->
+<% if params[:a] == "all" %>
 	<% @threads = Threadx.all %>
 <% else %>
 	<% @threads = current_user.owned_threads %>
