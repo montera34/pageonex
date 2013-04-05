@@ -45,9 +45,9 @@
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">Threads<b class="caret"></b></a>
               <ul class="dropdown-menu">
                 <% if user_signed_in? %>
-                  <li><a href="/threads/" title="">Your Threads</a></li>
+                  <li><a href="/threads/?a=own" title="">Your Threads</a></li>
                 <% end %>
-                <li><a href="/threads/?a=t" title="">All Threads</a></li>
+                <li><a href="/threads/" title="">All Threads</a></li>
               </ul>
             </li>
 	    <li><%= link_to "About", "/about"  %></li>

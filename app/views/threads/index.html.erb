@@ -9,10 +9,10 @@
 
 <!-- this condition is used to distinguish listing all threads from listing the owned threads -->
 <!-- "all" for all threads -->
-<% if params[:a] == "all" %>
-	<% @threads = Threadx.all %>
-<% else %>
+<% if params[:a] == "own" %>
 	<% @threads = current_user.owned_threads %>
+<% else %>
+	<% @threads = Threadx.all %>
 <% end %>
 
 <ul class="thumbnails">
