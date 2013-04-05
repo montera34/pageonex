@@ -24,7 +24,8 @@
 
     <li class="span3">
       <div class="thumbnail">
-          <a href="<%= "/#{thread.owner.username.split(' ').join('_')}/#{thread.thread_name}/" %>">
+	<div class="row-fluid">
+          <a href="<%= "/#{thread.owner.username.split(' ').join('_')}/#{thread.thread_name}/" %>" title="<%= "#{thread.thread_display_name}" %>">
           <% if use_local_images %>
             <% thread.images[0,3].each do |image| %>
 	      <%= image_tag "/assets#{image.local_path}", :size => "80x80", :class => "pull-left", :alt => "thread.thread_display_name" %>
@@ -37,6 +38,7 @@
             <!-- end heroku-->
           <% end %>
           </a>
+ 	</div>
         <div class="caption">
           <h4><%= link_to thread.thread_display_name, "/#{thread.owner.username.split(' ').join('_')}/#{thread.thread_name}/" %></h4>
           <p><%= thread.description.truncate(100) %></p>
@@ -46,7 +48,9 @@
   		      <%= link_to "Delete", "/threads/#{thread.thread_name}" ,:method=>"delete" , :class => "btn btn-small btn-danger delete" %>
   		      <%= link_to "Edit", "/threads/#{thread.thread_name}/edit/", :class => "btn btn-small" %>
   	      <% end %>
-          <p><%= thread.owner.username %>  <span class="pull-right label"><%= thread.category %></span></p>
+          <div class="row-fluid">
+            <%= thread.owner.username %>  <span class="pull-right label"><%= thread.category %></span>
+          </div>
         </div>
 
       </div>														
