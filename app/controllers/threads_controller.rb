@@ -7,6 +7,7 @@ class ThreadsController < ApplicationController
 	# matches the /threads/ url to list all the user owned threads
 	# and also matches the /threads/?a=t url to the user owned threads
 	def index
+		#TODO: this will need pagination soon
 		@threads = Threadx.all
 	end
 
