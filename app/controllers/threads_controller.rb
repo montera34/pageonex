@@ -239,7 +239,10 @@ for opened thread:
 				row = tables[m].row
 				row.cell date, :type=>:date
 				results[:codes].each do |code|
-					row.cell results[:data][date][m][code], :type=>:float
+					code_percent = results[:data][date][m]
+					if not code_percent.nil?
+						row.cell code_percent[code], :type=>:float
+					end
 				end
 			end
 		end
