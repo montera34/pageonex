@@ -1,5 +1,4 @@
 require 'odf/spreadsheet'
-require 'Time'
 
 class ThreadsController < ApplicationController
 	# this filter is used to prevent an unregistered user form using the app, except if it was just exploring the threads
