@@ -7,6 +7,12 @@ class ThreadsController < ApplicationController
 	# matches the /threads/ url to list all the user owned threads
 	# and also matches the /threads/?a=t url to the user owned threads
 	def index
+		@threads = Threadx.all
+	end
+
+	def mine
+		@threads = current_user.owned_threads
+		render :index
 	end
 
 	# new action render the new form, with the an array of all the media in the db, but before that it do change the name of the media, by formating it, as "#{newspaper.country} - #{newspaper.display_name}" to be sorted by country name in the view

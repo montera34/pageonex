@@ -29,6 +29,9 @@ class Threadx < ActiveRecord::Base
 		t.thread_name = t.thread_name.to_url 
 	}
 
+	# for now, default to sort by most recent first
+	default_scope order('created_at DESC')
+
 	# workaround for bug #59
 	def not_too_many_images
 		media_count = media.length

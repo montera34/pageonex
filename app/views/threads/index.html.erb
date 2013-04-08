@@ -7,20 +7,12 @@
 	</div>
 <% end %>
 
-<!-- this condition is used to distinguish listing all threads from listing the owned threads -->
-<!-- "all" for all threads -->
-<% if params[:a] == "own" %>
-	<% @threads = current_user.owned_threads %>
-<% else %>
-	<% @threads = Threadx.all %>
-<% end %>
-
 <ul class="thumbnails">
 
-<% if @threads != [] %>
+<% if @threads.length > 0%>
   <div class="row">
 
-  <% @threads.sort{|a,b| b.created_at <=> a.created_at }.each_with_index do |thread,i| %>
+  <% @threads.each_with_index do |thread,i| %>
 
     <li class="span3">
       <div class="thumbnail">
@@ -66,7 +58,9 @@
   </div> <!-- end class="row"-->
 
 <% else %>
+
   <h2>There are no threads.</h2>
+
 <% end %>
 
 </ul>

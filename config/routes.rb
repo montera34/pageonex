@@ -1,6 +1,8 @@
 Pageonex::Application.routes.draw do
   devise_for :users
 
+  match 'threads/mine' => 'threads#mine'
+
   resources :threads
 
   match 'threads/new_topic/:index' => 'threads#new_topic'
