@@ -28,8 +28,11 @@ class CodingController < ApplicationController
       if params["id_#{ha_name}"].to_i == 0
       	# This is a new area
       	code = Code.find params["code_id_#{ha_name}"]
-      	ha = code.highlighted_areas.create(image_id:image.id, code_id:code.id)
-      	area = Area.create(highlighted_area_id: ha.id, x1: params["x1_#{ha_name}"].to_i, y1: params["y1_#{ha_name}"].to_i, x2: params["x2_#{ha_name}"].to_i, y2: params["y2_#{ha_name}"].to_i, width: params["width_#{ha_name}"].to_i, height: params["height_#{ha_name}"].to_i)
+      	ha = code.highlighted_areas.create(:image_id=>image.id, :code_id=>code.id, :user_id=>current_user.id)
+      	area = Area.create(highlighted_area_id: ha.id, x1: params["x1_#{ha_name}"].to_i, 
+          y1: params["y1_#{ha_name}"].to_i, x2: params["x2_#{ha_name}"].to_i, 
+          y2: params["y2_#{ha_name}"].to_i, width: params["width_#{ha_name}"].to_i, 
+          height: params["height_#{ha_name}"].to_i)
       else
       	# Updating an existing area
       	ha = @thread.highlighted_areas.find(params["id_#{ha_name}"])
@@ -38,7 +41,10 @@ class CodingController < ApplicationController
       	  ha.destroy
       	else
       	  ha.update_attribute('code_id', params["code_id_#{ha_name}"].to_i)
-      	  ha.areas[0].update_attributes(x1: params["x1_#{ha_name}"].to_i, y1: params["y1_#{ha_name}"].to_i, x2: params["x2_#{ha_name}"].to_i, y2: params["y2_#{ha_name}"].to_i, width: params["width_#{ha_name}"].to_i, height: params["height_#{ha_name}"].to_i)
+      	  ha.areas[0].update_attributes(x1: params["x1_#{ha_name}"].to_i, 
+            y1: params["y1_#{ha_name}"].to_i, x2: params["x2_#{ha_name}"].to_i, 
+            y2: params["y2_#{ha_name}"].to_i, width: params["width_#{ha_name}"].to_i, 
+            height: params["height_#{ha_name}"].to_i)
       	end
       end
     end
