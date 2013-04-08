@@ -1,3 +1,5 @@
+require 'odf/spreadsheet'
+
 class ThreadsController < ApplicationController
 	# this filter is used to prevent an unregistered user form using the app, except if it was just exploring the threads
 	before_filter :authenticate_user!, :except => "index"
@@ -204,7 +206,7 @@ for opened thread:
 			format.html
 			format.json { render :json => @thread.results.to_json }
 			format.ods do
-				send_file @thread.results_as_ods,
+				send_file results_to_ods(@thread.results),
 					:filename => 'export.ods',
 					:type => 'application/x-vnd.oasis.opendocument.spreadsheet',
 					:disposition => 'attachment'
@@ -212,4 +214,32 @@ for opened thread:
 		end
 	end
 
+	def results_to_ods(results)
+		spreadsheet = ODF::Spreadsheet.new
+		# Create tables and headers
+		tables = {}
+		results[:media].each do |m|
+			tables[m] = spreadsheet.table m
+			row = tables[m].row
+			results[:codes].each do |c|
+				row.cell c
+			end
+		end
+		# We use the arrays rather than hash keys to guarantee ordering
+		results[:dates].each do |date|
+			results[:media].each do |m|
+				row = tables[m].row
+				results[:codes].each do |code|
+					row.cell results[:data][date][m][code]
+				end
+			end
+		end
+		# Create a temporary filepath
+		file = Tempfile.new(['export', '.ods']);
+		path = file.path
+		file.close
+		file.unlink
+		spreadsheet.write_to(path)
+		return path
+	end
 end

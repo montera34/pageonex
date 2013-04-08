@@ -1,5 +1,3 @@
-require 'odf/spreadsheet'
-
 class Threadx < ActiveRecord::Base
 
 	MAX_IMAGES = 500
@@ -85,7 +83,7 @@ class Threadx < ActiveRecord::Base
 	def results
 		# Create an ordered list of newspapers, codes, dates
 		res = {
-			:media => media.map {|m| m.display_name},
+			:media => ['Total'] + media.map {|m| m.display_name},
 			:codes => codes.map {|c| c.code_text},
 			:dates => start_date .. end_date,
 			:data => {}
@@ -126,57 +124,4 @@ class Threadx < ActiveRecord::Base
 		res
 	end
 	
-	def results_as_ods
-		spreadsheet = ODF::Spreadsheet.new
-		# Calculate totals
-		table = spreadsheet.table 'Total'
-		row = table.row
-		row.cell 'Date'
-		codes.each do |c|
-			row.cell c.code_text
-		end
-		(start_date..end_date).each do |date|
-			row = table.row
-			row.cell date
-			codes.each do |c|
-				sum = 0.0;
-				count = 0.0;
-				media.each do |m|
-					next if images.by_media(m.id).by_date(date).codeable.length < 1
-					count += 1
-					sum += get_percent(c, m, date)
-				end
-				if count > 0.0
-					row.cell sum / count
-				else
-					row.cell 0.0
-				end
-			end
-		end
-		# Calculate percentages for each newspaper
-		media.each do |m|
-			table = spreadsheet.table m.display_name
-			row = table.row
-			row.cell 'Date'
-			codes.each do |c|
-				row.cell c.code_text
-			end
-			(start_date..end_date).each do |date|
-				row = table.row
-				row.cell date
-				next if images.by_media(m.id).by_date(date).codeable.length < 1
-				codes.each do |c|
-					row.cell get_percent(c, m, date)
-				end
-			end
-		end
-		# Create a temporary filepath
-		file = Tempfile.new(['export', '.ods']);
-		path = file.path
-		file.close
-		file.unlink
-		spreadsheet.write_to(path)
-		path
-	end
-
 end
