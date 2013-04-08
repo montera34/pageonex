@@ -221,6 +221,7 @@ for opened thread:
 		results[:media].each do |m|
 			tables[m] = spreadsheet.table m
 			row = tables[m].row
+			row.cell 'Date'
 			results[:codes].each do |c|
 				row.cell c
 			end
@@ -229,6 +230,7 @@ for opened thread:
 		results[:dates].each do |date|
 			results[:media].each do |m|
 				row = tables[m].row
+				row.cell date
 				results[:codes].each do |code|
 					row.cell results[:data][date][m][code]
 				end
