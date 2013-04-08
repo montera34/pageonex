@@ -1,4 +1,5 @@
 require 'odf/spreadsheet'
+require 'Time'
 
 class ThreadsController < ApplicationController
 	# this filter is used to prevent an unregistered user form using the app, except if it was just exploring the threads
@@ -228,18 +229,18 @@ for opened thread:
 		results[:media].each do |m|
 			tables[m] = spreadsheet.table m
 			row = tables[m].row
-			row.cell 'Date'
+			row.cell 'Date', :type=>:string
 			results[:codes].each do |c|
-				row.cell c
+				row.cell c, :type=>:string
 			end
 		end
 		# We use the arrays rather than hash keys to guarantee ordering
 		results[:dates].each do |date|
 			results[:media].each do |m|
 				row = tables[m].row
-				row.cell date
+				row.cell date, :type=>:date
 				results[:codes].each do |code|
-					row.cell results[:data][date][m][code]
+					row.cell results[:data][date][m][code], :type=>:float
 				end
 			end
 		end
