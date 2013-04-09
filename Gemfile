@@ -48,3 +48,6 @@ gem 'devise'
 
 # smart generation of slugs for theadx objects
 gem 'stringex'
+
+# pagination support
+gem 'will_paginate', '~> 3.0'

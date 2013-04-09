@@ -2,6 +2,8 @@ class Threadx < ActiveRecord::Base
 
 	MAX_IMAGES = 500
 
+	self.per_page = 20
+
 	has_many :media_threadxes
 	has_many :media, :through => :media_threadxes
 

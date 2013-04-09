@@ -57,6 +57,12 @@
   <% end %>
   </div> <!-- end class="row"-->
 
+  <div class="row">
+    <div class="span12">
+      <%= will_paginate @threads %>
+    </div>
+  </div>
+
 <% else %>
 
   <h2>There are no threads.</h2>

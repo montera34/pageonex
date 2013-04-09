@@ -8,7 +8,7 @@ class ThreadsController < ApplicationController
 	# and also matches the /threads/?a=t url to the user owned threads
 	def index
 		#TODO: this will need pagination soon
-		@threads = Threadx.all
+		@threads = Threadx.page(params[:page])
 	end
 
 	def mine
@@ -76,7 +76,7 @@ class ThreadsController < ApplicationController
 		# otherwise, the new form will rendered again with the error messages
 		else
 			# we should load the names of the media again. 
-			@media = Media.by_country_and_display_name.all.collect { |m| m.name_with_country }
+			@media = Media.by_country_and_display_name.all
 
 			# send some params back to the view, to tell the user about what is missing
 			if params["topic_name_1"] == ""
@@ -164,7 +164,7 @@ class ThreadsController < ApplicationController
 			redirect_to "/#{current_user.username.split(' ').join('_')}/#{@thread.thread_name}"
 		else
 			# A method should be created to make a DRY code. don't repeat!
-			@media = Media.by_country_and_display_name.all.collect { |m| m.name_with_country }
+			@media = Media.by_country_and_display_name.all
 
 			@thread.media.each do |m|
 				params["media"] << "#{m.id}"
