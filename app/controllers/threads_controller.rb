@@ -18,7 +18,7 @@ class ThreadsController < ApplicationController
 
 	# new action render the new form, with the an array of all the media in the db, but before that it do change the name of the media, by formating it, as "#{newspaper.country} - #{newspaper.display_name}" to be sorted by country name in the view
 	def new
-		@media = Media.all
+		@media = Media.by_country_and_display_name.all
 		@thread = Threadx.new
 	end
 
@@ -76,7 +76,7 @@ class ThreadsController < ApplicationController
 		# otherwise, the new form will rendered again with the error messages
 		else
 			# we should load the names of the media again. 
-			@media = Media.all.collect { |m| m.name_with_country }
+			@media = Media.by_country_and_display_name.all.collect { |m| m.name_with_country }
 
 			# send some params back to the view, to tell the user about what is missing
 			if params["topic_name_1"] == ""
@@ -103,7 +103,7 @@ class ThreadsController < ApplicationController
 			redirect_to "/threads/"
 		end
 
-		@media = Media.all
+		@media = Media.by_country_and_display_name.all
 
 		params["media"] = @thread.media.each.collect { |m| m.id }
 
@@ -164,7 +164,7 @@ class ThreadsController < ApplicationController
 			redirect_to "/#{current_user.username.split(' ').join('_')}/#{@thread.thread_name}"
 		else
 			# A method should be created to make a DRY code. don't repeat!
-			@media = Media.all.collect { |m| m.name_with_country }
+			@media = Media.by_country_and_display_name.all.collect { |m| m.name_with_country }
 
 			@thread.media.each do |m|
 				params["media"] << "#{m.id}"

@@ -5,6 +5,8 @@ class Media < ActiveRecord::Base
 
   default_scope where(:working=>true)
 
+  scope :by_country_and_display_name, order("country, display_name") 
+
   def name_with_country
     self.country + " - " + self.display_name
   end
