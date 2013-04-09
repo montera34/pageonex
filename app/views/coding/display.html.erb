@@ -1,4 +1,5 @@
 <% @title = "#{@thread.thread_display_name.capitalize} - PageOneX" %>
+
 <div id="fb-root"></div>
 <script>
 	(function(d, s, id) {
@@ -12,6 +13,7 @@
 
 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
 
+<!-- thread info / actions -->
 <div class="row">
 	<div class="span8">
 		<h2><%= @thread.thread_display_name.capitalize %></h2>
@@ -39,6 +41,7 @@
 	</div>
 </div>
 
+<!-- Thread details / code info -->
 <div class="row">
 	<div class="span5">
 		<h4>Description</h4><p> <%= @thread.description %></p>
@@ -75,48 +78,35 @@
 		<div class="fb-like" data-send="true" data-layout="button_count" data-width="460" data-show-faces="true" data-action="recommend" data-font="verdana"></div>
 	</div>
 </div>
-<!--End Share buttons-->
+
+<!-- Results Chart -->
 <div class="row">
 	<div id="chart_div" style="margin-left: 110px;width: 1210px; margin-bottom: -30px;"></div><!--div to display bar chart-->
 </div>
-<!-- <div id="ratios"> -->
-	<% @ratios.each do |v,r|  %>
-		<% hidden_field_tag "v#{v}", r %>
-	<% end %>
-<!-- </div> -->
+
+<!-- Non displaying ratio and date info -->
+<% @ratios.each do |v,r|  %>
+	<% hidden_field_tag "v#{v}", r %>
+<% end %>
 <%= hidden_field_tag "number_of_column", @ratios.length %>
 <%= hidden_field_tag "number_of_rows", @thread.media.length %>
+<div id="ratios">
+	<!-- for each column we create a div contains set of hidden fields each on represent a code percentage -->
+	<% @results[:dates].each_with_index do |date, index| %>
+		<div id="<%= "row_c#{index + 1}" %>">
+				<% @results[:codes].each_with_index do |code, index| %>
+					<%= hidden_field_tag "code_#{index}", @results[:data][date]['Total'][code] %>
+				<% end %>
+		</div>
+	<% end %>
+</div>
+<div id="date-box">
+	<% (@thread.start_date..@thread.end_date).each do |d| %>
+		<%= hidden_field_tag "#{d.day}/#{d.month}" %>
+	<% end %>
+</div>
 
-	<!--
-	<div id="ratios">
-		<% @codes_high_areas.each do |column, codes| %>
-			<div id="<%= "row_#{column}" %>">
-					<% codes.each do |code_id,value| %>
-						<%= hidden_field_tag "#{code_id}", value %>
-					<% end %>
-				
-			</div>
-		<% end %>
-	</div>
-	-->
-	<div id="ratios">
-		<!-- for each column we create a div contains set of hidden fields each on represent a code percentage -->
-		<% @results[:dates].each_with_index do |date, index| %>
-			<div id="<%= "row_c#{index + 1}" %>">
-					<% @results[:codes].each_with_index do |code, index| %>
-						<%= hidden_field_tag "code_#{index}", @results[:data][date]['Total'][code] %>
-					<% end %>
-			</div>
-		<% end %>
-	</div>
-
-	<br>
-
-	<div id="date-box">
-		<% (@thread.start_date..@thread.end_date).each do |d| %>
-			<%= hidden_field_tag "#{d.day}/#{d.month}" %>
-		<% end %>
-	</div>
+<!-- show the coding info on top of the front page images-->
 <div id="datavis" style="display: none;">
 	<!-- loop over all the newspaper in the thread and find which images are belongs to this newspaper and then insert this images into this newspaper row -->
 	<% @thread.media.each do |m| %>
@@ -164,41 +154,44 @@
 	<% end %>
 </div>
 
+<!-- loading info -->
 <h2 id="loading-bar-h">Please wait</h2>
 <div id="loading-bar" class="progress progress-striped active">
-
 		<div class="bar" style="width:1%;"></div>
 </div>
 
-	<div id="high_images">
-	    <% @thread.images.each do |image| %>
-		<div class="ha_group" id="ha_group_<%= image.image_name %>">
-		    <% @thread.highlighted_areas_for_image(image).each_with_index do |ha, index| %>
-			<div id="<%= "#{image.image_name}_#{index}" %>">
-			    <%= hidden_field_tag "ha_name[]", "#{image.image_name}_#{index}" %>
-			    <%= hidden_field_tag "img_id_#{image.image_name}_#{index}", "#{image.image_name}" %>
-			    <%= hidden_field_tag "id_#{image.image_name}_#{index}", "#{ha.id}" %>
-			    <%= hidden_field_tag "code_id_#{image.image_name}_#{index}", "#{ha.code_id}" %>
-			    <%= hidden_field_tag "x1_#{image.image_name}_#{index}", "#{ha.areas.first.x1}" %>
-			    <%= hidden_field_tag "y1_#{image.image_name}_#{index}", "#{ha.areas.first.y1}" %>
-			    <%= hidden_field_tag "x2_#{image.image_name}_#{index}", "#{ha.areas.first.x2}" %>
-			    <%= hidden_field_tag "y2_#{image.image_name}_#{index}", "#{ha.areas.first.y2}" %>
-			    <%= hidden_field_tag "width_#{image.image_name}_#{index}", "#{ha.areas.first.width}" %>
-			    <%= hidden_field_tag "height_#{image.image_name}_#{index}", "#{ha.areas.first.height}" %>
-			    <%= hidden_field_tag "img_width_#{image.image_name}_#{index}", "#{image.width}" %>
-			    <%= hidden_field_tag "img_height_#{image.image_name}_#{index}", "#{image.height}" %>
-			    <%= hidden_field_tag "deleted_#{image.image_name}_#{index}" %>
-			</div>
-		    <% end %>
+<!-- lots of hidden info about the highlighted images -->
+<div id="high_images">
+    <% @thread.images.each do |image| %>
+	<div class="ha_group" id="ha_group_<%= image.image_name %>">
+	    <% @thread.highlighted_areas_for_image(image).each_with_index do |ha, index| %>
+		<div id="<%= "#{image.image_name}_#{index}" %>">
+		    <%= hidden_field_tag "ha_name[]", "#{image.image_name}_#{index}" %>
+		    <%= hidden_field_tag "img_id_#{image.image_name}_#{index}", "#{image.image_name}" %>
+		    <%= hidden_field_tag "id_#{image.image_name}_#{index}", "#{ha.id}" %>
+		    <%= hidden_field_tag "code_id_#{image.image_name}_#{index}", "#{ha.code_id}" %>
+		    <%= hidden_field_tag "x1_#{image.image_name}_#{index}", "#{ha.areas.first.x1}" %>
+		    <%= hidden_field_tag "y1_#{image.image_name}_#{index}", "#{ha.areas.first.y1}" %>
+		    <%= hidden_field_tag "x2_#{image.image_name}_#{index}", "#{ha.areas.first.x2}" %>
+		    <%= hidden_field_tag "y2_#{image.image_name}_#{index}", "#{ha.areas.first.y2}" %>
+		    <%= hidden_field_tag "width_#{image.image_name}_#{index}", "#{ha.areas.first.width}" %>
+		    <%= hidden_field_tag "height_#{image.image_name}_#{index}", "#{ha.areas.first.height}" %>
+		    <%= hidden_field_tag "img_width_#{image.image_name}_#{index}", "#{image.width}" %>
+		    <%= hidden_field_tag "img_height_#{image.image_name}_#{index}", "#{image.height}" %>
+		    <%= hidden_field_tag "deleted_#{image.image_name}_#{index}" %>
 		</div>
 	    <% end %>
-	    <%= hidden_field_tag "status", "0" %>
 	</div>
+    <% end %>
+    <%= hidden_field_tag "status", "0" %>
+</div>
 
 <!-- other library we were using for the column chart, it's comment just in case we want to reuse it again -->
 <!-- "d3.min.js", "d3.layout.min.js", "rickshaw.min.js", -->
 <%= javascript_include_tag "highlighted_area.js" %>
 <%= javascript_include_tag "display.js" %>
+
+<!-- thread info summary and code info again -->
 <div class="row">
 	<div class="offset2 span8">
 		<h3><%= @thread.thread_display_name %> </h3>
@@ -212,8 +205,8 @@
 	       	<% end %>
 		</ul>
 	</div>	
-	</div>
 </div>
+
 <script>
 
 	// var data = [ { x: 0, y: 40 }, { x: 1, y: 49 }, { x: 2, y: 17 }, { x: 3, y: 42 } ];

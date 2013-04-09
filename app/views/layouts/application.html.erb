@@ -74,6 +74,7 @@
 
     <div class="container" style="min-width: 1170px;">
       <div class="content">
+
         <div class="row">
            <div class="span12">
 
@@ -95,24 +96,21 @@
                 <p><%= alert %></p>
               </div>
             <% end %>
+          </div>
+        </div>
 
-		<%= yield %>
-            
-            </div>
-            <div class="span2" style="display:none">
-              
-            </div><!--/span-->
-        </div><!--/row-->
+        <%= yield %>
+
       </div><!--/content-->
       
-      <footer>
-        <div class="row">
-	  	<div class=""></div>
-         		<hr> More info at <a href="http://montera34.org/pageonex/" title="Go to blog">PageOneX Blog</a>. Check examples at <a href="http://numeroteca.org/cat/frontpage-newspaper/" title="Go to blog">numeroteca.org</a>
-		</div>
-	</div>
-      </footer>
-
+      <div class="row" id="footer">
+        <div class="span12">
+          <footer>
+           		<hr> More info at <a href="http://montera34.org/pageonex/" title="Go to blog">PageOneX Blog</a>. Check examples at <a href="http://numeroteca.org/cat/frontpage-newspaper/" title="Go to blog">numeroteca.org</a>
+  		    </footer>
+        </div>
+      </div>
+      
     </div> <!-- /container -->
 
     <!-- Le javascript
@@ -121,19 +119,15 @@
     <!-- <link href='http://fonts.googleapis.com/css?family=Cabin:400,500,600,700,400italic' rel='stylesheet' type='text/css'> -->
 
     <link href='http://fonts.googleapis.com/css?family=Signika+Negative:300,400,600,700' rel='stylesheet' type='text/css'>
-    
-    
 
   </body>
+
+  <script type="text/javascript">
+  $(function () {
+    d = { show: 700, hide: 1 }
+    $('#coding').popover({placement:'bottom',delay:d })
+    $('#disp').popover({placement:'bottom',delay:d})
+  })
+  </script>
+
 </html>
-
-<script type="text/javascript">
-$(function () {
-  d = { show: 700, hide: 1 }
-  $('#coding').popover({placement:'bottom',delay:d })
-  $('#disp').popover({placement:'bottom',delay:d})
-})
-
-
-
-</script>
