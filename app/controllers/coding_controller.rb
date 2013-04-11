@@ -1,11 +1,11 @@
 class CodingController < ApplicationController
-  before_filter :authenticate_user!, :except => :display
+  before_filter :authenticate_user!, :except => [:display, :process_images]
 
   # render the coding view
   def process_images
     @thread = Threadx.find_by_thread_name params[:thread_name]
     @highlighted_areas = @thread.highlighted_areas
-    @allowed_to_code = (@thread.owner.id == current_user.id)
+    @allowed_to_code = (!current_user.nil?) && (@thread.owner.id == current_user.id)
     @images = @thread.images_by_date  # while coding we want to go day by day, NOT media by media
   end
 

@@ -4,6 +4,7 @@ class CodedPage < ActiveRecord::Base
   has_one :image
   
   def self.for_user(user)
+    return where(1) if user.nil?
     where(:user_id => user.id)
   end
   

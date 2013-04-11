@@ -115,59 +115,64 @@
           </div>
         </div>
 
-        <%= form_tag "/#{current_user.username}/#{@thread.thread_name}/process_highlighted_areas" do %>
-	    <%= hidden_field_tag "status", "0", :id => 'status' %>
-	    <div id="coded_pages">
-		<% @thread.images.each do |image| %>
-		    <%= hidden_field_tag 'image_name[]', image.image_name %>
-		    <%= hidden_field_tag "nothing_to_code_#{image.image_name}", @thread.coded_pages.for_image(image).for_user(current_user).length %>
-		<% end %>
-	    </div>
-            <div id="high_images">
-		<% @thread.images.each do |image| %>
-		    <div id="ha_group_<%= image.image_name %>">
-			<% @thread.highlighted_areas_for_image(image).each_with_index do |ha, index| %>
-			    <div id="<%= "#{image.image_name}_#{index}" %>">
-				<%= hidden_field_tag "ha_name[]", "#{image.image_name}_#{index}" %>
-				<%= hidden_field_tag "img_id_#{image.image_name}_#{index}", "#{image.image_name}" %>
-				<%= hidden_field_tag "id_#{image.image_name}_#{index}", "#{ha.id}" %>
-				<%= hidden_field_tag "code_id_#{image.image_name}_#{index}", "#{ha.code_id}" %>
-				<%= hidden_field_tag "x1_#{image.image_name}_#{index}", "#{ha.areas.first.x1}" %>
-				<%= hidden_field_tag "y1_#{image.image_name}_#{index}", "#{ha.areas.first.y1}" %>
-				<%= hidden_field_tag "x2_#{image.image_name}_#{index}", "#{ha.areas.first.x2}" %>
-				<%= hidden_field_tag "y2_#{image.image_name}_#{index}", "#{ha.areas.first.y2}" %>
-				<%= hidden_field_tag "width_#{image.image_name}_#{index}", "#{ha.areas.first.width}" %>
-				<%= hidden_field_tag "height_#{image.image_name}_#{index}", "#{ha.areas.first.height}" %>
-				<%= hidden_field_tag "deleted_#{image.image_name}_#{index}" %>
-			    </div>
-			<% end %>
-		    </div>
-	        <% end %>
-                <%= hidden_field_tag "status", "0" %>
-            </div>
         <% if @allowed_to_code %>
-            <div class="form-actions" style="text-align:center">
-                <div class="pull-left btn-group">
-                    <a id="" class="btn  btn-danger clear_highlighting">Clear Highlighted Areas</a>
-                    <a id="" class="btn btn-inverse skip_coding">Nothing to Code</a>
-                </div>
-
-                <div class="pull-right">
-			<div class="btn-group">
-		            <%= submit_tag "Save", class: "save btn btn-primary "%>
-		            <%= submit_tag "Save and Display", class: "save btn btn-info"%>
-			<a href="/" class="btn ">Cancel</a>
-			</div>
-                    
-                </div>
-            </div>
+            <% form_destination = "/#{current_user.username}/#{@thread.thread_name}/process_highlighted_areas" %>
         <% else %>
-            <div class="form-actions" style="text-align:center">
-                <a href="<%= "/#{@thread.owner.username}/#{@thread.thread_name}/" %>" class="btn btn-inverse">Go to Display</a>
-                <a href="/" class="btn ">Cancel</a>
-            </div>
+            <% form_destination = "/dev/null" %>
         <% end %>
-        <br>
+        <%= form_tag form_destination do %>
+    	    <%= hidden_field_tag "status", "0", :id => 'status' %>
+    	    <div id="coded_pages">
+        		<% @thread.images.each do |image| %>
+        		    <%= hidden_field_tag 'image_name[]', image.image_name %>
+        		    <%= hidden_field_tag "nothing_to_code_#{image.image_name}", @thread.coded_pages.for_image(image).for_user(current_user).length %>
+        		<% end %>
+    	    </div>
+            <div id="high_images">
+                <% @thread.images.each do |image| %>
+                    <div id="ha_group_<%= image.image_name %>">
+                        <% @thread.highlighted_areas_for_image(image).each_with_index do |ha, index| %>
+        			    <div id="<%= "#{image.image_name}_#{index}" %>">
+            				<%= hidden_field_tag "ha_name[]", "#{image.image_name}_#{index}" %>
+            				<%= hidden_field_tag "img_id_#{image.image_name}_#{index}", "#{image.image_name}" %>
+            				<%= hidden_field_tag "id_#{image.image_name}_#{index}", "#{ha.id}" %>
+            				<%= hidden_field_tag "code_id_#{image.image_name}_#{index}", "#{ha.code_id}" %>
+            				<%= hidden_field_tag "x1_#{image.image_name}_#{index}", "#{ha.areas.first.x1}" %>
+            				<%= hidden_field_tag "y1_#{image.image_name}_#{index}", "#{ha.areas.first.y1}" %>
+            				<%= hidden_field_tag "x2_#{image.image_name}_#{index}", "#{ha.areas.first.x2}" %>
+            				<%= hidden_field_tag "y2_#{image.image_name}_#{index}", "#{ha.areas.first.y2}" %>
+            				<%= hidden_field_tag "width_#{image.image_name}_#{index}", "#{ha.areas.first.width}" %>
+            				<%= hidden_field_tag "height_#{image.image_name}_#{index}", "#{ha.areas.first.height}" %>
+            				<%= hidden_field_tag "deleted_#{image.image_name}_#{index}" %>
+        			    </div>
+                        <% end %>
+                    </div> 
+               <% end %>
+            </div>
+            <%= hidden_field_tag "status", "0" %>
+            <% if @allowed_to_code %>
+                <div class="form-actions" style="text-align:center">
+                    <div class="pull-left btn-group">
+                        <a id="" class="btn  btn-danger clear_highlighting">Clear Highlighted Areas</a>
+                        <a id="" class="btn btn-inverse skip_coding">Nothing to Code</a>
+                    </div>
+
+                    <div class="pull-right">
+            			<div class="btn-group">
+            		            <%= submit_tag "Save", class: "save btn btn-primary "%>
+            		            <%= submit_tag "Save and Display", class: "save btn btn-info"%>
+            			<a href="/" class="btn ">Cancel</a>
+            			</div>
+                        
+                    </div>
+                </div>
+            <% else %>
+                <div class="form-actions" style="text-align:center">
+                    <a href="<%= "/#{@thread.owner.username}/#{@thread.thread_name}/" %>" class="btn btn-inverse">Go to Display</a>
+                    <a href="/" class="btn ">Cancel</a>
+                </div>
+            <% end %>
+            <br>
         <% end %>
         
     </div>
