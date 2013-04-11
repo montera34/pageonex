@@ -9,11 +9,24 @@
 
 var HighlightedAreas = {
 
+    _roundSelection: function(selection) {
+        var s = {
+            x1: Math.round(selection.x1),
+            y1: Math.round(selection.y1),
+            x2: Math.round(selection.x2),
+            y2: Math.round(selection.y2)
+        };
+        s.width = s.x2 - s.x1;
+        s.height = s.y2 - s.y1;
+        return s;
+    },
+
     add: function(img_id, code_id, selection) {
         // Get div containing highlighted area info for the specified image
         var ha_group = $("#ha_group_" + img_id);
         var count = ha_group.children().length;
         var cssid = img_id + '_' + (count+1);
+        var roundedSelection = HighlightedAreas._roundSelection(selection);
         // Create hidden fields to contain data
         var ha_elt = $('<div>').attr('id', cssid).appendTo(ha_group);
         var tag = '<input type="hidden"/>';
@@ -21,12 +34,12 @@ var HighlightedAreas = {
         $(tag).attr('name', 'img_id_'+cssid).val(img_id).appendTo(ha_elt);
         $(tag).attr('name', 'id_'+cssid).val(0).appendTo(ha_elt);
         $(tag).attr('name', 'code_id_'+cssid).val(code_id).appendTo(ha_elt);
-        $(tag).attr('name', 'x1_'+cssid).val(selection.x1).appendTo(ha_elt);
-        $(tag).attr('name', 'y1_'+cssid).val(selection.y1).appendTo(ha_elt);
-        $(tag).attr('name', 'x2_'+cssid).val(selection.x2).appendTo(ha_elt);
-        $(tag).attr('name', 'y2_'+cssid).val(selection.y2).appendTo(ha_elt);
-        $(tag).attr('name', 'width_'+cssid).val(selection.width).appendTo(ha_elt);
-        $(tag).attr('name', 'height_'+cssid).val(selection.height).appendTo(ha_elt);
+        $(tag).attr('name', 'x1_'+cssid).val(roundedSelection.x1).appendTo(ha_elt);
+        $(tag).attr('name', 'y1_'+cssid).val(roundedSelection.y1).appendTo(ha_elt);
+        $(tag).attr('name', 'x2_'+cssid).val(roundedSelection.x2).appendTo(ha_elt);
+        $(tag).attr('name', 'y2_'+cssid).val(roundedSelection.y2).appendTo(ha_elt);
+        $(tag).attr('name', 'width_'+cssid).val(roundedSelection.width).appendTo(ha_elt);
+        $(tag).attr('name', 'height_'+cssid).val(roundedSelection.height).appendTo(ha_elt);
         $(tag).attr('name', 'deleted_'+cssid).appendTo(ha_elt);
         setModified();
         clearNothingToCode(img_id);
