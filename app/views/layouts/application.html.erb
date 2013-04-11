@@ -60,6 +60,10 @@
               <h5><%= link_to current_user.username, edit_user_registration_path %></h5>
               <%= link_to "Sign out", destroy_user_session_path, :method => :delete  %>
             </div>
+          <% else %>
+            <div class="pull-right" id="login-info">
+              <%= link_to 'Sign in', new_user_session_path %> 
+            </div>
           <% end %>
 
           
