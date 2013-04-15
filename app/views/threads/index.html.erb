@@ -39,6 +39,7 @@
           <% if thread.owner == current_user %>
   		      <%= link_to "Delete", "/threads/#{thread.thread_name}" ,:method=>"delete" , :class => "btn btn-small btn-danger delete" %>
   		      <%= link_to "Edit", "/threads/#{thread.thread_name}/edit/", :class => "btn btn-small" %>
+  		      <%= link_to "Code", "/threads/#{thread.thread_name}/coding/", :class => "btn btn-small" %>
   	      <% end %>
           <div class="row-fluid">
             <%= thread.owner.username %>  <span class="pull-right label"><%= thread.category %></span>
