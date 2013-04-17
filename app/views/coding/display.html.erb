@@ -143,7 +143,7 @@
 							<% end %>
 						</a>
 						<% @thread.highlighted_areas_for_image(image).each do |ha| %>
-							<div id="<%= "ha_#{ha.id}" %>" style="position: absolute; overflow: hidden; z-index: 0; left: 0px; top: 0px; width: 0px; height: 0px; display: block; opacity: 0.7;" class=""></div>
+							<div id="<%= "ha_#{ha.id}" %>" style="position: absolute; overflow: hidden; z-index: 0; left: 0px; top: 0px; width: 0px; height: 0px; display: block; opacity: 0.7;" class="highlighted_area"></div>
 						<% end %>
 						</div>
 					<% end %>
@@ -292,7 +292,7 @@
 		var options = {
 		  hAxis: { textPosition: 'out',	textStyle: { fontSize: 9} },
 		  vAxis: {title: 'Percentage of total newspapers area', titleTextStyle: {color:'#666', italic: false}, format:'#,##%', gridlines: {color: '#ddd',count: 3},textStyle:{fontSize:'10'},viewWindow:{min:0}}, 
-		  bar:{groupWidth:'51%'}, 
+		  bar:{groupWidth:'80%'}, 
 		  legend:{position: 'none'}, 
 		  colors: codes_colors
 		};
