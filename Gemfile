@@ -52,3 +52,6 @@ gem 'stringex'
 # pagination support
 gem 'will_paginate', '~> 3.0'
 gem 'bootstrap-will_paginate'
+
+# web analytics
+gem 'piwik_analytics'
