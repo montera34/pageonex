@@ -12,7 +12,7 @@ class ThreadsController < ApplicationController
 	end
 
 	def mine
-		@threads = current_user.owned_threads
+		@threads = current_user.owned_threads.page(params[:page])
 		render :index
 	end
 

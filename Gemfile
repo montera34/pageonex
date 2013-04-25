@@ -12,12 +12,12 @@ end
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
   gem 'coffee-rails', '~> 3.2.1'
-  gem 'therubyracer'  # See https://github.com/sstephenson/execjs#readme for more supported runtimes
-  gem 'less-rails'
   gem 'uglifier', '>= 1.0.3'
 end 
 
 # GUI support libraries
+gem 'therubyracer'  # See https://github.com/sstephenson/execjs#readme for more supported runtimes
+gem 'less-rails'
 gem "twitter-bootstrap-rails"
 gem "jquery-rails"
 gem "jquery-ui-rails"
@@ -52,3 +52,6 @@ gem 'stringex'
 # pagination support
 gem 'will_paginate', '~> 3.0'
 gem 'bootstrap-will_paginate'
+
+# web analytics
+gem 'piwik_analytics'
