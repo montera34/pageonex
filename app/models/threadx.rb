@@ -55,6 +55,11 @@ class Threadx < ActiveRecord::Base
 		end
 	end
 	
+	# length of threadx in days
+	def duration
+	 (end_date - start_date).to_i + 1   # plus one is because date range for threadx is inclusive
+	end
+	
 	def images
 		Image.by_media(medium_ids).by_date(start_date..end_date)
 	end

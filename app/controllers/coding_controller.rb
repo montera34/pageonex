@@ -93,26 +93,17 @@ class CodingController < ApplicationController
 
     @ratios = {}
 
-    images_per_row = @thread.images.length / @thread.media.length
+    #images_per_row = @thread.images.length.to_f / @thread.media.length.to_f
+    images_per_row = @thread.duration
 
     1.upto(images_per_row) do |c|
     	@images_columns["c#{c}"] = []
-    end
-
-    1.upto(images_per_row) do |c|
       @high_areas_per["c#{c}"] = []
-    end
-
-    1.upto(images_per_row) do |c|
       @ratios["#{c}"] = 0
-    end
-
-    1.upto(images_per_row) do |c|
       @codes_high_areas["c#{c}"] = {}
       @codes.each do |code|
         @codes_high_areas["c#{c}"]["code_#{code.id}"] = 0.0
       end
-      
     end
 
     cr = 1
@@ -126,14 +117,14 @@ class CodingController < ApplicationController
         @images_columns["c#{cr}"] << img
       end
     end
-    @images_columns.each do |cr,imgs|
+    @images_columns.each do |col,imgs|
       imgs.each do |img|
         img.highlighted_areas.each do |ha|
           if @codes.include? ha.code
             highlighted_area = ha.areas[0]["height"].to_f * ha.areas[0]["width"].to_f #"to_f" returns number as a float.
             image_area = ha.image.size.split("x")[0].to_f * ha.image.size.split("x")[1].to_f #takes the values from the threads_controler.rb " image_size="750x951" " that's causing the error in the visualization for tabloids format. it gives approx good measures for "spanish" format newspapers 
             ratio = (highlighted_area / image_area) * 100
-            @codes_high_areas[cr]["code_#{ha.code.id}"] += ratio.ceil
+            @codes_high_areas[col]["code_#{ha.code.id}"] += ratio.ceil
          end
         end 
       end 
