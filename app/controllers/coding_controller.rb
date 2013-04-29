@@ -37,7 +37,9 @@ class CodingController < ApplicationController
       	# Updating an existing area
       	ha = @thread.highlighted_areas.find(params["id_#{ha_name}"])
       	if params["deleted_#{ha_name}"] == '1'
-      	  ha.areas[0].destroy
+      	  ha.areas.each do |a|
+      	    a.destroy
+      	  end
       	  ha.destroy
       	else
       	  ha.update_attribute('code_id', params["code_id_#{ha_name}"].to_i)
