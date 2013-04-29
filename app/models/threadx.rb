@@ -23,6 +23,8 @@ class Threadx < ActiveRecord::Base
 	validate :existing_thread, :on => :create
 
 	validate :not_too_many_images
+	
+	validate :starts_before_ends
 
 	validates :thread_name, :uniqueness=>true
 
@@ -33,6 +35,12 @@ class Threadx < ActiveRecord::Base
 
 	# for now, default to sort by most recent first
 	default_scope order('created_at DESC')
+
+  def starts_before_ends
+    if end_date < start_date
+      errors.add(:end_date, 'must be after start date')
+    end 
+  end
 
 	# workaround for bug #59
 	def not_too_many_images
