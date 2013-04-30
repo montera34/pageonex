@@ -67,3 +67,87 @@
 #footer {
   margin-bottom: 40px;
 }
+
+/*----------------new menu----------*/
+.pageonex-brand {
+	text-shadow: 0 0px 0 !important;
+	padding: 5px 20px 10px;
+}
+#pre-menu{
+	margin-top:6px;	
+}
+#pre-menu li a {
+        display: block!important;
+        display: block;
+        position: relative;
+        text-decoration: none;
+        z-index: 999;
+}
+#pre-menu li:hover,
+#pre-menu li a:hover,
+#pre-menu li:hover a {
+	text-decoration: none;
+	position: relative;
+	z-index: 999;
+}
+#pre-menu li ul {
+	display: none;
+	position: absolute;
+	z-index: 999;
+	width: 150px;
+	font-weight: bold;
+	left: 0;
+	padding: 2px 0 5px;
+	margin: 0 !important;
+}
+#pre-menu li a:hover ul,
+#pre-menu li:hover ul {
+	display: block !important;
+}
+#pre-menu li a:hover ul li,
+#pre-menu li:hover ul li {
+	position: relative;
+	display: block;
+	margin: 0 !important;
+	padding: 0 !important;
+	z-index: 999;
+	background-color: #fff;
+}
+#pre-menu li a:hover ul li a,
+#pre-menu li:hover ul li a {
+	padding: 2px 0 8px 5 !important;
+}
+#pre-menu li ul li:hover{
+	/*background-color: #bbb;*/
+}
+#pre-menu li ul li{
+	border:0;
+}
+#pre-menu ul.dropdown-menu li a{
+	color:gray;
+}
+#pre-menu ul.dropdown-menu li a:hover{
+	color:white !important;
+}
+.navbar .navbar-inner{
+	background-image:none;
+}
+#main-menu ul li {
+	background-color:#a1a1a1;
+	margin-right: 5px;
+}
+#main-menu li:hover {
+	background-color:#ff9955;
+}
+
+#main-menu li a{
+	color:white;
+	text-shadow: 0 0px 0 white;
+	padding: 5px;
+}
+#main-menu li.current-menu-item{
+	background-color:white;
+}
+#main-menu li.current-menu-item a{
+	color:#a1a1a1;
+}

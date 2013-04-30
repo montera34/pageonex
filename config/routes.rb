@@ -14,6 +14,7 @@ Pageonex::Application.routes.draw do
 
   match '/about' => 'home#about'
   match '/help' => 'home#help'
+  match '/terms-of-service' => 'home#terms-of-service'
 
   root :to => "home#index"
 

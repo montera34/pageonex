@@ -27,20 +27,22 @@
     <link href="images/apple-touch-icon-72x72.png" rel="apple-touch-icon" sizes="72x72">
     <link href="images/apple-touch-icon-114x114.png" rel="apple-touch-icon" sizes="114x114">
     -->
+
+    <%= favicon_link_tag %>
   </head>
   <body>
 
-    <div class="navbar navbar-inverse navbar-fixed-top">
-      <div class="navbar-inner">
+    <div class="navbar navbar-fixed-top" id="main-menu" style="background-color:#dedede">
+      <div class="">
           <div class="container">
           <a class="btn btn-navbar" data-target=".nav-collapse" data-toggle="collapse">
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </a>
-          <a class="brand" href="/" title="home PageOneX">PageOneX <em>beta</em></a>
-          <div class="container nav-collapse">
-          <ul class="nav">
+          <a class="brand pageonex-brand" href="/" title="Home PageOneX"><%= image_tag "imago-pageonex-4.png" %> PageOneX <em>beta</em></a>
+          <div class="container">
+          <ul id="pre-menu" class="nav nav-pills">
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">Threads<b class="caret"></b></a>
               <ul class="dropdown-menu">
@@ -50,7 +52,7 @@
                 <li><a href="/threads/" title="">All Threads</a></li>
               </ul>
             </li>
-	    <li><%= link_to "About", "/about"  %></li>
+	    <li class="menu-item" ><%= link_to "About", "/about"  %></li>
 	    <li><%= link_to "Documentation", "https://github.com/numeroteca/pageonex/wiki"  %></li>
 	    <li><%= link_to "Blog", "http://blog.pageonex.com"  %></li>
 	    <li><%= link_to "Report Bugs", "http://blog.pageonex.com/report-bugs/"  %></li>      
@@ -106,12 +108,11 @@
         <%= yield %>
 
       </div><!--/content-->
-      
       <div class="row" id="footer">
         <div class="span12">
           <footer>
-           		<hr> More info at <a href="http://blog.pageonex.com/" title="Go to blog">PageOneX Blog</a>. Check examples at <a href="http://numeroteca.org/cat/frontpage-newspaper/" title="Go to blog">numeroteca.org</a>
-  		    </footer>
+		<hr><a href="http://pageonex.com" title="PageOneX">PageOneX.com</a> | <%= link_to "Terms of Service", "/terms-of-service"  %> | Supported by <a href="http://civic.mit.edu/" title="">Center for Civic Media</a> | Project by <a href="http://numeroteca.org/cat/frontpage-newspaper/" title="Go to blog">numeroteca.org</a> 
+	  </footer>
         </div>
       </div>
       
