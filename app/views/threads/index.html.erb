@@ -23,11 +23,9 @@
 	      <%= image_tag "/assets#{image.local_path}", :size => "80x80", :class => "pull-left", :alt => "thread.thread_display_name" %>
             <% end %>
           <% else %>
-            <!-- for heroku -->
             <% thread.images[0,3].each do |image| %>
 	      <%= image_tag "#{image.source_url}", :size => "80x80", :class => "pull-left" %>
             <% end %>
-            <!-- end heroku-->
           <% end %>
           </a>
  	</div>
@@ -37,10 +35,14 @@
           <p>From <%= thread.start_date %> to <%= thread.end_date %></p>
           <!--<p>Status <%= thread.status %></p>-->
           <% if thread.owner == current_user %>
-  		      <%= link_to "Delete", "/threads/#{thread.thread_name}" ,:method=>"delete" , :class => "btn btn-small btn-danger delete" %>
+		<div class="btn-group row-fluid">	
+		      <%= link_to "View", "/#{thread.owner.username.split(' ').join('_')}/#{thread.thread_name}/", :class => "btn btn-small"  %>
   		      <%= link_to "Edit", "/threads/#{thread.thread_name}/edit/", :class => "btn btn-small" %>
   		      <%= link_to "Code", "/threads/#{thread.thread_name}/coding/", :class => "btn btn-small" %>
-  	      <% end %>
+		      <%= link_to "Delete", "/threads/#{thread.thread_name}" ,:method=>"delete" , :class => "btn btn-small btn-danger delete" %>
+		</div>
+	  <% end %>
+	  <hr style="margin:5px 3px 0px 3px;">
           <div class="row-fluid">
             <%= thread.owner.username %>  <span class="pull-right label"><%= thread.category %></span>
           </div>
