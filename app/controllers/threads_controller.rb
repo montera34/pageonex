@@ -96,23 +96,29 @@ class ThreadsController < ApplicationController
 	# edit action is responsible for rendering the edit thread form
 	def edit
 		# set the @thread object with the thread from the user owned threads
-		@thread = current_user.owned_threads.find_by_thread_name params[:id]
+		if current_user.admin
+			@thread = Threadx.find_by_thread_name params[:id]
+		else
+			@thread = current_user.owned_threads.find_by_thread_name params[:id]
+		end
 		# and if the user is not the owner, it redirects the user to the threads index, flash a message to the user to notify him, that he/she doesn't have permission to modify that thread
-		if @thread == nil
+		if @thread.nil?
 			flash[:thread_name_error] = "You don't have premission to edit this thread"
 			redirect_to "/threads/"
+		else
+			@media = Media.by_country_and_display_name.all
+			params["media"] = @thread.media.each.collect { |m| m.id }
 		end
-
-		@media = Media.by_country_and_display_name.all
-
-		params["media"] = @thread.media.each.collect { |m| m.id }
-
 	end
 
 
 	# the update action is responsible for processing the submitted request, it's pretty much the same as the create action. DRY this!
 	def update
-		@thread = current_user.owned_threads.find_by_thread_name params[:id]
+		if current_user.admin
+			@thread = Threadx.find_by_thread_name params[:id]
+		else
+			@thread = current_user.owned_threads.find_by_thread_name params[:id]
+		end
 
 		media = params[:media]
 

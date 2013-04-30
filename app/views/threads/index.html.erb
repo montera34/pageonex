@@ -34,7 +34,7 @@
           <p><%= thread.description.truncate(100) %></p>
           <p>From <%= thread.start_date %> to <%= thread.end_date %></p>
           <!--<p>Status <%= thread.status %></p>-->
-          <% if thread.owner == current_user %>
+          <% if thread.owner == current_user or current_user.admin  %>
 		<div class="btn-group row-fluid">	
 		      <%= link_to "View", "/#{thread.owner.username.split(' ').join('_')}/#{thread.thread_name}/", :class => "btn btn-small"  %>
   		      <%= link_to "Edit", "/threads/#{thread.thread_name}/edit/", :class => "btn btn-small" %>
