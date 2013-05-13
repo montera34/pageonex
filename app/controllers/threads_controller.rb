@@ -96,7 +96,7 @@ class ThreadsController < ApplicationController
 	# edit action is responsible for rendering the edit thread form
 	def edit
 		# set the @thread object with the thread from the user owned threads
-		if current_user.admin
+		if !current_user.nil? and current_user.admin
 			@thread = Threadx.find_by_thread_name params[:id]
 		else
 			@thread = current_user.owned_threads.find_by_thread_name params[:id]
@@ -114,7 +114,7 @@ class ThreadsController < ApplicationController
 
 	# the update action is responsible for processing the submitted request, it's pretty much the same as the create action. DRY this!
 	def update
-		if current_user.admin
+		if !curernt_user.nil? and current_user.admin
 			@thread = Threadx.find_by_thread_name params[:id]
 		else
 			@thread = current_user.owned_threads.find_by_thread_name params[:id]
