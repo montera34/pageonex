@@ -58,12 +58,12 @@
                         You are looking at the first image of this thread.
                     </div>
                     <div id="downloadImageAlert" class="alert above-image-alert" style="display:inline-block">
-                        <form accept-charset="UTF-8" action="/image/download" method="post" class="form-inline">
+                        <%= form_tag("/images/download", method: "post", :class=>'form-inline') do %>
                             Missing image! &nbsp;
                             <%= hidden_field_tag "missing_image_id", "" %>
                             <%= hidden_field_tag "thread_id", @thread.id %>
                             <%= submit_tag "try to download it", :class=>"btn" %>
-                        </form>
+                        <% end %>
                     </div>
                 </div>
             </div>
