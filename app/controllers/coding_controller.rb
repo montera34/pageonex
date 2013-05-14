@@ -5,7 +5,7 @@ class CodingController < ApplicationController
   def process_images
     @thread = Threadx.find_by_thread_name params[:thread_name]
     @highlighted_areas = @thread.highlighted_areas
-    @allowed_to_code = (!current_user.nil?) && (@thread.owner.id == current_user.id)
+    @allowed_to_code = !current_user.nil? && ((@thread.owner.id == current_user.id) || current_user.admin)
     @images = @thread.images_by_date  # while coding we want to go day by day, NOT media by media
   end
 
