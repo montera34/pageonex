@@ -34,17 +34,16 @@ $(document).ready(function () {
         renderHighlightedAreas();
 
         // after we slide for the next image, we normally initialize the imgAreaSelect for the new image, but before that, we also check if the user have a premonition
-        $('#downloadImageAlert').hide();
         if (pageData.allowedToCode) {
             // is the image was not found, it will not initialize the imgAreaSelect, and this not working in the heroku deployed version
             if ( (current_img.attr("alt") == "404") || (current_img.attr('data-missing')=='true') ) {
                 $('#images_section div.active img').imgAreaSelect({handles: true,onSelectEnd: highlightingArea, disable:true});
                 $('#missing_image_id').val(current_img.attr('data-id'));
-                $('#downloadImageAlert').show();
             }else{
                 $('#images_section div.active img').imgAreaSelect({handles: true,onSelectEnd: highlightingArea});
             }
         }
+        setMissingImageInfoFromImg(current_img);
 
         // update the sidebar meta-data about the image
         var source_url = $("#images_section div.active img").attr('url');
@@ -98,6 +97,15 @@ $(document).ready(function () {
     progressBarPercentage()
 
 });
+
+function setMissingImageInfoFromImg(imgElem){
+    if(imgElem.attr('data-missing')=='true'){
+        $('#missing_image_id').val(imgElem.attr('data-id'));
+        $('#downloadImageAlert').show();
+    } else {
+        $('#downloadImageAlert').hide();
+    }
+}
 
 function markAsNothingToCode(){ 
     var current_img = getCurrentImage();

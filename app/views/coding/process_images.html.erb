@@ -227,18 +227,20 @@ $(function() {
     $("#coding").css("color","#fff")
     $("#coding").attr("class", "btn btn-info");
 
+    // hide alerts
+    $('#youHaveLoopedAlert').hide();
+    $('#downloadImageAlert').hide();
+
     // support auto-starting on the image the user clicked in the display view
     if (pageData.startImageName.length != 0) {
         $("#images_section div.active img").parent().attr("class", "item")
-        $("#images_section div img[name='"+pageData.startImageName+"']").parent().attr("class", "active item")
+        var startImage = $("#images_section div img[name='"+pageData.startImageName+"']");
+        startImage.parent().attr("class", "active item");
+        setMissingImageInfoFromImg(startImage);
     };
 
     // when the user click save, it will set the status to "0", to allow the form to be submitted
     $(".save").click(function (e) { setModified(0) })
-
-    // hide alerts
-    $('#youHaveLoopedAlert').hide();
-    $('#downloadImageAlert').hide();
 
     $(document).bind('keydown', 'left', function(){ $('#carouselPrevLink').click() });
     $(document).bind('keydown', 'right', function(){ $('#carouselNextLink').click() });
