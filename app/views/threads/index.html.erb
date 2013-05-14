@@ -17,7 +17,7 @@
     <li class="span3">
       <div class="thumbnail">
 	<div class="row-fluid">
-          <a href="<%= "/#{thread.owner.username.split(' ').join('_')}/#{thread.thread_name}/" %>" title="<%= "#{thread.thread_display_name}" %>">
+          <a href="<%= "#{thread.link_url}" %>" title="<%= "#{thread.thread_display_name}" %>">
           <% if use_local_images %>
             <% thread.images[0,3].each do |image| %>
 	      <%= image_tag "/assets#{image.local_path}", :size => "80x80", :class => "pull-left", :alt => "thread.thread_display_name" %>
@@ -30,7 +30,7 @@
           </a>
  	</div>
         <div class="caption">
-          <h4><%= link_to thread.thread_display_name, "/#{thread.owner.username.split(' ').join('_')}/#{thread.thread_name}/" %></h4>
+          <h4><%= link_to thread.thread_display_name, "#{thread.link_url}" %></h4>
           <p><%= thread.description.truncate(100) %></p>
           <p>From <%= thread.start_date %> to <%= thread.end_date %></p>
           <!--<p>Status <%= thread.status %></p>-->
@@ -38,7 +38,7 @@
 		<!--do nothing-->
 	  <% elsif thread.owner == current_user or current_user.admin  %>
 		<div class="btn-group row-fluid">	
-		      <%= link_to "View", "/#{thread.owner.username.split(' ').join('_')}/#{thread.thread_name}/", :class => "btn btn-small"  %>
+		      <%= link_to "View", "#{thread.link_url}", :class => "btn btn-small"  %>
   		      <%= link_to "Edit", "/threads/#{thread.thread_name}/edit/", :class => "btn btn-small" %>
   		      <%= link_to "Code", "/threads/#{thread.thread_name}/coding/", :class => "btn btn-small" %>
 		      <%= link_to "Delete", "/threads/#{thread.thread_name}" ,:method=>"delete" , :class => "btn btn-small btn-danger delete" %>

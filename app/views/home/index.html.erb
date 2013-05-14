@@ -31,7 +31,7 @@
   	<h3>Last threads</h3>
   	<% if @threads != [] %>
   		<% @threads.sort{|a,b| b.created_at <=> a.created_at }.each do |thread| %>
-  			    <h4><a href="<%= "/#{thread.owner.username.split(' ').join('_')}/#{thread.thread_name}/" %>"><%= thread.thread_display_name %></a> <small><%= thread.owner.username %></small> </h4>
+  			    <h4><a href="<%= "#{thread.link_url}" %>"><%= thread.thread_display_name %></a> <small><%= thread.owner.username %></small> </h4>
   		<% end %>
   	<% else %>
     	<h2>There are no threads.</h2>

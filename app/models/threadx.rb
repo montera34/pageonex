@@ -36,6 +36,10 @@ class Threadx < ActiveRecord::Base
 	# for now, default to sort by most recent first
 	default_scope order('created_at DESC')
 
+	def link_url
+		'/'+owner.username.split(' ').join('_')+'/'+thread_name+'/'
+	end
+
   def starts_before_ends
     if end_date < start_date
       errors.add(:end_date, 'must be after start date')
