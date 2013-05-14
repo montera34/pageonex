@@ -11,6 +11,13 @@ class Media < ActiveRecord::Base
     self.country + " - " + self.display_name
   end
 
+  def create_image_directory
+    return false if not Pageonex::Application.config.use_local_images
+    local_image_dir = File.join(KioskoScraper.local_image_dir, name)
+    FileUtils.mkdir local_image_dir unless File.directory? local_image_dir
+    true
+  end
+
   def self.get_names_from_list media_list
     newspapers_names = {}
     media_list.each do |m|
