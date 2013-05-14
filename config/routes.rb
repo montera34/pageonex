@@ -5,6 +5,8 @@ Pageonex::Application.routes.draw do
 
   resources :threads
 
+  match ':images/download' => 'images#download'
+
   match 'threads/new_topic/:index' => 'threads#new_topic'
   match ':username/:thread_name/export' => 'threads#export'
 

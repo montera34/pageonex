@@ -33,12 +33,14 @@ $(document).ready(function () {
         
         renderHighlightedAreas();
 
-        // after we slide for the next image, we normally initialize the imgAreaSelect for the new image, but befor that, we also check if the user have a premonition
+        // after we slide for the next image, we normally initialize the imgAreaSelect for the new image, but before that, we also check if the user have a premonition
+        $('#downloadImageAlert').hide();
         if (pageData.allowedToCode) {
-
             // is the image was not found, it will not initialize the imgAreaSelect, and this not working in the heroku deployed version
-            if (current_img.attr("alt") == "404") {
+            if ( (current_img.attr("alt") == "404") || (current_img.attr('data-missing')=='true') ) {
                 $('#images_section div.active img').imgAreaSelect({handles: true,onSelectEnd: highlightingArea, disable:true});
+                $('#missing_image_id').val(current_img.attr('data-id'));
+                $('#downloadImageAlert').show();
             }else{
                 $('#images_section div.active img').imgAreaSelect({handles: true,onSelectEnd: highlightingArea});
             }
@@ -60,6 +62,7 @@ $(document).ready(function () {
             $('#youHaveLoopedAlert').hide();
         }
 
+        // TODO: update the 'i' param on the url to be current_img.attr("name")... without refreshing the page
     });
 
     // this attemps to handle user zoom in/out, but doesn't play well with the highlighted area resizing code

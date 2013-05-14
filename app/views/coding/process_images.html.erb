@@ -54,8 +54,16 @@
                             <a id="" class="btn btn-inverse skip_coding">Nothing to Code</a>
                         </div>
                     </div>
-                    <div id="youHaveLoopedAlert" class="alert alert-info" style="display:inline-block">
+                    <div id="youHaveLoopedAlert" class="alert alert-info above-image-alert" style="display:inline-block">
                         You are looking at the first image of this thread.
+                    </div>
+                    <div id="downloadImageAlert" class="alert above-image-alert" style="display:inline-block">
+                        <form accept-charset="UTF-8" action="/image/download" method="post" class="form-inline">
+                            Missing image! &nbsp;
+                            <%= hidden_field_tag "missing_image_id", "" %>
+                            <%= hidden_field_tag "thread_id", @thread.id %>
+                            <%= submit_tag "try to download it", :class=>"btn" %>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -76,13 +84,15 @@
                     <% if use_local_images %>
                         <%= image_tag @images[ic].local_path, :id => "image#{ic+1}", :style => "width: 670px", :media=>@images[ic].media.display_name, 
                                         :image_size=>@images[ic].size, :pub_date=>@images[ic].publication_date, :name=>@images[ic].image_name,
-                                        :url=>@images[ic].source_url, :media_url=>@images[ic].media.url %>
+                                        :url=>@images[ic].source_url, :media_url=>@images[ic].media.url, 
+                                        'data-id'=>@images[ic].id , 'data-missing'=>@images[ic].missing
+                        %>
                     <% else %>
                         <!-- display live version form kiosko, just for the online beta version on heroku -->
                         <% if @images[ic].local_path == "404.jpg" %>
-                            <img src="/assets/404.jpg" alt="404" id="<%= "image#{ic+1}" %>" style="width: 670px;" image_size="<%= @images[ic].size %>" media="<%= @images[ic].media.display_name%>" pub_date="<%= @images[ic].publication_date %>" name="<%= "#{@images[ic].media.name}_#{@images[ic].publication_date.day}_#{@images[ic].publication_date.month}" %>" />
+                            <img src="/assets/404.jpg" alt="404" data-id="<%=image.id%>" id="<%= "image#{ic+1}" %>" style="width: 670px;" image_size="<%= @images[ic].size %>" media="<%= @images[ic].media.display_name%>" pub_date="<%= @images[ic].publication_date %>" name="<%= "#{@images[ic].media.name}_#{@images[ic].publication_date.day}_#{@images[ic].publication_date.month}" %>" />
                         <% else %>
-                            <img src="<%= @images[ic].source_url %>" alt="<%= @images[ic].image_name %>" id="<%= "image#{ic+1}" %>" style="width: 670px;" image_size="<%= @images[ic].size %>" media="<%= @images[ic].media.display_name%>" url="<%= @images[ic].media.url%>" pub_date="<%= @images[ic].publication_date %>" name="<%= @images[ic].image_name %>" />
+                            <img src="<%= @images[ic].source_url %>" data-id="<%=image.id%>" alt="<%= @images[ic].image_name %>" id="<%= "image#{ic+1}" %>" style="width: 670px;" image_size="<%= @images[ic].size %>" media="<%= @images[ic].media.display_name%>" url="<%= @images[ic].media.url%>" pub_date="<%= @images[ic].publication_date %>" name="<%= @images[ic].image_name %>" />
                         <% end %>
                         <!-- end -->
                     <% end %>
@@ -225,6 +235,10 @@ $(function() {
 
     // when the user click save, it will set the status to "0", to allow the form to be submitted
     $(".save").click(function (e) { setModified(0) })
+
+    // hide alerts
+    $('#youHaveLoopedAlert').hide();
+    $('#downloadImageAlert').hide();
 
     $(document).bind('keydown', 'left', function(){ $('#carouselPrevLink').click() });
     $(document).bind('keydown', 'right', function(){ $('#carouselNextLink').click() });
