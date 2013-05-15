@@ -107,14 +107,20 @@ class Threadx < ActiveRecord::Base
 		return nil
 	end
 	
-	def results
+	def results(type = :tree)
 		# Create an ordered list of newspapers, codes, dates
 		res = {
-			:media => ['Total'] + media.map {|m| m.display_name},
+			:media => media.map {|m| m.display_name},
 			:codes => codes.map {|c| c.code_text},
 			:dates => start_date .. end_date,
+			:colors => {},
 			:data => {}
 		}
+		codes.each do |c|
+			res[:colors][c.code_text] = c.color
+		end
+		tree_data = {}
+		flat_data = []
 		# Create a tree: date->media->code->percentage
 		(start_date..end_date).each do |date|
 			media_code = {}
@@ -132,6 +138,9 @@ class Threadx < ActiveRecord::Base
 					percent = get_percent(code, m, date)
 					code_percent[code.code_text] = percent
 					code_sum[code.code_text] += percent
+					flat_data << {
+						:id => "#{date}:#{m.display_name}:#{code.code_text}", :date => date, :media => m.display_name, :code => code.code_text, :percent => percent
+					}
 				end
 				media_code[m.display_name] = code_percent
 				code_count += 1.0
@@ -146,9 +155,14 @@ class Threadx < ActiveRecord::Base
 				end
 			end
 			media_code['Total'] = code_percent
-			res[:data][date] = media_code
+			tree_data[date] = media_code
 		end
-		res
+		if type == :tree
+			res[:data] = tree_data
+		elsif type == :flat
+			res[:data] = flat_data
+		end
+		return res
 	end
 	
 end
