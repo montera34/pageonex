@@ -7,6 +7,11 @@ var getKey = function (d) { return d.key; };
 var mapValues = function (a, f) { return {key:a.key, values:a.values.map(f) }; };
 var isNonzero = function (d) { return d.percent > 0; };
 
+var formatDate = function (dateString) {
+    var d = new Date(dateString + ' 00:00:00');
+    return (d.getMonth() + 1) + '/' + d.getDate();
+};
+
 var dataviz = {
     drawCodedThread: function(width, height, padding, thread) {
         // Configuration
@@ -25,7 +30,7 @@ var dataviz = {
         stack = d3.layout.stack()
             .values(function (d) { return d.values; })
             .x(function (d) { return dateIndex(d.date); })
-            .y(function (d) { return d.percent; })
+            .y(function (d) { return d.percent / d.image_count; })
             .out(function (d, y0, y) { d.y0 = y0; });
         // Apply stack layout to data with the same code
         data = data.map(function (date) {
@@ -38,7 +43,7 @@ var dataviz = {
             return d3.max(date.values, function (code) {
                 return d3.max(code.values, function (media) {
                     return d3.max(media.values, function (d) {
-                        return d.y0 + d.percent;
+                        return d.y0 + d.percent / d.image_count;
                     });
                 });
             });
@@ -53,6 +58,9 @@ var dataviz = {
         dateX = d3.scale.ordinal()
             .domain(thread.dates)
             .rangeRoundBands([0, chartWidth], 0.1);
+        dateLabel = d3.scale.ordinal()
+            .domain(thread.dates.map(formatDate))
+            .rangeRoundBands([0, chartWidth], 0.1);
         codeX = d3.scale.ordinal()
             .domain(thread.codes)
             .rangeRoundBands([0, dateX.rangeBand()], 0.025);
@@ -64,7 +72,7 @@ var dataviz = {
             .append('g')
         // Draw axes
         xAxis = d3.svg.axis()
-            .scale(dateX)
+            .scale(dateLabel)
             .orient('bottom');
         chart.append('g')
             .attr('transform', 'translate(' + (padding.left - 0.5) + ',' + (height - padding.bottom + 0.5) + ')')
@@ -91,7 +99,7 @@ var dataviz = {
             .attr('dx', '-0.2em')
             .attr('dy', '.71em')
             .style('text-anchor', 'end')
-            .text('Area');
+            .text('Mean % of Area');
         d3.selectAll('svg .domain').attr('stroke', 'black').attr('fill', 'none');
         d3.selectAll('svg .tick line').attr('stroke', 'black').attr('fill', 'none');
         // Draw bars
@@ -111,11 +119,10 @@ var dataviz = {
         percent.enter()
             .append('rect')
             .attr('x', function (d,i) { return padding.left + dateX(d.date); })
-            .attr('y', function (d) { return height - padding.bottom - Math.floor(y(d.percent + d.y0)); })
+            .attr('y', function (d) { return height - padding.bottom - Math.floor(y(d.percent / d.image_count + d.y0)); })
             .attr('width', codeX.rangeBand())
-            .attr('height', function (d) { return Math.ceil(y(d.percent)); })
-            .attr('fill', function (d) { return thread['colors'][d.code]; })
-            .attr('class', function (d) { return 'debug-' + (Math.ceil(y(d.percent))); });
+            .attr('height', function (d) { return Math.ceil(y(d.percent / d.image_count)); })
+            .attr('fill', function (d) { return thread['colors'][d.code]; });
     },
     getTitle: function (node) {
         var title = '';
@@ -132,16 +139,15 @@ var dataviz = {
                 media = d.values[i];
                 for (var j = 0; j < media.values.length; j++) {
                     data = media.values[j];
-                        total += data.percent;
+                        total += data.percent / data.image_count;
                 }
             }
             content = data.code + ': <strong>' + total + '</strong>';
         });
         return content;
     },
-    toDataUri: function (width, height) {
-        var svg = 'data:image/svg+html,';
-        svg += $('#chart_div')[0].innerHTML;
+    getSvg: function (width, height) {
+        svg = $('#chart_div')[0].innerHTML;
         return svg;
     }
 };

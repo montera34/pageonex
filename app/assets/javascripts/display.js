@@ -103,3 +103,7 @@ $(function () {
 	})
 
 })
+
+$('#chart-modal form').submit(function () {
+	$('#chart-modal').modal('hide');
+});

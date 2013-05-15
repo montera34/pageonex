@@ -130,6 +130,7 @@ class Threadx < ActiveRecord::Base
 			codes.each do |code|
 				code_sum[code.code_text] = 0.0
 			end
+			image_count = images.by_date(date).codeable.length
 			# Caclulate percentage for each newspaper
 			media.each do |m|
 				next if images.by_media(m.id).by_date(date).codeable.length == 0
@@ -139,7 +140,7 @@ class Threadx < ActiveRecord::Base
 					code_percent[code.code_text] = percent
 					code_sum[code.code_text] += percent
 					flat_data << {
-						:id => "#{date}:#{m.display_name}:#{code.code_text}", :date => date, :media => m.display_name, :code => code.code_text, :percent => percent
+						:id => "#{date}:#{m.display_name}:#{code.code_text}", :date => date, :media => m.display_name, :code => code.code_text, :percent => percent, :image_count => image_count
 					}
 				end
 				media_code[m.display_name] = code_percent
