@@ -3,6 +3,7 @@ Pageonex::Application.routes.draw do
 
   match 'threads/mine' => 'threads#mine'
   match 'threads/search' => 'threads#search'
+  match 'threads/search_by_category' => 'threads#search_by_category'
 
   resources :threads
 

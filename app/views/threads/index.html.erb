@@ -7,6 +7,8 @@
 	</div>
 <% end %>
 
+<h2><%=@subtitle%></h2>
+
 <ul class="thumbnails">
 
 <% if @threads.length > 0%>
@@ -16,37 +18,42 @@
 
     <li class="span3">
       <div class="thumbnail">
-	<div class="row-fluid">
+        <div class="row-fluid">
           <a href="<%= "#{thread.link_url}" %>" title="<%= "#{thread.thread_display_name}" %>">
           <% if use_local_images %>
             <% thread.images[0,3].each do |image| %>
-	      <%= image_tag "/assets#{image.local_path}", :size => "80x80", :class => "pull-left", :alt => "thread.thread_display_name" %>
+              <%= image_tag "/assets#{image.local_path}", :size => "80x80", :class => "pull-left", :alt => "thread.thread_display_name" %>
             <% end %>
           <% else %>
             <% thread.images[0,3].each do |image| %>
-	      <%= image_tag "#{image.source_url}", :size => "80x80", :class => "pull-left" %>
+              <%= image_tag "#{image.source_url}", :size => "80x80", :class => "pull-left" %>
             <% end %>
           <% end %>
           </a>
- 	</div>
+ 	      </div>
         <div class="caption">
           <h4><%= link_to thread.thread_display_name, "#{thread.link_url}" %></h4>
           <p><%= thread.description.truncate(100) %></p>
           <p>From <%= thread.start_date %> to <%= thread.end_date %></p>
           <!--<p>Status <%= thread.status %></p>-->
           <% if current_user.nil? %>
-		<!--do nothing-->
-	  <% elsif thread.owner == current_user or current_user.admin  %>
-		<div class="btn-group row-fluid">	
-		      <%= link_to "View", "#{thread.link_url}", :class => "btn btn-small"  %>
-  		      <%= link_to "Edit", "/threads/#{thread.thread_name}/edit/", :class => "btn btn-small" %>
-  		      <%= link_to "Code", "/threads/#{thread.thread_name}/coding/", :class => "btn btn-small" %>
-		      <%= link_to "Delete", "/threads/#{thread.thread_name}" ,:method=>"delete" , :class => "btn btn-small btn-danger delete" %>
-		</div>
-	  <% end %>
-	  <hr style="margin:5px 3px 0px 3px;">
+		        <!--do nothing-->
+          <% elsif thread.owner == current_user or current_user.admin  %>
+        		<div class="btn-group row-fluid">	
+        		      <%= link_to "View", "#{thread.link_url}", :class => "btn btn-small"  %>
+          		      <%= link_to "Edit", "/threads/#{thread.thread_name}/edit/", :class => "btn btn-small" %>
+          		      <%= link_to "Code", "/threads/#{thread.thread_name}/coding/", :class => "btn btn-small" %>
+        		      <%= link_to "Delete", "/threads/#{thread.thread_name}" ,:method=>"delete" , :class => "btn btn-small btn-danger delete" %>
+        		</div>
+          <% end %>
+          <hr style="margin:5px 3px 0px 3px;">
           <div class="row-fluid">
-            <%= thread.owner.username %>  <span class="pull-right label"><%= thread.category %></span>
+            <%= thread.owner.username %>  
+            <span class="pull-right label">
+              <% thread.category_list.each do |c| %>
+                <%=link_to c,"/threads/search_by_category?q=#{c.strip}"%>
+              <% end %>
+            </span>
           </div>
         </div>
 
@@ -60,6 +67,7 @@
     <% end %>
 
   <% end %>
+  
   </div> <!-- end class="row"-->
 
   <% unless !@use_paging.nil? and @use_paging==false %>

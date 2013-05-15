@@ -67,6 +67,11 @@ class Threadx < ActiveRecord::Base
 		end
 	end
 	
+	# return an array of categories
+	def category_list
+		self.category.split(",")
+	end
+
 	# length of threadx in days
 	def duration
 	 (end_date - start_date).to_i + 1   # plus one is because date range for threadx is inclusive

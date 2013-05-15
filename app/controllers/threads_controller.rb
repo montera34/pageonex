@@ -8,25 +8,36 @@ class ThreadsController < ApplicationController
 	# and also matches the /threads/?a=t url to the user owned threads
 	def index
 		#TODO: this will need pagination soon
+		@subtitle = "All Threads"
 		@threads = Threadx.page(params[:page])
 	end
 
 	def mine
+		@subtitle = "Your Threads"
 		@threads = current_user.owned_threads.page(params[:page])
+		render :index
+	end
+
+	def search_by_category
+		search_str = params[:q]
+		@subtitle = "Threads in the '#{search_str}' category"
+		@use_paging = false
+		Threadx.per_page = 1000 # don't do paging here
+		query = "%#{search_str}%"
+		@threads = Threadx.where("(category LIKE ?)", query).all
 		render :index
 	end
 
 	def search
 		search_str = params[:q]
+		@subtitle = "Threads about '#{search_str}'"
 		@use_paging = false
 		Threadx.per_page = 1000 # don't do paging here
-		#@threads = Table.where('thread_display_name LIKE ?', '%q%').all
-		query = "%#{search_str}"
+		query = "%#{search_str}%"
 		@threads = Threadx.joins(:codes).where(
 			"(code_text LIKE ?) OR (code_description LIKE ?) OR (thread_display_name LIKE ?) OR (description LIKE ?) OR (category LIKE ?)", 
 			query, query, query, query, query
 		).all.uniq
-
 		render :index
 	end
 
