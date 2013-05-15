@@ -43,7 +43,7 @@ $(function () {
     var spinner = new Spinner(opts).spin();
     wait_box.append(spinner.el);
   })
-
+/*
   // if the used chooses the open option, it will hide the end date box and will set the value for status with opened
   $("#open_thread").click(function () {
     $("label[for='threadx_end_date']").hide();
@@ -58,7 +58,7 @@ $(function () {
     $("#threadx_end_date").show();
     $("#status").attr("value","closed");
   })
-
+*/
   // clear all the selected media choices
   $("#clear_media").click(function () {
     $("#media").val([]);

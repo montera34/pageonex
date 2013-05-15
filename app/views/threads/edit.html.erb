@@ -30,6 +30,7 @@
     <%= f.text_field :thread_name, :rel=>"popover", 'data-content'=>"This will be used to create the URL this Thread. If you include any letters or symbols that don't work in URLs, we will automatically substitute them. This field will generate: pageonex.com/your_thread_name from 'Your Thread Name'" %> 
     </div>
   </div>
+<!--  
   <div class="control-group">
   <%= f.label :status, :class => "control-label"  %>
     <div class="controls">
@@ -46,8 +47,9 @@
     <% end %>
     </div>
   </div>
-  <%= hidden_field_tag :status, @thread.status %>
   <br>
+-->
+  <%= hidden_field_tag :status, @thread.status %>
   <div class="control-group">
   <%= f.label :start_date, :class => "control-label" %>
     <div class="controls">
@@ -134,7 +136,7 @@ $(function () {
   $("#media").val($("#org_media").val().split(" "));
 
   $('.datepicker').datepicker();
-
+/*
   $("#open_thread").click(function () {
     $("label[for='threadx_end_date']").hide();
     $("#threadx_end_date").hide();
@@ -146,5 +148,6 @@ $(function () {
     $("#threadx_end_date").show();
     $("#status").val("closed");
   });
+*/
 })
 </script>

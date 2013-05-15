@@ -38,6 +38,7 @@
       <%= f.text_field :thread_display_name, placeholder: "For example Occupy, Arab Spring", :class => "server_validation" %>
     </div>
   </div>
+<!--
   <div class="control-group">
     <%= f.label :status, :class => "control-label"  %>
     <div class="controls">
@@ -45,9 +46,9 @@
         <a id="open_thread" class="btn btn-primary status" rel="popover" data-content="In case of selecting this option, PageOneX will update with the latest newspapers front pages automatically" data-original-title="Opened Thread" >Opened</a>
         <a id="close_thread" class="btn btn-inverse active status" rel="popover"  data-content="In case of selecting this option, PageOneX will create a thread with fixed dates" data-original-title="Closed Thread" >Closed</a>
      </div>
-  <!-- the status value is closed by default but if you change it to open it will change this value -->
     </div>
-  </div>
+  </div> 
+-->
   <%= hidden_field_tag :status,"closed" %>
   <div class="date_errors">
     <div class="control-group">
