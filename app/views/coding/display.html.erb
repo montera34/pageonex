@@ -85,6 +85,16 @@
 
 <!-- Results Chart -->
 <div class="row">
+        <div id="chart_controls">
+		<div class="btn-group pull-right">
+		    <button class="btn btn-small">Export chart</button>
+		    <button class="btn btn-small dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
+		    <ul class="dropdown-menu">
+		      <li><a id="exportsvg" target="_blank" href="">Export as SVG</a></li>
+		      <li><a href="">Export as PNG</a></li>
+		    </ul>
+		</div>
+	</div>
 	<div id="chart_div" style="margin-left: 110px;width: 1210px; margin-bottom: -15px;"></div><!--div to display bar chart-->
 </div>
 
@@ -218,6 +228,7 @@ var height = 200;
 var width = 1210;
 var padding = {"top": 40, "right": 120, "bottom": 40, "left": 120 };
 dataviz.drawCodedThread(width, height, padding, thread);
+$('#exportsvg').attr('href', dataviz.toDataUri(width, height));
 $('.code').hover(function () {
         var title = dataviz.getTitle(this);
         var content = dataviz.getContent(this);

@@ -138,6 +138,11 @@ var dataviz = {
             content = data.code + ': <strong>' + total + '</strong>';
         });
         return content;
+    },
+    toDataUri: function (width, height) {
+        var svg = 'data:image/svg+html,';
+        svg += $('#chart_div')[0].innerHTML;
+        return svg;
     }
 };
 return dataviz;
