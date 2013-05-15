@@ -69,9 +69,9 @@
           <% end %>
 
           
-          <form class="navbar-search pull-right">
-            <input type="text" class="search-query" placeholder="Search">
-          </form>
+          <%= form_tag '/threads/search',:class=>'navbar-search pull-right' do %>
+            <input name="q" type="text" class="search-query" placeholder="Search">
+          <% end %>
           
           </div><!--/.nav-collapse -->
         </div>

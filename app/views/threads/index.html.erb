@@ -62,11 +62,13 @@
   <% end %>
   </div> <!-- end class="row"-->
 
-  <div class="row">
-    <div class="span12">
-      <%= will_paginate @threads %>
+  <% unless !@use_paging.nil? and @use_paging==false %>
+    <div class="row">
+      <div class="span12">
+        <%= will_paginate @threads %>
+      </div>
     </div>
-  </div>
+  <% end %>
 
 <% else %>
 

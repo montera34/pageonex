@@ -2,6 +2,7 @@ Pageonex::Application.routes.draw do
   devise_for :users
 
   match 'threads/mine' => 'threads#mine'
+  match 'threads/search' => 'threads#search'
 
   resources :threads
 

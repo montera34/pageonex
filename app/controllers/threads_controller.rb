@@ -16,6 +16,20 @@ class ThreadsController < ApplicationController
 		render :index
 	end
 
+	def search
+		search_str = params[:q]
+		@use_paging = false
+		Threadx.per_page = 1000 # don't do paging here
+		#@threads = Table.where('thread_display_name LIKE ?', '%q%').all
+		query = "%#{search_str}"
+		@threads = Threadx.joins(:codes).where(
+			"(code_text LIKE ?) OR (code_description LIKE ?) OR (thread_display_name LIKE ?) OR (description LIKE ?) OR (category LIKE ?)", 
+			query, query, query, query, query
+		).all.uniq
+
+		render :index
+	end
+
 	# new action render the new form, with the an array of all the media in the db, but before that it do change the name of the media, by formating it, as "#{newspaper.country} - #{newspaper.display_name}" to be sorted by country name in the view
 	def new
 		@media = Media.by_country_and_display_name.all
@@ -114,7 +128,7 @@ class ThreadsController < ApplicationController
 
 	# the update action is responsible for processing the submitted request, it's pretty much the same as the create action. DRY this!
 	def update
-		if !curernt_user.nil? and current_user.admin
+		if !current_user.nil? and current_user.admin
 			@thread = Threadx.find_by_thread_name params[:id]
 		else
 			@thread = current_user.owned_threads.find_by_thread_name params[:id]
