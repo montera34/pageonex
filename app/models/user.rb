@@ -12,4 +12,14 @@ class User < ActiveRecord::Base
 
 	has_many :threadx_collaborators
 	has_many :coll_threads, :through => :threadx_collaborators, :source => :threadx
+
+  validate :ok_username
+
+  # we want to prevent users from creating certain usernames
+  def ok_username
+    if ['pageonex', 'admin', 'user', 'thread', 'example'].include? self.username
+      errors.add(:userame, "isn't valid")
+    end 
+  end
+
 end
