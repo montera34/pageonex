@@ -64,7 +64,7 @@
     <div class="control-group">
       <%= f.label :end_date, :class => "control-label"  %>
       <div class="controls">
-        <%= f.text_field :end_date, placeholder: "DD/MM/YYYY", :class => "dates js_validate datepicker","rel" => "popover", "data-content"  => "For the alpha version, don't choose more than 90 days threads", "data-original-title" => "End date limitation" %>
+        <%= f.text_field :end_date, placeholder: "DD/MM/YYYY", :class => "dates js_validate datepicker","rel" => "popover", "data-content"  => "Start with a sort thread. You can always edit these dates and add more days", "data-original-title" => "End date limitation" %>
       </div>
     </div>
   </div>
@@ -87,7 +87,7 @@
 	<div id="media_box">
   	<%= label_tag :media, "Select newspapers", :id => "media_label1", :class => "control-label" %>
 	  <div class="controls">
-  	    <%= select_tag :media, options_from_collection_for_select(@media, "id", "name_with_country"),  :multiple => true ,"rel" => "popover", "data-content"  => "To select multiple newspapers: Hold Ctrl + select the newspaper, release the Ctrl with scrolling and hold it again before any other selection", "data-original-title" => "Select Multiple Newspapers" , style: "height: 300px;width: 300px;", :class=>"js_validate" %>
+  	    <%= select_tag :media, options_from_collection_for_select(@media, "id", "name_with_country"),  :multiple => true ,"rel" => "popover", "data-content"  => "To select multiple newspapers: Hold Ctrl + select the newspaper, release the Ctrl with scrolling and hold it again before any other selection. Start with 2-4 newspapers, you can always edit this and add more", "data-original-title" => "Select Multiple Newspapers" , style: "height: 300px;width: 300px;", :class=>"js_validate" %>
           </div>
 	  <div class="controls">
 	    <a id="clear_media" class="btn">Clear all choices</a>

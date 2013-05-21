@@ -88,7 +88,7 @@
   <div id="media_box" class="control-group">
     <%= label_tag :media, "Select newspapers", :id => "media_label1", :class => "control-label"  %>
     <div class="controls">
-    <%= select_tag :media, options_from_collection_for_select(@media, "id", "name_with_country"),  :multiple => true , style: "height: 300px;width: 300px;", :class=>"js_validate" %>
+    <%= select_tag :media, options_from_collection_for_select(@media, "id", "name_with_country"),  :multiple => true , "rel" => "popover", "data-content"  => "To select multiple newspapers: Hold Ctrl + select the newspaper, release the Ctrl with scrolling and hold it again before any other selection. Start with 2-4 newspapers, you can always edit this and add more", "data-original-title" => "Select Multiple Newspapers", style: "height: 300px;width: 300px;", :class=>"js_validate" %>
     </div>
   </div>
 
@@ -98,7 +98,7 @@
 
   <h3>Coding information</h3>
   <p>Create one or multiple categories you want to use in the analysis.</p>
-
+new
   <div class="span6">
     <div id="topic-list">
       <% 
@@ -119,7 +119,7 @@
 
   <label class="checkbox">
     <!-- <input id="clean_high_areas" type="checkbox">  -->
-    <%= check_box_tag "clean_high_areas" %> Keep all highlighted areas that you have done, even the ones from the relaated to deleted images
+    <%= check_box_tag "clean_high_areas" %> Keep all highlighted areas that you have done, even the ones from newspapers that are not any more selected, or days that are not longer in this thread
   </label>
 
   <hr>
