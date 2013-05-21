@@ -16,7 +16,7 @@
 <!-- thread info / actions -->
 <div class="row">
 	<div class="span8">
-		<h2><%= @thread.thread_display_name.capitalize %></h2>
+		<h2><%= @thread.thread_display_name %></h2>
 	</div>
 	<div class="span2">
 		<div class="btn-group pull-right">
@@ -44,8 +44,8 @@
 <!-- Thread details / code info -->
 <div class="row">
 	<div class="span5">
+		<h4>By</h4> <%= @thread.owner.username %>
 		<h4>Description</h4><p> <%= @thread.description %></p>
-		<h4>Author/s</h4> <%= @thread.owner.username %>
 	</div>
 	<div class="span2">
 		<h4>Topics</h4>
@@ -64,7 +64,7 @@
 	</div>
 	<div class="span3">
 		<h5>Category</h5> <span class="label"><%= @thread.category %></span>
-		<h5>Status</h5> <p><%= @thread.status %></p>
+		<!--<h5>Status</h5> <p><%= @thread.status %></p>-->
 	</div>
 	
 </div> 
