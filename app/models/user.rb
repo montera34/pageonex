@@ -17,7 +17,7 @@ class User < ActiveRecord::Base
 
   # we want to prevent users from creating certain usernames
   def ok_username
-    if ['pageonex', 'admin', 'user', 'thread', 'example'].include? self.username
+    if ['pageonex', 'admin', 'user', 'thread', 'example', 'blog', 'timeline', 'documentation', 'wiki', 'about', 'frontpage'].include? self.username
       errors.add(:userame, "isn't valid")
     end 
   end
