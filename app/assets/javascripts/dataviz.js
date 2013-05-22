@@ -75,8 +75,16 @@ var dataviz = {
             .scale(dateLabel)
             .orient('bottom');
         chart.append('g')
+            .attr('class', 'xaxis')
             .attr('transform', 'translate(' + (padding.left - 0.5) + ',' + (height - padding.bottom + 0.5) + ')')
             .call(xAxis);
+        // Scale x axis labels
+        d3.selectAll('.xaxis .tick text').attr('font-size', '14');
+        labelWidth = d3.max(d3.selectAll('.xaxis .tick text')[0].map(function f (x) { return x.getBBox().width; }));
+        newSize = 14 * 0.85 * dateX.rangeBand() / labelWidth;
+        d3.selectAll('.xaxis .tick text').attr('font-size', newSize);
+        d3.selectAll('.xaxis text').attr('dy', '10');
+        // Draw horizontal lines
         yAxis = d3.svg.axis()
             .scale(yInverse)
             .orient('left')
@@ -90,16 +98,17 @@ var dataviz = {
             .attr('x1', padding.left)
             .attr('x2', width - padding.right)
             .style('stroke', '#ccc');
-        chart.append('g')
+        // Draw y labels
+        ylabel = chart.append('g')
+            .attr('class', 'yaxis')
             .attr('transform', 'translate(' + (padding.left - 0.5) + ',' + (padding.top + 0.5) + ')')
             .call(yAxis)
             .append('text')
-            .attr('transform', 'rotate(-90)')
-            .attr('y', 3)
-            .attr('dx', '-0.2em')
-            .attr('dy', '.71em')
-            .style('text-anchor', 'end')
-            .text('Mean % of Area');
+            .text('Mean % of Area')
+            .attr('font-size', '12');
+        ylabel.attr('dx', (ylabel[0][0].getBBox().height * -0.2)).attr('dy', (ylabel[0][0].getBBox().height * 0.55));
+        ylabel.attr('transform', 'rotate(-90)').attr('y', 3).style('text-anchor', 'end');
+        d3.selectAll('.yaxis .tick text').attr('dy', d3.select('.yaxis .tick text')[0][0].getBBox().height * 0.25);
         d3.selectAll('svg .domain').attr('stroke', 'black').attr('fill', 'none');
         d3.selectAll('svg .tick line').attr('stroke', 'black').attr('fill', 'none');
         // Draw bars
