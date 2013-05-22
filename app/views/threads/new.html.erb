@@ -35,7 +35,7 @@
   <div class="control-group">
     <%= f.label :thread_display_name, "Thread Name", :class => "control-label" %>
     <div class="controls">
-      <%= f.text_field :thread_display_name, placeholder: "For example Occupy, Arab Spring", :class => "server_validation" %>
+      <%= f.text_field :thread_display_name, placeholder: "For example 'Occupy movement coverage...", :class => "server_validation" %>
     </div>
   </div>
 <!--
@@ -54,7 +54,7 @@
     <div class="control-group">
       <%= f.label :start_date, :class => "control-label"  %>
       <div class="controls">
-        <%= f.text_field :start_date, placeholder: "DD/MM/YYYY", :class => "dates js_validate datepicker","rel" => "popover", "data-content"  => "Scraping is done from Kiosko.net, so there are some limitations for the years 2008, 2009, 2010, 2011, 2012. Most of newspaper exist starting from 2010", "data-original-title" => "Limitations of Sources" %>
+        <%= f.text_field :start_date, placeholder: "DD/MM/YYYY", :class => "dates js_validate datepicker","rel" => "popover", "data-content"  => "Images are downloaded from Kiosko.net. Most of newspapers are availablesince January 2010", "data-original-title" => "Limitations of Sources" %>
       </div>
     </div>
   </div>
@@ -79,7 +79,7 @@
   <div class="control-group">
     <%= f.label :description, :class => "control-label"   %>
     <div class="controls">
-    <%= f.text_area :description, :rows => "10", placeholder: "Explain what this thread is about", :class => "server_validation"%>
+    <%= f.text_area :description, :rows => "10", placeholder: "Explain what this thread is about in few words.", :class => "server_validation"%>
     </div>
   </div>
   <!--h3>Newspapers</h3-->
