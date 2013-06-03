@@ -1,5 +1,5 @@
 <!-- displaying the error message if the user was not permitted for editing a thread -->
-<% @title = "Threads - PageOneX" %>
+<% @title = @subtitle+" - PageOneX" %>
 <% if flash[:thread_name_error] %>
 	<div class="alert alert-error">
 		<a type="button" class="close" data-dismiss="alert">×</a>
@@ -48,7 +48,7 @@
 		  <% end %>
 		  <hr style="margin:5px 3px 0px 3px;">
 		  <div class="row-fluid">
-		    <%= thread.owner.username %>  
+		    <%=link_to thread.owner.username, '/threads/by/'+thread.owner.username %>
 		    <span class="pull-right label">
 		      <% thread.category_list.each do |c| %>
 		        <%=link_to c,"/threads/search_by_category?q=#{c.strip}"%>

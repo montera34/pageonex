@@ -3,14 +3,13 @@ Pageonex::Application.routes.draw do
   resources :users
 
   match 'threads/mine' => 'threads#mine'
+  match 'threads/by/:username' => 'threads#by_username'
   match 'threads/search' => 'threads#search'
   match 'threads/search_by_category' => 'threads#search_by_category'
-
+  match 'threads/new_topic/:index' => 'threads#new_topic'
   resources :threads
 
   match 'images/download' => 'images#download'
-
-  match 'threads/new_topic/:index' => 'threads#new_topic'
 
   match ':username/:thread_name/export' => 'threads#export'
   match ':username/:thread_name/coding' => 'coding#process_images'

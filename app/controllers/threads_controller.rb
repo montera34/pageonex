@@ -12,6 +12,14 @@ class ThreadsController < ApplicationController
 		@threads = Threadx.page(params[:page])
 	end
 
+	def by_username
+		@subtitle = "Threads by "+params[:username]
+		@user = User.find_by_username params[:username]
+		@threads = []
+		@threads = @user.owned_threads.page(params[:page]) if @user
+		render :index
+	end
+
 	def mine
 		@subtitle = "Your Threads"
 		@threads = current_user.owned_threads.page(params[:page])
