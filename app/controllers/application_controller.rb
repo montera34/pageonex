@@ -7,4 +7,9 @@ class ApplicationController < ActionController::Base
     Pageonex::Application.config.use_local_images
   end
 
+  def authenticate_admin!
+    authenticate_user!
+    redirect_to '/' unless current_user.admin
+  end
+
 end
