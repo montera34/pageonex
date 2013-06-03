@@ -3,18 +3,21 @@ var dataviz = (function () {
 var getProperty = function (name) { return function (d) { return d[name]; }; };
 var getValues = function (d) { return d.values; };
 var getKey = function (d) { return d.key; };
-
+// Utility functions
 var mapValues = function (a, f) { return {key:a.key, values:a.values.map(f) }; };
 var isNonzero = function (d) { return d.percent > 0; };
-
 var formatDate = function (dateString) {
     var d = new Date(dateString + ' 00:00:00');
     return (d.getMonth() + 1) + '/' + d.getDate();
 };
-
+// The dataviz object
 var dataviz = {
+    width: 0,
+    height: 0,
     drawCodedThread: function(width, height, padding, thread) {
         // Configuration
+        this.width = width;
+        this.height = height;
         var chartHeight = height - padding.top - padding.bottom;
         var chartWidth = width - padding.left - padding.right;
         // Convert flat data to a nested tree
@@ -133,6 +136,11 @@ var dataviz = {
             .attr('height', function (d) { return Math.ceil(y(d.percent / d.image_count)); })
             .attr('fill', function (d) { return thread['colors'][d.code]; });
     },
+    exportToSvg: function (svgNode, imgNode) {
+        html = this.getSvg(svgNode);
+        d3.select(imgNode)
+            .attr("src", "data:image/svg+xml;base64," + btoa(html));
+    },
     getTitle: function (node) {
         var title = '';
         d3.select(node).each(function (d) {
@@ -155,9 +163,13 @@ var dataviz = {
         });
         return content;
     },
-    getSvg: function (width, height) {
-        svg = $('#chart_div')[0].innerHTML;
-        return svg;
+    getSvg: function (node) {
+        html = d3.select(node)
+            .attr("title", "PageOneX Export")
+            .attr("version", 1.1)
+            .attr("xmlns", "http://www.w3.org/2000/svg")
+            .node().parentNode.innerHTML
+        return html;
     }
 };
 return dataviz;

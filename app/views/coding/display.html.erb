@@ -87,24 +87,14 @@
 <div class="row">
         <a href="#chart-modal" role="button" class="btn pull-right" data-toggle="modal">Export chart</a>
         <div id="chart-modal" class="modal hide fade">
-                <form method="post" action="/export_chart">
-                <input type="hidden" name="format" value="svg"/>
-                <input id="svgdata" type="hidden" name="svgdata" value=""/>
                 <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                         <h3>Export Chart</h3>
                 </div>
                 <div class="modal-body">
-                        <div>
-                                <select name="format">
-                                        <option value="svg">SVG</option>
-                                </select>
-                        </div>
-                        <div>
-                                <button type="submit" class="btn btn-primary">Export</button>
-                        </div>
+                        <p>To export the chart, right click the image below and select "Save Image As..." This will download the chart in SVG format.</p>
+                        <img id="chart-export-img" />
                 </div>
-                </form>
         </div>
 	<div id="chart_div" style="margin-left: 110px;width: 1210px; margin-bottom: -15px;"></div><!--div to display bar chart-->
 </div>
@@ -239,7 +229,7 @@ var height = 200;
 var width = 1210;
 var padding = {"top": 40, "right": 120, "bottom": 40, "left": 120 };
 dataviz.drawCodedThread(width, height, padding, thread);
-$('#svgdata').val(dataviz.getSvg(width, height));
+dataviz.exportToSvg($('#chart_div svg')[0], $('#chart-export-img')[0]);
 $('.code').hover(function () {
         var title = dataviz.getTitle(this);
         var content = dataviz.getContent(this);
