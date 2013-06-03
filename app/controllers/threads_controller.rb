@@ -2,7 +2,7 @@ require 'odf/spreadsheet'
 
 class ThreadsController < ApplicationController
 	# this filter is used to prevent an unregistered user form using the app, except if it was just exploring the threads
-	before_filter :authenticate_user!, :except => "index"
+	before_filter :authenticate_user!, :except => ["index", "by_username", "search_by_category", "search"]
 
 	# matches the /threads/ url to list all the user owned threads
 	# and also matches the /threads/?a=t url to the user owned threads
