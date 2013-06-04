@@ -94,7 +94,6 @@ var dataviz = {
             .ticks(5);
         chart.selectAll('.yline')
             .data(y.ticks(5))
-            .scale(yInverse)
             .enter()
             .append('line')
             .attr('y1', function (ty) { return Math.floor(y(ty)) + padding.top + 0.5; })
