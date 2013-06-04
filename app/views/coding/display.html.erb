@@ -34,7 +34,7 @@
 		</div>
 	</div>
 	<div class="span2">
-		<% if @thread.owner == current_user %>
+		<% if @thread.owner == current_user or current_user.admin %>
 		<%=  link_to "Delete", "/threads/#{@thread.thread_name}" ,:method=>"delete" , :class => "btn btn-danger delete" %>
 		<a href="<%= "/threads/#{@thread.thread_name}/edit"%>" class="btn">Edit</a> 
 		<% end %>
@@ -63,9 +63,9 @@
 		<h4>To </h4> <p><%= @thread.end_date.inspect %></p>
 	</div>
 	<div class="span3">
-		<h5>Category</h5> <span class="label">
+		<h5>Category</h5> <span class="categories">
 		      <% @thread.category_list.each do |c| %>
-		        <%=link_to c,"/threads/search_by_category?q=#{c.strip}"%>
+		        <%=link_to c,"/threads/search_by_category?q=#{c.strip}", :class => "label"%>
 		      <% end %>
 		</span>
 		<!--<h5>Status</h5> <p><%= @thread.status %></p>-->
@@ -85,6 +85,17 @@
 
 <!-- Results Chart -->
 <div class="row">
+        <a href="#chart-modal" role="button" class="btn pull-right" data-toggle="modal">Export chart</a>
+        <div id="chart-modal" class="modal hide fade">
+                <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h3>Export Chart</h3>
+                </div>
+                <div class="modal-body">
+                        <p>To export the chart, right click the image below and select "Save Image As..." This will download the chart in SVG format.</p>
+                        <img id="chart-export-img" />
+                </div>
+        </div>
 	<div id="chart_div" style="margin-left: 110px;width: 1210px; margin-bottom: -15px;"></div><!--div to display bar chart-->
 </div>
 
@@ -191,8 +202,10 @@
 
 <!-- other library we were using for the column chart, it's comment just in case we want to reuse it again -->
 <!-- "d3.min.js", "d3.layout.min.js", "rickshaw.min.js", -->
+<%= javascript_include_tag "http://d3js.org/d3.v3.min.js" %>
 <%= javascript_include_tag "highlighted_area.js" %>
 <%= javascript_include_tag "display.js" %>
+<%= javascript_include_tag "dataviz.js" %>
 
 <!-- thread info summary and code info again -->
 <div class="row">
@@ -209,105 +222,29 @@
 		</ul>
 	</div>	
 </div>
-
-<script>
-
-	// var data = [ { x: 0, y: 40 }, { x: 1, y: 49 }, { x: 2, y: 17 }, { x: 3, y: 42 } ];
-
-	// var number_of_images = parseInt($("#number_of_column").attr("value"))
-	// var data = []
-	// var column_value = 0
-	// for (var i = 1; i <= number_of_images; i++) {
-	// 	column_value = parseInt($("#ratios #v"+i).attr("value"))
-	// 	data.push({
-	// 		x: i,
-	// 		y: column_value
-	// 	})
-	// };
-
-	// // var row_width = $("div.images").width() - 225;	
-	// var row_width = $(".img_box").width()
-
-	// var graph = new Rickshaw.Graph( {
-	//     element: document.querySelector("#chart"),
-	// 	renderer: 'bar',
-	//     //width: 640,
-	//     width: row_width,
-	//     height: 90,
-	//     series: [ {
-	//             color: $(".codes").css("background-color"),
-	//             data: data
-	//     } ]
-	// } );
-
-	// graph.render();
-
-
-</script>
-
-<script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script type="text/javascript">
-  // $("#chart_div").css("width",$(".img_box").width())
+var thread = <%= @thread.results(:flat).to_json.html_safe %>
+var height = 200;
+var width = 1210;
+var padding = {"top": 40, "right": 120, "bottom": 40, "left": 120 };
+dataviz.drawCodedThread(width, height, padding, thread);
+dataviz.exportToSvg($('#chart_div svg')[0], $('#chart-export-img')[0]);
+$('.code').hover(function () {
+        var title = dataviz.getTitle(this);
+        var content = dataviz.getContent(this);
+        $(this).popover({
+                'title': title,
+                'content': content,
+                'html': true,
+                'placement': 'top',
+                'container': 'body'
+        });
+        $(this).popover('show');
+}, function () {
+        $(this).popover('hide');
+});
 
-  // initialize the visualization
-	google.load("visualization", "1", {packages:["corechart"]});
-	google.setOnLoadCallback(drawChart);
-	
-
-	var number_of_images = parseInt($("#number_of_column").attr("value"))
-	var number_of_codes = $(".codes_boxes").length 
-
-	// this is an array of arrays which will store the columns dates, and the first array will be the header
-	var columns_data = [['Dates']]
-
-	// add the codes names in the first array
-	for (var i = 0; i < number_of_codes; i++) {
-		columns_data[0].push($($(".codes_boxes")[i]).text())
-	};
-
-	var dates = $("#date-box input")
-	var column_values = []
-	var column_codes = []
-
-	// iterates over the ratios stored in hidden fields and load them into the arrays
-	for (var i = 1; i <= number_of_images; i++) {
-		column_values = [ dates[i-1].name]
-		column_codes = $("#row_c"+i).children()
-
-		for (var z = 0; z < number_of_codes; z++) {
-			column_values.push(parseFloat($(column_codes[z]).attr("value")))
-		};
-		columns_data.push(column_values)
-		
-		column_values = []
-		column_codes = []
-	};
-	
-	var codes = $(".box_legend") 
-	// load the codes colors in the codes_colors array to pass this array in the initialization function later, to set to the codes colors
-	var codes_colors = []
-	for (var i = 0; i < codes.length; i++) {
-		codes_colors.push($(codes[i]).css("background-color"))
-	};
-	
-	function drawChart() {
-		var data = google.visualization.arrayToDataTable(columns_data);
-		var options = {
-		  hAxis: { textPosition: 'out',	textStyle: { fontSize: 9} },
-		  vAxis: {title: 'Percentage of total newspapers area', titleTextStyle: {color:'#666', italic: false}, format:'#,##%', gridlines: {color: '#ddd',count: 3},textStyle:{fontSize:'10'},viewWindow:{min:0}}, 
-		  bar:{groupWidth:'80%'}, 
-		  legend:{position: 'none'}, 
-		  colors: codes_colors
-		};
-		var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));	
-		// to be used after adding twitter
-		// var chart = new google.visualization.ComboChart(document.getElementById('chart_div'));	
-		
-		// start the drawing of the visualization
-		chart.draw(data, options);
-	}
 </script>
-
 
 <script type="text/javascript">
 $(function (argument) {

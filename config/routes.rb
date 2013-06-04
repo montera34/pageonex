@@ -20,6 +20,7 @@ Pageonex::Application.routes.draw do
   match '/help' => 'home#help'
   match '/terms-of-service' => 'home#terms-of-service'
   match '/privacy-policy' => 'home#privacy-policy'
+  match '/export_chart' => 'home#export_chart'
 
   root :to => "home#index"
 

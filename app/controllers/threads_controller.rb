@@ -257,6 +257,12 @@ for opened thread:
 					:type => 'application/x-vnd.oasis.opendocument.spreadsheet',
 					:disposition => 'attachment'
 			end
+			format.svg do
+				send_file '<svg><rect width="1" height="1"></svg>',
+					:filename => 'export.svg',
+					:type => 'image/svg+xml',
+					:disposition => 'attachment'
+			end
 		end
 	end
 

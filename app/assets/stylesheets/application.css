@@ -71,6 +71,10 @@
 	color:#fff !important;
 }
 
+.yaxis path {
+	display:none;
+}
+
 /*----------------new menu----------*/
 .pageonex-brand {
 	text-shadow: 0 0px 0 !important;
