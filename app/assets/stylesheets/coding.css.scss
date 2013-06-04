@@ -19,3 +19,19 @@
 #chart-export-img {
   box-shadow: 2px 2px 5px #888888;
 }
+
+/* composite image stuff */
+ul.thread-composite-images {
+  list-style-type: none;
+  margin: 0px;
+  padding: 0px;
+  position: relative;
+  display: block;
+}
+ul.thread-composite-images li {
+  display: float;
+  float: left;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+}

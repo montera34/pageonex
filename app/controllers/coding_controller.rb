@@ -86,6 +86,9 @@ class CodingController < ApplicationController
     @image_counter = @thread.images.length
     @codes = @thread.codes
 
+    @thread.generate_composite_images
+    @img_map_info = @thread.composite_image_map_info
+
     # This part is used to calculate the highlighted areas percentages vertically 
     @images_columns = {}
 

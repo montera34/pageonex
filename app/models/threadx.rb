@@ -80,6 +80,22 @@ class Threadx < ActiveRecord::Base
 		self.category.split(",")
 	end
 
+	def composite_image_map_info
+		composite_img_dir = self.create_composite_img_dir
+		return nil unless File.exists? File.join(composite_img_dir,'img_map.json')
+		JSON.parse( IO.read(File.join(composite_img_dir,'img_map.json')) )
+	end
+
+	def path_to_composite_cover_image
+		File.join('threads',self.owner.id.to_s,self.id.to_s,'front_pages.png').to_s
+	end
+
+	def path_to_composite_highlighed_area_image code_id
+		File.join('threads',self.owner.id.to_s,self.id.to_s,'code_'+code_id.to_s+'.png').to_s
+	end
+
+	# generate combined images of all the front pages and highlighted areas
+	# TODO: be smart about caching this (ie. delete and regen when anything is changed)
 	def generate_composite_images width=970
 		thumb_width = (width.to_f / self.duration.to_f).round
 		# figure out each row height
@@ -94,7 +110,7 @@ class Threadx < ActiveRecord::Base
 		composite_img_dir = self.create_composite_img_dir
 
 		# create the composite images
-		img_map = {}
+		img_map = {:images=>{}}.merge composite_image_dimens
 		composite_img = Magick::Image.new(composite_image_dimens[:width], composite_image_dimens[:height])
 		composite_img.opacity = Magick::MaxRGB
 		ha_composite_gcs = []
@@ -122,7 +138,7 @@ class Threadx < ActiveRecord::Base
 						thumb = img.thumbnail thumb_width
 						if not thumb.nil?
 							composite_img.composite!(thumb,offset[:x],offset[:y], Magick::OverCompositeOp)
-							img_map[img.image_name] = { :x1=>offset[:x].round, :y1=>offset[:y].round, 
+							img_map[:images][img.image_name] = { :x1=>offset[:x].round, :y1=>offset[:y].round, 
 								:x2=>offset[:x].round+thumb.columns, :y2=>offset[:y].round+thumb.rows }
 						end
 					end
@@ -132,7 +148,7 @@ class Threadx < ActiveRecord::Base
 				self.codes.each do |code|
 					gc = ha_composite_gcs[code.id]
 					gc.fill code.color 
-					gc.fill_opacity 0.3
+					gc.fill_opacity 0.5
 					img_ha_list = self.highlighted_areas.select { |ha| ha.code_id==code.id and ha.image_id==img.id}
 					scaled_areas = img_ha_list.collect { |ha| ha.scaled_areas scale }
 					scaled_areas.flatten.each do |area|
@@ -143,11 +159,16 @@ class Threadx < ActiveRecord::Base
 		end
 
 		# write out the image results
+		gc = Magick::Draw.new
+		gc.fill 'white'
+		gc.fill_opacity 0.3
+		gc.rectangle 0,0,composite_image_dimens[:width], composite_image_dimens[:height]
+		gc.draw composite_img
 		composite_img.write File.join(composite_img_dir,'front_pages.png')
 		self.codes.each do |code| 
 			composite_code_topic_img = Magick::Image.new(composite_image_dimens[:width], composite_image_dimens[:height])
 			composite_code_topic_img.opacity = Magick::MaxRGB
-			ha_composite_gcs[code.id].draw(composite_code_topic_img)
+			ha_composite_gcs[code.id].draw composite_code_topic_img
 			composite_code_topic_img.write File.join(composite_img_dir,'code_'+code.id.to_s+'.png')
 		end
 		File.open( File.join(composite_img_dir,'img_map.json'), 'w') {|f| f.write(img_map.to_json)}
