@@ -63,9 +63,9 @@
 		<h4>To </h4> <p><%= @thread.end_date.inspect %></p>
 	</div>
 	<div class="span3">
-		<h5>Category</h5> <span class="label">
+		<h5>Category</h5> <span class="categories">
 		      <% @thread.category_list.each do |c| %>
-		        <%=link_to c,"/threads/search_by_category?q=#{c.strip}"%>
+		        <%=link_to c,"/threads/search_by_category?q=#{c.strip}", :class => "label"%>
 		      <% end %>
 		</span>
 		<!--<h5>Status</h5> <p><%= @thread.status %></p>-->
