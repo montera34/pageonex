@@ -94,6 +94,7 @@ class Threadx < ActiveRecord::Base
 		composite_img_dir = self.create_composite_img_dir
 
 		# create the composite images
+		img_map = {}
 		composite_img = Magick::Image.new(composite_image_dimens[:width], composite_image_dimens[:height])
 		composite_img.opacity = Magick::MaxRGB
 		ha_composite_gcs = []
@@ -121,6 +122,8 @@ class Threadx < ActiveRecord::Base
 						thumb = img.thumbnail thumb_width
 						if not thumb.nil?
 							composite_img.composite!(thumb,offset[:x],offset[:y], Magick::OverCompositeOp)
+							img_map[img.image_name] = { :x1=>offset[:x].round, :y1=>offset[:y].round, 
+								:x2=>offset[:x].round+thumb.columns, :y2=>offset[:y].round+thumb.rows }
 						end
 					end
 				end
@@ -147,6 +150,7 @@ class Threadx < ActiveRecord::Base
 			ha_composite_gcs[code.id].draw(composite_code_topic_img)
 			composite_code_topic_img.write File.join(composite_img_dir,'code_'+code.id.to_s+'.png')
 		end
+		File.open( File.join(composite_img_dir,'img_map.json'), 'w') {|f| f.write(img_map.to_json)}
 
 	end
 
