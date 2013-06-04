@@ -83,10 +83,10 @@ var dataviz = {
             .call(xAxis);
         // Scale x axis labels
         d3.selectAll('.xaxis .tick text').attr('font-size', '14');
-        labelWidth = d3.max(d3.selectAll('.xaxis .tick text')[0].map(function f (x) { return x.getBBox().width; }));
-        newSize = 14 * 0.85 * dateX.rangeBand() / labelWidth;
-        d3.selectAll('.xaxis .tick text').attr('font-size', newSize);
-        d3.selectAll('.xaxis text').attr('dy', '10');
+        //labelWidth = d3.max(d3.selectAll('.xaxis .tick text')[0].map(function f (x) { return x.getBBox().width; }));
+        //newSize = 14 * 0.85 * dateX.rangeBand() / labelWidth;
+        //d3.selectAll('.xaxis .tick text').attr('font-size', newSize);
+        //d3.selectAll('.xaxis text').attr('dy', '10');
         // Draw horizontal lines
         yAxis = d3.svg.axis()
             .scale(yInverse)
@@ -94,13 +94,14 @@ var dataviz = {
             .ticks(5);
         chart.selectAll('.yline')
             .data(y.ticks(5))
+            .scale(yInverse)
             .enter()
             .append('line')
             .attr('y1', function (ty) { return Math.floor(y(ty)) + padding.top + 0.5; })
             .attr('y2', function (ty) { return Math.floor(y(ty)) + padding.top + 0.5; })
             .attr('x1', padding.left)
             .attr('x2', width - padding.right)
-            .style('stroke', '#ccc');
+            .style('stroke', '#eee');
         // Draw y labels
         ylabel = chart.append('g')
             .attr('class', 'yaxis')
