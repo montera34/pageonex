@@ -43,6 +43,9 @@ gem 'rodf'
 # save image size while scraping kiosko.net
 gem "imagesize"
 
+# for thumbnails, because integrating paperclip gem at this point is too hard
+gem 'rmagick'
+
 # full management of user accounts
 gem 'devise'
 

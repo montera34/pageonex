@@ -23,4 +23,9 @@ class HighlightedArea < ActiveRecord::Base
 	def area
 		areas.first.width * areas.first.height
 	end
+ 
+	def scaled_areas scale
+		areas.collect { |a| a.scaled_copy scale }
+	end
+
 end

@@ -15,6 +15,7 @@
 /tmp
 
 /app/assets/images/kiosko
+/app/assets/images/threads
 
 # Ignore OS X image cache
 .DS_Store

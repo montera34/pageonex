@@ -146,6 +146,7 @@ GEM
     rdoc (3.12.2)
       json (~> 1.4)
     ref (1.0.4)
+    rmagick (2.13.2)
     rodf (0.3.4)
       activesupport (~> 3.0)
       builder (~> 3.0)
@@ -227,6 +228,7 @@ DEPENDENCIES
   pg
   piwik_analytics
   rails (= 3.2.13)
+  rmagick
   rodf
   rspec-rails
   sass-rails (~> 3.2.3)

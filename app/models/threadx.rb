@@ -67,9 +67,87 @@ class Threadx < ActiveRecord::Base
 		end
 	end
 	
+	def width
+		return self.size.split('x')[0].to_f
+	end
+
+	def height
+		return self.size.split('x')[1].to_f
+	end
+
 	# return an array of categories
 	def category_list
 		self.category.split(",")
+	end
+
+	def generate_composite_images width=970
+		thumb_width = (width.to_f / self.duration.to_f).round
+		# figure out each row height
+		height_by_media = []
+		thumbnails = []
+		self.media.each_with_index do |media, index|
+			media_images = self.images.select { |img| img.media_id==media.id }
+			thumbnail_media_heights = media_images.collect { |img| (img.thumbnail thumb_width).rows }
+			height_by_media[index] = thumbnail_media_heights.max.round
+		end
+		composite_image_dimens = {:width=>thumb_width*self.duration, :height=>height_by_media.sum}
+		composite_img_dir = self.create_composite_img_dir
+
+		# create the composite images
+		composite_img = Magick::Image.new(composite_image_dimens[:width], composite_image_dimens[:height])
+		composite_img.opacity = Magick::MaxRGB
+		ha_composite_gcs = []
+		self.codes.each do |code| 
+			ha_composite_gcs[code.id] = Magick::Draw.new
+		end
+
+		# stitch it all together
+		(self.start_date..self.end_date).each do |date|	# iterate over days (ie. columns)
+			day_images = self.images.select { |img| img.publication_date==date }
+			offset = { 
+					:x=>(date-self.start_date)*thumb_width, #TODO: add padding
+					:y=>0 
+			}
+			self.media.each_with_index do |media,index|	# iterate over media sources within that day
+				offset[:y] = height_by_media.first(index).sum #TODO: add padding
+				# make the thumbnail composite
+				media_img_index = day_images.find_index { |img| img.media_id==media.id }
+				if media_img_index.nil?
+					# TODO: include a note that img is missing?
+				else 
+					img = day_images[media_img_index]
+					if not img.missing
+						# add the thumb to the composite images
+						thumb = img.thumbnail thumb_width
+						if not thumb.nil?
+							composite_img.composite!(thumb,offset[:x],offset[:y], Magick::OverCompositeOp)
+						end
+					end
+				end
+				# make the coding composites
+				scale = thumb_width / img.width.to_f
+				self.codes.each do |code|
+					gc = ha_composite_gcs[code.id]
+					gc.fill code.color 
+					gc.fill_opacity 0.3
+					img_ha_list = self.highlighted_areas.select { |ha| ha.code_id==code.id and ha.image_id==img.id}
+					scaled_areas = img_ha_list.collect { |ha| ha.scaled_areas scale }
+					scaled_areas.flatten.each do |area|
+						gc.rectangle offset[:x]+area.x1, offset[:y]+area.y1, offset[:x]+area.x2, offset[:y]+area.y2
+					end
+				end
+			end
+		end
+
+		# write out the image results
+		composite_img.write File.join(composite_img_dir,'front_pages.png')
+		self.codes.each do |code| 
+			composite_code_topic_img = Magick::Image.new(composite_image_dimens[:width], composite_image_dimens[:height])
+			composite_code_topic_img.opacity = Magick::MaxRGB
+			ha_composite_gcs[code.id].draw(composite_code_topic_img)
+			composite_code_topic_img.write File.join(composite_img_dir,'code_'+code.id.to_s+'.png')
+		end
+
 	end
 
 	# length of threadx in days
@@ -151,4 +229,10 @@ class Threadx < ActiveRecord::Base
 		res
 	end
 	
+	def create_composite_img_dir
+	  composite_image_dir = File.join('app','assets','images','threads',self.owner.id.to_s,self.id.to_s)
+		FileUtils.mkpath composite_image_dir unless File.directory? composite_image_dir
+		composite_image_dir
+	end
+
 end

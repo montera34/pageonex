@@ -1,3 +1,4 @@
+require 'RMagick'
 require "open-uri"
 
 class Image < ActiveRecord::Base
@@ -34,16 +35,28 @@ class Image < ActiveRecord::Base
 		select('publication_date').uniq.map { |elt| elt.publication_date }
 	end
 
+	# return a Magick img object that is a thumbnail (caches to disk)
+	def thumbnail width
+		return nil unless File.exists? self.full_local_path # bail if there is no image
+		thumb_file_path = self.full_local_path.chomp(File.extname(self.full_local_path) )+'-thumb-'+width.to_s+'.jpg'
+		return Magick::Image.read(thumb_file_path).first if File.exists? thumb_file_path
+		# if the thumb doesn't exist then generate it
+		img = Magick::Image.read(self.full_local_path).first
+		scale = width.to_f / img.columns.to_f
+		img_thumb = img.thumbnail(scale)
+		img_thumb.write thumb_file_path
+		return img_thumb
+	end
+
 	def download		
 		if Pageonex::Application.config.use_local_images
 			# make the media dir if you need to
 			self.media.create_image_directory
 			# try to fetch the image
 			self.local_path = File.join('kiosko',self.media.name,image_name + ".jpg")
-			full_local_path = File.join('app','assets','images', self.local_path)
 			begin
-				File.open(full_local_path, "wb") { |f| f.write(open(self.source_url).read) }
-				File.open(full_local_path,"rb") do |f|
+				File.open(self.full_local_path, "wb") { |f| f.write(open(self.source_url).read) }
+				File.open(self.full_local_path,"rb") do |f|
 					size_info = ImageSize.new(f.read).get_size
 					self.size = "#{size_info[0]}x#{size_info[1]}"
 				end
@@ -63,6 +76,10 @@ class Image < ActiveRecord::Base
 			self.missing = (response.code != "200")
 		end
 		!missing
+	end
+
+	def full_local_path
+		File.join('app','assets','images', self.local_path)
 	end
 
 	private
