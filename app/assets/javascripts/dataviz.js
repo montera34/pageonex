@@ -58,6 +58,7 @@ var dataviz = {
         yInverse = d3.scale.linear()
             .domain([0, domainMax])
             .range([chartHeight, 0]);
+        var formatPercent = d3.format(".0%");
         dateX = d3.scale.ordinal()
             .domain(thread.dates)
             .rangeRoundBands([0, chartWidth], 0.1);
@@ -91,7 +92,8 @@ var dataviz = {
         yAxis = d3.svg.axis()
             .scale(yInverse)
             .orient('left')
-            .ticks(5);
+            .ticks(5)
+            .tickFormat(formatPercent);
         chart.selectAll('.yline')
             .data(y.ticks(5))
             .enter()
