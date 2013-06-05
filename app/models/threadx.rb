@@ -103,11 +103,16 @@ class Threadx < ActiveRecord::Base
 		FileUtils.rm_r self.composite_img_dir if Dir.exists? self.composite_img_dir
 	end
 
+	def scrape_all_images
+		KioskoScraper.create_images(self.start_date, self.end_date, self.media)
+	end
+
 	# generate combined images of all the front pages and highlighted areas
 	# TODO: be smart about caching this (ie. delete and regen when anything is changed)
 	def generate_composite_images width=970, force=false
 		return if not force and Dir.exists? self.composite_img_dir
-		 self.composite_img_dir true	# create the container dir
+
+		self.composite_img_dir true	# create the container dir
 
 		thumb_width = (width.to_f / self.duration.to_f).round
 		img_map = {:row_info=>{},:images=>{}} # will hold info page needs to render
@@ -117,7 +122,10 @@ class Threadx < ActiveRecord::Base
 		thumbnails = []
 		self.media.each_with_index do |media, index|
 			media_images = self.images.select { |img| img.media_id==media.id }
-			thumbnail_media_heights = media_images.collect { |img| (img.thumbnail thumb_width).rows }
+			thumbnail_media_heights = media_images.collect do |img| 
+				thumb = img.thumbnail thumb_width
+				thumb.nil? ? 0 : thumb.rows
+			end
 			height_by_media[index] = thumbnail_media_heights.max.round
 			img_map[:row_info][media.id] = {:height=>thumbnail_media_heights.max.round, :name=>media.name_with_country}
 		end

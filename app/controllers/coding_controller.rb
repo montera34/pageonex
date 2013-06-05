@@ -74,22 +74,15 @@ class CodingController < ApplicationController
 
     # if the user clicked "Save" button, so it will redirect the user to the coding view again, otherwise it will redirect to the coding
     if params[:commit] == "Save"
-      redirect_to :back #"/#{current_user.username.split(' ').join('_')}/#{@thread.thread_name}/coding/"
+      redirect_to :back
     else
-      redirect_to "/#{current_user.username.split(' ').join('_')}/#{@thread.thread_name}"
+      redirect_to @thread.link_url
     end
   end
 
   # render display view
   def display
     @thread = Threadx.find_by_thread_name params[:thread_name]
-    @results = @thread.results
-    
-    # sort images by their publication date
-    @images = @thread.images
-    @image_counter = @thread.images.length
-    @codes = @thread.codes
-
     # prep the composite image to show
     @thread.generate_composite_images # make sure composite results images have been generated
     @img_map_info = @thread.composite_image_map_info

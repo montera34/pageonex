@@ -92,7 +92,7 @@ class ThreadsController < ApplicationController
 				codes << Code.create!({:code_text => params["topic_name_#{n}"], :code_description => params["topic_description_#{n}"],:color => params["topic_color_#{n}"]})
 			end
 
-			images = KioskoScraper.create_images(@thread.start_date, @thread.end_date, @thread.media)
+			images = @thread.scrape_all_images
 
 			# It saves the thread to the db, and assign an id to the thread
 			@thread.save
@@ -104,7 +104,7 @@ class ThreadsController < ApplicationController
 			@thread.codes << codes
 
 			# if all the above goes without any problem, the user will be redirected to the coding action
-			redirect_to "/#{current_user.username.split(' ').join('_')}/#{@thread.thread_name}/coding"
+			redirect_to @thread.link_url + "coding"
 
 		# otherwise, the new form will rendered again with the error messages
 		else
@@ -166,7 +166,7 @@ class ThreadsController < ApplicationController
 			@thread.status = params[:status]
 			@thread.update_attribute(:end_date, Date.today) if @thread.status == "opened"
 
-			images = KioskoScraper.create_images(@thread.start_date, @thread.end_date, @thread.media)
+			images = @thread.scrape_all_images
 			
 			#it should iterate through the recently created codes
 			params["code_id"].each_with_index do |id, index|
@@ -201,7 +201,7 @@ class ThreadsController < ApplicationController
 			end
 
 			# and then redirect the user to the display view
-			redirect_to "/#{current_user.username.split(' ').join('_')}/#{@thread.thread_name}"
+			redirect_to @thread.link_url
 		else
 			# A method should be created to make a DRY code. don't repeat!
 			@media = Media.by_country_and_display_name.all
