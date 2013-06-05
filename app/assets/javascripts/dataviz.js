@@ -161,7 +161,7 @@ var dataviz = {
                         total += data.percent / data.image_count;
                 }
             }
-            content = data.code + ': <strong>' + total + '</strong>';
+            content = data.code + ': <strong>' + (100*total).toFixed(1) + '%</strong>';
         });
         return content;
     },
