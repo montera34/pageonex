@@ -125,7 +125,6 @@ class ThreadsController < ApplicationController
 
 	end
 
-
 	# edit action is responsible for rendering the edit thread form
 	def edit
 		# set the @thread object with the thread from the user owned threads
@@ -152,6 +151,8 @@ class ThreadsController < ApplicationController
 		else
 			@thread = current_user.owned_threads.find_by_thread_name params[:id]
 		end
+
+		@thread.remove_composite_images # make sure to flush the generated composite images (because the update event handler won't catch topic changes)
 
 		media = params[:media]
 

@@ -12,6 +12,9 @@ class CodingController < ApplicationController
   # process the submitted highlighted area from the coding view, and redirect to the display
   def process_highlighted_areas
     @thread = Threadx.find_by_thread_name params[:thread_name]
+
+    @thread.remove_composite_images # flush the generated composite images because there is a new highlighted area
+
     @images = @thread.images
 
     # Look for images with nothing to code
@@ -86,7 +89,7 @@ class CodingController < ApplicationController
     @image_counter = @thread.images.length
     @codes = @thread.codes
 
-    @thread.generate_composite_images
+    @thread.generate_composite_images # make sure composite results images have been generated
     @img_map_info = @thread.composite_image_map_info
 
     # This part is used to calculate the highlighted areas percentages vertically 

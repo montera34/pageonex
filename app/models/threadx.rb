@@ -33,6 +33,11 @@ class Threadx < ActiveRecord::Base
 		t.thread_name = t.thread_name.to_url 
 	}
 
+	# remove the generated composite images when a thread is changed
+	after_save { |t| 
+		t.remove_composite_images
+	}
+
 	# for now, default to sort by most recent first
 	default_scope order('created_at DESC')
 
@@ -94,9 +99,16 @@ class Threadx < ActiveRecord::Base
 		File.join('threads',self.owner.id.to_s,self.id.to_s,'code_'+code_id.to_s+'.png').to_s
 	end
 
+	def remove_composite_images
+		FileUtils.rm_r self.composite_img_dir if Dir.exists? self.composite_img_dir
+	end
+
 	# generate combined images of all the front pages and highlighted areas
 	# TODO: be smart about caching this (ie. delete and regen when anything is changed)
-	def generate_composite_images width=970
+	def generate_composite_images width=970, force=false
+		return if not force and Dir.exists? self.composite_img_dir
+		 self.composite_img_dir true	# create the container dir
+
 		thumb_width = (width.to_f / self.duration.to_f).round
 		img_map = {:row_info=>{},:images=>{}} # will hold info page needs to render
 
@@ -166,7 +178,7 @@ class Threadx < ActiveRecord::Base
 		# write out the image results
 		gc = Magick::Draw.new
 		gc.fill 'white'
-		gc.fill_opacity 0.3
+		gc.fill_opacity 0.4
 		gc.rectangle 0,0,composite_image_dimens[:width], composite_image_dimens[:height]
 		gc.draw front_page_composite_img
 		front_page_composite_img.write File.join(thread_img_dir,'front_pages.png')
@@ -280,9 +292,11 @@ class Threadx < ActiveRecord::Base
 		return res
 	end
 	
-	def composite_img_dir
+	def composite_img_dir create_dir=false
 	  composite_image_dir = File.join('app','assets','images','threads',self.owner.id.to_s,self.id.to_s)
-		FileUtils.mkpath composite_image_dir unless File.directory? composite_image_dir
+		if create_dir and not File.directory? composite_image_dir
+			FileUtils.mkpath composite_image_dir
+		end
 		composite_image_dir
 	end
 
