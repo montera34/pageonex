@@ -178,7 +178,7 @@ class Threadx < ActiveRecord::Base
 		# write out the image results
 		gc = Magick::Draw.new
 		gc.fill 'white'
-		gc.fill_opacity 0.4
+		gc.fill_opacity 0.6
 		gc.rectangle 0,0,composite_image_dimens[:width], composite_image_dimens[:height]
 		gc.draw front_page_composite_img
 		front_page_composite_img.write File.join(thread_img_dir,'front_pages.png')
