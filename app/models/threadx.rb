@@ -172,7 +172,8 @@ class Threadx < ActiveRecord::Base
 				scale = thumb_width / img.width.to_f
 				self.codes.each do |code|
 					gc = ha_composite_gcs[code.id]
-					gc.fill code.color 
+					color = (code.color.nil?) ? '#ff0000' : code.color
+					gc.fill color
 					gc.fill_opacity 0.5
 					img_ha_list = self.highlighted_areas.select { |ha| ha.code_id==code.id and ha.image_id==img.id}
 					scaled_areas = img_ha_list.collect { |ha| ha.scaled_areas scale }
