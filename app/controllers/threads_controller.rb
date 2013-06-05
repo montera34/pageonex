@@ -217,19 +217,7 @@ class ThreadsController < ApplicationController
 	# the show action, is for displaying a thread
 	def show
 		@thread = Threadx.find_by_thread_name params[:id]
-
-		# 
-=begin
-	
-for opened thread:
-	each time a user opens the thread, check first if the status is opened, if so:
-		- check if the end date is the same as today, if not change the date
-		- and also checks if the thread length exceeds 90 days, if so it will not update the thread
-		- and run the scraper again to update the thread
-
-=end		
-
-		redirect_to "/#{current_user.username.split(' ').join('_')}/#{@thread.thread_name}"
+		redirect_to @thread.link_url
 	end
 
 	# the destroy actions, is for deleting a thread
