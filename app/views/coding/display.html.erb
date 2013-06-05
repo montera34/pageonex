@@ -20,14 +20,15 @@
 	</div>
 	<div class="span2">
 		<div class="btn-group pull-right">
-		    <button class="btn btn-small">Export data</button>
+		    <button class="btn btn-small">Export</button>
 		    <button class="btn btn-small dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
 		    <ul class="dropdown-menu">
-		      <!-- <li><a href="#">Download as  .svg </a></li>
-		      <li><a href="#">Download as  .csv </a></li>-->
+		      <li><a href="#chart-modal" data-toggle="modal">Download as  .svg </a></li>
+		      <!-- <li><a href="#">Download as  .csv </a></li>-->
 		      <li><a href="<%= thread_url(@thread)+"/export.ods" %>">Download as .ods</a></li>
 		      <li><a href="<%= thread_url(@thread)+"/export.json" %>">Download as .json</a></li>
-		      <!-- <li><a href="#">Download as  .png </a></li>
+		      <li><a href="<%= thread_url(@thread)+"/export.png" %>">Download as .png</a></li>
+		      <!--<li><a href="#">Download as  .png </a></li>
 		      <li class="divider"></li>
 		      <li><a href="#">Download as  .pdf </a></li>-->
 		    </ul>
@@ -85,17 +86,16 @@
 
 <!-- Results Chart -->
 <div class="row">
-        <a href="#chart-modal" role="button" class="btn pull-right" data-toggle="modal">Export chart</a>
-        <div id="chart-modal" class="modal hide fade">
-                <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h3>Export Chart</h3>
-                </div>
-                <div class="modal-body">
-                        <p>To export the chart, right click the image below and select "Save Image As..." This will download the chart in SVG format.</p>
-                        <img id="chart-export-img" />
-                </div>
-        </div>
+  <div id="chart-modal" class="modal hide fade">
+	  <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+      <h3>Export Chart</h3>
+	  </div>
+	  <div class="modal-body">
+      <p>To export the chart, right click the image below and select "Save Image As..." This will download the chart in SVG format.</p>
+      <img id="chart-export-img" />
+	  </div>
+  </div>
 	<div id="chart_div" style="margin-left: 110px;width: 1210px; margin-bottom: -15px;"></div><!--div to display bar chart-->
 </div>
 

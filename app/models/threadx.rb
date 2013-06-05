@@ -81,9 +81,9 @@ class Threadx < ActiveRecord::Base
 	end
 
 	def composite_image_map_info
-		composite_img_dir = self.create_composite_img_dir
-		return nil unless File.exists? File.join(composite_img_dir,'img_map.json')
-		JSON.parse( IO.read(File.join(composite_img_dir,'img_map.json')) )
+		thread_img_dir = self.composite_img_dir
+		return nil unless File.exists? File.join(thread_img_dir,'img_map.json')
+		JSON.parse( IO.read(File.join(thread_img_dir,'img_map.json')) )
 	end
 
 	def path_to_composite_cover_image
@@ -111,11 +111,13 @@ class Threadx < ActiveRecord::Base
 		end
 		composite_image_dimens = {:width=>thumb_width*self.duration, :height=>height_by_media.sum}
 		img_map.merge! composite_image_dimens
-		composite_img_dir = self.create_composite_img_dir
+		thread_img_dir = self.composite_img_dir
 
 		# create the composite images
-		composite_img = Magick::Image.new(composite_image_dimens[:width], composite_image_dimens[:height])
-		composite_img.opacity = Magick::MaxRGB
+		results_composite_img = Magick::Image.new(composite_image_dimens[:width], composite_image_dimens[:height])
+		results_composite_img.opacity = Magick::MaxRGB
+		front_page_composite_img = Magick::Image.new(composite_image_dimens[:width], composite_image_dimens[:height])
+		front_page_composite_img.opacity = Magick::MaxRGB
 		ha_composite_gcs = []
 		self.codes.each do |code| 
 			ha_composite_gcs[code.id] = Magick::Draw.new
@@ -140,7 +142,7 @@ class Threadx < ActiveRecord::Base
 						# add the thumb to the composite images
 						thumb = img.thumbnail thumb_width
 						if not thumb.nil?
-							composite_img.composite!(thumb,offset[:x],offset[:y], Magick::OverCompositeOp)
+							front_page_composite_img.composite!(thumb,offset[:x],offset[:y], Magick::OverCompositeOp)
 							img_map[:images][img.image_name] = { :x1=>offset[:x].round, :y1=>offset[:y].round, 
 								:x2=>offset[:x].round+thumb.columns, :y2=>offset[:y].round+thumb.rows }
 						end
@@ -166,15 +168,21 @@ class Threadx < ActiveRecord::Base
 		gc.fill 'white'
 		gc.fill_opacity 0.3
 		gc.rectangle 0,0,composite_image_dimens[:width], composite_image_dimens[:height]
-		gc.draw composite_img
-		composite_img.write File.join(composite_img_dir,'front_pages.png')
+		gc.draw front_page_composite_img
+		front_page_composite_img.write File.join(thread_img_dir,'front_pages.png')
+
+		results_composite_img.composite!(front_page_composite_img,0,0,Magick::OverCompositeOp)
+
 		self.codes.each do |code| 
 			composite_code_topic_img = Magick::Image.new(composite_image_dimens[:width], composite_image_dimens[:height])
 			composite_code_topic_img.opacity = Magick::MaxRGB
 			ha_composite_gcs[code.id].draw composite_code_topic_img
-			composite_code_topic_img.write File.join(composite_img_dir,'code_'+code.id.to_s+'.png')
+			composite_code_topic_img.write File.join(thread_img_dir,'code_'+code.id.to_s+'.png')
+			results_composite_img.composite! composite_code_topic_img,0,0,Magick::OverCompositeOp
 		end
-		File.open( File.join(composite_img_dir,'img_map.json'), 'w') {|f| f.write(img_map.to_json)}
+		
+		File.open( File.join(thread_img_dir,'img_map.json'), 'w') {|f| f.write(img_map.to_json)}
+		results_composite_img.write File.join(thread_img_dir,'results.png')
 
 	end
 
@@ -272,7 +280,7 @@ class Threadx < ActiveRecord::Base
 		return res
 	end
 	
-	def create_composite_img_dir
+	def composite_img_dir
 	  composite_image_dir = File.join('app','assets','images','threads',self.owner.id.to_s,self.id.to_s)
 		FileUtils.mkpath composite_image_dir unless File.directory? composite_image_dir
 		composite_image_dir
