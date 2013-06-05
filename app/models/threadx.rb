@@ -98,6 +98,8 @@ class Threadx < ActiveRecord::Base
 	# TODO: be smart about caching this (ie. delete and regen when anything is changed)
 	def generate_composite_images width=970
 		thumb_width = (width.to_f / self.duration.to_f).round
+		img_map = {:row_heights=>{},:images=>{}} # will hold info page needs to render
+
 		# figure out each row height
 		height_by_media = []
 		thumbnails = []
@@ -105,12 +107,13 @@ class Threadx < ActiveRecord::Base
 			media_images = self.images.select { |img| img.media_id==media.id }
 			thumbnail_media_heights = media_images.collect { |img| (img.thumbnail thumb_width).rows }
 			height_by_media[index] = thumbnail_media_heights.max.round
+			img_map[:row_heights][media.id] = thumbnail_media_heights.max.round
 		end
 		composite_image_dimens = {:width=>thumb_width*self.duration, :height=>height_by_media.sum}
+		img_map.merge! composite_image_dimens
 		composite_img_dir = self.create_composite_img_dir
 
 		# create the composite images
-		img_map = {:images=>{}}.merge composite_image_dimens
 		composite_img = Magick::Image.new(composite_image_dimens[:width], composite_image_dimens[:height])
 		composite_img.opacity = Magick::MaxRGB
 		ha_composite_gcs = []

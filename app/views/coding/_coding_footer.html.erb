@@ -4,11 +4,11 @@
 	</div>
   
  	<div class="span12">
-		<a href="<%= "/#{@thread.owner.username.split(' ').join('_')}/#{@thread.thread_name}/coding"%>" class="btn " id="coding" rel="popover"  data-content="Coding images, by highlighting the related news" data-original-title="Code">Code</a> 
+		<a href="<%= thread_code_url @thread %>" class="btn " id="coding" rel="popover"  data-content="Coding images, by highlighting the related news" data-original-title="Code">Code</a> 
 
 		<span style="margin: 0 100px 0 100px" class="divider"> - </span>
 
-		<a href="<%= "/#{@thread.owner.username.split(' ').join('_')}/#{@thread.thread_name}"%>" class="btn " id="disp" rel="popover"  data-content="Displaying the images matrix with bar chart of the ratios" data-original-title="Display">Display</a>
+		<a href="<%= thread_url @thread %>" class="btn " id="disp" rel="popover"  data-content="Displaying the images matrix with bar chart of the ratios" data-original-title="Display">Display</a>
 
 	</div>
 
