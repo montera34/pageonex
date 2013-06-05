@@ -99,28 +99,6 @@
 	<div id="chart_div" style="margin-left: 110px;width: 1210px; margin-bottom: -15px;"></div><!--div to display bar chart-->
 </div>
 
-<!-- Non displaying ratio and date info -->
-<% @ratios.each do |v,r|  %>
-	<% hidden_field_tag "v#{v}", r %>
-<% end %>
-<%= hidden_field_tag "number_of_column", @ratios.length %>
-<%= hidden_field_tag "number_of_rows", @thread.media.length %>
-<div id="ratios">
-	<!-- for each column we create a div contains set of hidden fields each on represent a code percentage -->
-	<% @results[:dates].each_with_index do |date, index| %>
-		<div id="<%= "row_c#{index + 1}" %>">
-				<% @results[:codes].each_with_index do |code, index| %>
-					<%= hidden_field_tag "code_#{index}", @results[:data][date]['Total'][code] %>
-				<% end %>
-		</div>
-	<% end %>
-</div>
-<div id="date-box">
-	<% (@thread.start_date..@thread.end_date).each do |d| %>
-		<%= hidden_field_tag "#{d.day}/#{d.month}" %>
-	<% end %>
-</div>
-
 <div class="row">
 	<div class="span2">
 		<ul class='thread-coposite-labels'>

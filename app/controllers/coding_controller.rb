@@ -84,68 +84,15 @@ class CodingController < ApplicationController
   def display
     @thread = Threadx.find_by_thread_name params[:thread_name]
     @results = @thread.results
+    
     # sort images by their publication date
     @images = @thread.images
     @image_counter = @thread.images.length
     @codes = @thread.codes
 
+    # prep the composite image to show
     @thread.generate_composite_images # make sure composite results images have been generated
     @img_map_info = @thread.composite_image_map_info
-
-    # This part is used to calculate the highlighted areas percentages vertically 
-    @images_columns = {}
-
-    @high_areas_per = {}
-    
-    @codes_high_areas = {}
-
-    @ratios = {}
-
-    #images_per_row = @thread.images.length.to_f / @thread.media.length.to_f
-    images_per_row = @thread.duration
-
-    1.upto(images_per_row) do |c|
-    	@images_columns["c#{c}"] = []
-      @high_areas_per["c#{c}"] = []
-      @ratios["#{c}"] = 0
-      @codes_high_areas["c#{c}"] = {}
-      @codes.each do |code|
-        @codes_high_areas["c#{c}"]["code_#{code.id}"] = 0.0
-      end
-    end
-
-    cr = 1
-    d = @images.first.publication_date.day
-    @images.each do |img|
-      if img.publication_date.day == d
-        @images_columns["c#{cr}"] << img
-      else
-        d = img.publication_date.day
-        cr += 1
-        @images_columns["c#{cr}"] << img
-      end
-    end
-    @images_columns.each do |col,imgs|
-      imgs.each do |img|
-        img.highlighted_areas.each do |ha|
-          if @codes.include? ha.code
-            highlighted_area = ha.areas[0]["height"].to_f * ha.areas[0]["width"].to_f #"to_f" returns number as a float.
-            #takes the values from the threads_controler.rb " image_size="750x951" " that's causing the error in the 
-            # visualization for tabloids format. it gives approx good measures for "spanish" format newspapers 
-            image_area = ha.image.size.split("x")[0].to_f * ha.image.size.split("x")[1].to_f 
-            ratio = (highlighted_area / image_area) * 100
-            @codes_high_areas[col]["code_#{ha.code.id}"] += ratio.ceil
-         end
-        end 
-      end 
-    end 
-
-    number_of_rows = @thread.media.length
-    @codes_high_areas.each do |column,codes|
-      codes.each do |code_id, value|
-        @codes_high_areas[column][code_id] = value/number_of_rows
-      end
-    end
-
   end
+
 end
