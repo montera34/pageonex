@@ -24,10 +24,10 @@
 		    <button class="btn btn-small dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
 		    <ul class="dropdown-menu">
 		      <!-- <li><a href="#">Download as  .csv </a></li>-->
-		      <li><a href="<%= thread_url(@thread)+"/export.ods" %>">Download Data as .ods</a></li>
-		      <li><a href="<%= thread_url(@thread)+"/export.json" %>">Download Data as .json</a></li>
+		      <li><a href="<%= thread_url(@thread)+"export.ods" %>">Download Data as .ods</a></li>
+		      <li><a href="<%= thread_url(@thread)+"export.json" %>">Download Data as .json</a></li>
 		      <li><a href="#chart-modal" data-toggle="modal">Download Graph as  .svg </a></li>
-		      <li><a href="<%= thread_url(@thread)+"/export.png" %>">Download Images as .png</a></li>
+		      <li><a href="<%= thread_url(@thread)+"export.png" %>">Download Images as .png</a></li>
 		      <!--<li><a href="#">Download as  .png </a></li>
 		      <li class="divider"></li>
 		      <li><a href="#">Download as  .pdf </a></li>-->
