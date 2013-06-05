@@ -124,11 +124,6 @@
 	</div>
 </div>
 
-<!-- other library we were using for the column chart, it's comment just in case we want to reuse it again -->
-<!-- "d3.min.js", "d3.layout.min.js", "rickshaw.min.js", -->
-<%= javascript_include_tag "http://d3js.org/d3.v3.min.js" %>
-<%= javascript_include_tag "dataviz.js" %>
-
 <!-- thread info summary and code info again -->
 <div class="row">
 	<div class="offset2 span10">
@@ -144,6 +139,12 @@
 		</ul>
 	</div>	
 </div>
+
+<!-- other library we were using for the column chart, it's comment just in case we want to reuse it again -->
+<!-- "d3.min.js", "d3.layout.min.js", "rickshaw.min.js", -->
+<%= javascript_include_tag "http://d3js.org/d3.v3.min.js" %>
+<%= javascript_include_tag "dataviz.js" %>
+
 <script type="text/javascript">
 var thread = <%= @thread.results(:flat).to_json.html_safe %>
 var height = 200;
@@ -170,11 +171,6 @@ $('.code').hover(function () {
 
 <script type="text/javascript">
 $(function (argument) {
-    $(".breadcrumb li").filter("li.active").attr("class"," ");
-    $("#disp").css("font-weight","bold")
-    $("#disp").css("color","#fff")
-    $("#disp").attr("class", "btn btn-info");
-
 	$(".delete").click(function (event) {
 		event.preventDefault()
 		if (confirm("Are you sure?")) {
