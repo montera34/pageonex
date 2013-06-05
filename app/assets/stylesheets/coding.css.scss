@@ -35,3 +35,14 @@ ul.thread-composite-images li {
   top: 0px;
   left: 0px;
 }
+ul.thread-coposite-labels {
+  list-style-type: none;
+  margin: 0px;
+  padding: 0px;
+  display: block;  
+}
+ul.thread-coposite-labels li {
+  display: block;
+  vertical-align: top;
+  text-align: right;
+}

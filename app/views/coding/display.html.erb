@@ -121,57 +121,29 @@
 	<% end %>
 </div>
 
-<!-- show the coding info on top of the front page images-->
-<div id="datavis" style="display: none;">
-	<!-- loop over all the newspaper in the thread and find which images are belongs to this newspaper and then insert this images into this newspaper row -->
-	<% @thread.media.each do |m| %>
-		<div class="row images" >
-			<div class="span2" style="/*width: 195px;*/">
-				<div class="" style="overflow: overlay; margin-right: -23px ;text-align: right;">
-  					<h2 style="font-size: 12px;"><%= link_to m.display_name, m.url, class: 'custom-link' %></h2>
-				</div>
-			</div>
-			<div class="img_box span10" >
-				<% @thread.images.each_with_index do |image, ic| %>
-					<% if @images[ic].media == m  %>  <!-- only displays images from that particular media-->
-						<div id="<%= "image_box#{ic+1}" %>" style="margin-bottom: 4px" class="span1 <%= "thum_image#{ic+1}" %>" image_name="<%= image.image_name %>">
-						<a href="<%= thread_code_url @thread, image.image_name %>" title="">
-							<% if use_local_images %>
-								<!-- display images stored locally -->
-								<% if @thread.image_coded? @images[ic] %> 
-									<%= image_tag @thread.images[ic].local_path, id: "image#{ic+1}", image_size: @images[ic].size, name: @images[ic].image_name, class: "thumb-img-coded"  %>
-								<% else %> 
-									<%= image_tag @thread.images[ic].local_path, id: "image#{ic+1}", image_size: @images[ic].size, name: @images[ic].image_name, class: "thumb-img-no-coded" %>
-								<% end %>
-							<% else %>
-								<!-- display live version form kiosko, just for the online beta version on heroku -->
-								<% if @images[ic].source_url == "404.jpg" %>
-									<img src="/assets/404.jpg" alt="" id="<%= "image#{ic+1}" %>" class="thumb-img" image_size="<%= @images[ic].size %>" />
-								<% else %>
-									<% if @thread.image_coded? @images[ic] %> 
-										<img src="<%= @images[ic].source_url %>" alt="" id="<%= "image#{ic+1}" %>" class="thumb-img-coded" image_size="<%= @images[ic].size %>" name="<%= @images[ic].image_name %>" />
-									<% else %> 
-										<img src="<%= @images[ic].source_url %>" alt="" id="<%= "image#{ic+1}" %>" class="thumb-img-no-coded" image_size="<%= @images[ic].size %>" name="<%= @images[ic].image_name %>" />
-									<% end %>
-								<% end %>
-							<% end %>
-						</a>
-						<% @thread.highlighted_areas_for_image(image).each do |ha| %>
-							<div id="<%= "ha_#{ha.id}" %>" style="position: absolute; overflow: hidden; z-index: 0; left: 0px; top: 0px; width: 0px; height: 0px; display: block; opacity: 0.7;" class="highlighted_area"></div>
-						<% end %>
-						</div>
-					<% end %>
-				<% end %>
-			</div>
-		</div>
-		
-	<% end %>
-</div>
-
-<!-- loading info -->
-<h2 id="loading-bar-h">Please wait</h2>
-<div id="loading-bar" class="progress progress-striped active">
-		<div class="bar" style="width:1%;"></div>
+<div class="row">
+	<div class="span2">
+		<ul class='thread-coposite-labels'>
+			<% @img_map_info['row_info'].each do |media_id,info| %>
+				<li style="height:<%=info['height']%>px"><%=info['name']%></li>
+			<% end %>
+		</ul>
+	</div>
+	<div class="span10">
+		<ul class="thread-composite-images" style="height:<%=@img_map_info['height']%>px">
+			<li class="cover-composite"><%= image_tag @thread.path_to_composite_cover_image %></li>
+		<% @thread.codes.each do |code| %>
+			<li class="highlighted-area-composite"><%= image_tag @thread.path_to_composite_highlighed_area_image code.id %></li>
+		<% end %>
+			<li><%=image_tag 'transparent.png', :style=>"width:#{@img_map_info['width']}px;height:#{@img_map_info['height']}px;", :usemap=>'front-page-images'%></li>
+		</ul>
+		<map name="front-page-images">
+			<% @img_map_info['images'].each_pair do |image_name, image_info| %>
+				<area shape="rect" coords="<%=image_info['x1']%>,<%=image_info['y1']%>,<%=image_info['x2']%>,<%=image_info['y2']%>"
+					href="<%=thread_code_url @thread, image_name%>">
+			<% end %>
+		</map>
+	</div>
 </div>
 
 <!-- lots of hidden info about the highlighted images -->
@@ -204,7 +176,6 @@
 <!-- "d3.min.js", "d3.layout.min.js", "rickshaw.min.js", -->
 <%= javascript_include_tag "http://d3js.org/d3.v3.min.js" %>
 <%= javascript_include_tag "highlighted_area.js" %>
-<%= javascript_include_tag "display.js" %>
 <%= javascript_include_tag "dataviz.js" %>
 
 <!-- thread info summary and code info again -->
@@ -262,27 +233,5 @@ $(function (argument) {
 	})
 })
 </script>
-
-<!-- new composite image -->
-<div class="row">
-	<div class="span2">
-		TODO: Title will go here...
-	</div>
-	<div class="span10">
-		<ul class="thread-composite-images" style="height:<%=@img_map_info['height']%>px">
-			<li class="cover-composite"><%= image_tag @thread.path_to_composite_cover_image %></li>
-		<% @thread.codes.each do |code| %>
-			<li class="highlighted-area-composite"><%= image_tag @thread.path_to_composite_highlighed_area_image code.id %></li>
-		<% end %>
-			<li><%=image_tag 'transparent.png', :style=>"width:#{@img_map_info['width']}px;height:#{@img_map_info['height']}px;", :usemap=>'front-page-images'%></li>
-		</ul>
-		<map name="front-page-images">
-			<% @img_map_info['images'].each_pair do |image_name, image_info| %>
-				<area shape="rect" coords="<%=image_info['x1']%>,<%=image_info['y1']%>,<%=image_info['x2']%>,<%=image_info['y2']%>"
-					href="<%=thread_code_url @thread, image_name%>">
-			<% end %>
-		</map>
-	</div>
-</div>
 
 <%= render :partial => "coding_footer" %>
