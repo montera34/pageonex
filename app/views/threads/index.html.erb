@@ -48,7 +48,7 @@
 		  <% end %>
 		  <hr style="margin:5px 3px 0px 3px;">
 		  <div class="row-fluid">
-		    <%=link_to thread.owner.username, '/threads/by/'+thread.owner.username %>
+		    <%=threads_by_user_link thread.owner %>
 		    <span class="pull-right categories">
 		      <% thread.category_list.each do |c| %>
 		        <%=link_to c,"/threads/search_by_category?q=#{c.strip}", :class => "label"%>

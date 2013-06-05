@@ -44,7 +44,7 @@
 <!-- Thread details / code info -->
 <div class="row">
 	<div class="span5">
-		<h4>By</h4> <%=link_to @thread.owner.username, '/threads/by/'+@thread.owner.username %>
+		<h4>By</h4> <%=threads_by_user_link @thread.owner %>
 		<h4>Description</h4><p> <%= @thread.description %></p>
 	</div>
 	<div class="span2">
@@ -146,36 +146,9 @@
 	</div>
 </div>
 
-<!-- lots of hidden info about the highlighted images -->
-<div id="high_images">
-    <% @thread.images.each do |image| %>
-	<div class="ha_group" id="ha_group_<%= image.image_name %>">
-	    <% @thread.highlighted_areas_for_image(image).each_with_index do |ha, index| %>
-		<div id="<%= "#{image.image_name}_#{index}" %>">
-		    <%= hidden_field_tag "ha_name[]", "#{image.image_name}_#{index}" %>
-		    <%= hidden_field_tag "img_id_#{image.image_name}_#{index}", "#{image.image_name}" %>
-		    <%= hidden_field_tag "id_#{image.image_name}_#{index}", "#{ha.id}" %>
-		    <%= hidden_field_tag "code_id_#{image.image_name}_#{index}", "#{ha.code_id}" %>
-		    <%= hidden_field_tag "x1_#{image.image_name}_#{index}", "#{ha.areas.first.x1}" %>
-		    <%= hidden_field_tag "y1_#{image.image_name}_#{index}", "#{ha.areas.first.y1}" %>
-		    <%= hidden_field_tag "x2_#{image.image_name}_#{index}", "#{ha.areas.first.x2}" %>
-		    <%= hidden_field_tag "y2_#{image.image_name}_#{index}", "#{ha.areas.first.y2}" %>
-		    <%= hidden_field_tag "width_#{image.image_name}_#{index}", "#{ha.areas.first.width}" %>
-		    <%= hidden_field_tag "height_#{image.image_name}_#{index}", "#{ha.areas.first.height}" %>
-		    <%= hidden_field_tag "img_width_#{image.image_name}_#{index}", "#{image.width}" %>
-		    <%= hidden_field_tag "img_height_#{image.image_name}_#{index}", "#{image.height}" %>
-		    <%= hidden_field_tag "deleted_#{image.image_name}_#{index}" %>
-		</div>
-	    <% end %>
-	</div>
-    <% end %>
-    <%= hidden_field_tag "status", "0" %>
-</div>
-
 <!-- other library we were using for the column chart, it's comment just in case we want to reuse it again -->
 <!-- "d3.min.js", "d3.layout.min.js", "rickshaw.min.js", -->
 <%= javascript_include_tag "http://d3js.org/d3.v3.min.js" %>
-<%= javascript_include_tag "highlighted_area.js" %>
 <%= javascript_include_tag "dataviz.js" %>
 
 <!-- thread info summary and code info again -->

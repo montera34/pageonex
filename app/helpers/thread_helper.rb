@@ -11,4 +11,8 @@ module ThreadHelper
     thread.link_url
   end
 
+  def threads_by_user_link user
+    link_to user.username, '/threads/by/'+user.username 
+  end
+
 end
