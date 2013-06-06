@@ -131,7 +131,9 @@ class Threadx < ActiveRecord::Base
 	# generate combined images of all the front pages and highlighted areas
 	# TODO: be smart about caching this (ie. delete and regen when anything is changed)
 	def generate_composite_images width=DEFAULT_COMPOSITE_IMAGE_WIDTH, force=false
-		return if not force and Dir.exists? self.composite_img_dir(width.to_s)
+		thread_img_dir = self.composite_img_dir width
+		return if not force and Dir.exists? thread_img_dir and File.exists? File.join(thread_img_dir, 'front_pages.png')
+
 
 		# create the container dir
 		self.composite_img_dir width, true
@@ -158,7 +160,6 @@ class Threadx < ActiveRecord::Base
 		composite_image_dimens = {:width=>thumb_width*self.duration + padding*self.duration, 
 															:height=>height_by_media.sum + padding*self.media.count }
 		img_map.merge! composite_image_dimens
-		thread_img_dir = self.composite_img_dir width
 
 		# create the composite images
 		results_composite_img = Magick::Image.new(composite_image_dimens[:width], composite_image_dimens[:height])
