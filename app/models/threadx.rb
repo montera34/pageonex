@@ -1,5 +1,7 @@
 class Threadx < ActiveRecord::Base
 
+	DEFAULT_COMPOSITE_IMAGE_WIDTH = 970
+
 	MAX_IMAGES = 500
 
 	self.per_page = 20
@@ -85,22 +87,23 @@ class Threadx < ActiveRecord::Base
 		self.category.split(",")
 	end
 
-	def composite_image_map_info
-		thread_img_dir = self.composite_img_dir
-		return nil unless File.exists? File.join(thread_img_dir,'img_map.json')
-		JSON.parse( IO.read(File.join(thread_img_dir,'img_map.json')) )
+	def composite_image_map_info width=DEFAULT_COMPOSITE_IMAGE_WIDTH
+		thread_img_dir = self.composite_img_dir width
+		path = File.join(thread_img_dir, 'img_map.json')
+		return nil unless File.exists? path
+		JSON.parse( IO.read path )
 	end
 
-	def path_to_composite_cover_image
-		File.join('threads',self.owner.id.to_s,self.id.to_s,'front_pages.png').to_s
+	def path_to_composite_cover_image width=DEFAULT_COMPOSITE_IMAGE_WIDTH
+		File.join('threads',self.owner.id.to_s,self.id.to_s, width.to_s, 'front_pages.png').to_s
 	end
 
-	def path_to_composite_highlighed_area_image code_id
-		File.join('threads',self.owner.id.to_s,self.id.to_s,'code_'+code_id.to_s+'.png').to_s
+	def path_to_composite_highlighed_area_image code_id, width=DEFAULT_COMPOSITE_IMAGE_WIDTH
+		File.join('threads',self.owner.id.to_s,self.id.to_s, width.to_s, 'code_'+code_id.to_s+'.png').to_s
 	end
 
-	def remove_composite_images
-		FileUtils.rm_r self.composite_img_dir if Dir.exists? self.composite_img_dir
+	def remove_composite_images width=DEFAULT_COMPOSITE_IMAGE_WIDTH
+		FileUtils.rm_r self.composite_img_dir(width) if Dir.exists? self.composite_img_dir(width) 
 	end
 
 	def scrape_all_images force_redownload=false
@@ -116,10 +119,14 @@ class Threadx < ActiveRecord::Base
 
 	# generate combined images of all the front pages and highlighted areas
 	# TODO: be smart about caching this (ie. delete and regen when anything is changed)
-	def generate_composite_images width=970, force=false, padding=3
-		return if not force and Dir.exists? self.composite_img_dir
+	def generate_composite_images width=DEFAULT_COMPOSITE_IMAGE_WIDTH, force=false
+		return if not force and Dir.exists? self.composite_img_dir(width.to_s)
 
-		self.composite_img_dir true	# create the container dir
+		# create the container dir
+		self.composite_img_dir width, true
+		FileUtils.mkpath self.composite_img_dir(width.to_s)
+
+		padding = self.duration > 10 ? 3 : 8 	# default padding logic
 
 		thumb_width = ((width-padding*self.duration).to_f / self.duration.to_f).round
 		img_map = {:row_info=>{},:images=>{}} # will hold info page needs to render
@@ -140,7 +147,7 @@ class Threadx < ActiveRecord::Base
 		composite_image_dimens = {:width=>thumb_width*self.duration + padding*self.duration, 
 															:height=>height_by_media.sum + padding*self.media.count }
 		img_map.merge! composite_image_dimens
-		thread_img_dir = self.composite_img_dir
+		thread_img_dir = self.composite_img_dir width
 
 		# create the composite images
 		results_composite_img = Magick::Image.new(composite_image_dimens[:width], composite_image_dimens[:height])
@@ -153,6 +160,7 @@ class Threadx < ActiveRecord::Base
 		end
 
 		# stitch it all together
+		full_ha_list = self.highlighted_areas.all
 		(self.start_date..self.end_date).each do |date|	# iterate over days (ie. columns)
 			day_images = self.images.select { |img| img.publication_date==date }
 			offset = { 
@@ -188,7 +196,7 @@ class Threadx < ActiveRecord::Base
 					color = (code.color.nil?) ? '#ff0000' : code.color
 					gc.fill color
 					gc.fill_opacity 0.5
-					img_ha_list = self.highlighted_areas.select { |ha| ha.code_id==code.id and ha.image_id==img.id}
+					img_ha_list = full_ha_list.select { |ha| ha.code_id==code.id and ha.image_id==img.id}
 					scaled_areas = img_ha_list.collect { |ha| ha.scaled_areas scale }
 					scaled_areas.flatten.each do |area|
 						gc.rectangle offset[:x]+area.x1, offset[:y]+area.y1, offset[:x]+area.x1+area.width, offset[:y]+area.y1+area.height
@@ -203,7 +211,7 @@ class Threadx < ActiveRecord::Base
 		gc.fill_opacity 0.6
 		gc.rectangle 0,0,composite_image_dimens[:width], composite_image_dimens[:height]
 		gc.draw front_page_composite_img
-		front_page_composite_img.write File.join(thread_img_dir,'front_pages.png')
+		front_page_composite_img.write File.join(thread_img_dir, 'front_pages.png')
 
 		results_composite_img.composite!(front_page_composite_img,0,0,Magick::OverCompositeOp)
 
@@ -211,12 +219,12 @@ class Threadx < ActiveRecord::Base
 			composite_code_topic_img = Magick::Image.new(composite_image_dimens[:width], composite_image_dimens[:height])
 			composite_code_topic_img.opacity = Magick::MaxRGB
 			ha_composite_gcs[code.id].draw composite_code_topic_img
-			composite_code_topic_img.write File.join(thread_img_dir,'code_'+code.id.to_s+'.png')
+			composite_code_topic_img.write File.join(thread_img_dir, 'code_'+code.id.to_s+'.png')
 			results_composite_img.composite! composite_code_topic_img,0,0,Magick::OverCompositeOp
 		end
 		
-		File.open( File.join(thread_img_dir,'img_map.json'), 'w') {|f| f.write(img_map.to_json)}
-		results_composite_img.write File.join(thread_img_dir,'results.png')
+		File.open( File.join(thread_img_dir, 'img_map.json'), 'w') {|f| f.write(img_map.to_json)}
+		results_composite_img.write File.join(thread_img_dir, 'results.png')
 
 	end
 
@@ -314,12 +322,12 @@ class Threadx < ActiveRecord::Base
 		return res
 	end
 	
-	def composite_img_dir create_dir=false
-	  composite_image_dir = File.join('app','assets','images','threads',self.owner.id.to_s,self.id.to_s)
-		if create_dir and not File.directory? composite_image_dir
-			FileUtils.mkpath composite_image_dir
+	def composite_img_dir width=DEFAULT_COMPOSITE_IMAGE_WIDTH, create_dir=false
+	  dir = File.join('app','assets','images','threads',self.owner.id.to_s,self.id.to_s, width.to_s)
+		if create_dir and not File.directory? dir
+			FileUtils.mkpath dir
 		end
-		composite_image_dir
+		dir
 	end
 
 end
