@@ -99,7 +99,7 @@ $(document).ready(function () {
 });
 
 function setMissingImageInfoFromImg(imgElem){
-    if(imgElem.attr('data-missing')=='true'){
+    if(imgElem.attr('data-missing')=='true' || imgElem.attr('src')=="/assets/404.jpg"){
         $('#missing_image_id').val(imgElem.attr('data-id'));
         $('#downloadImageAlert').show();
     } else {
