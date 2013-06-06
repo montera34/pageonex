@@ -20,7 +20,7 @@ class Image < ActiveRecord::Base
 	end
 	
 	def self.codeable
-		where("local_path != '404.jpg'")
+		where("local_path != '404.jpg'").where(:missing=>false)
 	end
 	
 	def self.by_media(media_ids)
