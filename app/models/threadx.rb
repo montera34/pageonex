@@ -63,6 +63,17 @@ class Threadx < ActiveRecord::Base
 		end
 	end
 
+	def uncoded_image_ids
+		all_img_ids = self.images.collect {|img| img.id }
+		all_img_ids - coded_image_ids
+	end
+
+	def coded_image_ids
+		coded_img_ids = self.coded_pages.collect {|cp| cp.image_id }
+		highlighted_img_ids = self.highlighted_areas.collect {|ha| ha.image_id}
+		coded_img_ids + highlighted_img_ids
+	end
+
 	def existing_thread
 		current_user = User.find owner_id
 		thread = current_user.owned_threads.find_by_thread_display_name thread_display_name
@@ -131,6 +142,8 @@ class Threadx < ActiveRecord::Base
 		thumb_width = ((width-padding*self.duration).to_f / self.duration.to_f).round
 		img_map = {:row_info=>{},:images=>{}} # will hold info page needs to render
 
+		uncoded = self.uncoded_image_ids
+
 		# figure out each row height
 		height_by_media = []
 		thumbnails = []
@@ -182,6 +195,15 @@ class Threadx < ActiveRecord::Base
 							front_page_composite_img.composite!(thumb,offset[:x],offset[:y], Magick::OverCompositeOp)
 							img_map[:images][img.image_name] = { :x1=>offset[:x].round, :y1=>offset[:y].round, 
 								:x2=>offset[:x].round+thumb.columns, :y2=>offset[:y].round+thumb.rows }
+							# if the front page is coded, fade it a bit so the uncoded ones stand out
+							if coded_image_ids.include? img.id
+								white_gc = Magick::Draw.new
+								white_gc.fill 'white'
+								white_gc.fill_opacity 0.7
+								white_gc.rectangle offset[:x].round, offset[:y].round, 
+																	 offset[:x].round+thumb.columns, offset[:y].round+thumb.rows
+								white_gc.draw front_page_composite_img
+							end
 						end
 					else
 						# include the link in the image map anyways
@@ -200,17 +222,12 @@ class Threadx < ActiveRecord::Base
 					scaled_areas = img_ha_list.collect { |ha| ha.scaled_areas scale }
 					scaled_areas.flatten.each do |area|
 						gc.rectangle offset[:x]+area.x1, offset[:y]+area.y1, offset[:x]+area.x1+area.width, offset[:y]+area.y1+area.height
-					end	
+					end
 				end
 			end
 		end
 
 		# write out the image results
-		gc = Magick::Draw.new
-		gc.fill 'white'
-		gc.fill_opacity 0.6
-		gc.rectangle 0,0,composite_image_dimens[:width], composite_image_dimens[:height]
-		gc.draw front_page_composite_img
 		front_page_composite_img.write File.join(thread_img_dir, 'front_pages.png')
 
 		results_composite_img.composite!(front_page_composite_img,0,0,Magick::OverCompositeOp)
