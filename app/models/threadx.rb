@@ -175,6 +175,10 @@ class Threadx < ActiveRecord::Base
 							img_map[:images][img.image_name] = { :x1=>offset[:x].round, :y1=>offset[:y].round, 
 								:x2=>offset[:x].round+thumb.columns, :y2=>offset[:y].round+thumb.rows }
 						end
+					else
+						# include the link in the image map anyways
+						img_map[:images][img.image_name] = { :x1=>offset[:x].round, :y1=>offset[:y].round, 
+								:x2=>offset[:x].round+thumb_width, :y2=>offset[:y].round+height_by_media[index] }
 					end
 				end
 				# make the coding composites
