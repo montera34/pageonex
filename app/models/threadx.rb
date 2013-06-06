@@ -187,7 +187,7 @@ class Threadx < ActiveRecord::Base
 					img_ha_list = self.highlighted_areas.select { |ha| ha.code_id==code.id and ha.image_id==img.id}
 					scaled_areas = img_ha_list.collect { |ha| ha.scaled_areas scale }
 					scaled_areas.flatten.each do |area|
-						gc.rectangle offset[:x]+area.x1, offset[:y]+area.y1, offset[:x]+area.x1+area.height, offset[:y]+area.y1+area.height
+						gc.rectangle offset[:x]+area.x1, offset[:y]+area.y1, offset[:x]+area.x1+area.width, offset[:y]+area.y1+area.height
 					end	
 				end
 			end
