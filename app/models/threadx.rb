@@ -103,18 +103,25 @@ class Threadx < ActiveRecord::Base
 		FileUtils.rm_r self.composite_img_dir if Dir.exists? self.composite_img_dir
 	end
 
-	def scrape_all_images
+	def scrape_all_images force_redownload=false
 		KioskoScraper.create_images(self.start_date, self.end_date, self.media)
+		if force_redownload
+			self.images.each do |image|
+    		image.download
+	    	image.save
+			end
+		end
+		remove_composite_images
 	end
 
 	# generate combined images of all the front pages and highlighted areas
 	# TODO: be smart about caching this (ie. delete and regen when anything is changed)
-	def generate_composite_images width=970, force=false
+	def generate_composite_images width=970, force=false, padding=3
 		return if not force and Dir.exists? self.composite_img_dir
 
 		self.composite_img_dir true	# create the container dir
 
-		thumb_width = (width.to_f / self.duration.to_f).round
+		thumb_width = ((width-padding*self.duration).to_f / self.duration.to_f).round
 		img_map = {:row_info=>{},:images=>{}} # will hold info page needs to render
 
 		# figure out each row height
@@ -129,7 +136,9 @@ class Threadx < ActiveRecord::Base
 			height_by_media[index] = thumbnail_media_heights.max.round
 			img_map[:row_info][media.id] = {:height=>thumbnail_media_heights.max.round, :name=>media.name_with_country}
 		end
-		composite_image_dimens = {:width=>thumb_width*self.duration, :height=>height_by_media.sum}
+		logger.debug(height_by_media)
+		composite_image_dimens = {:width=>thumb_width*self.duration + padding*self.duration, 
+															:height=>height_by_media.sum + padding*self.media.count }
 		img_map.merge! composite_image_dimens
 		thread_img_dir = self.composite_img_dir
 
@@ -147,11 +156,11 @@ class Threadx < ActiveRecord::Base
 		(self.start_date..self.end_date).each do |date|	# iterate over days (ie. columns)
 			day_images = self.images.select { |img| img.publication_date==date }
 			offset = { 
-					:x=>(date-self.start_date)*thumb_width, #TODO: add padding
+					:x=>(date-self.start_date)*thumb_width + padding*(date-self.start_date),
 					:y=>0 
 			}
 			self.media.each_with_index do |media,index|	# iterate over media sources within that day
-				offset[:y] = height_by_media.first(index).sum #TODO: add padding
+				offset[:y] = height_by_media.first(index).sum + padding*index
 				# make the thumbnail composite
 				media_img_index = day_images.find_index { |img| img.media_id==media.id }
 				if media_img_index.nil?
@@ -178,8 +187,8 @@ class Threadx < ActiveRecord::Base
 					img_ha_list = self.highlighted_areas.select { |ha| ha.code_id==code.id and ha.image_id==img.id}
 					scaled_areas = img_ha_list.collect { |ha| ha.scaled_areas scale }
 					scaled_areas.flatten.each do |area|
-						gc.rectangle offset[:x]+area.x1, offset[:y]+area.y1, offset[:x]+area.x2, offset[:y]+area.y2
-					end
+						gc.rectangle offset[:x]+area.x1, offset[:y]+area.y1, offset[:x]+area.x1+area.height, offset[:y]+area.y1+area.height
+					end	
 				end
 			end
 		end
