@@ -266,18 +266,6 @@ class Threadx < ActiveRecord::Base
 		area_count > 0 or skipped > 0
 	end
 	
-	def get_percent(code, medium, date)
-		image = images.by_media(medium.id).by_date(date).first
-		if not image.nil?
-			parts = image.size.match(/(\d+)x(\d+)/)
-			width = parts[1].to_f
-			height = parts[2].to_f
-			highlighted = highlighted_areas_for_image(image).by_code(code).inject(0) { |area, ha| area + ha.area }
-			return highlighted.to_f / (width * height)
-		end
-		return nil
-	end
-	
 	def results(type = :tree)
 		# Create an ordered list of newspapers, codes, dates
 		res = {
@@ -292,6 +280,9 @@ class Threadx < ActiveRecord::Base
 		end
 		tree_data = {}
 		flat_data = []
+		# preload some data for better querying
+		all_images = self.images.codeable.all
+		all_ha_list = self.highlighted_areas.all
 		# Create a tree: date->media->code->percentage
 		(start_date..end_date).each do |date|
 			media_code = {}
@@ -301,13 +292,19 @@ class Threadx < ActiveRecord::Base
 			codes.each do |code|
 				code_sum[code.code_text] = 0.0
 			end
-			image_count = images.by_date(date).codeable.length
+			day_images = all_images.select { |img| img.publication_date==date}
+
+			image_count = day_images.length
 			# Caclulate percentage for each newspaper
 			media.each do |m|
-				next if images.by_media(m.id).by_date(date).codeable.length == 0
+				media_day_images = day_images.select { |img| img.media_id==m.id}
+				next if media_day_images.length == 0
+				image = media_day_images.first #there should only really be one
 				code_percent = {} 
 				codes.each do |code|
-					percent = get_percent(code, m, date)
+					image_code_ha_list = all_ha_list.select { |ha| ha.image_id==image.id and ha.code_id==code.id}
+					highlighted = image_code_ha_list.inject(0) { |area, ha| area + ha.area }
+					percent = highlighted.to_f / (image.width * image.height)
 					code_percent[code.code_text] = percent
 					code_sum[code.code_text] += percent
 					flat_data << {
