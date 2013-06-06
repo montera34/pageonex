@@ -35,10 +35,20 @@ class Image < ActiveRecord::Base
 		select('publication_date').uniq.map { |elt| elt.publication_date }
 	end
 
+	def thumbnail_local_path width, generate=true
+	 	path = self.local_path.chomp(File.extname(self.local_path))+'-thumb-'+width.to_s+'.jpg'
+	 	self.thumbnail(width) if generate
+		path
+	end
+
 	# return a Magick img object that is a thumbnail (caches to disk)
-	def thumbnail width
+	def thumbnail width, path=nil
 		return nil unless File.exists? self.full_local_path # bail if there is no image
-		thumb_file_path = self.full_local_path.chomp(File.extname(self.full_local_path) )+'-thumb-'+width.to_s+'.jpg'
+		if path==nil
+			thumb_file_path = File.join 'app','assets','images',self.thumbnail_local_path(width,false)
+		else 
+			thumb_file_path = File.join 'app','assets','images', path
+		end
 		return Magick::Image.read(thumb_file_path).first if File.exists? thumb_file_path
 		# if the thumb doesn't exist then generate it
 		img = Magick::Image.read(self.full_local_path).first
