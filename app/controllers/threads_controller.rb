@@ -252,8 +252,8 @@ class ThreadsController < ApplicationController
 					:type => 'image/svg+xml',
 					:disposition => 'attachment'
 			end
-			format.png do
-				send_file File.join(@thread.composite_img_dir,'results.png'), :type=>'image/png', :disposition=>'inline'
+			format.jpeg do
+				send_file File.join(@thread.composite_img_dir,'results.jpg'), :type=>'image/jpg', :disposition=>'inline'
 			end
 		end
 	end

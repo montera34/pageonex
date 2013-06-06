@@ -106,7 +106,7 @@ class Threadx < ActiveRecord::Base
 	end
 
 	def path_to_composite_cover_image width=DEFAULT_COMPOSITE_IMAGE_WIDTH
-		File.join('threads',self.owner.id.to_s,self.id.to_s, width.to_s, 'front_pages.png').to_s
+		File.join('threads',self.owner.id.to_s,self.id.to_s, width.to_s, 'front_pages.jpg').to_s
 	end
 
 	def path_to_composite_highlighed_area_image code_id, width=DEFAULT_COMPOSITE_IMAGE_WIDTH
@@ -132,8 +132,7 @@ class Threadx < ActiveRecord::Base
 	# TODO: be smart about caching this (ie. delete and regen when anything is changed)
 	def generate_composite_images width=DEFAULT_COMPOSITE_IMAGE_WIDTH, force=false
 		thread_img_dir = self.composite_img_dir width
-		return if not force and Dir.exists? thread_img_dir and File.exists? File.join(thread_img_dir, 'front_pages.png')
-
+		return if not force and Dir.exists? thread_img_dir and File.exists? File.join(thread_img_dir, 'front_pages.jpg')
 
 		# create the container dir
 		self.composite_img_dir width, true
@@ -163,7 +162,6 @@ class Threadx < ActiveRecord::Base
 
 		# create the composite images
 		results_composite_img = Magick::Image.new(composite_image_dimens[:width], composite_image_dimens[:height])
-		results_composite_img.opacity = Magick::MaxRGB
 		front_page_composite_img = Magick::Image.new(composite_image_dimens[:width], composite_image_dimens[:height])
 		front_page_composite_img.opacity = Magick::MaxRGB
 		ha_composite_gcs = []
@@ -227,7 +225,7 @@ class Threadx < ActiveRecord::Base
 		end
 
 		# write out the image results
-		front_page_composite_img.write File.join(thread_img_dir, 'front_pages.png')
+		front_page_composite_img.write File.join(thread_img_dir, 'front_pages.jpg') {self.quality=60}
 
 		results_composite_img.composite!(front_page_composite_img,0,0,Magick::OverCompositeOp)
 
@@ -240,7 +238,7 @@ class Threadx < ActiveRecord::Base
 		end
 		
 		File.open( File.join(thread_img_dir, 'img_map.json'), 'w') {|f| f.write(img_map.to_json)}
-		results_composite_img.write File.join(thread_img_dir, 'results.png')
+		results_composite_img.write File.join(thread_img_dir, 'results.jpg')  {self.quality=60}
 
 	end
 
