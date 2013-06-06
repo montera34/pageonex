@@ -142,8 +142,6 @@ class Threadx < ActiveRecord::Base
 		thumb_width = ((width-padding*self.duration).to_f / self.duration.to_f).round
 		img_map = {:row_info=>{},:images=>{}} # will hold info page needs to render
 
-		uncoded = self.uncoded_image_ids
-
 		# figure out each row height
 		height_by_media = []
 		thumbnails = []
