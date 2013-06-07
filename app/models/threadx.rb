@@ -225,7 +225,7 @@ class Threadx < ActiveRecord::Base
 		end
 
 		# write out the image results
-		front_page_composite_img.write File.join(thread_img_dir, 'front_pages.jpg') {self.quality=60}
+		front_page_composite_img.write File.join(thread_img_dir, 'front_pages.jpg') {self.quality=80}
 
 		results_composite_img.composite!(front_page_composite_img,0,0,Magick::OverCompositeOp)
 
@@ -238,7 +238,7 @@ class Threadx < ActiveRecord::Base
 		end
 		
 		File.open( File.join(thread_img_dir, 'img_map.json'), 'w') {|f| f.write(img_map.to_json)}
-		results_composite_img.write File.join(thread_img_dir, 'results.jpg')  {self.quality=60}
+		results_composite_img.write File.join(thread_img_dir, 'results.jpg')  {self.quality=80}
 
 	end
 
