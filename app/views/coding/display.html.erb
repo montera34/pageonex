@@ -26,9 +26,9 @@
 		      <!-- <li><a href="#">Download as  .csv </a></li>-->
 		      <li><a href="<%= thread_url(@thread)+"export.ods" %>">Download Data as .ods</a></li>
 		      <li><a href="<%= thread_url(@thread)+"export.json" %>">Download Data as .json</a></li>
-		      <li><a href="#chart-modal" data-toggle="modal">Download Graph as  .svg </a></li>
-		      <li><a href="<%= thread_url(@thread)+"export.jpeg" %>">Download Images as .jpg</a></li>
-		      <!--<li><a href="#">Download as  .png </a></li>
+		      <li><a href="#chart-modal" data-toggle="modal">Download Graph as .svg </a></li>
+					<li><a href="#image-export-modal" data-toggle="modal">Download Images as .jpg </a></li>
+		      <!--
 		      <li class="divider"></li>
 		      <li><a href="#">Download as  .pdf </a></li>-->
 		    </ul>
@@ -86,16 +86,6 @@
 
 <!-- Results Chart -->
 <div class="row">
-  <div id="chart-modal" class="modal hide fade">
-	  <div class="modal-header">
-      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-      <h3>Export Chart</h3>
-	  </div>
-	  <div class="modal-body">
-      <p>To export the chart, right click the image below and select "Save Image As..." This will download the chart in SVG format.</p>
-      <img id="chart-export-img" />
-	  </div>
-  </div>
 	<div id="chart_div" style="margin-left: 110px;width: 1210px; margin-bottom: -15px;"></div><!--div to display bar chart-->
 </div>
 
@@ -136,9 +126,38 @@
 			    <div id="code_<%= code.id %>" style="background-color:<%= code.color %>;" class="box_legend"></div>
 			    <div class="legend_text"> <%= code.code_text  %> </div>
 		  </li>
-	       	<% end %>
+   	<% end %>
 		</ul>
 	</div>	
+</div>
+
+<!-- Results download modal popup -->
+<div id="chart-modal" class="modal hide fade">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h3>Export Chart</h3>
+  </div>
+  <div class="modal-body">
+    <p>To export the chart, right click the image below and select "Save Image As..." This will download the chart in SVG format.</p>
+    <img id="chart-export-img" />
+  </div>
+</div>
+
+<!-- Results download modal popup -->
+<div id="image-export-modal" class="modal hide fade">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h3>Export Image</h3>
+  </div>
+  <div class="modal-body">
+  	<%= form_tag thread_url(@thread)+"export.jpeg", :method=>"post" do %>
+  		<fieldset>
+    		<label>Image Width (in pixels)</label>
+    		<input type="text" name="width" placeholder="enter a width in pixels">
+    	</fieldset>
+    	<button type="submit" class="btn">Download</button>
+    <% end %>
+  </div>
 </div>
 
 <!-- other library we were using for the column chart, it's comment just in case we want to reuse it again -->
