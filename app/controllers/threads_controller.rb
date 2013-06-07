@@ -268,7 +268,10 @@ class ThreadsController < ApplicationController
 					:disposition => 'attachment'
 			end
 			format.jpeg do
-				send_file File.join(@thread.composite_img_dir,'results.jpg'), :type=>'image/jpg', :disposition=>'inline'
+				width = Threadx::DEFAULT_COMPOSITE_IMAGE_WIDTH
+				width = params['width'].to_i if params['width']
+				@thread.generate_composite_images width
+				send_file File.join(@thread.composite_img_dir(width),'results.jpg'), :type=>'image/jpg', :disposition=>'inline'
 			end
 		end
 	end
