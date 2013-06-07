@@ -340,5 +340,9 @@ class Threadx < ActiveRecord::Base
 		end
 		dir
 	end
+	
+	def allowed_to_code?(user)
+		return !user.nil? && (self.owner.id == user.id || !self.collaborators.find_by_id(user.id).nil? || user.admin)		
+	end
 
 end

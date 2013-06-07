@@ -21,7 +21,7 @@ var HighlightedAreas = {
         return s;
     },
 
-    add: function(img_id, code_id, selection) {
+    add: function(email, img_id, code_id, selection) {
         // Get div containing highlighted area info for the specified image
         var ha_group = $("#ha_group_" + img_id);
         var count = ha_group.children().length;
@@ -34,6 +34,7 @@ var HighlightedAreas = {
         $(tag).attr('name', 'img_id_'+cssid).val(img_id).appendTo(ha_elt);
         $(tag).attr('name', 'id_'+cssid).val(0).appendTo(ha_elt);
         $(tag).attr('name', 'code_id_'+cssid).val(code_id).appendTo(ha_elt);
+        $(tag).attr('name', 'email_'+cssid).val(email).appendTo(ha_elt);
         $(tag).attr('name', 'x1_'+cssid).val(roundedSelection.x1).appendTo(ha_elt);
         $(tag).attr('name', 'y1_'+cssid).val(roundedSelection.y1).appendTo(ha_elt);
         $(tag).attr('name', 'x2_'+cssid).val(roundedSelection.x2).appendTo(ha_elt);
@@ -77,6 +78,7 @@ var HighlightedAreas = {
         ha.cssid = cssid;
         ha.id = $("[name='id_"+cssid+"']").val();
         ha.code_id = $("[name='code_id_"+cssid+"']").val();
+        ha.email = $("[name='email_"+cssid+"']").val();
         ha.x1 = $("[name='x1_"+cssid+"']").val();
         ha.x2 = $("[name='x2_"+cssid+"']").val();
         ha.y1 = $("[name='y1_"+cssid+"']").val();
