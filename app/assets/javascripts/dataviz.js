@@ -92,10 +92,10 @@ var dataviz = {
         yAxis = d3.svg.axis()
             .scale(yInverse)
             .orient('left')
-            .ticks(5)
+            .ticks(4)
             .tickFormat(formatPercent);
         chart.selectAll('.yline')
-            .data(y.ticks(5))
+            .data(y.ticks(4))
             .enter()
             .append('line')
             .attr('y1', function (ty) { return Math.floor(y(ty)) + padding.top + 0.5; })
