@@ -39,7 +39,12 @@ or
 ### Options
 If you have problems with the dependencies of the gems check this tricks.
 
-**problems with dependencies**
+**Problems with dependencies**
 
 Run the same commands with 'bundle exec' like
 >bundle exec rake db:migrate
+
+If you have problems with the pg gem, needed for the "heroku" version, you can run:
+>bundle install --without heroku
+
+
