@@ -1,3 +1,5 @@
+require 'digest/md5'
+
 class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable and :omniauthable
@@ -20,6 +22,16 @@ class User < ActiveRecord::Base
     if ['pageonex', 'admin', 'user', 'thread', 'example', 'blog', 'timeline', 'documentation', 'wiki', 'about', 'frontpage'].include? self.username
       errors.add(:userame, "isn't valid")
     end 
+  end
+
+  def self.hashes
+    emails = User.select("username, email").all
+    result = {}
+    hashes = emails.map do |u|
+      digest = Digest::MD5.hexdigest(u['email'])
+      result[u['username']] = digest
+    end
+    return result
   end
 
 end

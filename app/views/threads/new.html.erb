@@ -101,7 +101,7 @@
   <h3>Collaborators</h3>
   <div class="control-group">
     <input type="text" id="collaborator-input" autocomplete="off"/>
-    <button type="button" class="btn">Add</button>
+    <button type="button" class="btn" id="collaborator-add">Add</button>
     <ul id="collab-list" class="unstyled">
     </ul>
     <div id="collab-inputs"></div>
@@ -170,17 +170,28 @@ $(function () {
   var users = <%= raw @users.to_json %>;
   var collaborators = <%= raw @collaborators %>;
   $('#collaborator-input').typeahead({
-    source:users
+    source:Object.keys(users)
     , updater:function (item) {
-      Collaborators.add(item);
+      Collaborators.add(item, users[item]);
       return '';
     }
   });
   for (var i = 0; i < collaborators.length; i++) {
-    Collaborators.add(collaborators[i]);
+    Collaborators.add(collaborators[i], users[collaborators[i]]);
   };
+  $('#collaborator-add').bind('click', function (e) {
+    var username = $('#collaborator-input').val();
+    $('#collaborator-input').val('');
+    if (typeof(users[username]) !== 'undefined') {
+      Collaborators.add(username, users[username]);
+    }
+  });
   $('#collaborator-input').bind('keypress keydown keyup', function (e) {
+    var username = $('#collaborator-input').val();
     if (e.keyCode == 13) {
+      if (typeof(users[username]) == 'undefined') {
+        $('#collaborator-input').val('');
+      }
       e.preventDefault();
     }
   });
