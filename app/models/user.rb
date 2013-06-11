@@ -24,7 +24,7 @@ class User < ActiveRecord::Base
     end 
   end
 
-  def hash
+  def email_hash
     return Digest::MD5.hexdigest(self.email.downcase)
   end
 
