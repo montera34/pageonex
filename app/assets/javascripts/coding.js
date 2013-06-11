@@ -214,8 +214,7 @@ function renderHighlightedArea(ha) {
     }
     // Create a new highlighted area by cloning a template DOM element
     var ha_elt = $('#high_area_template').clone();
-    var hash = String(CryptoJS.MD5(ha.email.toLowerCase()));
-    var icon = $('<img src="http://gravatar.com/avatar/' + hash + '?s=20"/>');
+    var icon = $('<img src="http://gravatar.com/avatar/' + ha.hash + '?s=20&d=identicon"/>');
     icon.appendTo(ha_elt);
     ha_elt.attr('id', 'ha_' + ha.cssid);
     ha_elt.addClass('clone');
@@ -259,7 +258,7 @@ function highlightingArea(img, selection) {
     // Create the highlighted area
     img_id = getCurrentImageId();
     code_id = '';
-    ha = HighlightedAreas.add(current_user, img_id, code_id, screenToNatural(selection));
+    ha = HighlightedAreas.add(current_user, current_user_hash, img_id, code_id, screenToNatural(selection));
     if( $("#codes option").length == 1) {   // if only one topic, default to that one
         setCodeOnHighlightedArea( ha.cssid );
     } else {

@@ -24,11 +24,15 @@ class User < ActiveRecord::Base
     end 
   end
 
+  def hash
+    return Digest::MD5.hexdigest(self.email.downcase)
+  end
+
   def self.hashes
     emails = User.select("username, email").all
     result = {}
     hashes = emails.map do |u|
-      digest = Digest::MD5.hexdigest(u['email'])
+      digest = Digest::MD5.hexdigest(u['email'].downcase)
       result[u['username']] = digest
     end
     return result
