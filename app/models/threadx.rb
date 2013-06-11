@@ -12,7 +12,7 @@ class Threadx < ActiveRecord::Base
 	belongs_to :owner, :class_name => "User"
 
 	has_many :threadx_collaborators
-	has_many :users, :through => :threadx_collaborators
+	has_many :collaborators, :through => :threadx_collaborators, :source => :user
 
 	has_many :codes
 	has_many :highlighted_areas, :through => :codes
@@ -339,6 +339,10 @@ class Threadx < ActiveRecord::Base
 			FileUtils.mkpath dir
 		end
 		dir
+	end
+	
+	def allowed_to_code?(user)
+		return !user.nil? && (self.owner.id == user.id || !self.collaborators.find_by_id(user.id).nil? || user.admin)		
 	end
 
 end

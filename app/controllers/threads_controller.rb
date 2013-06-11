@@ -53,6 +53,8 @@ class ThreadsController < ApplicationController
 	def new
 		@media = Media.by_country_and_display_name.all
 		@thread = Threadx.new
+		@users = User.pluck(:email)
+		@collaborators = @thread.collaborators.pluck(:email)
 	end
 
 	# create action is responsible of processing the submited new form, and create the thread object in the database and handle the validation
@@ -94,6 +96,8 @@ class ThreadsController < ApplicationController
 
 			images = @thread.scrape_all_images
 
+			@thread.collaborators = User.where(:email => params[:collaborators])
+
 			# It saves the thread to the db, and assign an id to the thread
 			@thread.save
 
@@ -110,6 +114,10 @@ class ThreadsController < ApplicationController
 		else
 			# we should load the names of the media again. 
 			@media = Media.by_country_and_display_name.all
+			
+			# Reload users and collaborators
+			@users = User.pluck(:email)
+			@collaborators = @thread.collaborators.pluck(:email)
 
 			# send some params back to the view, to tell the user about what is missing
 			if params["topic_name_1"] == ""
@@ -120,6 +128,7 @@ class ThreadsController < ApplicationController
 			end
 
 			# and then render the new form again
+
 			render "new"
 		end
 
@@ -141,6 +150,8 @@ class ThreadsController < ApplicationController
 			@media = Media.by_country_and_display_name.all
 			params["media"] = @thread.media.each.collect { |m| m.id }
 		end
+		@users = User.pluck(:email)
+		@collaborators = @thread.collaborators.pluck(:email)
 	end
 
 
@@ -167,6 +178,10 @@ class ThreadsController < ApplicationController
 			@thread.update_attribute(:end_date, Date.today) if @thread.status == "opened"
 
 			images = @thread.scrape_all_images
+			
+			# Add collaborators
+			users = User.where(:email => params[:collaborators])
+			@thread.collaborators = users
 			
 			#it should iterate through the recently created codes
 			params["code_id"].each_with_index do |id, index|

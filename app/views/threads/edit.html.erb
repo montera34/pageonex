@@ -95,7 +95,15 @@
     <%= hidden_field_tag :org_media, params["media"] %>
 
 
-
+  <h3>Collaborators</h3>
+  <div class="control-group">
+    <input type="text" id="collaborator-input" autocomplete="off"/>
+    <button type="button" class="btn">Add</button>
+    <ul id="collab-list" class="unstyled">
+    </ul>
+    <div id="collab-inputs"></div>
+  </div>
+  
   <h3>Coding information</h3>
   <p>Create one or multiple categories you want to use in the analysis.</p>
 
@@ -130,13 +138,15 @@
 <% end %>
 
 <%= javascript_include_tag "topic_form.js" %>
-
+<%= javascript_include_tag "md5.js" %>
+<%= javascript_include_tag "bootstrap-typeahead.js" %>
+<%= javascript_include_tag "collaborators.js" %>
 <script type="text/javascript">
 $(function () {
   $("#media").val($("#org_media").val().split(" "));
 
   $('.datepicker').datepicker();
-/*
+/* Commented out because we've switched to only closed (fixed date) threads.
   $("#open_thread").click(function () {
     $("label[for='threadx_end_date']").hide();
     $("#threadx_end_date").hide();
@@ -149,5 +159,23 @@ $(function () {
     $("#status").val("closed");
   });
 */
+  // Collaborator list
+  var users = <%= raw @users.to_json %>;
+  var collaborators = <%= raw @collaborators %>;
+  $('#collaborator-input').typeahead({
+    source:users
+    , updater:function (item) {
+      Collaborators.add(item);
+      return '';
+    }
+  });
+  for (var i = 0; i < collaborators.length; i++) {
+    Collaborators.add(collaborators[i]);
+  };
+  $('#collaborator-input').bind('keypress keydown keyup', function (e) {
+    if (e.keyCode == 13) {
+      e.preventDefault();
+    }
+  });
 })
 </script>
