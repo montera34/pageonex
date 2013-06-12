@@ -3,29 +3,28 @@ var Collaborators = {
     if (!Collaborators.initialized) {
       Collaborators.list = $('#collab-list');
       Collaborators.inputContainer = $('#collab-inputs');
-      Collaborators.emailToLi = {}
-      Collaborators.emailToInput = {}
+      Collaborators.userToLi = {}
+      Collaborators.userToInput = {}
     }
     Collaborators.initialized = true;
   },
-  add: function (email) {
+  add: function (username, hash) {
     Collaborators.init();
-    if (typeof(Collaborators.emailToLi[email]) != 'undefined') {
+    if (typeof(Collaborators.userToLi[username]) != 'undefined') {
       return;
     }
-    var hash = String(CryptoJS.MD5(email.toLowerCase()));
-    var li = $('<li><img src="http://gravatar.com/avatar/' + hash + '?s=20"/> ' + email + ' (<a href="javascript:Collaborators.remove(' + "'"+email+"'" + '); return false;">remove</a>)</li>');
+    var li = $('<li><img src="http://gravatar.com/avatar/' + hash + '?s=20&d=identicon"/> ' + username + ' (<a href="javascript:Collaborators.remove(' + "'"+username+"'" + '); return false;">remove</a>)</li>');
     li.appendTo(this.list);
-    Collaborators.emailToLi[email] = li;
-    var input = $('<input type="hidden" name="collaborators[]" value="' + email + '"/>');
-    Collaborators.emailToInput[email] = input;
+    Collaborators.userToLi[username] = li;
+    var input = $('<input type="hidden" name="collaborators[]" value="' + username + '"/>');
+    Collaborators.userToInput[username] = input;
     input.appendTo(this.inputContainer);
   },
-  remove: function (email) {
+  remove: function (username) {
     Collaborators.init();
-    Collaborators.emailToLi[email].remove();
-    Collaborators.emailToInput[email].remove();
-    delete Collaborators.emailToLi[email];
-    delete Collaborators.emailToInput[email];
+    Collaborators.userToLi[username].remove();
+    Collaborators.userToInput[username].remove();
+    delete Collaborators.userToLi[username];
+    delete Collaborators.userToInput[username];
   }
 };

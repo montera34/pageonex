@@ -147,7 +147,8 @@
             				<%= hidden_field_tag "img_id_#{image.image_name}_#{index}", "#{image.image_name}" %>
             				<%= hidden_field_tag "id_#{image.image_name}_#{index}", "#{ha.id}" %>
             				<%= hidden_field_tag "code_id_#{image.image_name}_#{index}", "#{ha.code_id}" %>
-					<%= hidden_field_tag "email_#{image.image_name}_#{index}", "#{ha.user.email}" %>
+					<%= hidden_field_tag "username_#{image.image_name}_#{index}", "#{ha.user.username}" %>
+					<%= hidden_field_tag "hash_#{image.image_name}_#{index}", "#{ha.user.email_hash}" %>
             				<%= hidden_field_tag "x1_#{image.image_name}_#{index}", "#{ha.areas.last.x1}" %>
             				<%= hidden_field_tag "y1_#{image.image_name}_#{index}", "#{ha.areas.last.y1}" %>
             				<%= hidden_field_tag "x2_#{image.image_name}_#{index}", "#{ha.areas.last.x2}" %>
@@ -256,7 +257,8 @@ window.onbeforeunload = function(e,s) {
     };
 }
 
-current_user = <%= raw current_user.nil? ? "''" : "'#{current_user.email}'" %>;
+current_user = <%= raw current_user.nil? ? "''" : "'#{current_user.username}'" %>;
+current_user_hash = <%= raw current_user.nil? ? "''" : "'#{current_user.hash}'" %>;
 </script>
 
 <%= javascript_include_tag "jquery.hotkeys", "jquery.imgareaselect", "highlighted_area", "md5", "coding" %>

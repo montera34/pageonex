@@ -53,8 +53,9 @@ class ThreadsController < ApplicationController
 	def new
 		@media = Media.by_country_and_display_name.all
 		@thread = Threadx.new
-		@users = User.pluck(:email)
-		@collaborators = @thread.collaborators.pluck(:email)
+		@users = User.hashes
+		@usernames = User.pluck(:username)
+ 		@collaborators = @thread.collaborators.pluck(:username)
 	end
 
 	# create action is responsible of processing the submited new form, and create the thread object in the database and handle the validation
@@ -96,7 +97,7 @@ class ThreadsController < ApplicationController
 
 			images = @thread.scrape_all_images
 
-			@thread.collaborators = User.where(:email => params[:collaborators])
+			@thread.collaborators = User.where(:username => params[:collaborators])
 
 			# It saves the thread to the db, and assign an id to the thread
 			@thread.save
@@ -116,8 +117,9 @@ class ThreadsController < ApplicationController
 			@media = Media.by_country_and_display_name.all
 			
 			# Reload users and collaborators
-			@users = User.pluck(:email)
-			@collaborators = @thread.collaborators.pluck(:email)
+			@users = User.hashes
+			@usernames = User.pluck(:username)
+			@collaborators = @thread.collaborators.pluck(:username)
 
 			# send some params back to the view, to tell the user about what is missing
 			if params["topic_name_1"] == ""
@@ -150,8 +152,9 @@ class ThreadsController < ApplicationController
 			@media = Media.by_country_and_display_name.all
 			params["media"] = @thread.media.each.collect { |m| m.id }
 		end
-		@users = User.pluck(:email)
-		@collaborators = @thread.collaborators.pluck(:email)
+		@users = User.hashes
+		@usernames = User.pluck(:username)
+		@collaborators = @thread.collaborators.pluck(:username)
 	end
 
 
@@ -180,7 +183,7 @@ class ThreadsController < ApplicationController
 			images = @thread.scrape_all_images
 			
 			# Add collaborators
-			users = User.where(:email => params[:collaborators])
+			users = User.where(:username => params[:collaborators]).all
 			@thread.collaborators = users
 			
 			#it should iterate through the recently created codes
