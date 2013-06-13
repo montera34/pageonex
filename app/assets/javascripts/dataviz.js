@@ -83,7 +83,7 @@ var dataviz = {
             .attr('transform', 'translate(' + (padding.left - 0.5) + ',' + (height - padding.bottom + 0.5) + ')')
             .call(xAxis);
         // Scale x axis labels
-        d3.selectAll('.xaxis .tick text').attr('font-size', '14');
+        d3.selectAll('.xaxis .tick text').attr('font-size', '13');
         //labelWidth = d3.max(d3.selectAll('.xaxis .tick text')[0].map(function f (x) { return x.getBBox().width; }));
         //newSize = 14 * 0.85 * dateX.rangeBand() / labelWidth;
         //d3.selectAll('.xaxis .tick text').attr('font-size', newSize);
