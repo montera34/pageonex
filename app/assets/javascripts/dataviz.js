@@ -137,6 +137,14 @@ var dataviz = {
             .attr('width', codeX.rangeBand())
             .attr('height', function (d) { return Math.ceil(y(d.percent / d.image_count)); })
             .attr('fill', function (d) { return thread['colors'][d.code]; });
+        // Draw start line
+	chart.append('line')
+            .attr("y1", padding.top + chartHeight)
+            .attr("y2", padding.top + chartHeight)
+            .attr('x1', padding.left)
+            .attr('x2', width - padding.right)
+            .style("stroke", "#000")
+            .style("stroke-width","1");
     },
     exportToSvg: function (svgNode, imgNode) {
         html = this.getSvg(svgNode);
