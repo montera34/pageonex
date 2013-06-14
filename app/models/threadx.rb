@@ -169,7 +169,12 @@ class Threadx < ActiveRecord::Base
 		front_page_composite_img.opacity = Magick::MaxRGB
 		ha_composite_gcs = []
 		self.codes.each do |code| 
-			ha_composite_gcs[code.id] = Magick::Draw.new
+			gc = Magick::Draw.new
+			# make sure it is transparent even if no highlighted areas coded
+			gc.fill '#ffffff'
+			gc.fill_opacity 1.0
+			gc.rectangle 0, 0, 5, 5
+			ha_composite_gcs[code.id] = gc
 		end
 
 		# stitch it all together
@@ -215,7 +220,7 @@ class Threadx < ActiveRecord::Base
 				scale = thumb_width / img.width.to_f
 				self.codes.each do |code|
 					gc = ha_composite_gcs[code.id]
-					color = (code.color.nil?) ? '#ff0000' : code.color
+					color = (code.color.nil?) ? '#ff0000' : code.color #safety check in case a color is missing
 					gc.fill color
 					gc.fill_opacity 0.5
 					img_ha_list = full_ha_list.select { |ha| ha.code_id==code.id and ha.image_id==img.id}
@@ -301,7 +306,7 @@ class Threadx < ActiveRecord::Base
 			media.each do |m|
 				media_day_images = day_images.select { |img| img.media_id==m.id}
 				next if media_day_images.length == 0
-				image = media_day_images.first #there should only really be one
+				image = media_day_images.first # there should only really be one
 				code_percent = {} 
 				codes.each do |code|
 					image_code_ha_list = all_ha_list.select { |ha| ha.image_id==image.id and ha.code_id==code.id}
