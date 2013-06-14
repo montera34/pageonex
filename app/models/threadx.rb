@@ -153,7 +153,10 @@ class Threadx < ActiveRecord::Base
 				thumb.nil? ? 0 : thumb.rows
 			end
 			height_by_media[index] = thumbnail_media_heights.max.round
-			img_map[:row_info][media.id] = {:height=>thumbnail_media_heights.max.round, :name=>media.name_with_country}
+			img_map[:row_info][media.id] = {
+				:height=>thumbnail_media_heights.max.round + padding, 
+				:name=>media.name_with_country
+			}
 		end
 		logger.debug(height_by_media)
 		composite_image_dimens = {:width=>thumb_width*self.duration + padding*self.duration, 
