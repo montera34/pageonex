@@ -97,7 +97,7 @@ class ThreadsController < ApplicationController
 
 			images = @thread.scrape_all_images
 
-			@thread.collaborators = User.where(:email => params[:collaborators])
+			@thread.collaborators = User.where(:username => params[:collaborators])
 
 			# It saves the thread to the db, and assign an id to the thread
 			@thread.save
@@ -183,7 +183,7 @@ class ThreadsController < ApplicationController
 			images = @thread.scrape_all_images
 			
 			# Add collaborators
-			users = User.where(:email => params[:collaborators])
+			users = User.where(:username => params[:collaborators]).all
 			@thread.collaborators = users
 			
 			#it should iterate through the recently created codes

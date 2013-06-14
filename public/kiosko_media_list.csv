@@ -21,6 +21,7 @@ Argentina,ar,El Cronista Comercial,ar_cronista,http://www.cronista.com/
 Argentina,ar,El Diario de Paraná,diario_parana,http://www.eldiario.com.ar/
 Argentina,ar,El Día de la Plata,ar_eldia,http://www.eldia.com.ar/
 Argentina,ar,El Litoral Corrientes,ar_litoral,http://www.ellitoral.com.ar/
+Argentina,ar,El Siglo de Tucumán,ar_siglo_tucuman,http://www.elsigloweb.com/
 Argentina,ar,El Sol,ar_elsol_concordia,http://www.diarioelsol.com/
 Argentina,ar,El Territorio,ar_territorio_posadas,http://www.territoriodigital.com/
 Argentina,ar,La Capital - Rosario,ar_capital_rosario,http://www.lacapital.com.ar/
@@ -97,13 +98,28 @@ Chile,cl,Diario El Andino,andino,http://www.elandino.cl/
 Chile,cl,Diario El Divisadero,cl_divisadero,http://www.eldivisadero.cl/
 Chile,cl,Diario de Concepción,diario_concepcion,http://www.diariodeconcepcion.cl/
 Chile,cl,Diario el Centro,cl_centro,http://www.diarioelcentro.cl/
+Chile,cl,El Austral de Temuco,austral_temuco,http://www.soychile.cl/temuco/
+Chile,cl,El Diario Austral de Valdivia,austral_valdivia,http://www.soyvaldivia.cl/
+Chile,cl,El Día,cl_eldia,http://www.diarioeldia.cl/
+Chile,cl,El Gráfico,cl_grafico,http://www.elgraficochile.cl/
+Chile,cl,El Llanquihue,llanquihue,http://www.diariollanquihue.cl/
+Chile,cl,El Magallanes,cl_prensa_austral,http://www.laprensaaustral.cl/
 Chile,cl,El Mercurio,cl_mercurio,http://www.elmercurio.com/
+Chile,cl,El Mercurio - Calama,mercurio_calama,http://www.mercuriocalama.cl/
+Chile,cl,El Mercurio de Antofagasta,mercurio_antofagasta,http://www.mercurioantofagasta.cl/
 Chile,cl,El Tipógrafo,cl_tipografo,http://www.eltipografo.cl/
 Chile,cl,Estrategia,cl_estrategia,http://www.estrategia.cl/
 Chile,cl,La Cuarta,cl_cuarta,http://www.lacuarta.cl/
+Chile,cl,La Discusion,discusion_chilan,http://www.diarioladiscusion.cl/
+Chile,cl,La Estrella de Arica,estrella_arica,http://www.estrellaarica.cl/
+Chile,cl,La Estrella de Concepción,estrella_concepcion,http://www.soychile.cl/concepcion/
+Chile,cl,La Estrella de Iquique,estrella_iquique,http://www.estrellaiquique.cl/
 Chile,cl,La Hora,cl_lahora,http://www.lahora.cl/
+Chile,cl,La Prensa,prensa_curico,http://www.diariolaprensa.cl/
 Chile,cl,La Tercera,cl_tercera,http://www.latercera.cl/
 Chile,cl,Las Últimas Noticias,cl_ultimas_noticias,http://www.lun.com/
+Chile,cl,Mercurio de Valparaiso,mercurio_valpo,http://www.mercuriovalpo.cl/
+Chile,cl,Publimetro,cl_publimetro,http://www.publimetro.cl/
 China,cn,China Daily,china_daily,http://www.chinadaily.com.cn/index.html
 China,cn,The Global Times,cn_global_times,http://www.globaltimes.cn/
 China,cn,人民网 - Renmin Ribao,cn_renmin_ribao,http://www.people.com.cn/
@@ -373,6 +389,7 @@ New Zealand,nz,The Press,press,http://www.thepress.co.nz/
 Nicaragua,ni,El Nuevo Diario,ni_nuevo_diario,http://www.elnuevodiario.com.ni/
 Nicaragua,ni,Hoy,hoy,http://www.hoy.com.ni/
 Nicaragua,ni,La Prensa,ni_prensa,http://www.laprensa.com.ni/
+Nigeria,ng,Vanguard ,vanguard,http://www.vanguardngr.com/
 Norway,no,Aftenposten,aftenposten,http://www.aftenposten.no/
 Panama,pa,El Siglo,el_siglo,http://www.elsiglo.com/
 Panama,pa,La Estrella de Panamá,estrella_panama,http://www.estrelladepanama.com/
@@ -444,6 +461,7 @@ Spain,es,De Luns a Venres,l-v,http://lv.galiciae.com/
 Spain,es,Deia,deia,http://www.deia.com/
 Spain,es,Diari Balears,diari_balears,http://dbalears.cat/
 Spain,es,Diari Bondia Lleida,bondia_lleida,http://www.bondia.cat/
+Spain,es,Diari Ebro de Tarragona,diari_ebro,http://www.diaridetarragona.com/ebre
 Spain,es,Diari de Girona,diari_girona,http://www.diaridegirona.cat/
 Spain,es,Diari de Tarragona,diari_tarragona,http://www.diaridetarragona.com/
 Spain,es,Diario Información,diario_informacion,http://www.diarioinformacion.com/
@@ -498,6 +516,7 @@ Spain,es,El Periódico Mediterraneo,elperiodico_mediterraneo,http://www.elperiod
 Spain,es,El Periódico de Aragón,elperiodico_aragon,http://www.elperiodicodearagon.com/
 Spain,es,El Periódico de Catalunya,elperiodico_cat,http://www.elperiodico.cat/
 Spain,es,El Periódico de Extremadura,elperiodico_extremadura,http://www.elperiodicoextremadura.com/
+Spain,es,El Periódico de Huelva,elperiodico_huelva,http://www.elperiodicodehuelva.es/
 Spain,es,El Progreso,progreso,http://elprogreso.galiciae.com/
 Spain,es,El Pueblo de Ceuta,elpueblo_ceuta,http://www.elpueblodeceuta.es/
 Spain,es,El Punt - Valencia,elpunt_valencia,http://www.elpunt.cat/
@@ -589,10 +608,17 @@ Sweden,se,Sundsvalls Tidning,sundsvalls_tidning,http://www.st.nu/
 Switzerland,ch,Basler Zeitung,basler_zeitung,http://www.baz.ch/
 Switzerland,ch,Corriere del Ticino,corriere_ticino,http://www.cdt.ch/
 Switzerland,ch,Tages-Anzeiger,tages_anzeiger,http://www.tagesanzeiger.ch/
+Turkey,tr,Cumhuriyet,cumhuriyet,http://emedya.cumhuriyet.com.tr/
+Turkey,tr,Dünya,dunya,http://www.dunyagazetesi.com.tr/
+Turkey,tr,Fanatik,fanatik,http://fanatik.ekolay.net/
+Turkey,tr,Fotomaç,fotomac,http://www.fotomac.com.tr/
 Turkey,tr,Habertürk,haberturk,http://www.haberturk.com/
 Turkey,tr,Hürriyet,hurriyet,http://www.hurriyet.com.tr/
 Turkey,tr,Milliyet,milliyet,http://www.milliyet.com.tr/
+Turkey,tr,Posta Gazetesi,posta_gazetesi,http://www.posta-gazetesi.net/
 Turkey,tr,Sabah,sabah,http://www.sabah.com.tr/
+Turkey,tr,Takvim,takvim,http://www.takvim.com.tr/
+Turkey,tr,Taraf ,taraf,http://www.taraf.com.tr/
 Turkey,tr,Vatan,vatan,http://www.gazetevatan.com/
 Turkey,tr,Zaman,zaman,http://www.zaman.com.tr/
 USA,us,Arizona Daily Star,arizona_daily_star,http://azstarnet.com/
@@ -642,6 +668,7 @@ United Kingdom,uk,Daily Telegraph,daily_telegraph,http://www.telegraph.co.uk/
 United Kingdom,uk,Evening Standard,evening_standard,http://www.thisislondon.co.uk/standard/
 United Kingdom,uk,Financial Times,ft_uk,http://www.ft.com/
 United Kingdom,uk,Irish News,irish_news,http://www.irishnews.com/
+United Kingdom,uk,Metro,metro,http://metro.co.uk/
 United Kingdom,uk,The Economist,economist,http://economist.co.uk/
 United Kingdom,uk,The Guardian,guardian,http://www.guardian.co.uk/
 United Kingdom,uk,The Herald,herald,http://www.theherald.co.uk/
@@ -661,6 +688,7 @@ Uruguay,uy,La Diaria,uy_ladiaria,http://www.ladiaria.com/
 Uruguay,uy,La República,uy_republica,http://www.diariolarepublica.net/
 Venezuela,ve,2001 - Dosmiluno,ve_2001,http://www.2001.com.ve/
 Venezuela,ve,Correo del Caroní,ve_correo_caroni,http://www.correodelcaroni.com/
+Venezuela,ve,De Frente - Barinas,de_frente_barinas,http://www.defrentebarinas.com/
 Venezuela,ve,Diario Impacto,ve_impacto,http://www.diarioimpactodigital.com/
 Venezuela,ve,Diario La Costa,ve_diario_costa,http://www.diariolacosta.com/
 Venezuela,ve,Diario La Región,ve_diario_region,http://www.diariolaregion.net/

@@ -94,7 +94,7 @@
 	<div class="span2">
 		<ul class='thread-coposite-labels'>
 			<% @img_map_info['row_info'].each do |media_id,info| %>
-				<li style="height:<%=info['height']%>px"><%=info['name']%></li>
+				<li style="height:<%=info['height']+8%>px"><%=info['name']%></li><!--added padding 8px manually, but it should be relative, defined in threadx.rb:141-->
 			<% end %>
 		</ul>
 	</div>

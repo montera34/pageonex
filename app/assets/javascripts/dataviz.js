@@ -83,7 +83,7 @@ var dataviz = {
             .attr('transform', 'translate(' + (padding.left - 0.5) + ',' + (height - padding.bottom + 0.5) + ')')
             .call(xAxis);
         // Scale x axis labels
-        d3.selectAll('.xaxis .tick text').attr('font-size', '14');
+        d3.selectAll('.xaxis .tick text').attr('font-size', '13');
         //labelWidth = d3.max(d3.selectAll('.xaxis .tick text')[0].map(function f (x) { return x.getBBox().width; }));
         //newSize = 14 * 0.85 * dateX.rangeBand() / labelWidth;
         //d3.selectAll('.xaxis .tick text').attr('font-size', newSize);
@@ -137,6 +137,14 @@ var dataviz = {
             .attr('width', codeX.rangeBand())
             .attr('height', function (d) { return Math.ceil(y(d.percent / d.image_count)); })
             .attr('fill', function (d) { return thread['colors'][d.code]; });
+        // Draw start line
+	chart.append('line')
+            .attr("y1", padding.top + chartHeight)
+            .attr("y2", padding.top + chartHeight)
+            .attr('x1', padding.left)
+            .attr('x2', width - padding.right)
+            .style("stroke", "#000")
+            .style("stroke-width","1");
     },
     exportToSvg: function (svgNode, imgNode) {
         html = this.getSvg(svgNode);

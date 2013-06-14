@@ -21,7 +21,7 @@ var HighlightedAreas = {
         return s;
     },
 
-    add: function(email, hash, img_id, code_id, selection) {
+    add: function(username, hash, img_id, code_id, selection) {
         // Get div containing highlighted area info for the specified image
         var ha_group = $("#ha_group_" + img_id);
         var count = ha_group.children().length;

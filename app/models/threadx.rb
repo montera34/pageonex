@@ -80,7 +80,7 @@ class Threadx < ActiveRecord::Base
 		existed_thread = ( thread == nil )
 		unless existed_thread
 			unless thread.thread_name == nil
-				errors.add(:thread_display_name, "is already exist")
+				errors.add(:thread_display_name, " There's already another thread with this name.")
 			end
 		end
 	end
