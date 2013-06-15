@@ -86,6 +86,10 @@ class CodingController < ApplicationController
     # prep the composite image to show
     @thread.generate_composite_images # make sure composite results images have been generated
     @img_map_info = @thread.composite_image_map_info
+    #prep to show collaborators of a thread
+    @users = User.hashes
+    @usernames = User.pluck(:username)
+    @collaborators = @thread.collaborators.pluck(:username)
   end
 
 end

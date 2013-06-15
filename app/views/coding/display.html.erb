@@ -45,10 +45,22 @@
 <!-- Thread details / code info -->
 <div class="row">
 	<div class="span5">
-		<h4>By</h4> <%=threads_by_user_link @thread.owner %>
+		<div class="row">
+			<div class="span2">
+				<h4>By</h4> <%=threads_by_user_link @thread.owner %><br>
+			</div>
+			<div class="span3">
+				<% if @collaborators.length >= 1 %> <h4>Collaborators</h4><% end %>
+				<ul id="collab-list" class="unstyled">
+					<% @collaborators.each do |c| %>
+					 <li><a href="/threads/by/<%= c %>"><%= c %></a></li>
+					<% end %>
+				</ul>
+			</div>
+		</div>
 		<h4>Description</h4><p> <%= @thread.description %></p>
 	</div>
-	<div class="span2">
+	<div class="span3">
 		<h4>Topics</h4>
 		  <ul class="nav nav-list">
 			<% @thread.codes.each do |code| %>
@@ -63,7 +75,7 @@
 		<h4>From</h4> <p><%= @thread.start_date.inspect %></p>
 		<h4>To </h4> <p><%= @thread.end_date.inspect %></p>
 	</div>
-	<div class="span3">
+	<div class="span2">
 		<h5>Category</h5> <span class="categories">
 		      <% @thread.category_list.each do |c| %>
 		        <%=link_to c,"/threads/search_by_category?q=#{c.strip}", :class => "label"%>
