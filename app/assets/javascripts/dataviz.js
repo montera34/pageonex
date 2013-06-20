@@ -26,7 +26,7 @@ var dataviz = {
             .key(function (d) { return d.code; })
             .key(function (d) { return d.media; })
         data = nest.entries(thread.data)
-        // Create a layout to stack newspapers on the same d
+        // Create a layout to stack newspapers on the same date
         dateIndex = d3.scale.ordinal()
             .domain(thread.dates)
             .range([0, thread.dates.length - 1]);
@@ -83,17 +83,18 @@ var dataviz = {
             .attr('transform', 'translate(' + (padding.left - 0.5) + ',' + (height - padding.bottom + 0.5) + ')')
             .call(xAxis);
         // Scale x axis labels
-        d3.selectAll('.xaxis .tick text').attr('font-size', '13');
+        d3.selectAll('.xaxis .tick text').attr('font-size', '12');
         //labelWidth = d3.max(d3.selectAll('.xaxis .tick text')[0].map(function f (x) { return x.getBBox().width; }));
         //newSize = 14 * 0.85 * dateX.rangeBand() / labelWidth;
         //d3.selectAll('.xaxis .tick text').attr('font-size', newSize);
         //d3.selectAll('.xaxis text').attr('dy', '10');
-        // Draw horizontal lines
+        // Scale y axis labels
         yAxis = d3.svg.axis()
             .scale(yInverse)
             .orient('left')
             .ticks(4)
             .tickFormat(formatPercent);
+        // Draw horizontal grid lines
         chart.selectAll('.yline')
             .data(y.ticks(4))
             .enter()
@@ -106,13 +107,13 @@ var dataviz = {
         // Draw y labels
         ylabel = chart.append('g')
             .attr('class', 'yaxis')
-            .attr('transform', 'translate(' + (padding.left - 0.5) + ',' + (padding.top + 0.5) + ')')
+            .attr('transform', 'translate(' + (padding.left - 5) + ',' + (padding.top + 0.5) + ')')
             .call(yAxis)
             .append('text')
             .text('Mean % of Area')
             .attr('font-size', '12');
         ylabel.attr('dx', (ylabel[0][0].getBBox().height * -0.2)).attr('dy', (ylabel[0][0].getBBox().height * 0.55));
-        ylabel.attr('transform', 'rotate(-90)').attr('y', 3).style('text-anchor', 'end');
+        ylabel.attr('transform', 'rotate(-90)').attr('y', -60).attr('x', -10).style('text-anchor', 'end');
         d3.selectAll('.yaxis .tick text').attr('dy', d3.select('.yaxis .tick text')[0][0].getBBox().height * 0.25);
         d3.selectAll('svg .domain').attr('stroke', 'black').attr('fill', 'none');
         d3.selectAll('svg .tick line').attr('stroke', 'black').attr('fill', 'none');
