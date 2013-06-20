@@ -50,3 +50,15 @@ ul.thread-coposite-labels li {
   vertical-align: top;
   text-align: right;
 }
+.avatar-icon {
+  float:left;
+  cursor:pointer;
+}
+.ha-user-name {
+  margin-left:25px;
+  display:none;
+  color:white;
+}
+.user-id img:hover + span {
+  display: block !important;
+}

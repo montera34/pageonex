@@ -214,7 +214,7 @@ function renderHighlightedArea(ha) {
     }
     // Create a new highlighted area by cloning a template DOM element
     var ha_elt = $('#high_area_template').clone();
-    var icon = $('<img src="http://gravatar.com/avatar/' + ha.hash + '?s=20&d=identicon"/>');
+    var icon = $('<div class="user-id"><img class="avatar-icon" src="http://gravatar.com/avatar/' + ha.hash + '?s=20&d=identicon"/> <span class="ha-user-name">' +  ha.username + '</span></div>');
     icon.appendTo(ha_elt);
     ha_elt.attr('id', 'ha_' + ha.cssid);
     ha_elt.addClass('clone');
