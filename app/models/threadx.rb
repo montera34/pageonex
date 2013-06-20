@@ -200,13 +200,22 @@ class Threadx < ActiveRecord::Base
 							front_page_composite_img.composite!(thumb,offset[:x],offset[:y], Magick::OverCompositeOp)
 							img_map[:images][img.image_name] = { :x1=>offset[:x].round, :y1=>offset[:y].round, 
 								:x2=>offset[:x].round+thumb.columns, :y2=>offset[:y].round+thumb.rows }
-							# if the front page is coded, fade it a bit so the uncoded ones stand out
+							# if the front page is not coded, fade it a bit so the color codes stand out
+							if uncoded_image_ids.include? img.id
+								white_gc = Magick::Draw.new
+								white_gc.fill 'white' #draws white rectangle on top of the image
+								white_gc.fill_opacity 0.4
+								white_gc.rectangle offset[:x].round, offset[:y].round, 
+									offset[:x].round+thumb.columns, offset[:y].round+thumb.rows
+								white_gc.draw front_page_composite_img
+							end
+							# if the front page is coded, fade it more so the uncoded ones stand out
 							if coded_image_ids.include? img.id
 								white_gc = Magick::Draw.new
-								white_gc.fill 'white'
-								white_gc.fill_opacity 0.7
+								white_gc.fill 'white' #draws white rectangle on top of the image
+								white_gc.fill_opacity 0.85
 								white_gc.rectangle offset[:x].round, offset[:y].round, 
-																	 offset[:x].round+thumb.columns, offset[:y].round+thumb.rows
+									offset[:x].round+thumb.columns, offset[:y].round+thumb.rows
 								white_gc.draw front_page_composite_img
 							end
 						end
@@ -222,7 +231,7 @@ class Threadx < ActiveRecord::Base
 					gc = ha_composite_gcs[code.id]
 					color = (code.color.nil?) ? '#ff0000' : code.color #safety check in case a color is missing
 					gc.fill color
-					gc.fill_opacity 0.5
+					gc.fill_opacity 0.6
 					img_ha_list = full_ha_list.select { |ha| ha.code_id==code.id and ha.image_id==img.id}
 					scaled_areas = img_ha_list.collect { |ha| ha.scaled_areas scale }
 					scaled_areas.flatten.each do |area|
