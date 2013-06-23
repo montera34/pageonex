@@ -55,11 +55,12 @@ ul.thread-coposite-labels li {
   cursor:pointer;
 }
 .ha-user-name {
-  margin-left:25px;
-  display:none;
-  color:white;
-  background-color:black;
-  width:150px;
+  margin-left: 25px;
+  display: none;
+  color: white;
+  background-color: black;
+  width: 150px;
+  padding-left: 5px;
 }
 .user-id img:hover + span {
   display: block !important;
