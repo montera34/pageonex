@@ -37,7 +37,7 @@
 	<div class="span2">
 		<% if current_user and (@thread.owner == current_user or current_user.admin) %>
 		<%=  link_to "Delete", "/threads/#{@thread.thread_name}" ,:method=>"delete" , :class => "btn btn-danger delete" %>
-		<a href="<%= "/threads/#{@thread.thread_name}/edit"%>" class="btn">Edit</a> 
+		<%=  link_to "Edit", "/threads/#{@thread.thread_name}/edit" , :class => "btn" %>
 		<% end %>
 	</div>
 </div>
@@ -56,6 +56,9 @@
 					 <li><a href="/threads/by/<%= c %>"><%= c %></a></li>
 					<% end %>
 				</ul>
+				<% if current_user and (@thread.owner == current_user or current_user.admin) %>
+				<%=  link_to "Add Collaborators", "/threads/#{@thread.thread_name}/edit/#collaborators" , :class => "btn" %>
+				<% end %>
 			</div>
 		</div>
 		<h4>Description</h4><p> <%= @thread.description %></p>
