@@ -7,7 +7,8 @@ var getKey = function (d) { return d.key; };
 var mapValues = function (a, f) { return {key:a.key, values:a.values.map(f) }; };
 var isNonzero = function (d) { return d.percent > 0; };
 var formatDate = function (dateString) {
-    var d = new Date(dateString + ' 00:00:00');
+    var parts = dateString.split('-');
+    var d = new Date(parts[0], parts[1] - 1, parts[2]);
     return (d.getMonth() + 1) + '/' + d.getDate();
 };
 // The dataviz object
@@ -83,10 +84,12 @@ var dataviz = {
             .attr('transform', 'translate(' + (padding.left - 0.5) + ',' + (height - padding.bottom + 0.5) + ')')
             .call(xAxis);
         // Scale x axis labels
-        d3.selectAll('.xaxis .tick text').attr('font-size', '12');
-        //labelWidth = d3.max(d3.selectAll('.xaxis .tick text')[0].map(function f (x) { return x.getBBox().width; }));
-        //newSize = 14 * 0.85 * dateX.rangeBand() / labelWidth;
-        //d3.selectAll('.xaxis .tick text').attr('font-size', newSize);
+        d3.selectAll('.xaxis .tick text').attr('font-size', '14');
+        labelWidth = d3.max(d3.selectAll('.xaxis .tick text')[0].map(function f (x) { return x.getBBox().width; }));
+        newSize = 14 * 0.85 * dateX.rangeBand() / labelWidth;
+        newSize = Math.min(newSize, '18');
+        d3.selectAll('.xaxis .tick text').attr('font-size', newSize);
+        labelWidth = d3.max(d3.selectAll('.xaxis .tick text')[0].map(function f (x) { return x.getBBox().width; }));
         //d3.selectAll('.xaxis text').attr('dy', '10');
         // Scale y axis labels
         yAxis = d3.svg.axis()
