@@ -21,6 +21,8 @@ var dataviz = {
         this.height = height;
         var chartHeight = height - padding.top - padding.bottom;
         var chartWidth = width - padding.left - padding.right;
+        // Ensure chartWidth is a multiple of the number of dates
+        chartWidth = Math.floor(chartWidth / thread.dates.length) * thread.dates.length;
         // Convert flat data to a nested tree
         nest = d3.nest()
             .key(function (d) { return d.date; })
