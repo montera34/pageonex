@@ -162,7 +162,7 @@ class KioskoScraper
 		CSV.foreach(csv_file,{encoding: "UTF-8",:headers => true}) do |row|
 			# override default scope here to find even the non-working media
 			m = Media.from_csv_row row
-			existing_media = Media.unscoped.find_by_name(m.name)
+			existing_media = Media.unscoped.find_by_name_and_country_code(m.name,m.country_code)
 			if existing_media.nil?
 				m.working = true
 				m.save
