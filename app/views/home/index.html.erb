@@ -11,7 +11,7 @@
 
   <div class="span6">
      <%= image_tag "header-blog-2.png", :style => "margin-bottom:5px;" %>
-       <p class="lead">PageOneX  makes it easy to track, code, and visualize major news stories based on  the proportion of newspaper front pages that they take up. <br>It's a  useful tool for researchers, advocacy groups, and anyone interested in  better understanding the front page news.</p>
+       <p class="lead">PageOneX  makes it easy to track, code, and visualize major news stories based on  the proportion of newspaper front pages that they take up. <br>It's a  useful tool for researchers, advocacy groups, and anyone interested in better understanding the media's priorities..</p>
     <div class="row-fluid"> 
       <div class="span2 offset4">
          <a href="https://twitter.com/PageOneX" class="btn" data-show-count="false">@PageOneX</a>
@@ -28,7 +28,7 @@
   		<%= link_to 'Sign up', new_user_registration_path, :class => "btn btn-info btn-large" %> 
   		
   	<% end %>
-  	<h3>Last threads</h3>
+  	<h3>Most recent threads</h3>
   	<% if @threads != [] %>
   		<% @threads.sort{|a,b| b.created_at <=> a.created_at }.each do |thread| %>
   			    <h4><a href="<%= thread_url thread %>"><%= thread.thread_display_name %></a> 
@@ -37,7 +37,7 @@
   	<% else %>
     	<h2>There are no threads.</h2>
   	<% end %>
-	<a class="btn btn-info btn-medium" href="/threads/">Show Threads</a> 
+	<a class="btn btn-info btn-medium" href="/threads/">View All</a> 
   </div>
 
 </div>
@@ -48,11 +48,11 @@
 	  <div class="span3">
 			<h3>Keep updated</h3>
 			<a href="https://groups.google.com/forum/?fromgroups#!forum/pageonex">Join the email list for users</a><br>
-			<a href="http://blog.pageonex.com/newsletter/">Subsocribe to the newsletter</a><br>
+			<a href="http://blog.pageonex.com/newsletter/">Subscribe to the newsletter</a><br>
 			Twitter: <a href="http://twitter.com/pageonex">@PageOneX</a><br>
 			<a href="https://github.com/numeroteca/pageonex/wiki">Wiki</a><br>
 			<a href="http://blog.pageonex.com/">Blog</a><br>
-			Contact: <a href="http://numeroteca.org/about/">form</a> + <a href="http://twitter.com/numeroteca">@numeroteca</a><br>
+			Contact: <a href="http://numeroteca.org/about/">form</a> or <a href="http://twitter.com/numeroteca">@numeroteca</a><br>
 
 			<h3>For developers</h3>
 			<p style="width:300px;">This is an open source tool built in Ruby on Rails. You can download and test it locally, and/or help improve the code!<br>
@@ -61,7 +61,7 @@
 			<a href="http://mailman.mit.edu/mailman/listinfo/pageonexdev">Email list for developers</a></p>
 		</div>
 		<div class="span3 offset1">
-			<h3>PageOneX in use</h3>
+			<h3>Examples</h3>
 			<a href="http://pinterest.com/numeroteca/newspaper-front-page-visualizations/" title="PageOneX in Pinterest"><img src="http://blog.pageonex.com/wp-content/uploads/2012/06/pinterest_p.png" width="" alt="PageOneX in Pinterest"></a><br>
 			<a href="http://blog.pageonex.com/timeline/">Timeline of the project.</a><br>
 			Slides: <a href="http://www.slideshare.net/numeroteca/pageonex-at-mrap">presentation at the MRAP</a><br>
