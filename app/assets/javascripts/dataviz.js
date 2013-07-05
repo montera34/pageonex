@@ -60,7 +60,7 @@ var dataviz = {
             .range([0, chartHeight]);
         yInverse = d3.scale.linear()
             .domain([0, domainMax])
-            .range([chartHeight, 0]);
+            .rangeRound([chartHeight, 0]);
         var formatPercent = d3.format(".0%");
         dateX = d3.scale.ordinal()
             .domain(thread.dates)
@@ -77,6 +77,27 @@ var dataviz = {
             .attr('width', width)
             .attr('height', height)
             .append('g')
+        // Draw bars
+        date = chart.selectAll('.date').data(data, getKey);
+        date.enter()
+            .append('g')
+            .attr('class', 'date');
+        code = date.selectAll('.code').data(getValues, getKey);
+        code.enter()
+            .append('g')
+            .attr('class', 'code')
+            .attr('transform', function (d) { return 'translate(' + codeX(d.key) + ',0)'; });
+        media = code.selectAll('.media').data(getValues, getKey);
+        media.enter().append('g')
+            .attr('class', 'media');
+        percent = media.selectAll('.percent').data(function (d) { return d.values.filter(isNonzero); }, getProperty('id'));
+        percent.enter()
+            .append('rect')
+            .attr('x', function (d,i) { return padding.left + dateX(d.date); })
+            .attr('y', function (d) { return height - padding.bottom - Math.floor(y(d.percent / d.image_count + d.y0)); })
+            .attr('width', codeX.rangeBand())
+            .attr('height', function (d) { return Math.ceil(y(d.percent / d.image_count)); })
+            .attr('fill', function (d) { return thread['colors'][d.code]; });
         // Draw axes
         xAxis = d3.svg.axis()
             .scale(dateLabel)
@@ -104,11 +125,11 @@ var dataviz = {
             .data(y.ticks(4))
             .enter()
             .append('line')
-            .attr('y1', function (ty) { return Math.floor(y(ty)) + padding.top + 0.5; })
-            .attr('y2', function (ty) { return Math.floor(y(ty)) + padding.top + 0.5; })
+            .attr('y1', function (ty) { return Math.round(y(ty)) + padding.top - 0.5; })
+            .attr('y2', function (ty) { return Math.round(y(ty)) + padding.top - 0.5; })
             .attr('x1', padding.left)
             .attr('x2', width - padding.right)
-            .style('stroke', '#eee');
+            .style('stroke', 'white');
         // Draw y labels
         ylabel = chart.append('g')
             .attr('class', 'yaxis')
@@ -122,31 +143,10 @@ var dataviz = {
         d3.selectAll('.yaxis .tick text').attr('dy', d3.select('.yaxis .tick text')[0][0].getBBox().height * 0.25);
         d3.selectAll('svg .domain').attr('stroke', 'black').attr('fill', 'none');
         d3.selectAll('svg .tick line').attr('stroke', 'black').attr('fill', 'none');
-        // Draw bars
-        date = chart.selectAll('.date').data(data, getKey);
-        date.enter()
-            .append('g')
-            .attr('class', 'date');
-        code = date.selectAll('.code').data(getValues, getKey);
-        code.enter()
-            .append('g')
-            .attr('class', 'code')
-            .attr('transform', function (d) { return 'translate(' + codeX(d.key) + ',0)'; });
-        media = code.selectAll('.media').data(getValues, getKey);
-        media.enter().append('g')
-            .attr('class', 'media');
-        percent = media.selectAll('.percent').data(function (d) { return d.values.filter(isNonzero); }, getProperty('id'));
-        percent.enter()
-            .append('rect')
-            .attr('x', function (d,i) { return padding.left + dateX(d.date); })
-            .attr('y', function (d) { return height - padding.bottom - Math.floor(y(d.percent / d.image_count + d.y0)); })
-            .attr('width', codeX.rangeBand())
-            .attr('height', function (d) { return Math.ceil(y(d.percent / d.image_count)); })
-            .attr('fill', function (d) { return thread['colors'][d.code]; });
         // Draw start line
 	chart.append('line')
-            .attr("y1", padding.top + chartHeight)
-            .attr("y2", padding.top + chartHeight)
+            .attr("y1", padding.top + chartHeight + 0.5)
+            .attr("y2", padding.top + chartHeight + 0.5)
             .attr('x1', padding.left)
             .attr('x2', width - padding.right)
             .style("stroke", "#000")
