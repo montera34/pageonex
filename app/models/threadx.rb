@@ -141,7 +141,7 @@ class Threadx < ActiveRecord::Base
 
 		padding = self.duration > 10 ? 3 : 8 	# default padding logic
 
-		thumb_width = ((width-padding*(self.duration + 1)).to_f / (self.duration + 1).to_f).floor
+		thumb_width = ((width-padding*(self.duration)).to_f / (self.duration).to_f).floor
 		img_map = {:row_info=>{},:images=>{}} # will hold info page needs to render
 
 		# figure out each row height
@@ -160,7 +160,7 @@ class Threadx < ActiveRecord::Base
 			}
 		end
 		logger.debug(height_by_media)
-		composite_image_dimens = {:width=>thumb_width*(self.duration + 1) + padding*(self.duration + 1), 
+		composite_image_dimens = {:width=>thumb_width*(self.duration) + padding*(self.duration), 
 															:height=>height_by_media.sum + padding*self.media.count }
 		img_map.merge! composite_image_dimens
 
@@ -183,7 +183,7 @@ class Threadx < ActiveRecord::Base
 		(self.start_date..self.end_date).each do |date|	# iterate over days (ie. columns)
 			day_images = self.images.select { |img| img.publication_date==date }
 			offset = { 
-					:x=>(date-self.start_date)*thumb_width + padding*(date-self.start_date) + (thumb_width/2.0).round + (padding/2.0).round,
+					:x=>(date-self.start_date)*thumb_width + padding*(date-self.start_date),
 					:y=>0 
 			}
 			self.media.each_with_index do |media,index|	# iterate over media sources within that day
