@@ -41,7 +41,7 @@ class Image < ActiveRecord::Base
 		path
 	end
 
-	# return a Magick img object that is a thumbnail (caches to disk)
+	# return a Magick img object that is a thumbnail (caches to disk) - nil if image missing or messed up
 	def thumbnail width, path=nil
 		return nil unless File.exists? self.full_local_path # bail if there is no image
 		if path==nil
@@ -51,10 +51,14 @@ class Image < ActiveRecord::Base
 		end
 		return Magick::Image.read(thumb_file_path).first if File.exists? thumb_file_path
 		# if the thumb doesn't exist then generate it
-		img = Magick::Image.read(self.full_local_path).first
-		scale = width.to_f / img.columns.to_f
-		img_thumb = img.thumbnail(scale)
-		img_thumb.write thumb_file_path
+		begin
+			img = Magick::Image.read(self.full_local_path).first
+			scale = width.to_f / img.columns.to_f
+			img_thumb = img.thumbnail(scale)
+			img_thumb.write thumb_file_path
+		rescue Magick::ImageMagickError=>e
+			logger.error "Image Empty Error in image.thumbnail: #{e}"
+		end
 		return img_thumb
 	end
 
