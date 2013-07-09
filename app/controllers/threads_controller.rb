@@ -74,12 +74,7 @@ class ThreadsController < ApplicationController
 		@thread.end_date = Date.today if @thread.status == "opened"
 
 		# formatting the newspapers_names hash as mentioned above
-		@thread.media = params[:media].collect { |media_id| Media.find(media_id) }
-
-		# this array is made to be passed to KioskoScraper.get_issues method, because this method accepts the specific format of newspapers names as the following
-		# {"es" => ["elpais", "abc"], "de" => ["faz", "bild"], "fr" => ["lemonde", "lacroix"], "it" => ["corriere_della_sera", "ilmessaggero"], "uk" => ["the_times", ],"us" => ["wsj", "newyork_times", "usa_today"]}
-		# name attribute holds the name of the newspaper {"elpais", "abc", ...}
-		newspapers_names = Media.get_names_from_list @thread.media
+		@thread.media = Media.where(:id=>params[:media])
 
 		# For any submitted new thread, it should pass the following conditons to be saved to the db
 		# (@thread.valid?) this conditions is used to check if the instantiated thread, is passing the validations in the threadx model class
@@ -168,10 +163,7 @@ class ThreadsController < ApplicationController
 
 		@thread.remove_composite_images # make sure to flush the generated composite images (because the update event handler won't catch topic changes)
 
-		media = params[:media]
-
-		@thread.media = params[:media].collect { |media_id| Media.find(media_id) }
-		newspapers_names = Media.get_names_from_list @thread.media
+		@thread.media = Media.where(:id=>params[:media])
 
 		#@thread.codes = params[:codes]
 		
@@ -212,9 +204,10 @@ class ThreadsController < ApplicationController
 			@thread.save	
 
 			# if the user did not select the option for keeping the highlighted areas of the removed images, they will be deleted
+			thread_image_ids = @thread.images.collect { |img| img.id }
 			if params["clean_high_areas"] != "1"
 				@thread.highlighted_areas.each do |ha|
-					ha.destroy unless @thread.images.include? ha.image
+					ha.destroy unless thread_image_ids.include? ha.image_id
 				end
 			end
 
