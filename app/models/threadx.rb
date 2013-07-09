@@ -122,8 +122,8 @@ class Threadx < ActiveRecord::Base
 		KioskoScraper.create_images(self.start_date, self.end_date, self.media)
 		if force_redownload
 			self.images.each do |image|
-    		image.download
-	    	image.save
+    			image.download
+	    		image.save
 			end
 		end
 		remove_composite_images
