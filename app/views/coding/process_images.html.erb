@@ -147,9 +147,14 @@
             				<%= hidden_field_tag "img_id_#{image.image_name}_#{index}", "#{image.image_name}" %>
             				<%= hidden_field_tag "id_#{image.image_name}_#{index}", "#{ha.id}" %>
             				<%= hidden_field_tag "code_id_#{image.image_name}_#{index}", "#{ha.code_id}" %>
-					<%= hidden_field_tag "username_#{image.image_name}_#{index}", "#{ha.user.username}" %>
-					<%= hidden_field_tag "hash_#{image.image_name}_#{index}", "#{ha.user.email_hash}" %>
-            				<%= hidden_field_tag "x1_#{image.image_name}_#{index}", "#{ha.areas.last.x1}" %>
+                            <% if ha.user.nil? %>
+                                <%= hidden_field_tag "username_#{image.image_name}_#{index}", "" %>
+                                <%= hidden_field_tag "hash_#{image.image_name}_#{index}", "" %>
+                            <% else %>
+                                <%= hidden_field_tag "username_#{image.image_name}_#{index}", "#{ha.user.username}" %>
+					            <%= hidden_field_tag "hash_#{image.image_name}_#{index}", "#{ha.user.email_hash}" %>
+            				<% end %>
+                            <%= hidden_field_tag "x1_#{image.image_name}_#{index}", "#{ha.areas.last.x1}" %>
             				<%= hidden_field_tag "y1_#{image.image_name}_#{index}", "#{ha.areas.last.y1}" %>
             				<%= hidden_field_tag "x2_#{image.image_name}_#{index}", "#{ha.areas.last.x2}" %>
             				<%= hidden_field_tag "y2_#{image.image_name}_#{index}", "#{ha.areas.last.y2}" %>
