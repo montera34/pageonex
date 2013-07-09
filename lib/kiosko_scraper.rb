@@ -185,6 +185,18 @@ class KioskoScraper
 		puts "Done"
 	end
 
+	def self.migrate_media_folders_to_include_country_codes 
+		Media.unscoped.all.each do |media|
+			src = File.join('app','assets','images','kiosko',media.name)
+			dest = File.join('app','assets','images','kiosko',media.country_code+"-"+media.name)
+			if Dir.exists? src
+				print "moving #{src} \n"
+				print "    to #{dest}\n"
+				FileUtils.mv(src,dest)
+			end
+		end
+	end
+
 	private
 
 		# be nice to kiosko and cache the pages locally while we scrape

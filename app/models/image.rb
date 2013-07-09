@@ -20,7 +20,7 @@ class Image < ActiveRecord::Base
 	end
 	
 	def self.codeable
-		where("local_path != '404.jpg'").where(:missing=>false)
+		where(:missing=>false)
 	end
 	
 	def self.by_media(media_ids)
@@ -63,12 +63,15 @@ class Image < ActiveRecord::Base
 		return img_thumb
 	end
 
+	def local_path
+		File.join('kiosko', self.media.country_code+"-"+self.media.name, self.image_name + ".jpg")
+	end
+
 	def download		
 		if Pageonex::Application.config.use_local_images
 			# make the media dir if you need to
 			self.media.create_image_directory
 			# try to fetch the image
-			self.local_path = File.join('kiosko',self.media.name,image_name + ".jpg")
 			begin
 				File.open(self.full_local_path, "wb") { |f| f.write(open(self.source_url).read) }
 				File.open(self.full_local_path,"rb") do |f|
@@ -79,7 +82,6 @@ class Image < ActiveRecord::Base
 			rescue Exception => e  
 				# image doesn't exist on their server :-(
 				logger.debug "Image Download Failed:#{id}: couldn't find image at #{source_url} (#{e.message})"
-				self.local_path = '404.jpg'
 				self.size = '750x951'
 				self.missing = true
 			end

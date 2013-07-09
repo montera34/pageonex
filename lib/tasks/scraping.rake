@@ -20,8 +20,14 @@ namespace :scraping do
 	# rake scraping:scrape_day
 	desc "Scrape images for the current day"
 	task :scrape_day => :environment do
-    day = Date.today - 1
-    KioskoScraper::create_images(day, day, Media.all)
+    	day = Date.today - 1
+    	KioskoScraper::create_images(day, day, Media.all)
+	end
+
+	# rake scraping:migrate_media_folders_to_include_country_codes
+	desc "One time-fix to migrate media folders to include country codes"
+	task :migrate_media_folders_to_include_country_codes => :environment do
+		KioskoScraper::migrate_media_folders_to_include_country_codes 
 	end
 
 end

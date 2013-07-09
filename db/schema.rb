@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130429213553) do
+ActiveRecord::Schema.define(:version => 20130709193435) do
 
   create_table "areas", :force => true do |t|
     t.integer  "x1"
@@ -54,7 +54,6 @@ ActiveRecord::Schema.define(:version => 20130429213553) do
   create_table "images", :force => true do |t|
     t.date     "publication_date"
     t.string   "size"
-    t.string   "local_path"
     t.integer  "media_id"
     t.datetime "created_at",       :null => false
     t.datetime "updated_at",       :null => false
