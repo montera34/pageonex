@@ -114,6 +114,7 @@ class Threadx < ActiveRecord::Base
 	end
 
 	def remove_composite_images width=DEFAULT_COMPOSITE_IMAGE_WIDTH
+		logger.info "Removing composite images for '#{self.thread_name}' (#{self.id}) at #{self.composite_img_dir(width) }"
 		FileUtils.rm_r self.composite_img_dir(width) if Dir.exists? self.composite_img_dir(width) 
 	end
 
