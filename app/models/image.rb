@@ -51,6 +51,7 @@ class Image < ActiveRecord::Base
 		end
 		return Magick::Image.read(thumb_file_path).first if File.exists? thumb_file_path
 		# if the thumb doesn't exist then generate it
+		img_thumb = nil
 		begin
 			img = Magick::Image.read(self.full_local_path).first
 			scale = width.to_f / img.columns.to_f
