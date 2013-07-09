@@ -64,10 +64,10 @@ var dataviz = {
         var formatPercent = d3.format(".0%");
         dateX = d3.scale.ordinal()
             .domain(thread.dates)
-            .rangeRoundBands([0, chartWidth], 0.1);
+            .rangeRoundBands([0, chartWidth], 0.1, 0);
         dateLabel = d3.scale.ordinal()
             .domain(thread.dates.map(formatDate))
-            .rangeRoundBands([0, chartWidth], 0.1);
+            .rangeRoundBands([0, chartWidth], 0.1, 0);
         codeX = d3.scale.ordinal()
             .domain(thread.codes)
             .rangeRoundBands([0, dateX.rangeBand()], 0.025);
@@ -112,8 +112,9 @@ var dataviz = {
         newSize = 14 * 0.85 * dateX.rangeBand() / labelWidth;
         newSize = Math.min(newSize, '18');
         d3.selectAll('.xaxis .tick text').attr('font-size', newSize);
+        d3.selectAll('.xaxis .tick text').attr('y', '4');
         labelWidth = d3.max(d3.selectAll('.xaxis .tick text')[0].map(function f (x) { return x.getBBox().width; }));
-        //d3.selectAll('.xaxis text').attr('dy', '10');
+        d3.selectAll('.xaxis .tick line').attr('stroke', 'none');
         // Scale y axis labels
         yAxis = d3.svg.axis()
             .scale(yInverse)
@@ -122,7 +123,7 @@ var dataviz = {
             .tickFormat(formatPercent);
         // Draw horizontal grid lines
         chart.selectAll('.yline')
-            .data(y.ticks(4))
+            .data(yInverse.ticks(4))
             .enter()
             .append('line')
             .attr('y1', function (ty) { return Math.round(y(ty)) + padding.top - 0.5; })
@@ -142,15 +143,8 @@ var dataviz = {
         ylabel.attr('transform', 'rotate(-90)').attr('y', -60).attr('x', -10).style('text-anchor', 'end');
         d3.selectAll('.yaxis .tick text').attr('dy', d3.select('.yaxis .tick text')[0][0].getBBox().height * 0.25);
         d3.selectAll('svg .domain').attr('stroke', 'black').attr('fill', 'none');
-        d3.selectAll('svg .tick line').attr('stroke', 'black').attr('fill', 'none');
+        d3.selectAll('svg .yaxis .tick line').attr('stroke', 'black').attr('fill', 'none');
         // Draw start line
-	chart.append('line')
-            .attr("y1", padding.top + chartHeight + 0.5)
-            .attr("y2", padding.top + chartHeight + 0.5)
-            .attr('x1', padding.left)
-            .attr('x2', width - padding.right)
-            .style("stroke", "#000")
-            .style("stroke-width","1");
     },
     exportToSvg: function (svgNode, imgNode) {
         html = this.getSvg(svgNode);
