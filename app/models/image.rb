@@ -64,7 +64,7 @@ class Image < ActiveRecord::Base
 	end
 
 	def local_path
-		File.join('kiosko', self.media.country_code+"-"+self.media.name, self.image_name + ".jpg")
+		File.join('kiosko', self.media.image_directory_name, self.image_name + ".jpg")
 	end
 
 	def download		

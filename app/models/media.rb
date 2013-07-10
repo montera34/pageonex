@@ -11,9 +11,13 @@ class Media < ActiveRecord::Base
     self.country + " - " + self.display_name
   end
 
+  def image_directory_name
+    self.country_code+"-"+self.name
+  end
+
   def create_image_directory
     return false if not Pageonex::Application.config.use_local_images
-    local_image_dir = File.join(KioskoScraper.local_image_dir, name)
+    local_image_dir = File.join(KioskoScraper.local_image_dir, self.image_directory_name)
     FileUtils.mkdir local_image_dir unless File.directory? local_image_dir
     true
   end
