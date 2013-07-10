@@ -122,9 +122,9 @@
 			<li><%=image_tag 'transparent.png', :style=>"width:#{@img_map_info['width']}px;height:#{@img_map_info['height']}px;", :name=>'front-page-images', :usemap=>'#front-page-images'%></li>
 		</ul>
 		<map name="front-page-images">
-			<% @img_map_info['images'].each_pair do |image_name, image_info| %>
+			<% @img_map_info['images'].each_pair do |image_id, image_info| %>
 				<area shape="rect" coords="<%=image_info['x1']%>,<%=image_info['y1']%>,<%=image_info['x2']%>,<%=image_info['y2']%>"
-					href="<%=thread_code_url @thread, image_name%>" title="Go to <%=image_date_name @thread, image_name%>">
+					href="<%=thread_code_url @thread, image_id%>" title="Go to <%=image_info['name']%>">
 			<% end %>
 		</map>
 	</div>

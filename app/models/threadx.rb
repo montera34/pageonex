@@ -199,8 +199,9 @@ class Threadx < ActiveRecord::Base
 						thumb = img.thumbnail thumb_width
 						if not thumb.nil?
 							front_page_composite_img.composite!(thumb,offset[:x],offset[:y], Magick::OverCompositeOp)
-							img_map[:images][img.image_name] = { :x1=>offset[:x].round, :y1=>offset[:y].round, 
-								:x2=>offset[:x].round+thumb.columns, :y2=>offset[:y].round+thumb.rows }
+							img_map[:images][img.id] = { :x1=>offset[:x].round, :y1=>offset[:y].round, 
+								:x2=>offset[:x].round+thumb.columns, :y2=>offset[:y].round+thumb.rows,
+								:name=>img.image_name }
 							# if the front page is not coded, fade it a bit so the color codes stand out
 							if uncoded_image_ids.include? img.id
 								white_gc = Magick::Draw.new
@@ -222,8 +223,9 @@ class Threadx < ActiveRecord::Base
 						end
 					else
 						# include the link in the image map anyways
-						img_map[:images][img.image_name] = { :x1=>offset[:x].round, :y1=>offset[:y].round, 
-								:x2=>offset[:x].round+thumb_width, :y2=>offset[:y].round+height_by_media[index] }
+						img_map[:images][img.id] = { :x1=>offset[:x].round, :y1=>offset[:y].round, 
+								:x2=>offset[:x].round+thumb_width, :y2=>offset[:y].round+height_by_media[index],
+								:name=>img.image_name }
 					end
 				end
 				# make the coding composites

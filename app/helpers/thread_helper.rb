@@ -7,11 +7,6 @@ module ThreadHelper
     link
   end
 
-  def image_date_name thread, image_name=nil
-    link = "#{image_name}" unless image_name.nil?
-    link
-  end
-
   def thread_url thread
     thread.link_url
   end

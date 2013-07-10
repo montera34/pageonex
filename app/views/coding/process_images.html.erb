@@ -82,10 +82,12 @@
                 <div class="item <%= 'active' if ic==0%> ">
 
                     <% if use_local_images %>
-                        <%= image_tag @images[ic].local_path, :id => "image#{ic+1}", :style => "width: 670px", :media=>@images[ic].media.display_name, 
-                                        :image_size=>@images[ic].size, :pub_date=>@images[ic].publication_date, :name=>@images[ic].image_name,
-                                        :url=>@images[ic].source_url, :media_url=>@images[ic].media.url, 
-                                        'data-id'=>@images[ic].id , 'data-missing'=>@images[ic].missing
+                        <%= image_tag @images[ic].local_path, 
+                                    :id => "image#{ic+1}", :style => "width: 670px", 
+                                    :media=>@images[ic].media.display_name, :name=>@images[ic].image_name,
+                                    :image_size=>@images[ic].size, :pub_date=>@images[ic].publication_date,
+                                    :url=>@images[ic].source_url, :media_url=>@images[ic].media.url, 
+                                    'data-id'=>@images[ic].id , 'data-missing'=>@images[ic].missing
                         %>
                     <% else %>
                         <!-- display live version form kiosko, just for the online beta version on heroku -->
@@ -221,7 +223,7 @@
 // store thead-specific variables needed by the JS code
 var pageData = {
     totalImageCount: <%=@thread.images.length%>,
-    startImageName: "<%=params[:i]%>",   // support jumping to the image the user clicked on in the threadx display view
+    startImageId: "<%=params[:i]%>",   // support jumping to the image the user clicked on in the threadx display view
     allowedToCode: <%= @allowed_to_code ? 'true' : 'false' %>,
     currentHighlightedArea: 1   // used to pass in the current highlighted area id to the modal to choose a topic
 }
@@ -240,9 +242,9 @@ $(function() {
     $('#downloadImageAlert').hide();
 
     // support auto-starting on the image the user clicked in the display view
-    if (pageData.startImageName.length != 0) {
+    if (pageData.startImageId.length != 0) {
         $("#images_section div.active img").parent().attr("class", "item")
-        var startImage = $("#images_section div img[name='"+pageData.startImageName+"']");
+        var startImage = $("#images_section div img[data-id='"+pageData.startImageId+"']");
         startImage.parent().attr("class", "active item");
         setMissingImageInfoFromImg(startImage);
     };
