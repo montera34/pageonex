@@ -19,7 +19,7 @@ class CodingController < ApplicationController
 
     # Look for images with nothing to code
     params[:image_name].each do |image_name|
-      image = Image.find_by_image_name(image_name)
+      image = Image.find_by_id(image_name)
       @thread.coded_pages.for_user(current_user).for_image(image).delete_all
       if params["nothing_to_code_#{image_name}"] == '1'
 	     @thread.coded_pages.create(:user_id => current_user.id, :image_id => image.id)
@@ -27,7 +27,7 @@ class CodingController < ApplicationController
     end
     # Go through each submitted highlighted area
     params.fetch(:ha_name, []).each do |ha_name|
-      image = Image.find_by_image_name(params["img_id_#{ha_name}"])
+      image = Image.find_by_id(params["img_id_#{ha_name}"])
       if params["id_#{ha_name}"].to_i == 0
       	# This is a new area
       	code = Code.find params["code_id_#{ha_name}"]

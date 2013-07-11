@@ -84,7 +84,7 @@
                     <% if use_local_images %>
                         <%= image_tag @images[ic].local_path, 
                                     :id => "image#{ic+1}", :style => "width: 670px", 
-                                    :media=>@images[ic].media.display_name, :name=>@images[ic].image_name,
+                                    :media=>@images[ic].media.display_name, :name=>@images[ic].id,
                                     :image_size=>@images[ic].size, :pub_date=>@images[ic].publication_date,
                                     :url=>@images[ic].source_url, :media_url=>@images[ic].media.url, 
                                     'data-id'=>@images[ic].id , 'data-missing'=>@images[ic].missing
@@ -92,9 +92,9 @@
                     <% else %>
                         <!-- display live version form kiosko, just for the online beta version on heroku -->
                         <% if @images[ic].local_path == "404.jpg" %>
-                            <img src="/assets/404.jpg" alt="404" data-id="<%=image.id%>" id="<%= "image#{ic+1}" %>" style="width: 670px;" image_size="<%= @images[ic].size %>" media="<%= @images[ic].media.display_name%>" pub_date="<%= @images[ic].publication_date %>" name="<%= "#{@images[ic].media.name}_#{@images[ic].publication_date.day}_#{@images[ic].publication_date.month}" %>" />
+                            <img src="/assets/404.jpg" alt="404" data-id="<%=image.id%>" id="<%= "image#{ic+1}" %>" style="width: 670px;" image_size="<%= @images[ic].size %>" media="<%= @images[ic].media.display_name%>" pub_date="<%= @images[ic].publication_date %>" name="" />
                         <% else %>
-                            <img src="<%= @images[ic].source_url %>" data-id="<%=image.id%>" alt="<%= @images[ic].image_name %>" id="<%= "image#{ic+1}" %>" style="width: 670px;" image_size="<%= @images[ic].size %>" media="<%= @images[ic].media.display_name%>" url="<%= @images[ic].media.url%>" pub_date="<%= @images[ic].publication_date %>" name="<%= @images[ic].image_name %>" />
+                            <img src="<%= @images[ic].source_url %>" data-id="<%=image.id%>" alt="<%= @images[ic].image_name %>" id="<%= "image#{ic+1}" %>" style="width: 670px;" image_size="<%= @images[ic].size %>" media="<%= @images[ic].media.display_name%>" url="<%= @images[ic].media.url%>" pub_date="<%= @images[ic].publication_date %>" name="<%= @images[ic].id %>" />
                         <% end %>
                         <!-- end -->
                     <% end %>
@@ -136,33 +136,33 @@
     	    <%= hidden_field_tag "status", "0", :id => 'status' %>
     	    <div id="coded_pages">
         		<% @thread.images.each do |image| %>
-        		    <%= hidden_field_tag 'image_name[]', image.image_name %>
-        		    <%= hidden_field_tag "nothing_to_code_#{image.image_name}", @thread.coded_pages.for_image(image).for_user(current_user).length %>
+        		    <%= hidden_field_tag 'image_name[]', image.id %>
+        		    <%= hidden_field_tag "nothing_to_code_#{image.id}", @thread.coded_pages.for_image(image).for_user(current_user).length %>
         		<% end %>
     	    </div>
             <div id="high_images">
                 <% @thread.images.each do |image| %>
-                    <div id="ha_group_<%= image.image_name %>">
+                    <div id="ha_group_<%= image.id %>">
                         <% @thread.highlighted_areas_for_image(image).each_with_index do |ha, index| %>
-        			    <div id="<%= "#{image.image_name}_#{index}" %>">
-            				<%= hidden_field_tag "ha_name[]", "#{image.image_name}_#{index}" %>
-            				<%= hidden_field_tag "img_id_#{image.image_name}_#{index}", "#{image.image_name}" %>
-            				<%= hidden_field_tag "id_#{image.image_name}_#{index}", "#{ha.id}" %>
-            				<%= hidden_field_tag "code_id_#{image.image_name}_#{index}", "#{ha.code_id}" %>
+        			    <div id="<%= "ha_#{image.id}_#{index}" %>">
+            				<%= hidden_field_tag "ha_name[]", "ha_#{image.id}_#{index}" %>
+            				<%= hidden_field_tag "img_id_ha_#{image.id}_#{index}", "#{image.id}" %>
+            				<%= hidden_field_tag "id_ha_#{image.id}_#{index}", "#{ha.id}" %>
+            				<%= hidden_field_tag "code_id_ha_#{image.id}_#{index}", "#{ha.code_id}" %>
                             <% if ha.user.nil? %>
-                                <%= hidden_field_tag "username_#{image.image_name}_#{index}", "" %>
-                                <%= hidden_field_tag "hash_#{image.image_name}_#{index}", "" %>
+                                <%= hidden_field_tag "username_ha_#{image.id}_#{index}", "" %>
+                                <%= hidden_field_tag "hash_ha_#{image.id}_#{index}", "" %>
                             <% else %>
-                                <%= hidden_field_tag "username_#{image.image_name}_#{index}", "#{ha.user.username}" %>
-					            <%= hidden_field_tag "hash_#{image.image_name}_#{index}", "#{ha.user.email_hash}" %>
+                                <%= hidden_field_tag "username_ha_#{image.id}_#{index}", "#{ha.user.username}" %>
+					            <%= hidden_field_tag "hash_ha_#{image.id}_#{index}", "#{ha.user.email_hash}" %>
             				<% end %>
-                            <%= hidden_field_tag "x1_#{image.image_name}_#{index}", "#{ha.areas.last.x1}" %>
-            				<%= hidden_field_tag "y1_#{image.image_name}_#{index}", "#{ha.areas.last.y1}" %>
-            				<%= hidden_field_tag "x2_#{image.image_name}_#{index}", "#{ha.areas.last.x2}" %>
-            				<%= hidden_field_tag "y2_#{image.image_name}_#{index}", "#{ha.areas.last.y2}" %>
-            				<%= hidden_field_tag "width_#{image.image_name}_#{index}", "#{ha.areas.last.width}" %>
-            				<%= hidden_field_tag "height_#{image.image_name}_#{index}", "#{ha.areas.last.height}" %>
-            				<%= hidden_field_tag "deleted_#{image.image_name}_#{index}" %>
+                            <%= hidden_field_tag "x1_ha_#{image.id}_#{index}", "#{ha.areas.last.x1}" %>
+            				<%= hidden_field_tag "y1_ha_#{image.id}_#{index}", "#{ha.areas.last.y1}" %>
+            				<%= hidden_field_tag "x2_ha_#{image.id}_#{index}", "#{ha.areas.last.x2}" %>
+            				<%= hidden_field_tag "y2_ha_#{image.id}_#{index}", "#{ha.areas.last.y2}" %>
+            				<%= hidden_field_tag "width_ha_#{image.id}_#{index}", "#{ha.areas.last.width}" %>
+            				<%= hidden_field_tag "height_ha_#{image.id}_#{index}", "#{ha.areas.last.height}" %>
+            				<%= hidden_field_tag "deleted_ha_#{image.id}_#{index}" %>
         			    </div>
                         <% end %>
                     </div> 
