@@ -10,6 +10,7 @@ Pageonex::Application.routes.draw do
   resources :threads
 
   match 'images/download' => 'images#download'
+  resources :images
 
   match ':username/:thread_name/export' => 'threads#export'
   match ':username/:thread_name/coding' => 'coding#process_images'
