@@ -11,7 +11,7 @@ class ImagesController < ApplicationController
     thread = Threadx.find(thread_id)
     # TODO: should this flush the composite images on ALL the threads that use this image?
     thread.remove_composite_images if downloaded_something # flush the generated composite images because there is a new highlighted area
-    redirect_to thread.link_url+"coding?i="+image.image_name
+    redirect_to thread.link_url+"coding?i="+image.id.to_s
   end
 
 end
