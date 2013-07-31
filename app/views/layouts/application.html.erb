@@ -54,6 +54,7 @@
             </li>
             <% if user_signed_in? and current_user.admin %>
               <li class="menu-item" ><%= link_to "Users", "/users"  %></li>
+              <li class="menu-item" ><%= link_to "Images", "/images"  %></li>
             <% end %>
             <li class="menu-item" ><%= link_to "About", "/about"  %></li>
 	          <li><%= link_to "Documentation", "https://github.com/numeroteca/pageonex/wiki"  %></li>
