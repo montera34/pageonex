@@ -1,0 +1,35 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Name:</b>
+  <%= @media.name %>
+</p>
+
+<p>
+  <b>Country:</b>
+  <%= @media.country %>
+</p>
+
+<p>
+  <b>Country code:</b>
+  <%= @media.country_code %>
+</p>
+
+<p>
+  <b>Url:</b>
+  <%= @media.url %>
+</p>
+
+<p>
+  <b>Display name:</b>
+  <%= @media.display_name %>
+</p>
+
+<p>
+  <b>Working:</b>
+  <%= @media.working %>
+</p>
+
+
+<%= link_to 'Edit', edit_medium_path(@media) %> |
+<%= link_to 'Back', medium_path %>

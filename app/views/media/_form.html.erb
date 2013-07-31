@@ -1,0 +1,41 @@
+<%= form_for(@media) do |f| %>
+  <% if @media.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@media.errors.count, "error") %> prohibited this media from being saved:</h2>
+
+      <ul>
+      <% @media.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+  </div>
+  <div class="field">
+    <%= f.label :country %><br />
+    <%= f.text_field :country %>
+  </div>
+  <div class="field">
+    <%= f.label :country_code %><br />
+    <%= f.text_field :country_code %>
+  </div>
+  <div class="field">
+    <%= f.label :url %><br />
+    <%= f.text_field :url %>
+  </div>
+  <div class="field">
+    <%= f.label :display_name %><br />
+    <%= f.text_field :display_name %>
+  </div>
+  <div class="field">
+    <%= f.label :working %><br />
+    <%= f.check_box :working %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

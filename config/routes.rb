@@ -12,6 +12,8 @@ Pageonex::Application.routes.draw do
   match 'images/download' => 'images#download'
   resources :images
 
+  resources :media
+
   match ':username/:thread_name/export' => 'threads#export'
   match ':username/:thread_name/coding' => 'coding#process_images'
   match ':username/:thread_name/process_highlighted_areas' => 'coding#process_highlighted_areas'

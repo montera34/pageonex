@@ -24,7 +24,7 @@ describe MediaController do
   # Medium. As you add validations to Medium, be sure to
   # update the return value of this method accordingly.
   def valid_attributes
-    {  }
+    { "name" => "MyString" }
   end
 
   # This should return the minimal set of values that should be in the session
@@ -89,14 +89,14 @@ describe MediaController do
       it "assigns a newly created but unsaved medium as @medium" do
         # Trigger the behavior that occurs when invalid params are submitted
         Medium.any_instance.stub(:save).and_return(false)
-        post :create, {:medium => {  }}, valid_session
+        post :create, {:medium => { "name" => "invalid value" }}, valid_session
         assigns(:medium).should be_a_new(Medium)
       end
 
       it "re-renders the 'new' template" do
         # Trigger the behavior that occurs when invalid params are submitted
         Medium.any_instance.stub(:save).and_return(false)
-        post :create, {:medium => {  }}, valid_session
+        post :create, {:medium => { "name" => "invalid value" }}, valid_session
         response.should render_template("new")
       end
     end
@@ -110,8 +110,8 @@ describe MediaController do
         # specifies that the Medium created on the previous line
         # receives the :update_attributes message with whatever params are
         # submitted in the request.
-        Medium.any_instance.should_receive(:update_attributes).with({ "these" => "params" })
-        put :update, {:id => medium.to_param, :medium => { "these" => "params" }}, valid_session
+        Medium.any_instance.should_receive(:update_attributes).with({ "name" => "MyString" })
+        put :update, {:id => medium.to_param, :medium => { "name" => "MyString" }}, valid_session
       end
 
       it "assigns the requested medium as @medium" do
@@ -132,7 +132,7 @@ describe MediaController do
         medium = Medium.create! valid_attributes
         # Trigger the behavior that occurs when invalid params are submitted
         Medium.any_instance.stub(:save).and_return(false)
-        put :update, {:id => medium.to_param, :medium => {  }}, valid_session
+        put :update, {:id => medium.to_param, :medium => { "name" => "invalid value" }}, valid_session
         assigns(:medium).should eq(medium)
       end
 
@@ -140,7 +140,7 @@ describe MediaController do
         medium = Medium.create! valid_attributes
         # Trigger the behavior that occurs when invalid params are submitted
         Medium.any_instance.stub(:save).and_return(false)
-        put :update, {:id => medium.to_param, :medium => {  }}, valid_session
+        put :update, {:id => medium.to_param, :medium => { "name" => "invalid value" }}, valid_session
         response.should render_template("edit")
       end
     end
