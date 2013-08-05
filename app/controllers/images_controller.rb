@@ -16,6 +16,11 @@ class ImagesController < ApplicationController
     redirect_to thread.link_url+"coding?i="+image.id.to_s
   end
 
+  def for_media
+    @images = Image.where(:media_id=>params[:media_id])
+    render :index
+  end
+
   # GET /images
   # GET /images.json
   def index

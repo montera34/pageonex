@@ -10,6 +10,7 @@ Pageonex::Application.routes.draw do
   resources :threads
 
   match 'images/download' => 'images#download'
+  match 'images/for_media/:media_id' => 'images#for_media'
   resources :images
 
   resources :media
