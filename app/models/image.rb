@@ -74,6 +74,7 @@ class Image < ActiveRecord::Base
 			# try to fetch the image
 			begin
 				File.open(self.full_local_path, "wb") { |f| f.write(open(self.source_url).read) }
+				# TODO we should check the file size here to see if it is zero (raise exception if it is)
 				File.open(self.full_local_path,"rb") do |f|
 					size_info = ImageSize.new(f.read).get_size
 					self.size = "#{size_info[0]}x#{size_info[1]}"
