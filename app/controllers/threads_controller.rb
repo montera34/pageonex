@@ -267,7 +267,13 @@ class ThreadsController < ApplicationController
 				width = Threadx::DEFAULT_COMPOSITE_IMAGE_WIDTH
 				width = params['width'].to_i if params['width']
 				@thread.generate_composite_images width
-				send_file File.join(@thread.composite_img_dir(width),'results.jpg'), :type=>'image/jpg', :disposition=>'inline'
+				if params['image_export_type']=='jpg'
+					send_file File.join(@thread.composite_img_dir(width),'results.jpg'), :type=>'image/jpg', :disposition=>'inline'
+				else
+					send_file File.join(@thread.composite_img_dir(width),'results.zip'), 
+						:type=>'application/x-zip-compressed ', 
+						:disposition=>'attachment'					
+				end
 			end
 		end
 	end

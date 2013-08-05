@@ -26,8 +26,8 @@
 		      <!-- <li><a href="#">Download as  .csv </a></li>-->
 		      <li><a href="<%= thread_url(@thread)+"export.ods" %>">Download Data as .ods</a></li>
 		      <li><a href="<%= thread_url(@thread)+"export.json" %>">Download Data as .json</a></li>
-		      <li><a href="#chart-modal" data-toggle="modal">Download Graph as .svg </a></li>
-					<li><a href="#image-export-modal" data-toggle="modal">Download Images as .jpg </a></li>
+		      <li><a href="#chart-modal" data-toggle="modal">Download Graph as .svg</a></li>
+			  <li><a href="#image-export-modal" data-toggle="modal">Download Image as .jpg</a></li>
 		      <!--
 		      <li class="divider"></li>
 		      <li><a href="#">Download as  .pdf </a></li>-->
@@ -169,6 +169,16 @@
   		<fieldset>
     		<label>Image Width (in pixels)</label>
     		<input type="text" name="width" placeholder="enter a width in pixels">
+    	</fieldset>
+  		<fieldset>
+    		<label class="radio">
+    			<input type="radio" name="image_export_type" value="jpg" CHECKED>
+    			a single combined .jpg
+    		</label>
+    		<label class="radio">
+				<input type="radio" name="image_export_type" value="zip">
+				.zip with the combined .jpg, topic overlays, and more
+			</label>
     	</fieldset>
     	<button type="submit" class="btn">Download</button>
     <% end %>
