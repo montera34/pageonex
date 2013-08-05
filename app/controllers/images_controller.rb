@@ -10,10 +10,20 @@ class ImagesController < ApplicationController
     downloaded_something = image.download
     image.save
     # redirect back to the image in the thread
-    thread = Threadx.find(thread_id)
-    # TODO: should this flush the composite images on ALL the threads that use this image?
-    thread.remove_composite_images if downloaded_something # flush the generated composite images because there is a new highlighted area
-    redirect_to thread.link_url+"coding?i="+image.id.to_s
+    if thread_id=='0'
+      # TODO: this needs to flush the composite image cache on all the threads that use this
+      if downloaded_something
+        flash[:notice] = "Download the image"
+      else
+        flash[:error] = "Didn't download anything!"
+      end
+      redirect_to '/images/'+image_id
+    else
+      thread = Threadx.find(thread_id)
+      # TODO: should this flush the composite images on ALL the threads that use this image?
+      thread.remove_composite_images if downloaded_something # flush the generated composite images because there is a new highlighted area
+      redirect_to thread.link_url+"coding?i="+image.id.to_s
+    end
   end
 
   def for_media

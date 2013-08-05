@@ -19,6 +19,7 @@
 </dl>
 
 <div class="form-actions">
+  <a href="/images/download?missing_image_id=<%=@image.id%>&thread_id=0" class="btn">Download</a>
   <%= link_to t('.back', :default => t("helpers.links.back")),
               images_path, :class => 'btn'  %>
   <%= link_to t('.edit', :default => t("helpers.links.edit")),
