@@ -231,6 +231,7 @@ DEPENDENCIES
   rmagick
   rodf
   rspec-rails
+  rubyzip
   sass-rails (~> 3.2.3)
   sqlite3
   stringex

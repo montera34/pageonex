@@ -58,3 +58,6 @@ gem 'bootstrap-will_paginate'
 
 # web analytics
 gem 'piwik_analytics'
+
+# for downloading zipped archives
+gem 'rubyzip'

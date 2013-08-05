@@ -1,3 +1,5 @@
+require 'zip/zip'
+
 # handle stitching together composite images of a thread's highlighted areas and front page images
 # yes, there is code duplication, but this is an attempt to optimized for memory use on our hosted servers because
 # really big threads are breaking things
@@ -44,12 +46,20 @@ class ImageCompositor
 		@height_by_media_id.length
 	end
 
-	def code_overlay_composite_image_path code_id
+	def code_composite_image_path code_id
+		File.join(@image_dir, 'code_'+code_id.to_s+'.png')
+	end
+
+	def code_overlay_image_path code_id
 		File.join @image_dir, 'code_'+code_id.to_s+'_overlay.png'
 	end
 
 	def front_page_composite_image_path
 		File.join @image_dir, 'front_pages.jpg' 
+	end
+
+	def full_composite_image_path
+		File.join(@image_dir, 'results.jpg')
 	end
 
 	def generate_front_page_composite images
@@ -133,18 +143,18 @@ class ImageCompositor
 		composite_code_topic_img = Magick::Image.new @image_map[:width], @image_map[:height] 
 		composite_code_topic_img.opacity = Magick::MaxRGB
 		gc.draw composite_code_topic_img
-		composite_code_topic_img.write self.code_overlay_composite_image_path(code_id) {self.quality=JPEG_IMAGE_QUALITY}
+		composite_code_topic_img.write self.code_overlay_image_path(code_id) {self.quality=JPEG_IMAGE_QUALITY}
 	end
 
 	def generate_code_composite code_id
 		front_page_composite_img = Magick::Image.read(self.front_page_composite_image_path).first
-		code_overlay_composite_img = Magick::Image.read(self.code_overlay_composite_image_path(code_id)).first
+		code_overlay_composite_img = Magick::Image.read(self.code_overlay_image_path(code_id)).first
 
 		composite_img = Magick::Image.new @image_map[:width], @image_map[:height] 
 		composite_img.opacity = Magick::MaxRGB
 		composite_img.composite! front_page_composite_img, 0, 0, Magick::OverCompositeOp
 		composite_img.composite! code_overlay_composite_img, 0, 0, Magick::OverCompositeOp
-		composite_img.write File.join(@image_dir, 'code_'+code_id.to_s+'.png')
+		composite_img.write code_composite_image_path(code_id) {self.quality=JPEG_IMAGE_QUALITY}
 	end
 
 	def generate_full_composite code_id_list
@@ -154,14 +164,27 @@ class ImageCompositor
 		composite_img.opacity = Magick::MaxRGB
 		composite_img.composite! front_page_composite_img, 0, 0, Magick::OverCompositeOp
 		code_id_list.each do |code_id|
-			code_overlay_composite_img = Magick::Image.read(self.code_overlay_composite_image_path(code_id)).first
+			code_overlay_composite_img = Magick::Image.read(self.code_overlay_image_path(code_id)).first
 			composite_img.composite! code_overlay_composite_img, 0, 0, Magick::OverCompositeOp
 		end
-		composite_img.write File.join(@image_dir, 'results.jpg')  {self.quality=JPEG_IMAGE_QUALITY}
+		composite_img.write full_composite_image_path  {self.quality=JPEG_IMAGE_QUALITY}
 	end
 
 	def generate_image_map
 		File.open( File.join(@image_dir, 'image_map.json'), 'w') {|f| f.write(@image_map.to_json)}
 	end	
+
+	def generate_image_archive code_id_list
+		input_files = [ full_composite_image_path, front_page_composite_image_path ]
+		code_id_list.each do |code_id| 
+			input_files.push code_composite_image_path code_id
+			input_files.push code_overlay_image_path code_id
+		end
+		Zip::ZipFile.open( File.join(@image_dir, 'results.zip'), Zip::ZipFile::CREATE) do |zipfile|
+			input_files.each do |path|
+				zipfile.add File.basename(path), path
+			end
+		end
+	end
 
 end

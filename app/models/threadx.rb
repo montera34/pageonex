@@ -170,8 +170,10 @@ class Threadx < ActiveRecord::Base
 		end
 
 		# combine into the total composite
-		compositor.generate_full_composite self.codes.collect { |code| code.id }
+		code_id_list = self.codes.collect { |code| code.id }
+		compositor.generate_full_composite code_id_list
 		compositor.generate_image_map
+		compositor.generate_image_archive code_id_list
 
 	end
 
