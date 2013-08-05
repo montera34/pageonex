@@ -100,7 +100,7 @@ class Threadx < ActiveRecord::Base
 
 	def composite_image_map_info width=DEFAULT_COMPOSITE_IMAGE_WIDTH
 		thread_img_dir = self.composite_img_dir width
-		path = File.join(thread_img_dir, 'img_map.json')
+		path = File.join(thread_img_dir, 'image_map.json')
 		return nil unless File.exists? path
 		JSON.parse( IO.read path )
 	end
@@ -110,7 +110,7 @@ class Threadx < ActiveRecord::Base
 	end
 
 	def path_to_composite_highlighed_area_image code_id, width=DEFAULT_COMPOSITE_IMAGE_WIDTH
-		File.join('threads',self.owner.id.to_s,self.id.to_s, width.to_s, 'code_'+code_id.to_s+'.png').to_s
+		File.join('threads',self.owner.id.to_s,self.id.to_s, width.to_s, 'code_'+code_id.to_s+'_overlay.png').to_s
 	end
 
 	def remove_composite_images width=DEFAULT_COMPOSITE_IMAGE_WIDTH
@@ -129,9 +129,10 @@ class Threadx < ActiveRecord::Base
 		remove_composite_images
 	end
 
-	# generate combined images of all the front pages and highlighted areas
-	# TODO: be smart about caching this (ie. delete and regen when anything is changed)
+	# this passes info into the ImageCompositor so this code is a bit cleaner
 	def generate_composite_images width=DEFAULT_COMPOSITE_IMAGE_WIDTH, force=false
+
+		# bail if we've already done this
 		thread_img_dir = self.composite_img_dir width
 		return if not force and Dir.exists? thread_img_dir and File.exists? File.join(thread_img_dir, 'front_pages.jpg')
 
@@ -139,126 +140,38 @@ class Threadx < ActiveRecord::Base
 		self.composite_img_dir width, true
 		FileUtils.mkpath self.composite_img_dir(width.to_s)
 
-		padding = self.duration > 10 ? 3 : 8 	# default padding logic
-
-		thumb_width = ((width-padding*(self.duration)).to_f / (self.duration).to_f).floor
-		img_map = {:row_info=>{},:images=>{}} # will hold info page needs to render
+		# set up the copositing engine
+		compositor = ImageCompositor.new self.start_date, self.end_date
+		compositor.image_dir = self.composite_img_dir width
+		compositor.width = width
+		compositor.uncoded_image_ids = self.uncoded_image_ids
 
 		# figure out each row height
-		height_by_media = []
 		thumbnails = []
 		self.media.each_with_index do |media, index|
 			media_images = self.images.select { |img| img.media_id==media.id }
 			thumbnail_media_heights = media_images.collect do |img| 
-				thumb = img.thumbnail thumb_width
+				thumb = img.thumbnail compositor.thumb_width
 				thumb.nil? ? 0 : thumb.rows
 			end
-			height_by_media[index] = thumbnail_media_heights.max.round
-			img_map[:row_info][media.id] = {
-				:height=>thumbnail_media_heights.max.round + padding, 
-				:name=>media.name_with_country
-			}
+			compositor.set_media_info(media.id, media.name_with_country, thumbnail_media_heights.max.round + compositor.padding)
 		end
-		logger.debug(height_by_media)
-		composite_image_dimens = {:width=>thumb_width*(self.duration) + padding*(self.duration), 
-															:height=>height_by_media.sum + padding*self.media.count }
-		img_map.merge! composite_image_dimens
+		compositor.calculate_image_map_width_height
 
-		# create the composite images
-		results_composite_img = Magick::Image.new(composite_image_dimens[:width], composite_image_dimens[:height])
-		front_page_composite_img = Magick::Image.new(composite_image_dimens[:width], composite_image_dimens[:height])
-		front_page_composite_img.opacity = Magick::MaxRGB
-		ha_composite_gcs = []
-		self.codes.each do |code| 
-			gc = Magick::Draw.new
-			# make sure it is transparent even if no highlighted areas coded
-			gc.fill '#ffffff'
-			gc.fill_opacity 1.0
-			gc.rectangle 0, 0, 5, 5
-			ha_composite_gcs[code.id] = gc
-		end
+		# create the background image grid
+		compositor.generate_front_page_composite self.images
 
-		# stitch it all together
+		# create an overlay and composite for each topic
 		full_ha_list = self.highlighted_areas.all
-		(self.start_date..self.end_date).each do |date|	# iterate over days (ie. columns)
-			day_images = self.images.select { |img| img.publication_date==date }
-			offset = { 
-					:x=>(date-self.start_date)*thumb_width + padding*(date-self.start_date),
-					:y=>0 
-			}
-			self.media.each_with_index do |media,index|	# iterate over media sources within that day
-				offset[:y] = height_by_media.first(index).sum + padding*index
-				# make the thumbnail composite
-				media_img_index = day_images.find_index { |img| img.media_id==media.id }
-				if media_img_index.nil?
-					# TODO: include a note that img is missing?
-				else 
-					img = day_images[media_img_index]
-					if not img.missing
-						# add the thumb to the composite images
-						thumb = img.thumbnail thumb_width
-						if not thumb.nil?
-							front_page_composite_img.composite!(thumb,offset[:x],offset[:y], Magick::OverCompositeOp)
-							img_map[:images][img.id] = { :x1=>offset[:x].round, :y1=>offset[:y].round, 
-								:x2=>offset[:x].round+thumb.columns, :y2=>offset[:y].round+thumb.rows,
-								:name=>img.image_name }
-							# if the front page is not coded, fade it a bit so the color codes stand out
-							if uncoded_image_ids.include? img.id
-								white_gc = Magick::Draw.new
-								white_gc.fill 'white' #draws white rectangle on top of the image
-								white_gc.fill_opacity 0.4
-								white_gc.rectangle offset[:x].round, offset[:y].round, 
-									offset[:x].round+thumb.columns, offset[:y].round+thumb.rows
-								white_gc.draw front_page_composite_img
-							end
-							# if the front page is coded, fade it more so the uncoded ones stand out
-							if coded_image_ids.include? img.id
-								white_gc = Magick::Draw.new
-								white_gc.fill 'white' #draws white rectangle on top of the image
-								white_gc.fill_opacity 0.85
-								white_gc.rectangle offset[:x].round, offset[:y].round, 
-									offset[:x].round+thumb.columns, offset[:y].round+thumb.rows
-								white_gc.draw front_page_composite_img
-							end
-						end
-					else
-						# include the link in the image map anyways
-						img_map[:images][img.id] = { :x1=>offset[:x].round, :y1=>offset[:y].round, 
-								:x2=>offset[:x].round+thumb_width, :y2=>offset[:y].round+height_by_media[index],
-								:name=>img.image_name }
-					end
-				end
-				# make the coding composites
-				scale = thumb_width / img.width.to_f
-				self.codes.each do |code|
-					gc = ha_composite_gcs[code.id]
-					color = (code.color.nil?) ? '#ff0000' : code.color #safety check in case a color is missing
-					gc.fill color
-					gc.fill_opacity 0.6
-					img_ha_list = full_ha_list.select { |ha| ha.code_id==code.id and ha.image_id==img.id}
-					scaled_areas = img_ha_list.collect { |ha| ha.scaled_areas scale }
-					scaled_areas.flatten.each do |area|
-						gc.rectangle offset[:x]+area.x1, offset[:y]+area.y1, offset[:x]+area.x1+area.width, offset[:y]+area.y1+area.height
-					end
-				end
-			end
+		self.codes.each do |code|
+			code_highlisted_areas = full_ha_list.select { |ha| ha.code_id==code.id }
+			compositor.generate_code_overlay_composite self.images, code_highlisted_areas, code.id, code.color
+			compositor.generate_code_composite code.id
 		end
 
-		# write out the image results
-		front_page_composite_img.write File.join(thread_img_dir, 'front_pages.jpg') {self.quality=85}
-
-		results_composite_img.composite!(front_page_composite_img,0,0,Magick::OverCompositeOp)
-
-		self.codes.each do |code| 
-			composite_code_topic_img = Magick::Image.new(composite_image_dimens[:width], composite_image_dimens[:height])
-			composite_code_topic_img.opacity = Magick::MaxRGB
-			ha_composite_gcs[code.id].draw composite_code_topic_img
-			composite_code_topic_img.write File.join(thread_img_dir, 'code_'+code.id.to_s+'.png')
-			results_composite_img.composite! composite_code_topic_img,0,0,Magick::OverCompositeOp
-		end
-		
-		File.open( File.join(thread_img_dir, 'img_map.json'), 'w') {|f| f.write(img_map.to_json)}
-		results_composite_img.write File.join(thread_img_dir, 'results.jpg')  {self.quality=90}
+		# combine into the total composite
+		compositor.generate_full_composite self.codes.collect { |code| code.id }
+		compositor.generate_image_map
 
 	end
 
@@ -354,7 +267,7 @@ class Threadx < ActiveRecord::Base
 	end
 	
 	def composite_img_dir width=DEFAULT_COMPOSITE_IMAGE_WIDTH, create_dir=false
-	  dir = File.join('app','assets','images','threads',self.owner.id.to_s,self.id.to_s, width.to_s)
+		dir = File.join('app','assets','images','threads',self.owner.id.to_s,self.id.to_s, width.to_s)
 		if create_dir and not File.directory? dir
 			FileUtils.mkpath dir
 		end
