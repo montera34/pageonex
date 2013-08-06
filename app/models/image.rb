@@ -37,7 +37,7 @@ class Image < ActiveRecord::Base
 
 	def thumbnail_local_path width=80, generate=true
 	 	path = self.local_path.chomp(File.extname(self.local_path))+'-thumb-'+width.to_s+'.jpg'
-	 	self.thumbnail(width) if generate
+	 	self.thumbnail width if generate
 		path
 	end
 
@@ -49,7 +49,7 @@ class Image < ActiveRecord::Base
 		else 
 			thumb_file_path = File.join 'app','assets','images', path
 		end
-		return Magick::Image.read(thumb_file_path).first if File.exists? thumb_file_path
+		return Magick::Image.read(thumb_file_path).first if File.exists?(thumb_file_path) and File.size?(thumb_file_path)
 		# if the thumb doesn't exist then generate it
 		img_thumb = nil
 		return img_thumb if File.size? self.full_local_path
