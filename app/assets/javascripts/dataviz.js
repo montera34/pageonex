@@ -77,6 +77,16 @@ var dataviz = {
             .attr('width', width)
             .attr('height', height)
             .append('g')
+        // Draw horizontal grid lines
+        chart.selectAll('.yline')
+            .data(yInverse.ticks(4))
+            .enter()
+            .append('line')
+            .attr('y1', function (ty) { return height - padding.bottom - Math.floor(y(ty)) + 0.5; })
+            .attr('y2', function (ty) { return height - padding.bottom - Math.floor(y(ty)) + 0.5; })
+            .attr('x1', padding.left)
+            .attr('x2', width - padding.right)
+            .style('stroke', '#ccc');
         // Draw bars
         date = chart.selectAll('.date').data(data, getKey);
         date.enter()
@@ -121,16 +131,6 @@ var dataviz = {
             .orient('left')
             .ticks(4)
             .tickFormat(formatPercent);
-        // Draw horizontal grid lines
-        chart.selectAll('.yline')
-            .data(yInverse.ticks(4))
-            .enter()
-            .append('line')
-            .attr('y1', function (ty) { return Math.round(y(ty)) + padding.top - 0.5; })
-            .attr('y2', function (ty) { return Math.round(y(ty)) + padding.top - 0.5; })
-            .attr('x1', padding.left)
-            .attr('x2', width - padding.right)
-            .style('stroke', 'white');
         // Draw y labels
         ylabel = chart.append('g')
             .attr('class', 'yaxis')
