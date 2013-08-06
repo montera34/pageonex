@@ -24,7 +24,7 @@
         <td><%= image.size %></td>
         <td><%= image.media_id %></td>
         <td><%= image.image_name %></td>
-        <td><%= image.source_url %></td>
+        <td><%= link_to image.source_url, image.source_url %></td>
         <td><%= image.missing %></td>
         <td><%=l image.created_at %></td>
         <td>

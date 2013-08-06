@@ -13,7 +13,7 @@
   <dt><strong><%= model_class.human_attribute_name(:image_name) %>:</strong></dt>
   <dd><%= @image.image_name %></dd>
   <dt><strong><%= model_class.human_attribute_name(:source_url) %>:</strong></dt>
-  <dd><%= link_to @image.source_url %></dd>
+  <dd><%= link_to @image.source_url, @image.source_url %></dd>
   <dt><strong><%= model_class.human_attribute_name(:missing) %>:</strong></dt>
   <dd><%= @image.missing %></dd>
 </dl>
