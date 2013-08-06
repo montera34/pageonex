@@ -75,12 +75,17 @@ class Image < ActiveRecord::Base
 			# try to fetch the image
 			begin
 				File.open(self.full_local_path, "wb") { |f| f.write(open(self.source_url).read) }
-				# TODO we should check the file size here to see if it is zero (raise exception if it is)
-				File.open(self.full_local_path,"rb") do |f|
-					size_info = ImageSize.new(f.read).get_size
-					self.size = "#{size_info[0]}x#{size_info[1]}"
+				if File.size? self.full_local_path
+					# TODO we should check the file size here to see if it is zero (raise exception if it is)
+					File.open(self.full_local_path,"rb") do |f|
+						size_info = ImageSize.new(f.read).get_size
+						self.size = "#{size_info[0]}x#{size_info[1]}"
+					end
+					self.missing = false 
+				else 
+					self.size = '750x951'
+					logger.debug "Image Download Failed:#{id}: got a zero size image for #{source_url}"
 				end
-				self.missing = false
 			rescue Exception => e  
 				# image doesn't exist on their server :-(
 				logger.debug "Image Download Failed:#{id}: couldn't find image at #{source_url} (#{e.message})"
