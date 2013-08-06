@@ -152,7 +152,7 @@ class Threadx < ActiveRecord::Base
 			media_images = self.images.select { |img| img.media_id==media.id }
 			thumbnail_media_heights = media_images.collect do |img| 
 				thumb = img.thumbnail compositor.thumb_width
-				thumb.nil? ? 0 : thumb.rows
+				thumb.nil? ? 50 : thumb.rows	# use a default height so an empty row shows up for media we don't have any images for
 			end
 			compositor.set_media_info(media.id, media.name_with_country, thumbnail_media_heights.max.round + compositor.padding)
 		end
