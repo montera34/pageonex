@@ -67,10 +67,10 @@ class ImageCompositor
 		front_page_composite_img = Magick::Image.new @image_map[:width], @image_map[:height] 
 		front_page_composite_img.opacity = Magick::MaxRGB
 		# iterate over days (ie. columns)
-		(self.start_date..self.end_date).each do |date|
+		(self.start_date..self.end_date).each_with_index do |date, day_index|
 			day_images = images.select { |img| img.publication_date==date }
 			offset = { 
-				:x=>(date-@start_date)*self.thumb_width + self.padding*(date-@start_date),
+				:x=>day_index*self.thumb_width + day_index*self.padding,
 				:y=>0 
 			}
 			# iterate over media sources (ie. rows)
@@ -101,7 +101,7 @@ class ImageCompositor
 					else
 						# include the link in the image map anyways
 						@image_map[:images][img.id] = { :x1=>offset[:x].round, :y1=>offset[:y].round, 
-								:x2=>offset[:x].round+thumb_width, :y2=>offset[:y].round+@height_by_media_id[index],
+								:x2=>offset[:x].round+self.thumb_width, :y2=>offset[:y].round+@height_by_media_id[media_id],
 								:name=>img.image_name }
 					end
 				end
