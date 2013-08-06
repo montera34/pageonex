@@ -13,7 +13,7 @@
   <dt><strong><%= model_class.human_attribute_name(:image_name) %>:</strong></dt>
   <dd><%= @image.image_name %></dd>
   <dt><strong><%= model_class.human_attribute_name(:source_url) %>:</strong></dt>
-  <dd><%= @image.source_url %></dd>
+  <dd><%= link_to @image.source_url %></dd>
   <dt><strong><%= model_class.human_attribute_name(:missing) %>:</strong></dt>
   <dd><%= @image.missing %></dd>
 </dl>
@@ -30,3 +30,16 @@
               :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
               :class => 'btn btn-danger' %>
 </div>
+
+<% if @image.missing %>
+  <i>Image is missing :-(</i>
+<% else %>
+  <p>
+  <b>Thumbnail</b><br />
+  <%= image_tag @image.thumbnail_local_path(80,true), :alt => @image.image_name %>
+  </p>
+  <p>
+  <b>Full Size</p>
+  <%= image_tag @image.local_path, :alt => @image.image_name %>
+  </p>
+<% end %>

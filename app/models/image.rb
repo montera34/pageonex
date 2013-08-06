@@ -35,7 +35,7 @@ class Image < ActiveRecord::Base
 		select('publication_date').uniq.map { |elt| elt.publication_date }
 	end
 
-	def thumbnail_local_path width, generate=true
+	def thumbnail_local_path width=80, generate=true
 	 	path = self.local_path.chomp(File.extname(self.local_path))+'-thumb-'+width.to_s+'.jpg'
 	 	self.thumbnail(width) if generate
 		path
