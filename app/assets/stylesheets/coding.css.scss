@@ -23,6 +23,12 @@
 .high_area {
   border: 1px solid #333333;
 }
+/* dataviz */
+.gridline {
+  stroke: #ccc;
+  shape-rendering: crispEdges;
+  stroke-width:1;
+}
 
 /* composite image stuff */
 ul.thread-composite-images {

@@ -13,6 +13,7 @@
 # Ignore all logfiles and tempfiles.
 /log/*.log
 /tmp
+*~
 
 /app/assets/images/kiosko
 /app/assets/images/threads

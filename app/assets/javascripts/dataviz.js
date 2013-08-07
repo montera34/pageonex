@@ -86,7 +86,7 @@ var dataviz = {
             .attr('y2', function (ty) { return height - padding.bottom - Math.floor(y(ty)) + 0.5; })
             .attr('x1', padding.left)
             .attr('x2', width - padding.right)
-            .style('stroke', '#ccc');
+            .attr('class','gridline');
         // Draw bars
         date = chart.selectAll('.date').data(data, getKey);
         date.enter()
