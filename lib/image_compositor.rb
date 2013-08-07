@@ -93,7 +93,7 @@ class ImageCompositor
 							fade_amount = (@uncoded_image_ids.include? img.id) ? 0.4 : 0.85
 							white_gc = Magick::Draw.new
 							white_gc.fill 'white'
-							white_gc.fill_opacity 0.4
+							white_gc.fill_opacity fade_amount
 							white_gc.rectangle offset[:x].round, offset[:y].round, 
 								offset[:x].round+thumb.columns, offset[:y].round+thumb.rows
 							white_gc.draw front_page_composite_img
