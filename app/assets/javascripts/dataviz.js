@@ -111,7 +111,7 @@ var dataviz = {
         // Draw axes
         xAxis = d3.svg.axis()
             .scale(dateLabel)
-            .orient('bottom');
+            .orient('bottom')
         chart.append('g')
             .attr('class', 'xaxis')
             .attr('transform', 'translate(' + (padding.left - 0.5) + ',' + (height - padding.bottom + 0.5) + ')')

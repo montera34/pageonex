@@ -25,7 +25,12 @@
 }
 /* dataviz */
 .gridline {
-  stroke: #ccc;
+  stroke: #ddd;
+  shape-rendering: crispEdges;
+  stroke-width:1;
+}
+
+.yaxis line, .xaxis path{
   shape-rendering: crispEdges;
   stroke-width:1;
 }
