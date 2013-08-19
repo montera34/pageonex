@@ -114,7 +114,7 @@ class Threadx < ActiveRecord::Base
 	end
 
 	def remove_composite_images width=DEFAULT_COMPOSITE_IMAGE_WIDTH
-		logger.info "Removing composite images for '#{self.thread_name}' (#{self.id}) at #{self.composite_img_dir(width) }"
+		logger.info "Removing composite images for '#{self.thread_name}' (#{self.id}) at #{self.composite_img_dir(width)}px"
 		FileUtils.rm_r self.composite_img_dir(width) if Dir.exists? self.composite_img_dir(width) 
 	end
 
@@ -136,6 +136,8 @@ class Threadx < ActiveRecord::Base
 		thread_img_dir = self.composite_img_dir width
 		return if not force and Dir.exists? thread_img_dir and File.exists? File.join(thread_img_dir, 'front_pages.jpg')
 
+		logger.info "Creating composites for '#{self.thread_name}' (#{self.id}) at #{self.composite_img_dir(width)}px"
+
 		# create the container dir
 		self.composite_img_dir width, true
 		FileUtils.mkpath self.composite_img_dir(width.to_s)
@@ -147,6 +149,7 @@ class Threadx < ActiveRecord::Base
 		compositor.uncoded_image_ids = self.uncoded_image_ids
 
 		# figure out each row height
+		logger.info "  determining row heights"
 		thumbnails = []
 		self.media.each_with_index do |media, index|
 			media_images = self.images.select { |img| img.media_id==media.id }
@@ -159,9 +162,11 @@ class Threadx < ActiveRecord::Base
 		compositor.calculate_image_map_width_height
 
 		# create the background image grid
+		logger.info "  creating background image grid"
 		compositor.generate_front_page_composite self.images
 
 		# create an overlay and composite for each topic
+		logger.info "  creating overlays for topics"
 		full_ha_list = self.highlighted_areas.all
 		self.codes.each do |code|
 			code_highlisted_areas = full_ha_list.select { |ha| ha.code_id==code.id }
@@ -170,10 +175,13 @@ class Threadx < ActiveRecord::Base
 		end
 
 		# combine into the total composite
+		logger.info "  combining into composites"
 		code_id_list = self.codes.collect { |code| code.id }
 		compositor.generate_full_composite code_id_list
 		compositor.generate_image_map
 		compositor.generate_image_archive code_id_list
+
+		logger.info "  done"
 
 	end
 
