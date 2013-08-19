@@ -20,3 +20,6 @@
 
 # Ignore OS X image cache
 .DS_Store
+
+# ignore some generated thumb files
+app/assets/images/404-thumb*.jpg
