@@ -49,11 +49,11 @@ class ImageCompositor
 	end
 
 	def code_composite_image_path code_id
-		File.join(@image_dir, 'code_'+code_id.to_s+'.png')
+		File.join(@image_dir, 'code_'+code_id.to_s+'.jpg')
 	end
 
 	def code_overlay_image_path code_id
-		File.join @image_dir, 'code_'+code_id.to_s+'_overlay.png'
+		File.join @image_dir, 'code_'+code_id.to_s+'_overlay.jpg'
 	end
 
 	def front_page_composite_image_path
