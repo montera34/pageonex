@@ -9,6 +9,7 @@ class ImageCompositor
 
 	DEFAULT_CODE_COLOR = '#ff0000'
 	JPEG_IMAGE_QUALITY = 90
+	MAX_THUMBNAIL_WIDTH = (Threadx::DEFAULT_COMPOSITE_IMAGE_WIDTH/2).floor
 
 	def initialize start_date, end_date
 		@start_date = start_date
@@ -24,7 +25,8 @@ class ImageCompositor
 	end
 
 	def thumb_width
-		((@width-self.padding*@duration).to_f / @duration.to_f).floor
+		[ ((@width-self.padding*@duration).to_f / @duration.to_f).floor, 
+		  MAX_THUMBNAIL_WIDTH ].min
 	end
 
 	def set_media_info id, name, max_image_height
