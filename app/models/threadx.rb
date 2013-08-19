@@ -110,7 +110,7 @@ class Threadx < ActiveRecord::Base
 	end
 
 	def path_to_composite_highlighed_area_image code_id, width=DEFAULT_COMPOSITE_IMAGE_WIDTH
-		File.join('threads',self.owner.id.to_s,self.id.to_s, width.to_s, 'code_'+code_id.to_s+'_overlay.png').to_s
+		File.join('threads',self.owner.id.to_s,self.id.to_s, width.to_s, 'code_'+code_id.to_s+'_overlay.jpg').to_s
 	end
 
 	def remove_composite_images width=DEFAULT_COMPOSITE_IMAGE_WIDTH
