@@ -156,7 +156,7 @@ class Threadx < ActiveRecord::Base
 			thumbnail_media_heights = media_images.collect do |img| 
 				img.image_height_at_width compositor.thumb_width
 			end
-			compositor.set_media_info(media.id, media.name_with_country, thumbnail_media_heights.max.round + compositor.padding)
+			compositor.set_media_info(media.id, media.name_with_country, thumbnail_media_heights.max.round)
 		end
 		compositor.calculate_image_map_width_height
 

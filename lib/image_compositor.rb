@@ -32,7 +32,7 @@ class ImageCompositor
 	def set_media_info id, name, max_image_height
 		@image_map[:row_info][id] = {
 			:name => name,
-			:height => max_image_height
+			:height => max_image_height + self.padding
 		}
 		@height_by_media_id[id] = max_image_height
 	end
