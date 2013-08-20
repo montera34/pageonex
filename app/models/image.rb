@@ -41,6 +41,10 @@ class Image < ActiveRecord::Base
 		path
 	end
 
+	def image_height_at_width other_width
+		(other_width.to_f / self.width) * self.height
+	end
+
 	# return a Magick img object that is a thumbnail (caches to disk) - nil if image missing or messed up
 	def thumbnail width, path=nil
 		return nil unless File.exists? self.full_local_path # bail if there is no image
