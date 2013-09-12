@@ -1,6 +1,6 @@
 class HomeController < ApplicationController
   def index
-    @threads = Threadx.find(:all, :limit=>15)
+    @threads = Threadx.find(:all, :limit=>10) if Threadx.coded_image_ids != []
   end
   def about
 
