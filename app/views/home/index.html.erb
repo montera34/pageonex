@@ -29,7 +29,7 @@
   		
   	<% end %>
   	<h3>Most recent threads</h3>
-  	<% if @threads != [] %>
+  	<% if @threads != [] and @threads.highlighted_areas.length > 0 %>
   		<% @threads.sort{|a,b| b.created_at <=> a.created_at }.each do |thread| %>
   			    <h4><a href="<%= thread_url thread %>"><%= thread.thread_display_name %></a> 
               <small>by <%=threads_by_user_link thread.owner %></small> </h4>
