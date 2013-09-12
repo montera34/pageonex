@@ -1,6 +1,6 @@
 class HomeController < ApplicationController
   def index
-    @threads = Threadx.find(:coded_pages.length > 2, :limit=>10)
+    @threads = Threadx.find(:all, :limit=>15)
   end
   def about
 
