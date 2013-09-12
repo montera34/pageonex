@@ -29,10 +29,13 @@
   		
   	<% end %>
   	<h3>Most recent threads</h3>
-  	<% if @threads != [] %>
+  	<% if @threads != [] %> 
   		<% @threads.sort{|a,b| b.created_at <=> a.created_at }.each do |thread| %>
-  			    <h4><a href="<%= thread_url thread %>"><%= thread.thread_display_name %></a> 
-              <small>by <%=threads_by_user_link thread.owner %></small> </h4>
+				<% if thread.coded_image_ids != [] %>
+  			   <h4><a href="<%= thread_url thread %>"><%= thread.thread_display_name %></a> 
+              <small>by <%=threads_by_user_link thread.owner %></small> </h4> 
+				<% else%>
+				<% end %>
   		<% end %>
   	<% else %>
     	<h2>There are no threads.</h2>
@@ -66,5 +69,14 @@
 			<a href="http://blog.pageonex.com/timeline/">Timeline of the project.</a><br>
 			Slides: <a href="http://www.slideshare.net/numeroteca/pageonex-at-mrap">presentation at the MRAP</a><br>
 			Galleries of examples: <a href="http://numeroteca.org/cat/frontpage-newspaper/">at numeroteca</a> and <a href="http://pinterest.com/numeroteca/newspaper-front-page-visualizations/">at Pineterest</a>
+		</div>
+		<div class="span4 offset1"> <!-- Temporary list of featured threads. It should pull from the most visited threads in the site -->
+			<h3>Featured Threads</h3>
+			<a href="/matrushka/gezi-parki-protests-in-turkish-newspapers/">Gezi parki protests in turkish newspapers</a> (Turkey)<br>
+			<a href="/DeboraLeal/spring-in-brazil/ ">Violence x Protest</a> (Brazil)<br>
+			<a href="/numeroteca/corrupcion-espana-agosto-2013/">Corrupción españa. Agosto 2013</a> (Spain)<br>
+			<a href="/numeroteca/nsa-leaks-prism/ ">NSA leaks: PRISM</a>  (USA)<br>
+			<a href="/Amelrame/analisis-paro-agrario/">Análisis Paro Agrario </a> (Colombia)<br>
+			<a href="/numeroteca/local-national-world-news/">Local, national and world news in US newspapers</a> (USA)
 		</div>
 </div>
