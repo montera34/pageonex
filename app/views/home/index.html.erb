@@ -29,15 +29,10 @@
   		
   	<% end %>
   	<h3>Most recent threads</h3>
-  	<% if @threads != [] %>and 
+  	<% if @threads != [] %>
   		<% @threads.sort{|a,b| b.created_at <=> a.created_at }.each do |thread| %>
-				<% if thread.coded_pages.length > 1 %>
   			   <h4><a href="<%= thread_url thread %>"><%= thread.thread_display_name %></a> 
               <small>by <%=threads_by_user_link thread.owner %></small> </h4> 
-				<% else%>
-					<h5><a href="<%= thread_url thread %>"><%= thread.thread_display_name %></a></h5> 
-				<% end %>
-  		<% end %>
   	<% else %>
     	<h2>There are no threads.</h2>
   	<% end %>
