@@ -83,13 +83,17 @@ class CodingController < ApplicationController
   # render display view
   def display
     @thread = Threadx.find_by_thread_name params[:thread_name]
-    # prep the composite image to show
-    @thread.generate_composite_images # make sure composite results images have been generated
-    @img_map_info = @thread.composite_image_map_info
-    #prep to show collaborators of a thread
-    @users = User.hashes
-    @usernames = User.pluck(:username)
-    @collaborators = @thread.collaborators.pluck(:username)
+    if @thread.nil?
+      raise ActionController::RoutingError.new('Not Found')
+    else
+      # prep the composite image to show
+      @thread.generate_composite_images # make sure composite results images have been generated
+      @img_map_info = @thread.composite_image_map_info
+      #prep to show collaborators of a thread
+      @users = User.hashes
+      @usernames = User.pluck(:username)
+      @collaborators = @thread.collaborators.pluck(:username)
+    end
   end
 
 end
