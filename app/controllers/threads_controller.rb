@@ -84,10 +84,15 @@ class ThreadsController < ApplicationController
 
 			# create object for each code (topic) submited
 			codes = [] #creates empty array to store all the codes of the thread
-			number_of_topics = params[:topic_count].to_i
+			number_of_codes = params[:topic_count].to_i
 			# iterating over the submitted topics, and create a code object for each one. Then add this object to the codes array to assign it to the thread 
-			number_of_topics.times do |n|
-				codes << Code.create!({:code_text => params["topic_name_#{n}"], :code_description => params["topic_description_#{n}"],:color => params["topic_color_#{n}"]})
+			number_of_codes.times do |n|
+				code_name = params["topic_name_#{n}"]
+				unless code_name.empty?
+					codes << Code.create!({:code_text => code_name, 
+										   :code_description => params["topic_description_#{n}"],
+										   :color => params["topic_color_#{n}"]})
+				end
 			end
 
 			images = @thread.scrape_all_images
@@ -180,8 +185,13 @@ class ThreadsController < ApplicationController
 			
 			#it should iterate through the recently created codes
 			params["code_id"].each_with_index do |id, index|
+				code_name = params["topic_name_#{index}"]
 				if id.empty?
-					@thread.codes.create({code_text: params["topic_name_#{index}"], color: params["topic_color_#{index}"], code_description: params["topic_description_#{index}"]})
+					unless code_name.empty?
+						@thread.codes.create({code_text: code_name, 
+							color: params["topic_color_#{index}"], 
+							code_description: params["topic_description_#{index}"]})
+					end
 					# New code
 				else
 					# Fetch existing code from database by id and update
@@ -189,15 +199,24 @@ class ThreadsController < ApplicationController
 					if params["topic_deleted_#{index}"] == '1'
 						code.destroy()
 					else
-						code.update_attributes({code_text: params["topic_name_#{index}"], color: params["topic_color_#{index}"], code_description: params["topic_description_#{index}"]})
+						unless code_name.empty?
+							code.update_attributes({code_text: code_name, 
+								color: params["topic_color_#{index}"], 
+								code_description: params["topic_description_#{index}"]})
+						end
 					end
 				end
 			end
 			@thread.codes.to_enum.with_index.each do |code,index|
+				code_name = params["topic_name_#{index}"]
 				if params["topic_deleted_#{index}"] == '1'
 					code.destroy()
 				else #To Do: it should save the new codes created
-					code.update_attributes({code_text: params["topic_name_#{index}"], color: params["topic_color_#{index}"], code_description: params["topic_description_#{index}"]})
+					unless code_name.empty?
+						code.update_attributes({code_text: code_name, 
+							color: params["topic_color_#{index}"], 
+							code_description: params["topic_description_#{index}"]})
+					end
 				end
 			end
 
