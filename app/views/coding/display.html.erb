@@ -105,30 +105,41 @@
 </div>
 
 <!-- composite image view -->
-<div class="row">
-	<div class="span2">
-		<ul class='thread-coposite-labels'>
-			<% @img_map_info['row_info'].each do |media_id,info| %>
-				<li style="height:<%=info['height']%>px"><%=info['name']%></li>
-			<% end %>
-		</ul>
+<% if @img_map_info.nil? %>
+	<div class="row">
+		<div class="span8 offset2">
+			<div class="alert alert-error">
+				<h4>Error!</h4>
+				Sorry, we had a problem stitching the front page images together.  Try waiting a bit and reloading the webpage.
+			</div>
+		</div>
 	</div>
-	<div class="span10">
-		<ul class="thread-composite-images" style="height:<%=@img_map_info['height']%>px">
-			<li class="cover-composite"><%= image_tag @thread.path_to_composite_cover_image %></li>
-		<% @thread.codes.each do |code| %>
-			<li class="highlighted-area-composite"><%= image_tag @thread.path_to_composite_highlighed_area_image code.id %></li>
-		<% end %>
-			<li><%=image_tag 'transparent.png', :style=>"width:#{@img_map_info['width']}px;height:#{@img_map_info['height']}px;", :name=>'front-page-images', :usemap=>'#front-page-images'%></li>
-		</ul>
-		<map name="front-page-images">
-			<% @img_map_info['images'].each_pair do |image_id, image_info| %>
-				<area shape="rect" coords="<%=image_info['x1']%>,<%=image_info['y1']%>,<%=image_info['x2']%>,<%=image_info['y2']%>"
-					href="<%=thread_code_url @thread, image_id%>" title="Go to <%=image_info['name']%>">
+<% else %>
+	<div class="row">
+		<div class="span2">
+			<ul class='thread-coposite-labels'>
+				<% @img_map_info['row_info'].each do |media_id,info| %>
+					<li style="height:<%=info['height']%>px"><%=info['name']%></li>
+				<% end %>
+			</ul>
+		</div>
+		<div class="span10">
+			<ul class="thread-composite-images" style="height:<%=@img_map_info['height']%>px">
+				<li class="cover-composite"><%= image_tag @thread.path_to_composite_cover_image %></li>
+			<% @thread.codes.each do |code| %>
+				<li class="highlighted-area-composite"><%= image_tag @thread.path_to_composite_highlighed_area_image code.id %></li>
 			<% end %>
-		</map>
+				<li><%=image_tag 'transparent.png', :style=>"width:#{@img_map_info['width']}px;height:#{@img_map_info['height']}px;", :name=>'front-page-images', :usemap=>'#front-page-images'%></li>
+			</ul>
+			<map name="front-page-images">
+				<% @img_map_info['images'].each_pair do |image_id, image_info| %>
+					<area shape="rect" coords="<%=image_info['x1']%>,<%=image_info['y1']%>,<%=image_info['x2']%>,<%=image_info['y2']%>"
+						href="<%=thread_code_url @thread, image_id%>" title="Go to <%=image_info['name']%>">
+				<% end %>
+			</map>
+		</div>
 	</div>
-</div>
+<% end %>
 
 <!-- thread info summary and code info again -->
 <div class="row">
