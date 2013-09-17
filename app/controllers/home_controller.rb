@@ -1,6 +1,6 @@
 class HomeController < ApplicationController
   def index
-    @threads = Threadx.last(16).reverse_order #selects the last 16 threads and reverses the order
+    @threads = Threadx.limit(16)
   end
   def about
 
