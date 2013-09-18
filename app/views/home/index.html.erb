@@ -30,11 +30,10 @@
   	<% end %>
   	<h3>Most recent threads</h3>
   	<% if @threads != [] %> 
-  		<% @threads.sort{|a,b| b.created_at <=> a.created_at }.each do |thread| %>
+  		<% @threads.each do |thread| %>
 				<% if thread.coded_image_ids.length > 4 %>
-  			   <h4><a href="<%= thread_url thread %>"><%= thread.thread_display_name %></a> 
-              <small>by <%=threads_by_user_link thread.owner %></small> </h4> 
-				<% else%>
+					<h4><a href="<%= thread_url thread %>"><%= thread.thread_display_name %></a> 
+					<small>by <%=threads_by_user_link thread.owner %></small> </h4> 
 				<% end %>
   		<% end %>
   	<% else %>
