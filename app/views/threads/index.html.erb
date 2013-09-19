@@ -22,10 +22,7 @@
 		  <a href="<%= thread_url thread %>" title="<%= "#{thread.thread_display_name}" %>">
 		  <% if use_local_images %>
 		    <% thread.images[0,3].each do |image| %>
-		      <% if File.exist?(image.thumbnail_local_path) %>
 		        <%= image_tag image.thumbnail_local_path 80, :class => "pull-left", :alt => image.image_name %>
-					<% else %>
-		      <% end %>
 		    <% end %>
 		  <% else %>
 		    <% thread.images[0,3].each do |image| %>
