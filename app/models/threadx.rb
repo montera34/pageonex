@@ -47,11 +47,11 @@ class Threadx < ActiveRecord::Base
 		'/'+owner.username.split(' ').join('_')+'/'+thread_name+'/'
 	end
 
-  def starts_before_ends
-    if end_date < start_date
-      errors.add(:end_date, 'must be after start date')
-    end 
-  end
+	def starts_before_ends
+		if end_date < start_date
+			errors.add(:end_date, 'must be after start date')
+		end 
+	end
 
 	# workaround for bug #59
 	def not_too_many_images
@@ -191,6 +191,10 @@ class Threadx < ActiveRecord::Base
 	
 	def images
 		Image.by_media(medium_ids).by_date(start_date..end_date)
+	end
+
+	def non_missing_images(count)
+		self.images.where(:missing=>false).limit(count)
 	end
 
 	def images_by_date

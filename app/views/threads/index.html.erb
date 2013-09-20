@@ -21,11 +21,11 @@
 		<div class="row-fluid">
 		  <a href="<%= thread_url thread %>" title="<%= "#{thread.thread_display_name}" %>">
 		  <% if use_local_images %>
-		    <% thread.images[0,3].each do |image| %>
+		    <% thread.non_missing_images(3).each do |image| %>
 		      <%= image_tag image.thumbnail_local_path 80, :class => "pull-left", :alt => image.image_name %>
 		    <% end %>
 		  <% else %>
-		    <% thread.images[0,3].each do |image| %>
+		    <% thread.non_missing_images(3).each do |image| %>
 		      <%= image_tag "#{image.source_url}", :size => "80x80", :class => "pull-left" %>
 		    <% end %>
 		  <% end %>
