@@ -28,8 +28,10 @@ class CodingController < ApplicationController
     # Go through each submitted highlighted area
     params.fetch(:ha_name, []).each do |ha_name|
       image = Image.find_by_id(params["img_id_#{ha_name}"])
+      
       if params["id_#{ha_name}"].to_i == 0
-      	# This is a new area
+      	# This is a new area, create it if it hasn't been deleted
+      	next if params["deleted_#{ha_name}"].to_i == 1
       	code = Code.find params["code_id_#{ha_name}"]
       	ha = code.highlighted_areas.create(:image_id=>image.id, :code_id=>code.id, :user_id=>current_user.id)
       	area = Area.create(highlighted_area_id: ha.id, x1: params["x1_#{ha_name}"].to_i, 
