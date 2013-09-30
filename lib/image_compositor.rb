@@ -25,7 +25,7 @@ class ImageCompositor
 	end
 
 	def thumb_width
-		[ ((@width-self.padding*@duration).to_f / @duration.to_f).floor, 
+		[ [((@width-self.padding*@duration).to_f / @duration.to_f).floor, 0].max, 
 		  MAX_THUMBNAIL_WIDTH ].min
 	end
 
