@@ -3,6 +3,7 @@ class Threadx < ActiveRecord::Base
 	DEFAULT_COMPOSITE_IMAGE_WIDTH = 970
 
 	MAX_IMAGES = 500
+	MAX_DAYS = 186
 
 	self.per_page = 20
 
@@ -60,6 +61,9 @@ class Threadx < ActiveRecord::Base
 		number_of_images = media_count * days
 		if ((media_count * days) > MAX_IMAGES)
 			errors.add(:start_date, "This range is too big.  Your number of total images must be below " + MAX_IMAGES.to_s + ". Your thread has now " + number_of_images.to_i.to_s + " images ( "+ days.to_i.to_s + " days * " + media_count.to_s + " newspapers). Make a shorter range or use less newspapers.")
+		end
+		if days > MAX_DAYS
+			errors.add(:start_date, "This range is too big.  Your total number of days must be less than #{MAX_DAYS}")
 		end
 	end
 
