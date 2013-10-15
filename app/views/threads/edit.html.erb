@@ -74,14 +74,14 @@
   <div class="control-group">
   <%= f.label :category, :class => "control-label"  %>
     <div class="controls">
-      <%= f.text_field :category %> 
+      <%= f.text_field :category, :rel=>"popover", 'data-content'=>"Separate the different categories by commas. Ex: social, politics, Brazil" %> 
     </div>
   </div>
 
   <div class="control-group">
   <%= f.label :description, :class => "control-label"  %>
     <div class="controls">
-      <%= f.text_area :description, :rows => "10"%> 
+      <%= f.text_area :description, :rows => "10", :rel=>"popover", 'data-content'=>"Allowed HTML tags: <a href=""> <strong>..." %>  
     </div>
   </div>
 
