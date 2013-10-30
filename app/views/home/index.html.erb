@@ -2,7 +2,7 @@
 <div class="row">
   <div class="span12">
     <div class="page-header">
-      <h1>PageOneX <small>Visualize the evolution of stories on newspaper front pages</small></h1>
+      <h1>PageOneX <small><%=t :tagline %></small></h1>
     </div>
   </div>
 </div>
@@ -11,7 +11,7 @@
 
   <div class="span6">
      <%= image_tag "header-blog-2.png", :style => "margin-bottom:5px;" %>
-       <p class="lead">PageOneX  makes it easy to track, code, and visualize major news stories based on  the proportion of newspaper front pages that they take up. <br>It's a  useful tool for researchers, advocacy groups, and anyone interested in better understanding the media's priorities.</p>
+       <p class="lead"><%=t :intro_paragraph_html %></p>
     <div class="row-fluid"> 
       <div class="span2 offset4">
          <a href="https://twitter.com/PageOneX" class="btn" data-show-count="false">@PageOneX</a>
@@ -28,7 +28,7 @@
   		<%= link_to 'Sign up', new_user_registration_path, :class => "btn btn-info btn-large" %> 
   		
   	<% end %>
-  	<h3>Most recent threads</h3>
+  	<h3><%=t :recent_threads %></h3>
   	<% if @threads != [] %> 
   		<% @threads.each do |thread| %>
 			<% if thread.coded_image_ids.length > 4 %>
@@ -48,7 +48,7 @@
 
 <div class="row-fluid">
 	  <div class="span3">
-			<h3>Keep updated</h3>
+			<h3><%=t :keep_updated %></h3>
 			<a href="https://groups.google.com/forum/?fromgroups#!forum/pageonex">Join the email list for users</a><br>
 			<a href="http://blog.pageonex.com/newsletter/">Subscribe to the newsletter</a><br>
 			Twitter: <a href="http://twitter.com/pageonex">@PageOneX</a><br>
@@ -56,21 +56,21 @@
 			<a href="http://blog.pageonex.com/">Blog</a><br>
 			Contact: <a href="http://numeroteca.org/about/">form</a> or <a href="http://twitter.com/numeroteca">@numeroteca</a><br>
 
-			<h3>For developers</h3>
+			<h3><%=t :for_developers %></h3>
 			<p style="width:300px;">This is an open source tool built in Ruby on Rails. You can download and test it locally, and/or help improve the code!<br>
 			<a href="https://github.com/numeroteca/pageonex">View, collaborate and download the code</a><br>
 			<a href="https://github.com/numeroteca/pageonex/issues?state=open">Issue tracker</a><br>
 			<a href="http://mailman.mit.edu/mailman/listinfo/pageonexdev">Email list for developers</a></p>
 		</div>
 		<div class="span3 offset1">
-			<h3>Examples</h3>
+			<h3><%=t :examples %></h3>
 			<a href="http://pinterest.com/numeroteca/newspaper-front-page-visualizations/" title="PageOneX in Pinterest"><img src="http://blog.pageonex.com/wp-content/uploads/2012/06/pinterest_p.png" width="" alt="PageOneX in Pinterest"></a><br>
 			<a href="http://blog.pageonex.com/timeline/">Timeline of the project.</a><br>
 			Slides: <a href="http://www.slideshare.net/numeroteca/pageonex-at-mrap">presentation at the MRAP</a><br>
 			Galleries of examples: <a href="http://numeroteca.org/cat/frontpage-newspaper/">at numeroteca</a> and <a href="http://pinterest.com/numeroteca/newspaper-front-page-visualizations/">at Pineterest</a>
 		</div>
 		<div class="span4 offset1"> <!-- Temporary list of featured threads. It should pull from the most visited threads in the site -->
-			<h3>Featured Threads</h3>
+			<h3><%=t :featured_threads %></h3>
 			<a href="/matrushka/gezi-parki-protests-in-turkish-newspapers/">Gezi parki protests in turkish newspapers</a> (Turkey)<br>
 			<a href="/DeboraLeal/spring-in-brazil/ ">Violence x Protest</a> (Brazil)<br>
 			<a href="/numeroteca/corrupcion-espana-agosto-2013/">Corrupción españa. Agosto 2013</a> (Spain)<br>

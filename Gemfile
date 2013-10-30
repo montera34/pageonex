@@ -62,3 +62,6 @@ gem 'piwik_analytics'
 
 # for downloading zipped archives
 gem 'rubyzip'
+
+# for translating and localizing
+gem 'rails-i18n'

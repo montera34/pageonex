@@ -11,5 +11,11 @@ class ApplicationController < ActionController::Base
     authenticate_user!
     redirect_to '/' unless current_user.admin
   end
+  
+	before_filter :set_locale
 
+	def set_locale
+		I18n.locale = params[:locale] || I18n.default_locale
+	end
+	
 end

@@ -1,0 +1,17 @@
+es:
+  hello: "Hello worldo"
+  threads: Hilos
+  thread: hilo #TODO pluralization
+  create_thread: Crea nuevo hilo
+  all_threads: Todos los hilos
+  featured_threads: Hilos destacados
+  recent_threads: Hilos más recientes
+  about: Sobre
+  documentation: Documentación
+  blog: Blog
+  report_bugs: Informa de fallos
+  tagline: Visualiza la cobertura de las noticias en las portadas de los periódicos
+  intro_paragraph_html: Con PageOneX es fácil hacer un seguimiento, medir y visualizar noticias basado en la proporción que ocupan en las portadas de los periódicos.<br>Es un método útil para investigadores, activistas o cualquiera interesado en entender mejor a los medios de comunicación.
+  keep_updated: Mantente informado
+  examples: Ejemplos
+  for_developers: Para desarrolladores

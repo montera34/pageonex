@@ -2,4 +2,19 @@
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 en:
-  hello: "Hello world"
+  hello: Hello world
+  threads: Threads #TODO pluralization
+  thread: thread #TODO pluralization
+  create_thread: Create New Thread
+  all_threads: All Thread
+  featured_threads: Featured Threads
+  recent_threads: Most recent threads
+  about: About
+  documentation: Documentation
+  blog: Blog
+  report_bugs: Report Bugs
+  tagline: Visualize the evolution of stories on newspaper front pages
+  intro_paragraph_html: PageOneX makes it easy to track, code, and visualize major news stories based on the proportion of newspaper front pages that they take up.<br>It is a useful tool for researchers, advocacy groups, and anyone interested in better understanding the media's priorities.
+  keep_updated: Keep updated
+  examples: Examples
+  for_developers: For developers

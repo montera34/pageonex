@@ -31,61 +31,51 @@
     <%= favicon_link_tag %>
   </head>
   <body>
-
     <div class="navbar navbar-fixed-top" id="main-menu" style="background-color:#dedede">
-      <div class="">
-          <div class="container">
-          <a class="btn btn-navbar" data-target=".nav-collapse" data-toggle="collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </a>
-          <a class="brand pageonex-brand" href="/" title="Home PageOneX"><%= image_tag "imago-pageonex-4.png" %> PageOneX <em>beta</em></a>
-          <div class="container">
-          <ul id="pre-menu" class="nav nav-pills">
+			<div class="container">
+        <a class="brand pageonex-brand" href="/" title="Home PageOneX"><%= image_tag "imago-pageonex-4.png" %> PageOneX <em>beta</em></a>
+        <ul id="pre-menu" class="nav nav-pills">
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><%=t :threads %><b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <% if user_signed_in? %>
+                <li><a href="/threads/mine" title="">Your Threads</a></li>
+                <li><a href="/threads/new" title="">Create New Thread</a></li>
+              <% end %>
+              <li><a href="/threads/" title=""><%=t :all_threads %></a></li>
+            </ul>
+          </li>
+          <% if user_signed_in? and current_user.admin %>
             <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Threads<b class="caret"></b></a>
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin<b class="caret"></b></a>
               <ul class="dropdown-menu">
-                <% if user_signed_in? %>
-                  <li><a href="/threads/mine" title="">Your Threads</a></li>
-                  <li><a href="/threads/new" title="">Create New Thread</a></li>
-                <% end %>
-                <li><a href="/threads/" title="">All Threads</a></li>
+                <li class="menu-item" ><%= link_to "Users", "/users"  %></li>
+                <li class="menu-item" ><%= link_to "Images", "/images"  %></li>
+                <li class="menu-item" ><%= link_to "Media", "/media"  %></li>
               </ul>
             </li>
-            <% if user_signed_in? and current_user.admin %>
-              <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin<b class="caret"></b></a>
-                <ul class="dropdown-menu">
-                  <li class="menu-item" ><%= link_to "Users", "/users"  %></li>
-                  <li class="menu-item" ><%= link_to "Images", "/images"  %></li>
-                  <li class="menu-item" ><%= link_to "Media", "/media"  %></li>
-                </ul>
-              </li>
-            <% end %>
-            <li class="menu-item" ><%= link_to "About", "/about"  %></li>
-	          <li><%= link_to "Documentation", "https://github.com/numeroteca/pageonex/wiki"  %></li>
-	          <li><%= link_to "Blog", "http://blog.pageonex.com"  %></li>
-	          <li><%= link_to "Report Bugs", "http://blog.pageonex.com/report-bugs/"  %></li>      
-          </ul>
-          <% if user_signed_in? %>
-            <div class="pull-right" id="login-info">
-              <h5><%= link_to current_user.username, edit_user_registration_path %></h5>
-              <%= link_to "Sign out", destroy_user_session_path, :method => :delete  %>
-            </div>
-          <% else %>
-            <div class="pull-right" id="login-info">
-              <%= link_to 'Sign in', new_user_session_path %> 
-            </div>
           <% end %>
+          <li class="menu-item" ><%= link_to "About", "/about"  %></li>
+	        <li><%= link_to "Documentation", "https://github.com/numeroteca/pageonex/wiki"  %></li>
+	        <li><%= link_to "Blog", "http://blog.pageonex.com"  %></li>
+	        <li><%= link_to "Report Bugs", "http://blog.pageonex.com/report-bugs/"  %></li>
+        </ul>
+        <span><%= link_to_unless I18n.locale == :en, "English", locale: :en %> | <%= link_to_unless I18n.locale == :es, "Español", locale: :es %></span>
+        <% if user_signed_in? %>
+          <div class="pull-right" id="login-info">
+            <h5><%= link_to current_user.username, edit_user_registration_path %></h5>
+            <%= link_to "Sign out", destroy_user_session_path, :method => :delete  %>
+          </div>
+        <% else %>
+          <div class="pull-right" id="login-info">
+            <%= link_to 'Sign in', new_user_session_path %> 
+          </div>
+        <% end %>
 
-          
-          <%= form_tag '/threads/search',:class=>'navbar-search pull-right' do %>
-            <input name="q" type="text" class="search-query" placeholder="Search">
-          <% end %>
-          
-          </div><!--/.nav-collapse -->
-        </div>
+        <%= form_tag '/threads/search',:class=>'navbar-search pull-right' do %>
+          <input name="q" type="text" class="search-query" placeholder="Search">
+        <% end %>
+        
       </div>
     </div>
 
@@ -122,10 +112,10 @@
       <div class="row" id="footer">
         <div class="span12">
           <footer>
-		<hr>
-		<div class="pull-right"><%= link_to "Source Code: run yours!", "https://github.com/numeroteca/pageonex/"%></div>
-		<a href="http://pageonex.com" title="PageOneX">PageOneX.com</a> | <%= link_to "Terms of Service", "/terms-of-service"  %> | <%= link_to "Privacy Policy", "/privacy-policy"  %> | Supported by <a href="http://civic.mit.edu/" title="">Center for Civic Media</a> | Project by <a href="http://numeroteca.org/cat/frontpage-newspaper/" title="Go to blog">numeroteca.org</a> 
-	  </footer>
+						<hr>
+						<div class="pull-right"><%= link_to "Source Code: run yours!", "https://github.com/numeroteca/pageonex/"%></div>
+						<a href="http://pageonex.com" title="PageOneX">PageOneX.com</a> | <%= link_to "Terms of Service", "/terms-of-service"  %> | <%= link_to "Privacy Policy", "/privacy-policy"  %> | Supported by <a href="http://civic.mit.edu/" title="">Center for Civic Media</a> | Project by <a href="http://numeroteca.org/cat/frontpage-newspaper/" title="Go to blog">numeroteca.org</a> 
+					</footer>
         </div>
       </div>
       
