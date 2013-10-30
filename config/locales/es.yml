@@ -1,5 +1,4 @@
 es:
-  hello: "Hello worldo"
   threads: Hilos
   thread: hilo #TODO pluralization
   create_thread: Crea nuevo hilo
