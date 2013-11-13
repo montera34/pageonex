@@ -1,5 +1,5 @@
 class CodingController < ApplicationController
-  before_filter :authenticate_user!, :except => [:display, :process_images]
+  before_filter :authenticate_user!, :except => [:display, :process_images, :embed]
 
   # render the coding view
   def process_images
@@ -96,6 +96,23 @@ class CodingController < ApplicationController
       @usernames = User.pluck(:username)
       @collaborators = @thread.collaborators.pluck(:username)
     end
+  end
+
+  # render embed view
+  def embed
+    @thread = Threadx.find_by_thread_name params[:thread_name]
+    if @thread.nil?
+      raise ActionController::RoutingError.new('Not Found')
+    else
+      # prep the composite image to show
+      @thread.generate_composite_images # make sure composite results images have been generated
+      @img_map_info = @thread.composite_image_map_info
+      #prep to show collaborators of a thread
+      @users = User.hashes
+      @usernames = User.pluck(:username)
+      @collaborators = @thread.collaborators.pluck(:username)
+    end
+   render layout: "embed"
   end
 
 end

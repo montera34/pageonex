@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= @title %></title>
+    <% @title = "PageOneX" %>
+    <%= csrf_meta_tags %>
+    <%= javascript_include_tag "application" %>
+    
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js" type="text/javascript"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <%= stylesheet_link_tag "application", :media => "all" %>
+    <style type="text/css">
+      body, p{
+        font-family: 'Signika Negative', sans-serif;
+      }
+    </style>
+
+    <!-- Le fav and touch icons 
+    <link href="images/favicon.ico" rel="shortcut icon">
+    <link href="images/apple-touch-icon.png" rel="apple-touch-icon">
+    <link href="images/apple-touch-icon-72x72.png" rel="apple-touch-icon" sizes="72x72">
+    <link href="images/apple-touch-icon-114x114.png" rel="apple-touch-icon" sizes="114x114">
+    -->
+
+    <%= favicon_link_tag %>
+  </head>
+  <body style="padding-top:0;>
+
+    <div class="container" style="min-width: 1170px;">
+      <div class="content">
+
+        <%= yield %>
+
+      </div><!--/content-->
+    </div> <!-- /container -->
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <!-- <link href='http://fonts.googleapis.com/css?family=Cabin:400,500,600,700,400italic' rel='stylesheet' type='text/css'> -->
+
+    <link href='http://fonts.googleapis.com/css?family=Signika+Negative:300,400,600,700' rel='stylesheet' type='text/css'>
+
+  </body>
+
+  <script type="text/javascript">
+  $(function () {
+    d = { show: 700, hide: 1 }
+    $('#coding').popover({placement:'bottom',delay:d })
+    $('#disp').popover({placement:'bottom',delay:d})
+  })
+  </script>
+
+  <%= piwik_tracking_tag %>
+  
+</html>

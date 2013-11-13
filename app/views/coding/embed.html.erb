@@ -1,0 +1,86 @@
+<% @title = "#{@thread.thread_display_name} - PageOneX" %>
+
+<!-- Results Chart -->
+<div class="row">
+	<div id="chart_div" style="margin-left: 110px;width: 1210px; margin-bottom: -15px;"></div><!--div to display bar chart-->
+</div>
+
+<!-- composite image view -->
+<div class="row">
+	<div class="span2">
+		<ul class='thread-coposite-labels'>
+			<% @img_map_info['row_info'].each do |media_id,info| %>
+				<li style="height:<%=info['height']%>px"><%=info['name']%></li>
+			<% end %>
+		</ul>
+	</div>
+	<div class="span10">
+		<ul class="thread-composite-images" style="height:<%=@img_map_info['height']%>px">
+			<li class="cover-composite"><%= image_tag @thread.path_to_composite_cover_image %></li>
+		<% @thread.codes.each do |code| %>
+			<li class="highlighted-area-composite"><%= image_tag @thread.path_to_composite_highlighed_area_image code.id %></li>
+		<% end %>
+			<li><%=image_tag 'transparent.png', :style=>"width:#{@img_map_info['width']}px;height:#{@img_map_info['height']}px;", :name=>'front-page-images', :usemap=>'#front-page-images'%></li>
+		</ul>
+		<map name="front-page-images">
+			<% @img_map_info['images'].each_pair do |image_id, image_info| %>
+				<area shape="rect" coords="<%=image_info['x1']%>,<%=image_info['y1']%>,<%=image_info['x2']%>,<%=image_info['y2']%>"
+					href="<%=thread_code_url @thread, image_id%>" title="Go to <%=image_info['name']%>">
+			<% end %>
+		</map>
+	</div>
+</div>
+
+<!-- thread info summary and code info again -->
+<div class="row">
+	<div class="offset2 span10">
+		<h3><%= @thread.thread_display_name %> </h3>
+		<p><%= @thread.start_date.inspect %> - <%= @thread.end_date.inspect %></p>
+		<ul class="inline">
+		<% @thread.codes.each do |code| %>
+		  <li rel="popover"  data-content="<%= code.code_description %>" data-original-title="Description" >
+			    <div id="code_<%= code.id %>" style="background-color:<%= code.color %>;" class="box_legend"></div>
+			    <div class="legend_text"> <%= code.code_text  %> </div>
+		  </li>
+   	<% end %>
+		</ul>
+	</div>	
+</div>
+<%= javascript_include_tag "http://d3js.org/d3.v3.min.js" %>
+<%= javascript_include_tag "dataviz.js" %>
+
+<script type="text/javascript">
+var thread = <%= @thread.results(:flat).to_json.html_safe %>
+var height = 200;
+var width = 1210;
+var padding = {"top": 40, "right": 120, "bottom": 40, "left": 120 };
+dataviz.drawCodedThread(width, height, padding, thread);
+dataviz.exportToSvg($('#chart_div svg')[0], $('#chart-export-img')[0]);
+$('.code').hover(function () {
+        var title = dataviz.getTitle(this);
+        var content = dataviz.getContent(this);
+        $(this).popover({
+                'title': title,
+                'content': content,
+                'html': true,
+                'placement': 'top',
+                'container': 'body'
+        });
+        $(this).popover('show');
+}, function () {
+        $(this).popover('hide');
+});
+
+</script>
+
+<script type="text/javascript">
+$(function (argument) {
+	$(".delete").click(function (event) {
+		event.preventDefault()
+		if (confirm("Are you sure?")) {
+			event.click()
+		};
+		return false
+	})
+})
+</script>
