@@ -18,7 +18,15 @@
 	<div class="span8">
 		<h2><%= @thread.thread_display_name %></h2>
 	</div>
-	<div class="span2">
+	<div class="span3">
+		<div class="pull-right">
+			<% if current_user and (@thread.owner == current_user or current_user.admin) %>
+			<%=  link_to "Delete", "/threads/#{@thread.thread_name}" ,:method=>"delete" , :class => "btn btn-danger delete" %>
+			<%=  link_to "Edit", "/threads/#{@thread.thread_name}/edit" , :class => "btn" %>
+			<% end %>
+		</div>
+	</div>
+	<div class="span1">
 		<div class="btn-group pull-right">
 		    <button class="btn btn-small">Export</button>
 		    <button class="btn btn-small dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
@@ -33,12 +41,6 @@
 		      <li><a href="#">Download as  .pdf </a></li>-->
 		    </ul>
 		</div>
-	</div>
-	<div class="span2">
-		<% if current_user and (@thread.owner == current_user or current_user.admin) %>
-		<%=  link_to "Delete", "/threads/#{@thread.thread_name}" ,:method=>"delete" , :class => "btn btn-danger delete" %>
-		<%=  link_to "Edit", "/threads/#{@thread.thread_name}/edit" , :class => "btn" %>
-		<% end %>
 	</div>
 </div>
 
@@ -61,7 +63,16 @@
 				<% end %>
 			</div>
 		</div>
-		<h4>Description</h4><p> <%= raw @thread.description %></p>
+		<h4>Description</h4>
+		<p> <%= raw @thread.description %></p>
+			<div class="row">
+				<div class="span1">
+					<a href="https://twitter.com/share" class="twitter-share-button" data-via="PageOneX" data-hashtags="PageOneX" data-dnt="true">Tweet</a>
+				</div>
+				<div class="span1">
+					<div class="fb-like" data-send="true" data-layout="button_count" data-width="460" data-show-faces="true" data-action="recommend" data-font="verdana"></div>
+				</div>
+			</div>
 	</div>
 	<div class="span3">
 		<h4>Topics</h4>
@@ -88,16 +99,6 @@
 	</div>
 	
 </div> 
-
-<!--Share buttons-->
-<div class="row">
-	<div class="span1">
-		<a href="https://twitter.com/share" class="twitter-share-button" data-via="PageOneX" data-hashtags="PageOneX" data-dnt="true">Tweet</a>
-	</div>
-	<div class="span4">
-		<div class="fb-like" data-send="true" data-layout="button_count" data-width="460" data-show-faces="true" data-action="recommend" data-font="verdana"></div>
-	</div>
-</div>
 
 <!-- Results Chart -->
 <div class="row">
