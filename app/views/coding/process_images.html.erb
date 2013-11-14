@@ -1,4 +1,4 @@
-<% @title = "Coding: #{@thread.thread_display_name.capitalize} - PageOneX" %>
+<% @title = "Coding: #{@thread.thread_display_name} - PageOneX" %>
 
 <% unless @allowed_to_code %>
 <div class="alert alert-block">
@@ -21,7 +21,7 @@
         <h3 id="image_number" style="font-weight:normal"></h3>
         <hr> -->
         <h5>Topics</h5>
-        	<ul class="nav nav-list">
+        	<ul id="topics" class="nav nav-list">
 			<% @thread.codes.each do |code| %>
 			<li>
 				<div id="code_<%= code.id %>" class="box_legend" style="background-color:<%= code.color %>;"> </div>

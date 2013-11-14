@@ -1,4 +1,4 @@
-<% @title = "#{@thread.thread_display_name} - PageOneX" %>
+<% @title = "#{@thread.thread_display_name.capitalize} - PageOneX" %>
 
 <div id="fb-root"></div>
 <script>
@@ -65,13 +65,13 @@
 	</div>
 	<div class="span3">
 		<h4>Topics</h4>
-		  <ul class="nav nav-list">
+		  <ul class="nav nav-list" id="topics">
 			<% @thread.codes.each do |code| %>
 			<li>
 				<div id="code_<%= code.id %>" class="box_legend" style="background-color:<%= code.color %>;"> </div>
 				<h4 class="codes_boxes" rel="popover"  data-content="<%= code.code_description %>" data-original-title="Description"><%= code.code_text %></h4>
 			</li>
-	       		<% end %>
+			<% end %>
 		  </ul>
     	</div>
 	<div class="span2">
