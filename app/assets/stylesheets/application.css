@@ -41,13 +41,6 @@
   line-height: 16px;
   margin: 0px;
 }
-.box_legend {
-  width: 26px;
-  height: 26px;
-  display: block;
-  margin: 0 4px 4px;
-  float:left;
-}
 #datavis .images .span1{
 	margin-left: 0;
 }
@@ -56,9 +49,6 @@
 }
 .thumb-img-no-coded { 
 	opacity: 0.7;
-}
-.legend_text {
-	min-width:150px;
 }
 .custom-link{
 	color:#000;

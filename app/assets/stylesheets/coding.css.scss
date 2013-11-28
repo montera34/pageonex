@@ -1,6 +1,17 @@
 // Place all the styles related to the coding controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+.legend_text {
+	min-width:150px;
+	line-height: 1em;
+}
+.box_legend {
+  width: 26px;
+  height: 26px;
+  display: block;
+  margin: 0 4px 4px;
+  float:left;
+}
 
 #aboveImageToolbar {
   margin-bottom: 10px;  

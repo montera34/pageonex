@@ -15,99 +15,59 @@
 
 <!-- thread info / actions -->
 <div class="row">
-	<div class="span8">
-		<h2><%= @thread.thread_display_name %></h2>
+	<div class="span9">
+		<h1><%= @thread.thread_display_name %> <small> by <%=threads_by_user_link @thread.owner %></small></h1>
 	</div>
 	<div class="span3">
-		<div class="pull-right">
-			<% if current_user and (@thread.owner == current_user or current_user.admin) %>
-			<%=  link_to "Delete", "/threads/#{@thread.thread_name}" ,:method=>"delete" , :class => "btn btn-danger delete" %>
-			<%=  link_to "Edit", "/threads/#{@thread.thread_name}/edit" , :class => "btn" %>
-			<% end %>
-		</div>
-	</div>
-	<div class="span1">
-		<div class="btn-group pull-right">
-		    <button class="btn btn-small">Export</button>
-		    <button class="btn btn-small dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
-		    <ul class="dropdown-menu">
-		      <!-- <li><a href="#">Download as  .csv </a></li>-->
-		      <li><a href="<%= thread_url(@thread)+"export.ods" %>">Download Data as .ods</a></li>
-		      <li><a href="<%= thread_url(@thread)+"export.json" %>">Download Data as .json</a></li>
-		      <li><a href="#chart-modal" data-toggle="modal">Download Graph as .svg</a></li>
-			  <li><a href="#image-export-modal" data-toggle="modal">Download Image as .jpg</a></li>
-		      <!--
-		      <li class="divider"></li>
-		      <li><a href="#">Download as  .pdf </a></li>-->
-		    </ul>
+		<div class="row">
+			<div class="span2">
+				<div class="pull-right"><i class="icon-pencil"></i>
+					<div class="btn-group">
+						<% if current_user and (@thread.owner == current_user or current_user.admin) %>
+						<%=  link_to "Delete", "/threads/#{@thread.thread_name}" ,:method=>"delete" , :class => "btn btn-danger delete" %><i class="icon-pencil"></i>
+						<%=  link_to "Edit", "/threads/#{@thread.thread_name}/edit" , :class => "btn" %>
+						<% end %>
+					</div>
+				</div>
+			</div>
+			<div class="span1">
+				<div class="btn-group pull-right">
+					<button class="btn btn-small inactive	">Export</button>
+					<button class="btn btn-small dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
+					<ul class="dropdown-menu">
+					  <!-- <li><a href="#">Download as  .csv </a></li>-->
+					  <li><a href="<%= thread_url(@thread)+"export.ods" %>">Download Data as .ods</a></li>
+					  <li><a href="<%= thread_url(@thread)+"export.json" %>">Download Data as .json</a></li>
+					  <li><a href="#chart-modal" data-toggle="modal">Download Graph as .svg</a></li>
+						<li><a href="#image-export-modal" data-toggle="modal">Download Image as .jpg</a></li>
+					  <!--
+					  <li class="divider"></li>
+					  <li><a href="#">Download as  .pdf </a></li>-->
+					</ul>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
+<hr style="margin:0px 0px;">
 
-<!-- Thread details / code info -->
 <div class="row">
-	<div class="span5">
-		<div class="row">
-			<div class="span2">
-				<h4>By</h4> <%=threads_by_user_link @thread.owner %><br>
-			</div>
-			<div class="span3">
-				<% if @collaborators.length >= 1 %> <h4>Collaborators</h4><% end %>
-				<ul id="collab-list" class="unstyled">
-					<% @collaborators.each do |c| %>
-					 <li><a href="/threads/by/<%= c %>"><%= c %></a></li>
-					<% end %>
-				</ul>
-				<% if current_user and (@thread.owner == current_user or current_user.admin) %>
-				<%=  link_to "Add Collaborators", "/threads/#{@thread.thread_name}/edit/#collaborators" , :class => "btn" %>
-				<% end %>
-			</div>
-		</div>
-		<h4>Description</h4>
-		<p> <%= raw @thread.description %></p>
-			<div class="row">
-				<div class="span1">
-					<a href="https://twitter.com/share" class="twitter-share-button" data-via="PageOneX" data-hashtags="PageOneX" data-dnt="true">Tweet</a>
-				</div>
-				<div class="span1">
-					<div class="fb-like" data-send="true" data-layout="button_count" data-width="460" data-show-faces="true" data-action="recommend" data-font="verdana"></div>
-				</div>
-			</div>
-	</div>
 	<div class="span3">
-		<h4>Topics</h4>
-		  <ul class="nav nav-list" id="topics">
-			<% @thread.codes.each do |code| %>
-			<li>
-				<div id="code_<%= code.id %>" class="box_legend" style="background-color:<%= code.color %>;"> </div>
-				<h4 class="codes_boxes" rel="popover"  data-content="<%= code.code_description %>" data-original-title="Description"><%= code.code_text %></h4>
-			</li>
+		<strong>From </strong> <%= @thread.start_date %> <strong> To </strong> <%= @thread.end_date %>
+	</div>
+	<div class="span5">
+		<span class="categories" >
+			<% @thread.category_list.each do |c| %>
+				<%=link_to c,"/threads/search_by_category?q=#{c.strip}", :class => "label"%>
 			<% end %>
-		  </ul>
-    	</div>
-	<div class="span2">
-		<h4>From</h4> <p><%= @thread.start_date.inspect %></p>
-		<h4>To </h4> <p><%= @thread.end_date.inspect %></p>
+		</span>
 	</div>
-	<div class="span2">
-		<h5>Category</h5> 
-			<span class="categories">
-	      <% @thread.category_list.each do |c| %>
-	        <%=link_to c,"/threads/search_by_category?q=#{c.strip}", :class => "label"%>
-	      <% end %>
-			</span>
-		<!--<h5>Status</h5> <p><%= @thread.status %></p>-->
-			<h5>Embed Code </h5>
-			<input id="embed_code" type="text" class="span2"
-			value="<div id='wrap' style='width: 100%; height: 490px; padding: 0; overflow: hidden;'>
-			<iframe style='width: 1280px; height: 700px; -ms-zoom: 0.68; -transform: scale(0.68);-moz-transform: scale(0.68); 
-			-moz-transform-origin: 0 0; -o-transform: scale(0.68);-o-transform-origin: 0 0; -webkit-transform: scale(0.68); 
-			-webkit-transform-origin: 0 0;max-width: none; overflow: hidden; border: 1px solid white;' 
-			src='http://<%=request.host %>/<%=@thread.owner.username.split(' ').join('_') %>/<%=@thread.thread_name %>/embed'</iframe></div>" 
-			rel="tooltip" title="Copy + Paste">
-	</div>
-	
-</div> 
+	<span class="pull-right">
+		<a href="https://twitter.com/share" class="twitter-share-button" data-via="PageOneX" data-hashtags="PageOneX" data-dnt="true">Tweet</a>
+		<div class="fb-like" data-send="true" data-layout="button_count" data-width="460" data-show-faces="true" data-action="recommend" data-font="verdana"></div>
+	</span>
+</div>
+
 
 <!-- Results Chart -->
 <div class="row">
@@ -166,6 +126,49 @@
 		</ul>
 	</div>	
 </div>
+
+<!-- Thread details / code info -->
+<div class="row">
+	<div class="offset2 span10">
+		<div class="row">
+			<div class="span6">
+				<h4>Description</h4>
+				<p><%= raw @thread.description %></p>
+			</div>
+			<div class="span4">
+				<!--<h5>Status</h5> <p><%= @thread.status %></p>-->
+				<% if @collaborators.length >= 1 %> <h4>Collaborators</h4><% end %>
+					<ul id="collab-list" class="unstyled">
+						<% @collaborators.each do |c| %>
+						 <li><a href="/threads/by/<%= c %>"><%= c %></a></li>
+						<% end %>
+					</ul>
+					<% if current_user and (@thread.owner == current_user or current_user.admin) %>
+					<%=  link_to "Add Collaborators", "/threads/#{@thread.thread_name}/edit/#collaborators" , :class => "btn" %>
+					<% end %>
+				<h5>Embed Code </h5>
+				<input id="embed_code" type="text" class="span3"
+				value="<div id='wrap' style='width: 100%; height: 490px; padding: 0; overflow: hidden;'>
+				<iframe style='width: 1280px; height: 700px; -ms-zoom: 0.68; -transform: scale(0.68);-moz-transform: scale(0.68); 
+				-moz-transform-origin: 0 0; -o-transform: scale(0.68);-o-transform-origin: 0 0; -webkit-transform: scale(0.68); 
+				-webkit-transform-origin: 0 0;max-width: none; overflow: hidden; border: 1px solid white;' 
+				src='http://<%=request.host %>/<%=@thread.owner.username.split(' ').join('_') %>/<%=@thread.thread_name %>/embed'</iframe></div>" 
+				rel="tooltip" title="Copy + Paste">
+			</div>
+		</div>
+	</div>
+	<!--<div class="span3">
+		<h4>Topics</h4>
+		  <ul class="nav nav-list" id="topics">
+			<% @thread.codes.each do |code| %>
+			<li>
+				<div id="code_<%= code.id %>" class="box_legend" style="background-color:<%= code.color %>;"> </div>
+				<h4 class="codes_boxes" rel="popover"  data-content="<%= code.code_description %>" data-original-title="Description"><%= code.code_text %></h4>
+			</li>
+			<% end %>
+		  </ul>
+  </div>-->	
+</div> 
 
 <!-- Results download modal popup -->
 <div id="chart-modal" class="modal hide fade">
