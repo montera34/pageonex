@@ -90,12 +90,21 @@
 		<h4>To </h4> <p><%= @thread.end_date.inspect %></p>
 	</div>
 	<div class="span2">
-		<h5>Category</h5> <span class="categories">
-		      <% @thread.category_list.each do |c| %>
-		        <%=link_to c,"/threads/search_by_category?q=#{c.strip}", :class => "label"%>
-		      <% end %>
-		</span>
+		<h5>Category</h5> 
+			<span class="categories">
+	      <% @thread.category_list.each do |c| %>
+	        <%=link_to c,"/threads/search_by_category?q=#{c.strip}", :class => "label"%>
+	      <% end %>
+			</span>
 		<!--<h5>Status</h5> <p><%= @thread.status %></p>-->
+			<h5>Embed Code </h5>
+			<input id="embed_code" type="text" class="span2"
+			value="<div id='wrap' style='width: 100%; height: 490px; padding: 0; overflow: hidden;'>
+			<iframe style='width: 1280px; height: 700px; -ms-zoom: 0.68; -transform: scale(0.68);-moz-transform: scale(0.68); 
+			-moz-transform-origin: 0 0; -o-transform: scale(0.68);-o-transform-origin: 0 0; -webkit-transform: scale(0.68); 
+			-webkit-transform-origin: 0 0;max-width: none; overflow: hidden; border: 1px solid white;' 
+			src='http://<%=request.host %>/<%=@thread.owner.username.split(' ').join('_') %>/<%=@thread.thread_name %>/embed'</iframe></div>" 
+			rel="tooltip" title="Copy + Paste">
 	</div>
 	
 </div> 
