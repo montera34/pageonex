@@ -1,6 +1,12 @@
 // Place all the styles related to the coding controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+h1 {
+	font-size: 30px;
+	margin-top: 0;
+	margin-bottom: 5px;
+}
 .legend_text {
 	min-width:150px;
 	line-height: 1em;
