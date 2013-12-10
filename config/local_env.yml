@@ -1,0 +1,4 @@
+# ImageMagick settings
+
+# yield the cpu in chunks of this many ms
+MAGICK_THROTTLE: '1'
