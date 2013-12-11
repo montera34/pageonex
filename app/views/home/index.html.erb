@@ -32,7 +32,7 @@
   	<% if @threads != [] %> 
   		<% @threads.each do |thread| %>
 			<% if thread.coded_image_ids.length > 4 %>
-				<h4><a href="<%= thread_url thread %>"><%= image_tag "thread-icon.png" %> <%= thread.thread_display_name %></a> 
+				<h4><a href="<%= thread_url thread %>"><%= thread.thread_display_name %></a> 
 				<small>by <%=threads_by_user_link thread.owner %></small> </h4> 
 			<% end %>
   		<% end %>
