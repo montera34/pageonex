@@ -105,3 +105,11 @@ ul.thread-coposite-labels li {
 .user-id img:hover + span {
   display: block !important;
 }
+#embedded_footer{
+	position: absolute;
+	right: 0px;
+	bottom: 0px;
+	/*background-image: url("/images/header-proyecto.gif");*/
+	background-color:#ddd;
+	padding:3px;
+}
