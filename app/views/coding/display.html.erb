@@ -36,10 +36,10 @@
 					<button class="btn btn-small dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
 					<ul class="dropdown-menu">
 					  <!-- <li><a href="#">Download as  .csv </a></li>-->
-					  <li><a href="<%= thread_url(@thread)+"export.ods" %>">Download Data as .ods</a></li>
-					  <li><a href="<%= thread_url(@thread)+"export.json" %>">Download Data as .json</a></li>
-					  <li><a href="#chart-modal" data-toggle="modal">Download Graph as .svg</a></li>
-						<li><a href="#image-export-modal" data-toggle="modal">Download Image as .jpg</a></li>
+						<li><a href="<%= thread_url(@thread)+"export.ods" %>">Download Data as .ods (spreadsheet)</a></li>
+						<li><a href="<%= thread_url(@thread)+"export.json" %>">Download Data as .json</a></li>
+						<li><a href="#chart-modal" data-toggle="modal">Download Bar Graph as .svg</a></li>
+						<li><a href="#image-export-modal" data-toggle="modal">Download as image(s) as .jpg</a></li>
 					  <!--
 					  <li class="divider"></li>
 					  <li><a href="#">Download as  .pdf </a></li>-->
@@ -95,9 +95,10 @@
 		</div>
 		<div class="span10">
 			<ul class="thread-composite-images" style="height:<%=@img_map_info['height']%>px">
+				<!-- background's front pages image -->
 				<li class="cover-composite"><%= image_tag @thread.path_to_composite_cover_image %></li>
 			<% @thread.codes.each do |code| %>
-				<li class="highlighted-area-composite"><%= image_tag @thread.path_to_composite_highlighed_area_image code.id %></li>
+				<li class="highlighted-area-composite" id="composite_image_code_<%= code.id %>"><%= image_tag((@thread.path_to_composite_highlighed_area_image code.id), class: code.id) %></li>
 			<% end %>
 				<li><%=image_tag 'transparent.png', :style=>"width:#{@img_map_info['width']}px;height:#{@img_map_info['height']}px;", :name=>'front-page-images', :usemap=>'#front-page-images'%></li>
 			</ul>
@@ -116,10 +117,10 @@
 	<div class="offset2 span10">
 		<h3><%= @thread.thread_display_name %> </h3>
 		<p><%= @thread.start_date.inspect %> - <%= @thread.end_date.inspect %></p>
-		<ul class="inline">
-		<% @thread.codes.each do |code| %>
-		  <li rel="popover"  data-content="<%= code.code_description %>" data-original-title="Description" >
-			    <div id="code_<%= code.id %>" style="background-color:<%= code.color %>;" class="box_legend"></div>
+		<ul class="inline" id="color-legend"><!--legend: list of codes with their colors-->
+		<% @thread.codes.each do |code| %><!--list -->
+		  <li id="code_<%= code.id %>" class="active" rel="popover"  data-content="<%= code.code_description %>" data-original-title="Description" >
+			    <div style="background-color:<%= code.color %>;" class="box_legend"></div>
 			    <div class="legend_text"> <%= code.code_text  %> </div>
 		  </li>
    	<% end %>
@@ -209,7 +210,7 @@
   </div>
 </div>
 
-<!-- other library we were using for the column chart, it's comment just in case we want to reuse it again -->
+<!-- other library we were using for the column chart, it's commented just in case we want to reuse it again -->
 <!-- "d3.min.js", "d3.layout.min.js", "rickshaw.min.js", -->
 <%= javascript_include_tag "http://d3js.org/d3.v3.min.js" %>
 <%= javascript_include_tag "dataviz.js" %>
@@ -249,5 +250,19 @@ $(function (argument) {
 	})
 })
 </script>
+
+<%= javascript_tag do %> //activates and deactivates composite images clicking on legend
+	<% @thread.codes.each do |code| %>
+		d3.select('#code_<%= code.id %>').on('click',function() {
+			if (d3.select(this).attr('class')==='active'){
+				d3.select("#composite_image_code_<%= code.id %>").style("display", "none");
+				d3.select(this).attr("class","inactive");
+			} else {
+				d3.select("#composite_image_code_<%= code.id %>").style("display", "block");
+				d3.select(this).attr("class","active");
+			}
+		});
+ 	<% end %>
+<% end %>
 
 <%= render :partial => "coding_footer" %>
