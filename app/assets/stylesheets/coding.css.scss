@@ -17,6 +17,10 @@ h1 {
   display: block;
   margin: 0 4px 4px;
   float:left;
+  cursor:pointer;
+}
+.inactive .box_legend {
+	opacity:.4;
 }
 
 #aboveImageToolbar {
