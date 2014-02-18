@@ -8,19 +8,25 @@ h1 {
 	margin-bottom: 5px;
 }
 .legend_text {
-	min-width:150px;
 	line-height: 1em;
 }
 .box_legend {
   width: 26px;
   height: 26px;
   display: block;
-  margin: 0 4px 4px;
+  margin: 0 4px 4px 0;
   float:left;
   cursor:pointer;
 }
 .inactive .box_legend {
 	opacity:.4;
+}
+.legend_text:hover{
+	font-weight:bold;
+	cursor:pointer;
+}
+.legend_item{
+	vertical-align: top;
 }
 
 #aboveImageToolbar {
@@ -116,4 +122,8 @@ ul.thread-coposite-labels li {
 	/*background-image: url("/images/header-proyecto.gif");*/
 	background-color:#ddd;
 	padding:3px;
+}
+#color-legend li{
+	width:150px;
+	padding-right:0;
 }

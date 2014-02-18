@@ -119,7 +119,7 @@
 		<p><%= @thread.start_date.inspect %> - <%= @thread.end_date.inspect %></p>
 		<ul class="inline" id="color-legend"><!--legend: list of codes with their colors-->
 		<% @thread.codes.each do |code| %><!--list -->
-		  <li id="code_<%= code.id %>" class="active" rel="popover"  data-content="<%= code.code_description %>" data-original-title="Description" >
+		  <li id="code_<%= code.id %>" class="active legend_item" rel="popover" data-content="<%= code.code_description %>" data-original-title="Description" >
 			    <div style="background-color:<%= code.color %>;" class="box_legend"></div>
 			    <div class="legend_text"> <%= code.code_text  %> </div>
 		  </li>
