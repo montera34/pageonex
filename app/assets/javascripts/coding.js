@@ -2,7 +2,7 @@ $(document).ready(function () {
     // initializing the image slider "carousel" plugin
     carousel = $('.carousel').carousel();
     
-    // checks if the this user is owner, if so, it will initialize the imgAreaSelect plugin which is used for highlighting
+    // checks if the user is owner, if so, it will initialize the imgAreaSelect plugin which is used for highlighting
     if (pageData.allowedToCode) {
         // initializing imgAreaSelect plugin for the current active (displayed image)
         $('#images_section div.active img').imgAreaSelect({instance: true, handles: true,onSelectEnd: highlightingArea});
@@ -250,7 +250,9 @@ function renderNothingToCode () {
     ha_elt.css("width", getCurrentImage().width() + 'px');
     ha_elt.css("height", getCurrentImage().height() + 'px');
     ha_elt.css("background-color", "#eee");
-    ha_elt.css("opacity", "0.9");
+    ha_elt.css("opacity", ".4");
+    ha_elt.css("background-image", "url('/nothing-to-code.png')");
+    ha_elt.css("background-repeat", "no-repeat");
 }
 
 // the imgAreaSelect callback for the event onSelectEnd, which handles setting the values for the highlighted areas divs
