@@ -25,8 +25,12 @@ h1 {
 	font-weight:bold;
 	cursor:pointer;
 }
-.legend_item{
+#color-legend li{
 	vertical-align: top;
+}
+.codes_boxes{
+	margin-left: 30px;
+	font-size: 15px;
 }
 
 #aboveImageToolbar {
@@ -125,5 +129,5 @@ ul.thread-coposite-labels li {
 }
 #color-legend li{
 	width:150px;
-	padding-right:0;
+	padding:0;
 }
