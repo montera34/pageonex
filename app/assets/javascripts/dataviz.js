@@ -23,7 +23,7 @@ var dataviz = {
         var chartWidth = width - padding.left - padding.right;
         // Ensure chartWidth is a multiple of the number of dates
         chartWidth = Math.floor(chartWidth / thread.dates.length) * thread.dates.length;
-        // Convert flat data to a nested tree
+        // Convert flat data to a nested tree: first by date, then by code and then by media
         nest = d3.nest()
             .key(function (d) { return d.date; })
             .key(function (d) { return d.code; })
@@ -104,7 +104,7 @@ var dataviz = {
         percent.enter()
             .append('rect')
             .attr('x', function (d,i) { return padding.left + dateX(d.date); })
-            .attr('y', function (d) { return height - padding.bottom - Math.floor(y(d.percent / d.image_count + d.y0)); })
+            .attr('y', function (d) { return height - padding.bottom - y(d.percent / d.image_count + d.y0); })
             .attr('width', codeX.rangeBand())
             .attr('height', function (d) { return Math.ceil(y(d.percent / d.image_count)); })
             .attr('fill', function (d) { return thread['colors'][d.code]; });
