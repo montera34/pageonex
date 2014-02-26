@@ -1,7 +1,6 @@
 // Place all the styles related to the coding controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
-
 h1 {
 	font-size: 30px;
 	margin-top: 0;
@@ -103,6 +102,13 @@ ul.thread-coposite-labels li {
   display: block;
   vertical-align: top;
   text-align: right;
+  cursor:pointer;
+}
+ul.thread-coposite-labels li.active {
+  font-weight:bold;
+}
+ul.thread-coposite-labels li.inactive {
+  font-weight:normal;
 }
 .avatar-icon {
   float:left;

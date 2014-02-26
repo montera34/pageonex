@@ -87,9 +87,10 @@
 <% else %>
 	<div class="row">
 		<div class="span2">
+			<!-- list of media names-->
 			<ul class='thread-coposite-labels'>
 				<% @img_map_info['row_info'].each do |media_id,info| %>
-					<li style="height:<%=info['height']%>px"><%=info['name']%></li>
+					<li style="height:<%=info['height']%>px" id="<%= info['name'].gsub(/\s+/, '')%>" class="inactive"><%=info['name']%></li>
 				<% end %>
 			</ul>
 		</div>
@@ -251,7 +252,8 @@ $(function (argument) {
 })
 </script>
 
-<%= javascript_tag do %> //activates and deactivates composite images clicking on legend
+<%= javascript_tag do %> 
+//activates and deactivates composite images clicking on legend
 	<% @thread.codes.each do |code| %>
 		d3.select('#code_<%= code.id %>').on('click',function() {
 			if (d3.select(this).attr('class')==='active'){
@@ -263,6 +265,21 @@ $(function (argument) {
 			}
 		});
  	<% end %>
+<% end %>
+
+<%= javascript_tag do %> 
+//highlights parts of the bar chart that belong to a media
+	<% @img_map_info['row_info'].each do |media_id,info| %>
+		d3.select("#<%= info['name'].gsub(/\s+/, '')%>").on("click",function() {
+			if (d3.select(this).attr('class')==='inactive'){
+				d3.selectAll(".<%= info['name'].gsub(/\s+/, '')%>").style("stroke-width", "2").style("stroke", "#000");
+				d3.select(this).attr("class","active");
+			} else {
+				d3.selectAll(".<%= info['name'].gsub(/\s+/, '')%>").style("stroke-width", "0");
+				d3.select(this).attr("class","inactive");
+			}
+		});
+	<% end %>
 <% end %>
 
 <%= render :partial => "coding_footer" %>

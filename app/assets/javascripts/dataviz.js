@@ -11,6 +11,8 @@ var formatDate = function (dateString) {
     var d = new Date(parts[0], parts[1] - 1, parts[2]);
     return (d.getMonth() + 1) + '/' + d.getDate();
 };
+//replaces spaces and "."
+var replacement = function(d) { return d.replace(/\s+/g, '').replace(/\.+/g, '');};
 // The dataviz object
 var dataviz = {
     width: 0,
@@ -107,7 +109,8 @@ var dataviz = {
             .attr('y', function (d) { return height - padding.bottom - y(d.percent / d.image_count + d.y0); })
             .attr('width', codeX.rangeBand())
             .attr('height', function (d) { return Math.ceil(y(d.percent / d.image_count)); })
-            .attr('fill', function (d) { return thread['colors'][d.code]; });
+            .attr('fill', function (d) { return thread['colors'][d.code]; })
+            .attr('class', function (d) { return replacement(d.country+'-'+d.media); });
         // Draw axes
         xAxis = d3.svg.axis()
             .scale(dateLabel)

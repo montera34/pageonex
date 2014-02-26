@@ -54,7 +54,7 @@ class Threadx < ActiveRecord::Base
 		end 
 	end
 
-	# workaround for bug #59
+	# workaround for bug #59: too big threads
 	def not_too_many_images
 		media_count = media.length
 		days = end_date - start_date
@@ -67,11 +67,13 @@ class Threadx < ActiveRecord::Base
 		end
 	end
 
+	#returns the ids of images that are not coded
 	def uncoded_image_ids
 		all_img_ids = self.images.collect {|img| img.id }
 		all_img_ids - coded_image_ids
 	end
 
+	#returns the ids of images that are coded: with highlighted areas or selected as "nothing to code"
 	def coded_image_ids
 		coded_img_ids = self.coded_pages.collect {|cp| cp.image_id }
 		highlighted_img_ids = self.highlighted_areas.collect {|ha| ha.image_id}
@@ -113,6 +115,7 @@ class Threadx < ActiveRecord::Base
 		File.join('threads',self.owner.id.to_s,self.id.to_s, width.to_s, 'front_pages.jpg').to_s
 	end
 
+	#returns the path of the image of highlighted areas from a code 
 	def path_to_composite_highlighed_area_image code_id, width=DEFAULT_COMPOSITE_IMAGE_WIDTH
 		File.join('threads',self.owner.id.to_s,self.id.to_s, width.to_s, 'code_'+code_id.to_s+'_overlay.png').to_s
 	end
@@ -257,7 +260,7 @@ class Threadx < ActiveRecord::Base
 					code_percent[code.code_text] = percent
 					code_sum[code.code_text] += percent
 					flat_data << {
-						:id => "#{date}:#{m.display_name}:#{code.code_text}", :date => date, :media => m.display_name, :code => code.code_text, :percent => percent, :image_count => image_count
+						:id => "#{date}:#{m.display_name}:#{code.code_text}", :date => date, :media => m.display_name, :country => m.country, :code => code.code_text, :percent => percent, :image_count => image_count
 					}
 				end
 				media_code[m.display_name] = code_percent
