@@ -20,13 +20,22 @@
 	      <div class="thumbnail">
 		<div class="row-fluid">
 		  <a href="<%= thread_url thread %>" title="<%= "#{thread.thread_display_name}" %>">
+		  <!-- shows composite image-->
+		  <ul class="thread-composite-images pull-left" style="margin-left: 80px;">
+			<% thread.codes.each do |code| %>
+				<li class="highlighted-area-composite" id="composite_image_code_<%= code.id %>">
+					<%= image_tag((thread.path_to_composite_highlighed_area_image code.id), class: code.id, :size => "120x120") %>
+				</li>
+			<% end %>
+		  </ul>
+		  <!-- shows first available front page frm the thread> first day first newspaper-->
 		  <% if use_local_images %>
-		    <% thread.non_missing_images(3).each do |image| %>
-		      <%= image_tag image.thumbnail_local_path 80, :class => "pull-left", :alt => image.image_name %>
+		    <% thread.non_missing_images(1).each do |image| %>
+		      <%= image_tag image.thumbnail_local_path 80, :alt => image.image_name %>
 		    <% end %>
 		  <% else %>
-		    <% thread.non_missing_images(3).each do |image| %>
-		      <%= image_tag "#{image.source_url}", :size => "80x80", :class => "pull-left" %>
+		    <% thread.non_missing_images(1).each do |image| %>
+		      <%= image_tag "#{image.source_url}", :size => "80x80", :alt => image.image_name %>
 		    <% end %>
 		  <% end %>
 		  </a>
