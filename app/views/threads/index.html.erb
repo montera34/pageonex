@@ -9,74 +9,64 @@
 <div class="row-fluid">
 	<h2><%=@subtitle%></h2>
 
-	<ul class="thumbnails">
-
 	<% if @threads.length > 0%>
 	  <div class="row-fluid">
-
 	  <% @threads.each_with_index do |thread,i| %>
 
-	    <li class="span3">
-	      <div class="thumbnail">
-		<div class="row-fluid">
-		  <a href="<%= thread_url thread %>" title="<%= "#{thread.thread_display_name}" %>">
-		  <!-- shows composite image-->
-		  <ul class="thread-composite-images pull-left" style="margin-left: 80px;">
-			<% thread.codes.each do |code| %>
-				<li class="highlighted-area-composite" id="composite_image_code_<%= code.id %>">
-					<%= image_tag((thread.path_to_composite_highlighed_area_image code.id), class: code.id, :size => "120x120") %>
-				</li>
-			<% end %>
-		  </ul>
-		  <!-- shows first available front page frm the thread> first day first newspaper-->
-		  <% if use_local_images %>
-		    <% thread.non_missing_images(1).each do |image| %>
-		      <%= image_tag image.thumbnail_local_path 80, :alt => image.image_name %>
-		    <% end %>
-		  <% else %>
-		    <% thread.non_missing_images(1).each do |image| %>
-		      <%= image_tag "#{image.source_url}", :size => "80x80", :alt => image.image_name %>
-		    <% end %>
-		  <% end %>
-		  </a>
-	 	      </div>
-		<div class="caption">
-		  <h4><%= link_to thread.thread_display_name, thread_url(thread) %></h4>
-		  <p><%= strip_tags(sanitize(thread.description.truncate(150))) %></p>
-		  <p>From <%= thread.start_date %> to <%= thread.end_date %></p>
-		  <!--<p>Status <%= thread.status %></p>-->
-		  <% if current_user.nil? %>
-				<!--do nothing-->
-		  <% elsif thread.owner == current_user or current_user.admin  %>
-				<div class="btn-group row-fluid">	
-				      <%= link_to "View", thread_url(thread), :class => "btn btn-small"  %>
-		  		      <%= link_to "Edit", "/threads/#{thread.thread_name}/edit/", :class => "btn btn-small" %>
-		  		      <%= link_to "Code", "/threads/#{thread.thread_name}/coding/", :class => "btn btn-small" %>
-				      <%= link_to "Delete", "/threads/#{thread.thread_name}" ,:method=>"delete" , :class => "btn btn-small btn-danger delete" %>
-				</div>
-		  <% end %>
-		  <hr style="margin:5px 3px 0px 3px;">
-		  <div class="row-fluid">
-		    <%=threads_by_user_link thread.owner %>
-		    <span class="pull-right categories">
-		      <% thread.category_list.each do |c| %>
-		        <%=link_to c,"/threads/search_by_category?q=#{c.strip}", :class => "label"%>
-		      <% end %>
-		    </span>
-		  </div>
-		</div>
-
+	    <div class="span3">
+        <div class="row-fluid">
+          <a href="<%= thread_url thread %>" title="<%= '#{thread.thread_display_name}' %>" class="thumbnail" >
+          <!-- shows first available front page from the thread> first day first newspaper-->
+          <% if use_local_images %>
+          	<% thread.non_missing_images(1).each do |image| %>
+          		<%= image_tag((image.thumbnail_local_path 60), class: "pull-left") %>
+          	<% end %>
+          <% else %>
+          	<% thread.non_missing_images(1).each do |image| %>
+          		<%= image_tag "#{image.source_url}", :size => "80x80", :alt => image.image_name %>
+          	<% end %>
+          <% end %>
+          <!-- shows composite images-->
+          	<ul class="thread-composite-images" style="margin-left:65px;height:120px;background-color:#f3f3f3;overflow:hidden;">
+          	<% thread.codes.each do |code| %>
+          		<li class="highlighted-area-composite  pull-right" id="composite_image_code_<%= code.id %>">
+          			<%= image_tag((thread.path_to_composite_highlighed_area_image code.id), class: code.id, :size => "185x185") %>
+          		</li>
+          	<% end %>
+          	</ul>
+          </a>
+        </div>
+				<div class="caption">
+					<h4><%= link_to thread.thread_display_name, thread_url(thread) %> </h4>
+					<p><small style="color:#888;">by <%=threads_by_user_link thread.owner %> | From <%= thread.start_date %> to <%= thread.end_date %></small></p>
+					<p><%= strip_tags(sanitize(thread.description.truncate(150))) %></p>
+					<!--<p>Status <%= thread.status %></p>-->
+					<% if current_user.nil? %>
+						<!--do nothing-->
+					<% elsif thread.owner == current_user or current_user.admin  %>
+						<div class="btn-group row-fluid"style="margin:0px 0px 10px 0px;">
+									<%= link_to "View", thread_url(thread), :class => "btn btn-small"  %>
+									  <%= link_to "Edit", "/threads/#{thread.thread_name}/edit/", :class => "btn btn-small" %>
+									  <%= link_to "Code", "/threads/#{thread.thread_name}/coding/", :class => "btn btn-small" %>
+									<%= link_to "Delete", "/threads/#{thread.thread_name}" ,:method=>"delete" , :class => "btn btn-small btn-danger delete" %>
+						</div>
+					<% end %>
+					<div class="row-fluid">
+						<span class="categories">
+							<% thread.category_list.each do |c| %>
+							  <%=link_to c,"/threads/search_by_category?q=#{c.strip}", :class => "label"%>
+							<% end %>
+						</span>
+					</div>
 	      </div>														
-	    </li>
+	    </div><!-- end thread box-->
 	   
 	    <% if ((i+1)/4.0).to_i == ((i+1)/4.0) %>
 	      </div> <!-- end class="row-fluid"-->
-	      <hr />
 	      <div class="row-fluid">
 	    <% end %>
 
 	  <% end %>
-	  
 	  </div> <!-- end class="row"-->
 
 	  <% unless !@use_paging.nil? and @use_paging==false %>
@@ -93,7 +83,7 @@
 
 	<% end %>
 
-	</ul>
+	
 </div>
 
 <script type="text/javascript">
