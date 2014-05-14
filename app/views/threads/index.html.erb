@@ -44,7 +44,7 @@
 					<% if current_user.nil? %>
 						<!--do nothing-->
 					<% elsif thread.owner == current_user or current_user.admin  %>
-						<div class="btn-group row-fluid"style="margin:0px 0px 10px 0px;">
+						<div class="btn-group row-fluid" style="margin:0px 0px 10px 0px;">
 									<%= link_to "View", thread_url(thread), :class => "btn btn-small"  %>
 									  <%= link_to "Edit", "/threads/#{thread.thread_name}/edit/", :class => "btn btn-small" %>
 									  <%= link_to "Code", "/threads/#{thread.thread_name}/coding/", :class => "btn btn-small" %>
@@ -58,11 +58,12 @@
 							<% end %>
 						</span>
 					</div>
-	      </div>														
+	      </div>
 	    </div><!-- end thread box-->
 	   
 	    <% if ((i+1)/4.0).to_i == ((i+1)/4.0) %>
 	      </div> <!-- end class="row-fluid"-->
+	      <hr style="margin:5px 0px 5px 0px;">
 	      <div class="row-fluid">
 	    <% end %>
 
