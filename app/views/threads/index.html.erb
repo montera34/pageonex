@@ -33,7 +33,7 @@
 	 	      </div>
 		<div class="caption">
 		  <h4><%= link_to thread.thread_display_name, thread_url(thread) %></h4>
-		  <p><%= thread.description.truncate(100) %></p>
+		  <p><%= strip_tags(sanitize(thread.description.truncate(150))) %></p>
 		  <p>From <%= thread.start_date %> to <%= thread.end_date %></p>
 		  <!--<p>Status <%= thread.status %></p>-->
 		  <% if current_user.nil? %>
