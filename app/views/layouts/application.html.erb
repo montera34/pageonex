@@ -72,7 +72,7 @@
           </ul>
           <% if user_signed_in? %>
             <div class="pull-right" id="login-info">
-              <h5><%= link_to current_user.username, edit_user_registration_path %></h5>
+              <h5><%= link_to current_user.username , edit_user_registration_path, title: "edit your profile" %></h5>
               <%= link_to "Sign out", destroy_user_session_path, :method => :delete  %>
             </div>
           <% else %>

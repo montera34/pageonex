@@ -8,7 +8,11 @@
 <% end %>
 <div class="row-fluid">
 	<h2><%=@subtitle%></h2>
-
+	<div class="row-fluid">
+    <div class="span6">
+  	  <p><%= raw @bio %></p>
+    </div>
+  </div>
 	<% if @threads.length > 0%>
 	  <div class="row-fluid">
 	  <% @threads.each_with_index do |thread,i| %>

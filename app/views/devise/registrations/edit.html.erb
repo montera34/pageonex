@@ -7,6 +7,9 @@
   <div><%= f.label :username %>
   <%= f.text_field :username %></div>
   
+  <div><%= f.label :bio %>
+  <%= f.text_area :bio, rows: 5, :rel=>"popover", 'data-content'=>"Allowed HTML tags: <a href=''> <strong>..." %></div>
+  
   <div><%= f.label :email %> 
   <%= f.email_field :email %></div>
 

@@ -17,6 +17,7 @@ class ThreadsController < ApplicationController
 		@user = User.find_by_username params[:username]
 		@threads = []
 		@threads = @user.owned_threads.page(params[:page]) if @user
+		@bio = @user.bio
 		render :index
 	end
 
@@ -49,7 +50,7 @@ class ThreadsController < ApplicationController
 		render :index
 	end
 
-	# new action render the new form, with the an array of all the media in the db, but before that it do change the name of the media, by formating it, as "#{newspaper.country} - #{newspaper.display_name}" to be sorted by country name in the view
+	# new action renders the new form, with the array of all the media in the db, but before that it changes the name of the media, by formating it, as "#{newspaper.country} - #{newspaper.display_name}" to be sorted by country name in the view
 	def new
 		@media = Media.by_country_and_display_name.all
 		@thread = Threadx.new
@@ -297,6 +298,7 @@ class ThreadsController < ApplicationController
 		end
 	end
 
+	#To export the results to a spreadsheet using the gem rODF
 	def results_to_ods(results)
 		spreadsheet = ODF::Spreadsheet.new
 		# Create tables and headers
