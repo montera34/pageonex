@@ -1,5 +1,8 @@
 source 'https://rubygems.org'
 
+# specify a ruby version! (rvm respects this)
+ruby "1.9.3"
+
 gem 'rails', '3.2.13'
 
 # HACK: this group holds gems we need for heroku
