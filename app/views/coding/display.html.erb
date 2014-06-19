@@ -24,15 +24,15 @@
 				<div class="pull-right"><i class="icon-pencil"></i>
 					<div class="btn-group">
 						<% if current_user and (@thread.owner == current_user or current_user.admin) %>
-						<%=  link_to "Delete", "/threads/#{@thread.thread_name}" ,:method=>"delete" , :class => "btn btn-danger delete" %><i class="icon-pencil"></i>
-						<%=  link_to "Edit", "/threads/#{@thread.thread_name}/edit" , :class => "btn" %>
+						<%=  link_to "Delete", "/threads/#{@thread.thread_name}" ,:method=>"delete" , :class => "btn btn-small btn-danger delete" %><i class="icon-pencil"></i>
+						<%=  link_to "Edit", "/threads/#{@thread.thread_name}/edit" , :class => "btn btn-small" %>
 						<% end %>
 					</div>
 				</div>
 			</div>
 			<div class="span1">
 				<div class="btn-group pull-right">
-					<button class="btn btn-small inactive	">Export</button>
+					<button class="btn btn-small disabled">Export</button>
 					<button class="btn btn-small dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
 					<ul class="dropdown-menu">
 					  <!-- <li><a href="#">Download as  .csv </a></li>-->
@@ -221,7 +221,7 @@ var thread = <%= @thread.results(:flat).to_json.html_safe %>
 var height = 200;
 var width = 1210;
 var padding = {"top": 40, "right": 120, "bottom": 40, "left": 120 };
-dataviz.drawCodedThread(width, height, padding, thread);
+dataviz.drawCodedThread(width, height, padding, thread);//draws the bar chart
 dataviz.exportToSvg($('#chart_div svg')[0], $('#chart-export-img')[0]);
 $('.code').hover(function () {
         var title = dataviz.getTitle(this);
