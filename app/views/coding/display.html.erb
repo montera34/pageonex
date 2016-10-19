@@ -15,28 +15,30 @@
 
 <!-- thread info / actions -->
 <div class="row">
-	<div class="span9">
+	<div class="col-md-9">
 		<h1><%= @thread.thread_display_name %> <small> by <%=threads_by_user_link @thread.owner %></small></h1>
 	</div>
-	<div class="span3">
+	<div class="col-md-3">
 		<div class="row">
-			<div class="span2">
+			<div class="col-md-8">
 				<div class="pull-right"><i class="icon-pencil"></i>
-					<div class="btn-group">
+					<div class="btn-group" role="group">
 						<% if current_user and (@thread.owner == current_user or current_user.admin) %>
-						<%=  link_to "Delete", "/threads/#{@thread.thread_name}" ,:method=>"delete" , :class => "btn btn-small btn-danger delete" %><i class="icon-pencil"></i>
-						<%=  link_to "Edit", "/threads/#{@thread.thread_name}/edit" , :class => "btn btn-small" %>
+							<div class="btn btn-danger"><%=  link_to "Delete", "/threads/#{@thread.thread_name}" ,:method=>"delete", :style=>"color:#FFFFFF;" %></div>
+							<div class="btn btn-default"><%=  link_to "Edit", "/threads/#{@thread.thread_name}/edit" %></div>
 						<% end %>
 					</div>
 				</div>
 			</div>
-			<div class="span1">
-				<div class="btn-group pull-right">
-					<button class="btn btn-small disabled">Export</button>
-					<button class="btn btn-small dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
+			<div class="col-md-4">
+				<div class="btn-group pull-right" role="group">
+					<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						Export
+						<span class="caret"></span>
+					</button>
 					<ul class="dropdown-menu">
-					  <!-- <li><a href="#">Download as  .csv </a></li>-->
-						<li><a href="<%= thread_url(@thread)+"export.ods" %>">Download Data as .ods (spreadsheet)</a></li>
+						<!-- <li><a href="#">Download as  .csv </a></li>-->
+						<li><a href="<%= thread_url(@thread)+"export.ods" %>">Download Data as .ods (.xls spreadsheet)</a></li>
 						<li><a href="<%= thread_url(@thread)+"export.json" %>">Download Data as .json</a></li>
 						<li><a href="#chart-modal" data-toggle="modal">Download Bar Graph as .svg</a></li>
 						<li><a href="#image-export-modal" data-toggle="modal">Download as image(s) as .jpg</a></li>
@@ -52,10 +54,10 @@
 <hr style="margin:0px 0px;">
 
 <div class="row">
-	<div class="span3">
+	<div class="col-md-3">
 		<strong>From </strong> <%= @thread.start_date %> <strong> To </strong> <%= @thread.end_date %>
 	</div>
-	<div class="span5">
+	<div class="col-md-5">
 		<span class="categories" >
 			<% @thread.category_list.each do |c| %>
 				<%=link_to c,"/threads/search_by_category?q=#{c.strip}", :class => "label"%>
@@ -71,13 +73,13 @@
 
 <!-- Results Chart -->
 <div class="row">
-	<div id="chart_div" style="margin-left: 110px;width: 1210px; margin-bottom: -15px;"></div><!--div to display bar chart-->
+	<div id="chart_div" style="margin-left: 90px;width: 1210px; margin-bottom: -15px;"></div><!--div to display bar chart-->
 </div>
 
 <!-- composite image view -->
 <% if @img_map_info.nil? %>
 	<div class="row">
-		<div class="span8 offset2">
+		<div class="col-md-8 col-md-offset-2">
 			<div class="alert alert-error">
 				<h4>Error!</h4>
 				Sorry, we had a problem stitching the front page images together.  Try waiting a bit and reloading the webpage.
@@ -86,7 +88,7 @@
 	</div>
 <% else %>
 	<div class="row">
-		<div class="span2">
+		<div class="col-md-2 col-sm-2">
 			<!-- list of media names-->
 			<ul class='thread-coposite-labels'>
 				<% @img_map_info['row_info'].each do |media_id,info| %>
@@ -94,12 +96,14 @@
 				<% end %>
 			</ul>
 		</div>
-		<div class="span10">
+		<div class="col-md-10 col-sm-10">
 			<ul class="thread-composite-images" style="height:<%=@img_map_info['height']%>px">
 				<!-- background's front pages image -->
 				<li class="cover-composite"><%= image_tag @thread.path_to_composite_cover_image %></li>
 			<% @thread.codes.each do |code| %>
-				<li class="highlighted-area-composite" id="composite_image_code_<%= code.id %>"><%= image_tag((@thread.path_to_composite_highlighed_area_image code.id), class: code.id) %></li>
+				<li class="highlighted-area-composite" id="composite_image_code_<%= code.id %>">
+					<%= image_tag((@thread.path_to_composite_highlighed_area_image code.id), class: code.id ) %> <!-- TODO try to make images responsive with "img-responsive" -->
+				</li>
 			<% end %>
 				<li><%=image_tag 'transparent.png', :style=>"width:#{@img_map_info['width']}px;height:#{@img_map_info['height']}px;", :name=>'front-page-images', :usemap=>'#front-page-images'%></li>
 			</ul>
@@ -115,13 +119,13 @@
 
 <!-- thread info summary and code info again -->
 <div class="row">
-	<div class="offset2 span10">
+	<div class="col-md-offset-2 col-md-10">
 		<h3><%= @thread.thread_display_name %> </h3>
 		<p><%= @thread.start_date.inspect %> - <%= @thread.end_date.inspect %></p>
-		<ul class="inline" id="color-legend"><!--legend: list of codes with their colors-->
+		<ul class="list-inline" id="color-legend"><!--legend: list of codes with their colors-->
 		<% @thread.codes.each do |code| %><!--list -->
-		  <li id="code_<%= code.id %>" class="active" rel="popover" data-content="<%= code.code_description %>" data-original-title="Description" >
-			    <div style="background-color:<%= code.color %>;" class="box_legend"></div>
+		  <li id="code_<%= code.id %>" class="active col-md-2" rel="popover" data-content="<%= code.code_description %>" data-original-title="Description" >
+			    <div style="background-color:<%= code.color %>;" class="box_legend_display"></div>
 			    <div class="legend_text"> <%= code.code_text  %> </div>
 		  </li>
    	<% end %>
@@ -131,13 +135,13 @@
 
 <!-- Thread details / code info -->
 <div class="row">
-	<div class="offset2 span10">
+	<div class="col-md-offset-2 col-md-10">
 		<div class="row">
-			<div class="span6">
+			<div class="col-md-6">
 				<h4>Description</h4>
 				<p><%= raw @thread.description %></p>
 			</div>
-			<div class="span4">
+			<div class="col-md-4 col-md-offset-2">
 				<!--<h5>Status</h5> <p><%= @thread.status %></p>-->
 				<% if @collaborators.length >= 1 %> <h4>Collaborators</h4><% end %>
 					<ul id="collab-list" class="unstyled">
@@ -146,10 +150,10 @@
 						<% end %>
 					</ul>
 					<% if current_user and (@thread.owner == current_user or current_user.admin) %>
-					<%=  link_to "Add Collaborators", "/threads/#{@thread.thread_name}/edit/#collaborators" , :class => "btn" %>
+					<%=  link_to "Add Collaborators", "/threads/#{@thread.thread_name}/edit/#collaborators" , :class => "btn btn-default" %>
 					<% end %>
 				<h5>Embed Code </h5>
-				<input id="embed_code" type="text" class="span3" value="<div id='wrap' style='width: 100%; height: 490px; padding: 0; overflow: hidden;'><iframe style='width: 1280px; height: 700px; -ms-zoom: 0.68; -transform: scale(0.68);-moz-transform: scale(0.68);-moz-transform-origin: 0 0; -o-transform: scale(0.68);-o-transform-origin: 0 0; -webkit-transform: scale(0.68);-webkit-transform-origin: 0 0;max-width: none; overflow: hidden; border: 1px solid white;' src='http://<%=request.host %>/<%=@thread.owner.username.split(' ').join('_') %>/<%=@thread.thread_name %>/embed'></iframe></div>" rel="tooltip" title="Copy + Paste">
+				<input id="embed_code" type="text" class="col-md-12" value="<div id='wrap' style='width: 100%; height: 490px; padding: 0; overflow: hidden;'><iframe style='width: 1280px; height: 700px; -ms-zoom: 0.68; -transform: scale(0.68);-moz-transform: scale(0.68);-moz-transform-origin: 0 0; -o-transform: scale(0.68);-o-transform-origin: 0 0; -webkit-transform: scale(0.68);-webkit-transform-origin: 0 0;max-width: none; overflow: hidden; border: 1px solid white;' src='http://<%=request.host %>/<%=@thread.owner.username.split(' ').join('_') %>/<%=@thread.thread_name %>/embed'></iframe></div>" rel="tooltip" title="Copy + Paste">
 			</div>
 		</div>
 	</div>
@@ -250,12 +254,12 @@ $(function (argument) {
 //activates and deactivates composite images clicking on legend
 	<% @thread.codes.each do |code| %>
 		d3.select('#code_<%= code.id %>').on('click',function() {
-			if (d3.select(this).attr('class')==='active'){
+			if (d3.select(this).attr('class')==='active col-md-2'){
 				d3.select("#composite_image_code_<%= code.id %>").style("display", "none");
-				d3.select(this).attr("class","inactive");
+				d3.select(this).attr("class","inactive col-md-2");
 			} else {
 				d3.select("#composite_image_code_<%= code.id %>").style("display", "block");
-				d3.select(this).attr("class","active");
+				d3.select(this).attr("class","active col-md-2");
 			}
 		});
  	<% end %>

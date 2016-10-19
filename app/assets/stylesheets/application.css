@@ -32,6 +32,8 @@
  *= require jquery.ui.datepicker
  * require jquery.ui.progressbar
  */
+/* loads Twitter boottrap css */
+*= require bootstrap.min
 
 #login-info {
   margin-top: 3px;

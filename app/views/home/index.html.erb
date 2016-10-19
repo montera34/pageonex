@@ -1,26 +1,26 @@
 <% @title = "PageOneX" %>
 <div class="row">
-  <div class="span12">
+  <div class="col-md-12">
     <div class="page-header">
       <h1>PageOneX <small>Visualize the evolution of stories on newspaper front pages</small></h1>
     </div>
   </div>
 </div>
 
-<div class="row-fluid">
+<div class="row">
 
-  <div class="span6">
+  <div class="col-md-6">
      <%= image_tag "header-blog-2.png", :style => "margin-bottom:5px;" %>
        <p class="lead">PageOneX  makes it easy to track, code, and visualize major news stories based on  the proportion of newspaper front pages that they take up. <br>It's a  useful tool for researchers, advocacy groups, and anyone interested in better understanding the media's priorities.</p>
-    <div class="row-fluid"> 
-      <div class="span2 offset4">
-         <a href="https://twitter.com/PageOneX" class="btn" data-show-count="false">@PageOneX</a>
+    <div class="row"> 
+      <div class="col-md-2 col-md-offset-4">
+         <a href="https://twitter.com/PageOneX" class="btn btn-default" data-show-count="false">@PageOneX</a>
          <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
       </div>
      </div>
   </div>
 
-  <div class="span5 offset1">
+  <div class="col-md-5 col-md-offset-1">
   	<% if user_signed_in? %>
 		<%= link_to 'Create New Thread', '/threads/new', :class => "btn btn-success btn-large" %> 
   	<% else %>	
@@ -46,8 +46,8 @@
 
 <hr>
 
-<div class="row-fluid">
-	  <div class="span3">
+<div class="row">
+	  <div class="col-md-3">
 			<h3>Participate</h3>
 			You can learn from, contribute to, and gain recognition within the community.<br>
 			<a href="https://groups.google.com/forum/?fromgroups#!forum/pageonex" class="btn btn-primary">Join the PageOneX mailing list</a>
@@ -64,7 +64,7 @@
 			<a href="https://github.com/numeroteca/pageonex/issues?state=open">Issue tracker</a><br>
 			<a href="http://mailman.mit.edu/mailman/listinfo/pageonexdev">Email list for developers</a></p>
 		</div>
-		<div class="span3 offset1">
+		<div class="col-md-3 col-md-offset-1">
 			<h3>Examples</h3>
 			<a href="http://pinterest.com/numeroteca/newspaper-front-page-visualizations/" title="PageOneX in Pinterest"><img src="http://blog.pageonex.com/wp-content/uploads/2012/06/pinterest_p.png" width="" alt="PageOneX in Pinterest"></a><br>
 			<a href="http://blog.pageonex.com/timeline/">Timeline of the project.</a><br>
@@ -80,7 +80,7 @@
 			<a href="/Amelrame/analisis-paro-agrario/">Análisis Paro Agrario </a> (Colombia)<br>
 			<a href="/numeroteca/local-national-world-news/">Local, national and world news in US newspapers</a> (USA)
 		</div>
-		<div class="span4 offset1"> <!-- Temporary list of featured threads. It should pull from the most visited threads in the site -->
+		<div class="col-md-4 col-md-offset-1"> <!-- Temporary list of featured threads. It should pull from the most visited threads in the site -->
 			<a class="twitter-timeline"  href="https://twitter.com/PageOneX" data-widget-id="532672002205577216">Tweets by @PageOneX</a>
 			<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
 		</div>

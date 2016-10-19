@@ -11,7 +11,7 @@ PageOnex runs in Ruby on Rails, so you'll ned to install:
 Process
 -------
 You might want to clone the repository with git:
-> git clone git@github.com:numeroteca/pageonex.git
+> git clone https://github.com/numeroteca/pageonex.git
 
 Or download the .zip file from https://github.com/numeroteca/pageonex/archive/master.zip
 

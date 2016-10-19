@@ -15,38 +15,38 @@ human_topic_number = (Integer(index) + 1).to_s
   
   <%= hidden_field_tag "code_id[]", id %>
   
-  <div id="topic_name_box" class="control-group">
-    <%= label_tag "topic_name_#{index}", "Topic #{human_topic_number}", :id => "topic_name_label_#{index}", :class => "control-label"  %>
-    <div class="controls">
-    <%= text_field_tag "topic_name_#{index}",name,placeholder: "Code/Topic name",:class=>"topic_name js_validate" %> 
+  <div id="topic_name_box" class="form-group">
+    <%= label_tag "topic_name_#{index}", "Topic #{human_topic_number}", :id => "topic_name_label_#{index}", :class => "col-sm-4 control-label" %>
+    <div class="col-sm-6">
+    	<%= text_field_tag "topic_name_#{index}",name,placeholder: "Code/Topic name",:class=>"topic_name js_validate form-control" %> 
     </div>
   </div>
   
-  <div class="topic_color_box control-group">
-    <%= label_tag "topic_color_#{index}", "Topic #{human_topic_number} Color", :id => "topic_color_label_#{index}", :class => "control-label"  %>
-    <div class="controls">
-    <%= text_field_tag "topic_color_#{index}",color,placeholder: "#FF0000",:class=>"topic_color js_validate" %> 
+  <div class="topic_color_box form-group">
+    <%= label_tag "topic_color_#{index}", "Topic #{human_topic_number} Color", :id => "topic_color_label_#{index}", :class => "col-sm-4 control-label" %>
+    <div class="col-sm-6">
+    	<%= text_field_tag "topic_color_#{index}",color,placeholder: "#FF8b3d",:class=>"topic_color js_validate form-control",:style=>"height: 20px;" %> 
     </div>
   </div>
   
-  <div class="topic_description_box control-group">
-    <%= label_tag "topic_description_#{index}", "Topic #{human_topic_number} Description", :id => "topic_description_label_#{index}", :class => "control-label"  %>
-    <div class="controls">
-    <%= text_area_tag "topic_description_#{index}",description,:rows => "5",placeholder: "Some Info about that topic" %> 
+  <div class="topic_description_box form-group">
+    <%= label_tag "topic_description_#{index}", "Topic #{human_topic_number} Description", :id => "topic_description_label_#{index}", :class => "col-sm-4 control-label" %>
+    <div class="col-sm-8">
+    <%= text_area_tag "topic_description_#{index}",description,:rows => "5",placeholder: "Some Info about that topic", :class => "form-control" %> 
     </div>
   </div>
   
-  <div class="control-group">
-    <div class="controls">
+  <div class="form-group">
+    <div class="col-sm-offset-4 col-sm-6">
       <%= hidden_field_tag "topic_deleted_#{index}" %>
-      <a id="delete_topic_<%= index %>" class="btn delete_topic">Delete Code/Topic</a>
+      <a id="delete_topic_<%= index %>" class="btn btn-default delete_topic">Delete Code/Topic</a>
     </div>
   </div>
 </div>
 
 <script type="text/javascript">
 $(function() {
-  $("#topic_color_<%=index%>").minicolors({ defaultValue: '#FF0000' });
+  $("#topic_color_<%=index%>").minicolors({ defaultValue: '#0303ff' });
 });
 </script>
 

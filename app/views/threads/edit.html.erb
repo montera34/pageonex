@@ -18,16 +18,16 @@
     </div>
     <% end %>
 </div>
-  <div class="control-group">
-  <%= f.label :thread_display_name, "Thread Name", :class => "control-label" %>
-    <div class="controls">
-    <%= f.text_field :thread_display_name %> 
+  <div class="form-group">
+  <%= f.label :thread_display_name, "Thread Name", :class => "col-sm-2 control-label" %>
+    <div class="col-sm-6">
+    <%= f.text_field :thread_display_name , :class => "form-control" %> 
     </div>
   </div>
-  <div class="control-group">
-  <%= f.label :thread_name, "URL-Safe Name (slug)", :class => "control-label" %>
-    <div class="controls">
-    <%= f.text_field :thread_name, :rel=>"popover", 'data-content'=>"This will be used to create the URL this Thread. If you include any letters or symbols that don't work in URLs, we will automatically substitute them. This field will generate: pageonex.com/your_thread_name from 'Your Thread Name'" %> 
+  <div class="form-group">
+  <%= f.label :thread_name, "URL-Safe Name (slug)", :class => "col-sm-2 control-label" %>
+    <div class="col-sm-6">
+    <%= f.text_field :thread_name, :rel=>"popover", 'data-content'=>"This will be used to create the URL this Thread. If you include any letters or symbols that don't work in URLs, we will automatically substitute them. This field will generate: pageonex.com/your_thread_name from 'Your Thread Name'", :class => "form-control" %> 
     </div>
   </div>
 <!--  
@@ -50,44 +50,44 @@
   <br>
 -->
   <%= hidden_field_tag :status, @thread.status %>
-  <div class="control-group">
-  <%= f.label :start_date, :class => "control-label" %>
-    <div class="controls">
-    <%= f.text_field :start_date, :class => "datepicker"%>
+  <div class="form-group">
+  <%= f.label :start_date, :class => "col-sm-2 control-label" %>
+    <div class="col-sm-2">
+    <%= f.text_field :start_date, :class => "datepicker form-control" %>
     </div>
   </div>
 
-  <div class="control-group">
+  <div class="form-group">
   <% if @thread.status  == "closed" %>
-    <%= f.label :end_date, :class => "control-label" %>
-    <div class="controls">
-    <%= f.text_field :end_date , :class => "datepicker"%>
+    <%= f.label :end_date, :class => "col-sm-2 control-label" %>
+    <div class="col-sm-2">
+    <%= f.text_field :end_date , :class => "datepicker form-control"%>
     </div>
   <% else %>
     <%= f.label :end_date, :style=>"display:none", :class => "control-label" %>
-    <div class="controls">
-    <%= f.text_field :end_date , :class => "datepicker" , :style=>"display:none"%>
+    <div class="col-sm-6">
+    <%= f.text_field :end_date , :class => "datepicker form-control" , :style=>"display:none"%>
     </div>
   <% end %>
   </div>
 
-  <div class="control-group">
-  <%= f.label :category, :class => "control-label"  %>
-    <div class="controls">
-      <%= f.text_field :category, :rel=>"popover", 'data-content'=>"Separate the different categories by commas. Ex: social, politics, Brazil" %> 
+  <div class="form-group">
+  <%= f.label :category, :class => "col-sm-2 control-label" %>
+    <div class="col-sm-4">
+      <%= f.text_field :category, :rel=>"popover", 'data-content'=>"Separate the different categories by commas. Ex: social, politics, Brazil", :class => "form-control"  %> 
     </div>
   </div>
 
-  <div class="control-group">
-  <%= f.label :description, :class => "control-label"  %>
-    <div class="controls">
-      <%= f.text_area :description, :rows => "10", :rel=>"popover", 'data-content'=>"Allowed HTML tags: <a href=''> <strong>..." %>
+  <div class="form-group">
+  <%= f.label :description, :class => "col-sm-2 control-label" %>
+    <div class="col-sm-6">
+      <%= f.text_area :description, :rows => "10", :rel=>"popover", 'data-content'=>"Allowed HTML tags: <a href=''> <strong>...", :class => "form-control" %>
     </div>
   </div>
 
-  <div id="media_box" class="control-group">
-    <%= label_tag :media, "Select newspapers", :id => "media_label1", :class => "control-label"  %>
-    <div class="controls">
+  <div id="media_box" class="form-group">
+    <%= label_tag :media, "Select newspapers", :id => "media_label1", :class => "col-sm-2 control-label" %>
+    <div class="col-sm-6">
     <%= select_tag :media, options_from_collection_for_select(@media, "id", "name_with_country"),  :multiple => true , "rel" => "popover", "data-content"  => "To select multiple newspapers: Hold Ctrl + select the newspaper, release the Ctrl with scrolling and hold it again before any other selection. Start with 2-4 newspapers, you can always edit this and add more", "data-original-title" => "Select Multiple Newspapers", style: "height: 300px;width: 300px;", :class=>"js_validate" %>
     </div>
   </div>
@@ -96,9 +96,9 @@
 
   <a name="collaborators"></a>
   <h3>Collaborators</h3>
-  <div class="control-group">
+  <div class="form-group">
     <input type="text" id="collaborator-input" autocomplete="off"/>
-    <button type="button" class="btn" id="collaborator-add">Add</button>
+    <button type="button" class="btn btn-default" id="collaborator-add">Add</button>
     <ul id="collab-list" class="unstyled">
     </ul>
     <div id="collab-inputs"></div>
@@ -107,7 +107,7 @@
   <h3>Coding information</h3>
   <p>Create one or multiple categories you want to use in the analysis.</p>
 
-  <div class="span6">
+  <div class="col-md-6">
     <div id="topic-list">
       <% 
       @thread.codes.to_enum.with_index.each do |code,index| %>
@@ -117,9 +117,9 @@
       end
       %>
     </div>
-    <div class="control-group">
-      <div class="controls">
-        <a id="add_topic" class="btn">Add Another Code/Topic</a>
+    <div class="form-group">
+      <div class="controls col-sm-offset-4">
+        <a id="add_topic" class="btn btn-default">Add Another Code/Topic</a>
 	<!-- the hidden field stores the number of codes of the thread and provides this data to the javacript that generates more topics. The first field is id and name, the second is the value. To Do: to save the values in threads_controller.rb  in the update method  -->
           <%= hidden_field_tag :topic_count, @thread.codes.length %>
       </div>
@@ -132,7 +132,7 @@
 
   <hr>
   <div class="form-actions control-group">
-       <%= f.submit "Update Thread", :class => "btn btn-primary btn-large", id: "start_coding" %>
+       <%= f.submit "Update Thread", :class => "btn btn-primary btn-large col-sm-offset-4 ", id: "start_coding" %>
       <a class="btn btn-large" href="/threads/">Cancel</a>
   </div>
 <% end %>

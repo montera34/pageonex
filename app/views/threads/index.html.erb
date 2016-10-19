@@ -8,16 +8,16 @@
 <% end %>
 <div class="row-fluid">
 	<h2><%=@subtitle%></h2>
-	<div class="row-fluid">
-    <div class="span6">
+	<div class="row">
+    <div class="col-md-6">
   	  <p><%= raw @bio %></p>
     </div>
   </div>
 	<% if @threads.length > 0%>
-	  <div class="row-fluid">
+	  <div class="row">
 	  <% @threads.each_with_index do |thread,i| %>
 
-	    <div class="span3">
+	    <div class="col-md-3">
         <div class="row-fluid">
           <a href="<%= thread_url thread %>" title="<%= '#{thread.thread_display_name}' %>" class="thumbnail" >
           <!-- shows first available front page from the thread> first day first newspaper-->
@@ -48,17 +48,17 @@
 					<% if current_user.nil? %>
 						<!--do nothing-->
 					<% elsif thread.owner == current_user or current_user.admin  %>
-						<div class="btn-group row-fluid" style="margin:0px 0px 10px 0px;">
-									<%= link_to "View", thread_url(thread), :class => "btn btn-small"  %>
-									  <%= link_to "Edit", "/threads/#{thread.thread_name}/edit/", :class => "btn btn-small" %>
-									  <%= link_to "Code", "/threads/#{thread.thread_name}/coding/", :class => "btn btn-small" %>
-									<%= link_to "Delete", "/threads/#{thread.thread_name}" ,:method=>"delete" , :class => "btn btn-small btn-danger delete" %>
+						<div class="btn-group btn-group-sm" role="group">
+						  <div class="btn btn-default"><%= link_to "View", thread_url(thread) %></div>
+							<div class="btn btn-default"><%= link_to "Edit", "/threads/#{thread.thread_name}/edit/" %></div>
+							<div class="btn btn-default"><%= link_to "Code", "/threads/#{thread.thread_name}/coding/" %></div>
+							<div class="btn btn-danger"><%= link_to "Delete", "/threads/#{thread.thread_name}", :method=>"delete", :style=>"color:#FFFFFF;"%></div>
 						</div>
 					<% end %>
 					<div class="row-fluid">
 						<span class="categories">
 							<% thread.category_list.each do |c| %>
-							  <%=link_to c,"/threads/search_by_category?q=#{c.strip}", :class => "label"%>
+							  <%=link_to c,"/threads/search_by_category?q=#{c.strip}", :class => "label label-default"%>
 							<% end %>
 						</span>
 					</div>
@@ -76,7 +76,7 @@
 
 	  <% unless !@use_paging.nil? and @use_paging==false %>
 	    <div class="row">
-	      <div class="span12">
+	      <div class="col-md-12">
 		<%= will_paginate @threads %>
 	      </div>
 	    </div>

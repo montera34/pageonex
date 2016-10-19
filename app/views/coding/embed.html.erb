@@ -7,14 +7,14 @@
 
 <!-- composite image view -->
 <div class="row">
-	<div class="span2">
+	<div class="col-md-2">
 		<ul class='thread-coposite-labels'>
 			<% @img_map_info['row_info'].each do |media_id,info| %>
 				<li style="height:<%=info['height']%>px"><%=info['name']%></li>
 			<% end %>
 		</ul>
 	</div>
-	<div class="span10">
+	<div class="col-md-10">
 		<ul class="thread-composite-images" style="height:<%=@img_map_info['height']%>px">
 			<li class="cover-composite"><%= image_tag @thread.path_to_composite_cover_image %></li>
 		<% @thread.codes.each do |code| %>
@@ -33,7 +33,7 @@
 
 <!-- thread info summary and code info again -->
 <div class="row">
-	<div class="offset2 span10">
+	<div class="col-md-offset-2 col-md-10">
 		<h3><%= @thread.thread_display_name %> </h3>
 		<p><%= @thread.start_date.inspect %> - <%= @thread.end_date.inspect %></p>
 		<ul class="inline" id="color-legend">

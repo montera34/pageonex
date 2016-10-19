@@ -15,18 +15,20 @@
 
 <hr>
 <div class="row">
-    <div class="span2" >
+    <div class="col-md-2" >
         <h4><%= @thread.thread_display_name %></h4	>
 <!--         <h3>Current Image Number:</h3>
         <h3 id="image_number" style="font-weight:normal"></h3>
         <hr> -->
-        <h5>Topics</h5>
-        	<ul id="topics" class="nav nav-list">
-			<% @thread.codes.each do |code| %>
-			<li>
-				<div id="code_<%= code.id %>" class="box_legend" style="background-color:<%= code.color %>;"> </div>
-				<h4 class="codes_boxes" rel="popover"  data-content="<%= code.code_description %>" data-original-title="Description"><%= code.code_text %></h4>
-			</li>
+        <h4>Topics</h4>
+        	<ul id="topics" class="list-unstyled">
+						<% @thread.codes.each do |code| %>
+						<li>
+							<div class="row">
+								<div id="code_<%= code.id %>" class="box_legend col-md-2 col-md-offset-1" style="background-color:<%= code.color %>;"> </div>
+								<div class="codes_boxes col-md-6" rel="popover" data-content="<%= code.code_description %>" data-original-title="Description"><%= code.code_text %></div>
+							</div>
+						</li>
 	       		<% end %>
 		  </ul>
 	<hr>
@@ -41,18 +43,16 @@
 	</p>
         <!-- we are not using the direct link, because if you redirect from the same domain to kiosko, it will render the 300px image instead of the 750px -->
         <!-- <a id="source_of_image"  href="#">Original image form - Kiosko.net</a> -->
-        <input id="source_of_image" type="text" class="span2" value="#" rel="tooltip" title="Copy + Paste">
+        <input id="source_of_image" type="text" class="col-md-12" value="#" rel="tooltip" title="Copy + Paste">
 
     </div>
-    <div id="images_section" class="span7">
+    <div id="images_section" class="col-md-7">
         <% if @allowed_to_code %>
             <div class="row" id="aboveImageToolbar">
-                <div class="span7">
-                    <div class="btn-toolbar">
-                        <div class="pull-right btn-group">
-                            <a id="" class="btn btn-danger clear_highlighting">Clear Highlighted Areas</a>
-                            <a id="" class="btn btn-inverse skip_coding">Nothing to Code</a>
-                        </div>
+                <div class="col-md-7">
+                    <div class="pull-right btn-group" role="group">
+												<a class="btn btn-danger clear_highlighting">Clear Highlighted Areas</a>
+                        <a class="btn btn-default skip_coding">Nothing to Code</a>
                     </div>
                     <div id="youHaveLoopedAlert" class="alert alert-info above-image-alert" style="display:inline-block">
                         You are looking at the first image of this thread.
@@ -69,8 +69,8 @@
             </div>
         <% else %>
             <div class="form-actions" style="text-align:center">
-                <a href="<%= "/#{@thread.owner.username}/#{@thread.thread_name}/" %>" class="btn btn-inverse">Go to Display</a>
-                <a href="/" class="btn ">Cancel</a>
+                <a href="<%= "/#{@thread.owner.username}/#{@thread.thread_name}/" %>" class="btn btn-default">Go to Display</a>
+                <a href="/" class="btn btn-default">Cancel</a>
             </div>
         <% end %>
         <!-- Starting of the image slider (carousel) -->
@@ -123,7 +123,7 @@
                 <%= select_tag :codes, options_from_collection_for_select(@thread.codes, "id", "code_text")%>
           </div>
           <div class="modal-footer">
-            <a id="set_code" href="#" data-dismiss="modal" class="btn btn-primary">Okay</a>
+            <a id="set_code" href="#" data-dismiss="modal" class="btn btn-default">Okay</a>
           </div>
         </div>
 
@@ -170,36 +170,33 @@
             </div>
             <%= hidden_field_tag "status", "0" %>
             <% if @allowed_to_code %>
-                <div class="form-actions" style="text-align:center">
-                    <div class="pull-left btn-group">
-                        <a id="" class="btn  btn-danger clear_highlighting">Clear Highlighted Areas</a>
-                        <a id="" class="btn btn-inverse skip_coding">Nothing to Code</a>
-                    </div>
-
-                    <div class="pull-right">
-            			<div class="btn-group">
-            		            <%= submit_tag "Save", class: "save btn btn-primary "%>
-            		            <%= submit_tag "Save and Display", class: "save btn btn-info"%>
-            			<a href="/" class="btn ">Cancel</a>
-            			</div>
-                        
-                    </div>
+              <div class="form-actions row" style="margin-top:20px;">
+                <div class="btn-group col-md-6" role="group">
+										<a class="btn btn-danger clear_highlighting">Clear Highlighted Areas</a>
+                    <a class="btn btn-default skip_coding">Nothing to Code</a>
                 </div>
+                <div class="col-md-5 col-md-offset-1">
+		        			<div class="btn-group">
+				            <%= submit_tag "Save", class: "save btn btn-default "%>
+				            <%= submit_tag "Save and Display", class: "save btn btn-default"%>
+		        				<a href="/" class="btn btn-default">Cancel</a>
+		        			</div>
+                </div>
+              </div>
             <% else %>
-                <div class="form-actions" style="text-align:center">
-                    <a href="<%= "/#{@thread.owner.username}/#{@thread.thread_name}/" %>" class="btn btn-inverse">Go to Display</a>
-                    <a href="/" class="btn ">Cancel</a>
-                </div>
+              <div class="form-actions" style="text-align:center">
+                  <a href="<%= "/#{@thread.owner.username}/#{@thread.thread_name}/" %>" class="btn btn-default">Go to Display</a>
+                  <a href="/" class="btn btn-danger">Cancel</a>
+              </div>
             <% end %>
             <br>
         <% end %>
         
     </div>
     
-    <div class="alert alert-info span2" style="margin-left: 78px;">
+    <div class="alert alert-info col-md-2 col-md-offset-1">
       <a id="close_help" type="button" class="close" data-dismiss="alert">×</a>
       <h3>How coding works</h3>
-      <br>    
       <h4>Steps</h4>
       <ol>
           <li>Drag the mouse over the related article.</li>
@@ -211,7 +208,7 @@
         <li>The progress bar at the top page shows how many images have been coded</li>
         <li>You can draw as many areas as needed</li>
         <li>You can use the keyboard shortcuts: <strong>&larr;</strong> = previous image, <strong>&rarr;</strong> = next image, <strong>n</strong> = nothing to code.</li>
-	<li>If an image is missing, it might be because it was not available when we tried to scrape it. Try the button "try to download it".</li>
+				<li>If an image is missing, it might be because it was not available when we tried to scrape it. Try the button "try to download it".</li>
       </ul>
     </div>
     

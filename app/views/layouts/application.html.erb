@@ -31,87 +31,96 @@
     <%= favicon_link_tag %>
   </head>
   <body>
+		<nav class="navbar navbar-default navbar-fixed-top" id="main-menu-1" style="background-color:#dedede">
+      <div class="container">
+   			<!-- Brand and toggle get grouped for better mobile display -->
+				<div class="navbar-header">
+				  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+				    <span class="sr-only">Toggle navigation</span>
+				    <span class="icon-bar"></span>
+				    <span class="icon-bar"></span>
+				    <span class="icon-bar"></span>
+				  </button>
+				  <a class="navbar-brand pageonex-brand" href="/" title="Home PageOneX"><%= image_tag "imago-pageonex-2.png", :style => "float: left; margin-right: 4px;" %> PageOneX <em>beta</em></a>
+				</div>
 
-    <div class="navbar navbar-fixed-top" id="main-menu" style="background-color:#dedede">
-      <div class="">
-          <div class="container">
-          <a class="btn btn-navbar" data-target=".nav-collapse" data-toggle="collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </a>
-          <a class="brand pageonex-brand" href="/" title="Home PageOneX"><%= image_tag "imago-pageonex-4.png" %> PageOneX <em>beta</em></a>
-          <div class="container">
-          <ul id="pre-menu" class="nav nav-pills">
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Threads<b class="caret"></b></a>
-              <ul class="dropdown-menu">
-                <% if user_signed_in? %>
-                  <li><a href="/threads/mine" title="">Your Threads</a></li>
-                <% end %>
-                <li><a href="/threads/" title="">All Threads</a></li>
-                <% if user_signed_in? %>
-                  <li><a href="/threads/new" title="">Create New Thread</a></li>
-                <% end %>
-              </ul>
-            </li>
-            <% if user_signed_in? and current_user.admin %>
-              <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin<b class="caret"></b></a>
-                <ul class="dropdown-menu">
-                  <li class="menu-item" ><%= link_to "Users", "/users"  %></li>
-                  <li class="menu-item" ><%= link_to "Images", "/images"  %></li>
-                  <li class="menu-item" ><%= link_to "Media", "/media"  %></li>
-                </ul>
-              </li>
-            <% end %>
-            <li class="menu-item" ><%= link_to "About", "/about"  %></li>
-	          <li><%= link_to "Documentation", "https://github.com/numeroteca/pageonex/wiki"  %></li>
-	          <li><%= link_to "Blog", "http://blog.pageonex.com"  %></li>
-	          <li><%= link_to "References", "http://blog.pageonex.com/references", target: "_blank"  %></li>
-	          <li><%= link_to "Report Bugs", "http://blog.pageonex.com/report-bugs/"  %></li>      
-          </ul>
-          <% if user_signed_in? %>
-            <div class="pull-right" id="login-info">
-              <h5><%= link_to current_user.username , edit_user_registration_path, title: "edit your profile" %></h5>
-              <%= link_to "Sign out", destroy_user_session_path, :method => :delete  %>
-            </div>
-          <% else %>
-            <div class="pull-right" id="login-info">
-              <%= link_to 'Sign in', new_user_session_path %> 
-            </div>
-          <% end %>
+				<!-- Collect the nav links, forms, and other content for toggling -->
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+				  <ul class="nav navbar-nav">
+				    <li class="dropdown">
+				      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Threads <span class="caret"></span></a>
+				      <ul class="dropdown-menu">
+								<% if user_signed_in? %>
+				        	<li><a href="/threads/mine" title="">Your Threads</a></li>
+								<% end %>
+				         <li><a href="/threads/" title="">All Threads</a></li>
+				        <li role="separator" class="divider"></li>
+				        <% if user_signed_in? %>
+				          <li><a href="/threads/new" title="">Create New Thread</a></li>
+				        <% end %>
+				      </ul>
+				    </li>
+		      	<% if user_signed_in? and current_user.admin %>
+						<li class="dropdown">
+				      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Admin <span class="caret"></span></a>
+				      <ul class="dropdown-menu">
+								<li class="menu-item" ><%= link_to "Users", "/users"  %></li>
+		            <li class="menu-item" ><%= link_to "Images", "/images"  %></li>
+		            <li class="menu-item" ><%= link_to "Media", "/media"  %></li>
+				      </ul>
+				    </li>
+						<% end %>
+						<li class="menu-item" ><%= link_to "About", "/about"  %></li>
+				    <li><%= link_to "Documentation", "https://github.com/numeroteca/pageonex/wiki"  %></li>
+				    <li><%= link_to "Blog", "http://blog.pageonex.com"  %></li>
+				    <li><%= link_to "References", "http://blog.pageonex.com/references", target: "_blank"  %></li>
+				    <li><%= link_to "Report Bugs", "http://blog.pageonex.com/report-bugs/"  %></li> 
+				  </ul>
 
-          
-          <%= form_tag '/threads/search',:class=>'navbar-search pull-right' do %>
-            <input name="q" type="text" class="search-query" placeholder="Search">
-          <% end %>
-          
-          </div><!--/.nav-collapse -->
-        </div>
-      </div>
-    </div>
+					<ul class="nav navbar-nav navbar-right">
+						<% if user_signed_in? %>
+						  <div class="pull-right" id="login-info">
+						    <h5><%= link_to current_user.username , edit_user_registration_path, title: "edit your profile" %></h5>
+						    <%= link_to "Sign out", destroy_user_session_path, :method => :delete  %>
+						  </div>
+						<% else %>
+						  <div class="pull-right" id="login-info">
+						    <%= link_to 'Sign in', new_user_session_path %> 
+						  </div>
+						<% end %>
+		    
+						<%= form_tag '/threads/search',:class=>'navbar-form navbar-left' do %>
+							<div class="form-group">
+						  	<input name="q" type="text" class="search-query" placeholder="Search">
+							</div>
+							<button type="submit" class="btn btn-default">Submit</button>
+						<% end %>
+					</ul>
+
+				</div><!-- /.navbar-collapse -->
+			</div><!-- /.container -->
+		</nav>
 
     <div class="container" style="min-width: 1170px;">
       <div class="content">
 
         <div class="row">
-           <div class="span12">
+           <div class="col-md-12">
 
             <% if Rails.env.development? %>
-              <div class="alert alert-error">
+              <div class="alert alert-info" role="alert">
                 <h4>Development Server</h4>
                 You are working on a development server!
               </div>
             <% end %>
 
             <% if notice %>
-              <div class="alert">
+              <div class="alert alert-info" role="alert">
                 <a class="close" data-dismiss="alert" href="#">×</a>
                 <p><%= notice %></p>
               </div>
             <% elsif alert %>
-              <div class="alert alert-error">
+              <div class="alert alert-danger" role="alert">
                 <a class="close" data-dismiss="alert" href="#">×</a>
                 <p><%= alert %></p>
               </div>
@@ -123,7 +132,7 @@
 
       </div><!--/content-->
       <div class="row" id="footer">
-        <div class="span12">
+        <div class="col-md-12">
           <footer>
 		<hr>
 		<div class="pull-right"><%= link_to "Source Code: run yours!", "https://github.com/numeroteca/pageonex/"%></div>

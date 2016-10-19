@@ -52,23 +52,13 @@
 // require jquery.ui.effect-slide
 // require jquery.ui.effect-transfer
 
-//= require twitter/bootstrap/bootstrap-transition
-//= require twitter/bootstrap/bootstrap-alert
-//= require twitter/bootstrap/bootstrap-modal
-//= require twitter/bootstrap/bootstrap-dropdown
-//= require twitter/bootstrap/bootstrap-scrollspy
-// require twitter/bootstrap/bootstrap-tab
-//= require twitter/bootstrap/bootstrap-tooltip
-//= require twitter/bootstrap/bootstrap-popover
-//= require twitter/bootstrap/bootstrap-button
-//= require twitter/bootstrap/bootstrap-collapse
-// require twitter/bootstrap/bootstrap-typeahead
 //= require bootstrap-carousel
-// require twitter/bootstrap
 
 //= require spin.min
 
 // require_tree .
+
+//= require bootstrap
 
 $(function() {
   // initialize any and all popovers on the page

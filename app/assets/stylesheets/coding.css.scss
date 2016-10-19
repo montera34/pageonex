@@ -8,14 +8,22 @@ h1 {
 }
 .legend_text {
 	line-height: 1em;
+	font-size: 1.1em;
 }
 .box_legend {
   width: 26px;
   height: 26px;
   display: block;
-  margin: 0 4px 4px 0;
-  float:left;
+  margin: 0 0 5px 15px;
   cursor:pointer;
+}
+.box_legend_display {
+  width: 26px;
+  height: 26px;
+  display: block;
+  margin: 0 4px 4px 0;
+  cursor:pointer;
+	float:left;
 }
 .inactive .box_legend {
 	opacity:.4;
@@ -28,8 +36,8 @@ h1 {
 	vertical-align: top;
 }
 .codes_boxes{
-	margin-left: 30px;
-	font-size: 15px;
+	font-size: 18px;
+	font-weight: bold;
 }
 
 #aboveImageToolbar {
@@ -134,6 +142,6 @@ ul.thread-coposite-labels li.inactive {
 	padding:3px;
 }
 #color-legend li{
-	width:150px;
+	/*width:150px;*/
 	padding:0;
 }
