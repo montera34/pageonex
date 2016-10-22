@@ -52,8 +52,6 @@
 // require jquery.ui.effect-slide
 // require jquery.ui.effect-transfer
 
-//= require bootstrap-carousel
-
 //= require spin.min
 
 // require_tree .
