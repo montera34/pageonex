@@ -11,6 +11,7 @@ class Threadx < ActiveRecord::Base
 	has_many :media, :through => :media_threadxes
 
 	belongs_to :owner, :class_name => "User"
+	belongs_to :parent, class_name: 'Threadx', foreign_key: 'parent_id'
 
 	has_many :threadx_collaborators
 	has_many :collaborators, :through => :threadx_collaborators, :source => :user
