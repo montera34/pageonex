@@ -28,15 +28,15 @@ class CodingController < ApplicationController
     # Go through each submitted highlighted area
     params.fetch(:ha_name, []).each do |ha_name|
       image = Image.find_by_id(params["img_id_#{ha_name}"])
-      
+
       if params["id_#{ha_name}"].to_i == 0
       	# This is a new area, create it if it hasn't been deleted
       	next if params["deleted_#{ha_name}"].to_i == 1
       	code = Code.find params["code_id_#{ha_name}"]
       	ha = code.highlighted_areas.create(:image_id=>image.id, :code_id=>code.id, :user_id=>current_user.id)
-      	area = Area.create(highlighted_area_id: ha.id, x1: params["x1_#{ha_name}"].to_i, 
-          y1: params["y1_#{ha_name}"].to_i, x2: params["x2_#{ha_name}"].to_i, 
-          y2: params["y2_#{ha_name}"].to_i, width: params["width_#{ha_name}"].to_i, 
+      	area = Area.create(highlighted_area_id: ha.id, x1: params["x1_#{ha_name}"].to_i,
+          y1: params["y1_#{ha_name}"].to_i, x2: params["x2_#{ha_name}"].to_i,
+          y2: params["y2_#{ha_name}"].to_i, width: params["width_#{ha_name}"].to_i,
           height: params["height_#{ha_name}"].to_i)
       else
       	# Updating an existing area
@@ -48,9 +48,9 @@ class CodingController < ApplicationController
       	  ha.destroy
       	else
       	  ha.update_attribute('code_id', params["code_id_#{ha_name}"].to_i)
-      	  ha.areas[0].update_attributes(x1: params["x1_#{ha_name}"].to_i, 
-            y1: params["y1_#{ha_name}"].to_i, x2: params["x2_#{ha_name}"].to_i, 
-            y2: params["y2_#{ha_name}"].to_i, width: params["width_#{ha_name}"].to_i, 
+      	  ha.areas[0].update_attributes(x1: params["x1_#{ha_name}"].to_i,
+            y1: params["y1_#{ha_name}"].to_i, x2: params["x2_#{ha_name}"].to_i,
+            y2: params["y2_#{ha_name}"].to_i, width: params["width_#{ha_name}"].to_i,
             height: params["height_#{ha_name}"].to_i)
       	end
       end
@@ -63,7 +63,7 @@ class CodingController < ApplicationController
       if params["#{ha.name}_status"] == "1"
         # if the highlighted areas is "0" thats mean this highlighted areas have changed is cleared
         if params["#{ha.name}"] == "0"
-          ha.update_attribute("code_id",0)          
+          ha.update_attribute("code_id",0)
           ha.areas[0].update_attributes({x1:0, y1:0, x2:0, y2:0 , width:0, height:0})
         else
           code_id = params["#{ha.name}_code_id"]

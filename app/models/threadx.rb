@@ -18,27 +18,27 @@ class Threadx < ActiveRecord::Base
 
 	has_many :codes
 	has_many :highlighted_areas, :through => :codes
-	
+
 	has_many :coded_pages
 
 	validates :thread_name, :thread_display_name, :start_date, :end_date, :description , :category, :presence => true
-	
+
 	# this validation runs when a user create a thread, and checks if the user has a thread with same name or not
 	validate :existing_thread, :on => :create
 
 	validate :not_too_many_images
-	
+
 	validate :starts_before_ends
 
-	validates :thread_name, :uniqueness=>true
+	validates :thread_name, :uniqueness => true
 
-	before_validation { |t| 
+	before_validation { |t|
 		t.thread_name = t.thread_display_name if t.thread_name.nil? or t.thread_name.empty?
-		t.thread_name = t.thread_name.to_url 
+		t.thread_name = t.thread_name.to_url
 	}
 
 	# remove the generated composite images when a thread is changed
-	after_save { |t| 
+	after_save { |t|
 		t.remove_composite_images
 	}
 
@@ -52,7 +52,7 @@ class Threadx < ActiveRecord::Base
 	def starts_before_ends
 		if end_date < start_date
 			errors.add(:end_date, 'must be after start date')
-		end 
+		end
 	end
 
 	# workaround for bug #59: too big threads
@@ -91,7 +91,7 @@ class Threadx < ActiveRecord::Base
 			end
 		end
 	end
-	
+
 	def width
 		return self.size.split('x')[0].to_f
 	end
@@ -116,14 +116,14 @@ class Threadx < ActiveRecord::Base
 		File.join('threads',self.owner.id.to_s,self.id.to_s, width.to_s, 'front_pages.jpg').to_s
 	end
 
-	#returns the path of the image of highlighted areas from a code 
+	#returns the path of the image of highlighted areas from a code
 	def path_to_composite_highlighed_area_image code_id, width=DEFAULT_COMPOSITE_IMAGE_WIDTH
 		File.join('threads',self.owner.id.to_s,self.id.to_s, width.to_s, 'code_'+code_id.to_s+'_overlay.png').to_s
 	end
 
 	def remove_composite_images width=DEFAULT_COMPOSITE_IMAGE_WIDTH
 		logger.info "Removing composite images for '#{self.thread_name}' (#{self.id}) at #{self.composite_img_dir(width)}px"
-		FileUtils.rm_r self.composite_img_dir(width) if Dir.exists? self.composite_img_dir(width) 
+		FileUtils.rm_r self.composite_img_dir(width) if Dir.exists? self.composite_img_dir(width)
 	end
 
 	def scrape_all_images force_redownload=false
@@ -161,7 +161,7 @@ class Threadx < ActiveRecord::Base
 		thumbnails = []
 		self.media.each_with_index do |media, index|
 			media_images = self.images.select { |img| img.media_id==media.id }
-			thumbnail_media_heights = media_images.collect do |img| 
+			thumbnail_media_heights = media_images.collect do |img|
 				img.image_height_at_width compositor.thumb_width
 			end
 			compositor.set_media_info(media.id, media.name_with_country, thumbnail_media_heights.max.round)
@@ -196,7 +196,7 @@ class Threadx < ActiveRecord::Base
 	def duration
 	 (end_date - start_date).to_i + 1   # plus one is because date range for threadx is inclusive
 	end
-	
+
 	def images
 		Image.by_media(medium_ids).by_date(start_date..end_date)
 	end
@@ -212,13 +212,13 @@ class Threadx < ActiveRecord::Base
 	def highlighted_areas_for_image(image)
 		HighlightedArea.by_threadx(self).by_image(image)
 	end
-	
+
 	def image_coded?(image)
 		area_count = HighlightedArea.by_threadx(self).by_image(image).length
 		skipped = coded_pages.for_image(image).length
 		area_count > 0 or skipped > 0
 	end
-	
+
 	def results(type = :tree)
 		# Create an ordered list of newspapers, codes, dates
 		res = {
@@ -253,7 +253,7 @@ class Threadx < ActiveRecord::Base
 				media_day_images = day_images.select { |img| img.media_id==m.id}
 				next if media_day_images.length == 0
 				image = media_day_images.first # there should only really be one
-				code_percent = {} 
+				code_percent = {}
 				codes.each do |code|
 					image_code_ha_list = all_ha_list.select { |ha| ha.image_id==image.id and ha.code_id==code.id}
 					highlighted = image_code_ha_list.inject(0) { |area, ha| area + ha.area }
@@ -286,7 +286,7 @@ class Threadx < ActiveRecord::Base
 		end
 		return res
 	end
-	
+
 	def composite_img_dir width=DEFAULT_COMPOSITE_IMAGE_WIDTH, create_dir=false
 		dir = File.join('app','assets','images','threads',self.owner.id.to_s,self.id.to_s, width.to_s)
 		if create_dir and not File.directory? dir
@@ -294,9 +294,50 @@ class Threadx < ActiveRecord::Base
 		end
 		dir
 	end
-	
+
 	def allowed_to_code?(user)
-		return !user.nil? && (self.owner.id == user.id || !self.collaborators.find_by_id(user.id).nil? || user.admin)		
+		return !user.nil? && (self.owner.id == user.id || !self.collaborators.find_by_id(user.id).nil? || user.admin)
+	end
+
+	def create_fork(new_owner_id)
+		forked_thread = Threadx.new(thread_display_name: thread_display_name + "-#{SecureRandom.random_number(100000)}",
+			                          start_date: start_date,
+			                          end_date: end_date,
+			                          category: category,
+			                          description: description,
+			                          status: status,
+			                          owner_id: new_owner_id,
+			                          parent_id: id)
+		forked_thread.media = media
+		forked_thread.save!
+
+		forked_thread.images << forked_thread.scrape_all_images
+
+		codes.each do |code|
+			new_code = forked_thread.codes.create!({code_text: code.code_text,
+																							code_description: code.code_description,
+																							color: code.color})
+
+			code.highlighted_areas.each do |ha|
+				new_ha = new_code.highlighted_areas.create!({image_id: ha.image_id, name: ha.name, user_id: ha.user_id})
+
+				ha.areas.each do |area|
+					new_area = area.dup
+					new_area.highlighted_area = new_ha
+					new_area.save!
+				end
+			end
+		end
+
+		coded_pages do |coded_page|
+			CodedPage.create!({user_id: forked_thread.owner_id, image_id: coded_page.image_id, threadx_id: forked_thread.id})
+		end
+
+		forked_thread
+	end
+
+	def fork?
+		parent_id.present?
 	end
 
 end

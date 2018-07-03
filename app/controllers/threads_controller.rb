@@ -44,7 +44,7 @@ class ThreadsController < ApplicationController
 		Threadx.per_page = 1000 # don't do paging here
 		query = "%#{search_str}%"
 		@threads = Threadx.joins(:codes).where(
-			"(code_text LIKE ?) OR (code_description LIKE ?) OR (thread_display_name LIKE ?) OR (description LIKE ?) OR (category LIKE ?)", 
+			"(code_text LIKE ?) OR (code_description LIKE ?) OR (thread_display_name LIKE ?) OR (description LIKE ?) OR (category LIKE ?)",
 			query, query, query, query, query
 		).all.uniq
 		render :index
@@ -63,13 +63,13 @@ class ThreadsController < ApplicationController
 	def create
 		# create a new threadx object with the submit params related the threadx
 		@thread = Threadx.new(params[:threadx])
-		
+
 		# set the owner of the thread to the current logged in user
 		@thread.owner_id = current_user.id
 
 		# set the thread status with submitted thread status
 		@thread.status = params[:status]
-		
+
 		# if the thread is opened, sets the last date with today's dates and update the thread each time it's displayed.
 		# Now it works only when the Threah is save. Make if work when the thread is opened.
 		@thread.end_date = Date.today if @thread.status == "opened"
@@ -81,16 +81,16 @@ class ThreadsController < ApplicationController
 		# (@thread.valid?) this conditions is used to check if the instantiated thread, is passing the validations in the threadx model class
 		# (params[:media] != nil) and this condtions to be sure that the thread is submitted with more than one newspaper selected
 		# (params["topic_name_1"] != "" ) this condition is to be sure the thread has at least one topic
-		if @thread.valid? && params[:media] != nil && params["topic_name_1"] != "" 
+		if @thread.valid? && params[:media] != nil && params["topic_name_1"] != ""
 
 			# create object for each code (topic) submited
 			codes = [] #creates empty array to store all the codes of the thread
 			number_of_codes = params[:topic_count].to_i
-			# iterating over the submitted topics, and create a code object for each one. Then add this object to the codes array to assign it to the thread 
+			# iterating over the submitted topics, and create a code object for each one. Then add this object to the codes array to assign it to the thread
 			number_of_codes.times do |n|
 				code_name = params["topic_name_#{n}"]
 				unless code_name.empty?
-					codes << Code.create!({:code_text => code_name, 
+					codes << Code.create!({:code_text => code_name,
 										   :code_description => params["topic_description_#{n}"],
 										   :color => params["topic_color_#{n}"]})
 				end
@@ -114,9 +114,9 @@ class ThreadsController < ApplicationController
 
 		# otherwise, the new form will rendered again with the error messages
 		else
-			# we should load the names of the media again. 
+			# we should load the names of the media again.
 			@media = Media.by_country_and_display_name.all
-			
+
 			# Reload users and collaborators
 			@users = User.hashes
 			@usernames = User.pluck(:username)
@@ -131,7 +131,6 @@ class ThreadsController < ApplicationController
 			end
 
 			# and then render the new form again
-
 			render "new"
 		end
 
@@ -172,25 +171,25 @@ class ThreadsController < ApplicationController
 		@thread.media = Media.where(:id=>params[:media])
 
 		#@thread.codes = params[:codes]
-		
+
 		if @thread.update_attributes(params[:threadx])
-			
+
 			@thread.status = params[:status]
 			@thread.update_attribute(:end_date, Date.today) if @thread.status == "opened"
 
 			images = @thread.scrape_all_images
-			
+
 			# Add collaborators
 			users = User.where(:username => params[:collaborators]).all
 			@thread.collaborators = users
-			
+
 			#it should iterate through the recently created codes
 			params["code_id"].each_with_index do |id, index|
 				code_name = params["topic_name_#{index}"]
 				if id.empty?
 					unless code_name.empty?
-						@thread.codes.create({code_text: code_name, 
-							color: params["topic_color_#{index}"], 
+						@thread.codes.create({code_text: code_name,
+							color: params["topic_color_#{index}"],
 							code_description: params["topic_description_#{index}"]})
 					end
 					# New code
@@ -201,8 +200,8 @@ class ThreadsController < ApplicationController
 						code.destroy()
 					else
 						unless code_name.empty?
-							code.update_attributes({code_text: code_name, 
-								color: params["topic_color_#{index}"], 
+							code.update_attributes({code_text: code_name,
+								color: params["topic_color_#{index}"],
 								code_description: params["topic_description_#{index}"]})
 						end
 					end
@@ -214,14 +213,14 @@ class ThreadsController < ApplicationController
 					code.destroy()
 				else #To Do: it should save the new codes created
 					unless code_name.empty?
-						code.update_attributes({code_text: code_name, 
-							color: params["topic_color_#{index}"], 
+						code.update_attributes({code_text: code_name,
+							color: params["topic_color_#{index}"],
 							code_description: params["topic_description_#{index}"]})
 					end
 				end
 			end
 
-			@thread.save	
+			@thread.save
 
 			# if the user did not select the option for keeping the highlighted areas of the removed images, they will be deleted
 			thread_image_ids = @thread.images.collect { |img| img.id }
@@ -240,8 +239,8 @@ class ThreadsController < ApplicationController
 			@thread.media.each do |m|
 				params["media"] << "#{m.id}"
 			end
-		
-			render "edit"	
+
+			render "edit"
 		end
 
 	end
@@ -265,7 +264,13 @@ class ThreadsController < ApplicationController
 		render :partial => 'topic_form', :locals => {
 			:index => params[:index], :id => nil, :name => nil, :color => nil, :description => nil}
 	end
-	
+
+	def fork
+		@parent = Threadx.find(params[:id])
+		@thread = @parent.create_fork(current_user.id)
+		redirect_to @thread.link_url
+	end
+
 	def export
 		@thread = Threadx.find_by_thread_name params[:thread_name]
 		respond_to do |format|
@@ -290,9 +295,9 @@ class ThreadsController < ApplicationController
 				if params['image_export_type']=='jpg'
 					send_file File.join(@thread.composite_img_dir(width),'results.jpg'), :type=>'image/jpg', :disposition=>'inline'
 				else
-					send_file File.join(@thread.composite_img_dir(width),'results.zip'), 
-						:type=>'application/x-zip-compressed ', 
-						:disposition=>'attachment'					
+					send_file File.join(@thread.composite_img_dir(width),'results.zip'),
+						:type=>'application/x-zip-compressed ',
+						:disposition=>'attachment'
 				end
 			end
 		end
