@@ -6,7 +6,7 @@ ruby "1.9.3"
 gem 'rails', '3.2.13'
 
 # HACK: this group holds gems we need for heroku
-group :heroku do 
+group :heroku do
   gem 'pg'
 end
 
@@ -16,10 +16,10 @@ group :assets do
   gem 'sass-rails',   '~> 3.2.3'
   gem 'coffee-rails', '~> 3.2.1'
   gem 'uglifier', '>= 1.0.3'
-end 
+end
 
 # GUI support libraries
-gem 'therubyracer'  # See https://github.com/sstephenson/execjs#readme for more supported runtimes
+gem 'therubyracer', '~> 0.12.3' # See https://github.com/sstephenson/execjs#readme for more supported runtimes
 gem 'less-rails'
 gem "twitter-bootstrap-rails"
 gem "jquery-rails"

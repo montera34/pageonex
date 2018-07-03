@@ -7,7 +7,11 @@ Pageonex::Application.routes.draw do
   match 'threads/search' => 'threads#search'
   match 'threads/search_by_category' => 'threads#search_by_category'
   match 'threads/new_topic/:index' => 'threads#new_topic'
-  resources :threads
+  resources :threads do
+    member do
+      post :fork
+    end
+  end
 
   match 'images/download' => 'images#download'
   match 'images/for_media/:media_id' => 'images#for_media'

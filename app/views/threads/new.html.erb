@@ -30,7 +30,7 @@
       </div>
     <% end %>
   </div>
-  
+
   <!--<h2>Basic info</h2>-->
   <div class="control-group">
     <%= f.label :thread_display_name, "Thread Name", :class => "control-label" %>
@@ -47,9 +47,9 @@
         <a id="close_thread" class="btn btn-inverse active status" rel="popover"  data-content="In case of selecting this option, PageOneX will create a thread with fixed dates" data-original-title="Closed Thread" >Closed</a>
      </div>
     </div>
-  </div> 
+  </div>
 -->
-  <%= hidden_field_tag :status,"closed" %>
+  <%= hidden_field_tag :status, "closed" %>
   <div class="date_errors">
     <div class="control-group">
       <%= f.label :start_date, :class => "control-label"  %>
@@ -75,7 +75,7 @@
     <%= f.text_field :category, placeholder: "Social, Crisis, Country", :class => "server_validation" %>
     </div>
   </div>
-  
+
   <div class="control-group">
     <%= f.label :description, :class => "control-label"   %>
     <div class="controls">
@@ -84,18 +84,18 @@
   </div>
   <!--h3>Newspapers</h3-->
   <div class="control-group">
-	<div id="media_box">
-  	<%= label_tag :media, "Select newspapers", :id => "media_label1", :class => "control-label" %>
-	  <div class="controls">
-  	    <%= select_tag :media, options_from_collection_for_select(@media, "id", "name_with_country"),  :multiple => true ,"rel" => "popover", "data-content"  => "To select multiple newspapers: Hold Ctrl + select the newspaper, release the Ctrl with scrolling and hold it again before any other selection. Start with 2-4 newspapers, you can always edit this and add more", "data-original-title" => "Select Multiple Newspapers" , style: "height: 300px;width: 300px;", :class=>"js_validate" %>
-          </div>
-	  <div class="controls">
-	    <a id="clear_media" class="btn">Clear all choices</a>
-          </div>
-          <!-- a list of all selected newspapers -->
-    <%= hidden_field_tag :selected_newspapers, params["media"] %>
-	<!-- used to clear the highlighted areas selection -->
-       </div>
+  	<div id="media_box">
+    	<%= label_tag :media, "Select newspapers", :id => "media_label1", :class => "control-label" %>
+  	  <div class="controls">
+    	   <%= select_tag :media, options_from_collection_for_select(@media, "id", "name_with_country"),  :multiple => true ,"rel" => "popover", "data-content"  => "To select multiple newspapers: Hold Ctrl + select the newspaper, release the Ctrl with scrolling and hold it again before any other selection. Start with 2-4 newspapers, you can always edit this and add more", "data-original-title" => "Select Multiple Newspapers" , style: "height: 300px;width: 300px;", :class=>"js_validate" %>
+      </div>
+  	  <div class="controls">
+  	    <a id="clear_media" class="btn">Clear all choices</a>
+      </div>
+      <!-- a list of all selected newspapers -->
+      <%= hidden_field_tag :selected_newspapers, params["media"] %>
+  	  <!-- used to clear the highlighted areas selection -->
+    </div>
   </div>
 
   <h3>Collaborators</h3>
@@ -106,16 +106,16 @@
     </ul>
     <div id="collab-inputs"></div>
   </div>
-  
+
   <h3>Coding information</h3>
   <p>Create one or multiple categories you want to use in the analysis.</p>
 
   <div class="span6">
-    
+
     <% # if there were other topics already, they will be displayed %>
     <div id="topic-list" >
-      <% 
-      if params["topic_count"].to_i >  0 
+      <%
+      if params["topic_count"].to_i >  0
         1.upto(params["topic_count"].to_i) do |c|
       %><%= render :partial => "topic_form", :locals => {
             :index => c, :id => 1, :name => params["topic_name_#{c}"] , :color => params["topic_color_#{c}"],
@@ -151,7 +151,7 @@
   </div>
   <h2 style="text-align: center">Please wait, it will take time</h2>
   <div class="modal-body" style="padding: 54px 0 56px 279px;">
-  
+
   </div>
   <div class="modal-footer">
 

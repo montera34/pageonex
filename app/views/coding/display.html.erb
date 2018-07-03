@@ -17,19 +17,27 @@
 <div class="row">
 	<div class="span9">
 		<h1><%= @thread.thread_display_name %> <small> by <%=threads_by_user_link @thread.owner %></small></h1>
+    <% if @thread.fork? %>
+      <small> forked from <%= link_to @thread.parent.thread_display_name, thread_url(@thread.parent) %></small>
+    <% end %>
 	</div>
 	<div class="span3">
 		<div class="row">
-			<div class="span2">
+			<div class="span1">
 				<div class="pull-right"><i class="icon-pencil"></i>
 					<div class="btn-group">
 						<% if current_user and (@thread.owner == current_user or current_user.admin) %>
-						<%=  link_to "Delete", "/threads/#{@thread.thread_name}" ,:method=>"delete" , :class => "btn btn-small btn-danger delete" %><i class="icon-pencil"></i>
-						<%=  link_to "Edit", "/threads/#{@thread.thread_name}/edit" , :class => "btn btn-small" %>
+						<%=  link_to "Delete", "/threads/#{@thread.thread_name}", :method=>"delete", :class => "btn btn-small btn-danger delete" %><i class="icon-pencil"></i>
+						<%=  link_to "Edit", "/threads/#{@thread.thread_name}/edit", :class => "btn btn-small" %>
 						<% end %>
 					</div>
-				</div>
+        </div>
 			</div>
+      <div class="span1">
+        <% if current_user %>
+          <%= link_to "Fork", fork_thread_path(@thread), method: :post, class: "btn btn-small", confirm: "Forking this thread will create a copy of it in your own account. \nDo you want to continue?" %>
+        <% end %>
+      </div>
 			<div class="span1">
 				<div class="btn-group pull-right">
 					<button class="btn btn-small disabled">Export</button>
@@ -126,7 +134,7 @@
 		  </li>
    	<% end %>
 		</ul>
-	</div>	
+	</div>
 </div>
 
 <!-- Thread details / code info -->
@@ -163,8 +171,8 @@
 			</li>
 			<% end %>
 		  </ul>
-  </div>-->	
-</div> 
+  </div>-->
+</div>
 
 <!-- Results download modal popup -->
 <div id="chart-modal" class="modal hide fade">
@@ -246,7 +254,7 @@ $(function (argument) {
 })
 </script>
 
-<%= javascript_tag do %> 
+<%= javascript_tag do %>
 //activates and deactivates composite images clicking on legend
 	<% @thread.codes.each do |code| %>
 		d3.select('#code_<%= code.id %>').on('click',function() {
@@ -261,7 +269,7 @@ $(function (argument) {
  	<% end %>
 <% end %>
 
-<%= javascript_tag do %> 
+<%= javascript_tag do %>
 //highlights parts of the bar chart that belong to a media
 	<% @img_map_info['row_info'].each do |media_id,info| %>
 		d3.select("#<%= info['name'].gsub(/\s+/, '')%>").on("click",function() {
