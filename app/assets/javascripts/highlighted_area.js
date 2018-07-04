@@ -4,6 +4,7 @@
 // HighlightedAreas.add() - Add a single highlighted area to the current page
 // HighlightedAreas.save() - Save a highlighted area
 // HighlightedAreas.removeAllForImage() - Delete all highlighted areas for the current page
+// HighlightedAreas.removeOne() - Delete a specific highlighted area
 // HighlightedAreas.getByCssId() - Get data for a single highlighted area
 // HighlightedAreas.getAllForImage() - Get a list of highlighted areas
 
@@ -22,6 +23,7 @@ var HighlightedAreas = {
     },
 
     add: function(username, hash, img_id, code_id, selection) {
+
         // Get div containing highlighted area info for the specified image
         var ha_group = $("#ha_group_" + img_id);
         var count = ha_group.children().length;
@@ -72,6 +74,13 @@ var HighlightedAreas = {
         }
         clearNothingToCode(img_id);
         setModified();
+    },
+
+    removeOne: function(area_id) {
+        //id for hidden inputs container of the area with id=ha_ha_47 is ha_47
+        ha_removed = HighlightedAreas.getByCssId(area_id.replace("ha_", ''));
+        ha_removed.deleted = '1';
+        HighlightedAreas.save(ha_removed);
     },
 
     getByCssId: function(cssid) {

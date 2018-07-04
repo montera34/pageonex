@@ -1,7 +1,7 @@
 $(document).ready(function () {
     // initializing the image slider "carousel" plugin
     carousel = $('.carousel').carousel();
-    
+
     // checks if the user is owner, if so, it will initialize the imgAreaSelect plugin which is used for highlighting
     if (pageData.allowedToCode) {
         // initializing imgAreaSelect plugin for the current active (displayed image)
@@ -15,14 +15,14 @@ $(document).ready(function () {
     $("#newspaper_name").text($("#images_section div.active img").attr("media")).attr("href",media_url);
     $("#original_image_url").text("Link to original image").attr("href",source_url);
     $("#source_of_image").attr("value",$("#images_section div.active img").attr('url')).tooltip({placement:'bottom'})
-    
+
     // attaching a callback for the slide event on the carousel, so it will clear all the highlighted areas when the user slide
     // "This event fires immediately when the slide instance method is invoked." from bootstrap documentation
     carousel.on('slide',function () {
         // reset the highlighted areas values
         clearHighlightedAreas();
     });
-    
+
     //hides alert message "first image of this thread". Prevents from appearing in the first image that is being coded.
     $('#youHaveLoopedAlert').hide();
 
@@ -30,7 +30,7 @@ $(document).ready(function () {
     carousel.on('slid',function(){
         // set the current image to the current active(displayed) image in the carousel
         var current_img = $("#images_section div.active img")
-        
+
         renderHighlightedAreas();
 
         // after we slide for the next image, we normally initialize the imgAreaSelect for the new image, but before that, we also check if the user have a premonition
@@ -74,16 +74,16 @@ $(document).ready(function () {
         setCodeOnHighlightedArea(pageData.currentHighlightedArea);
     });
 
-    // it will set the highlighted areas to zero 
+    // it will set the highlighted areas to zero
     $(".clear_highlighting").click(function () {
         HighlightedAreas.removeAllForImage(getCurrentImageId());
         renderHighlightedAreas();
         progressBarPercentage();
-    })  
+    });
 
     // this used to for "nothing to code here"
     $(".skip_coding").click(markAsNothingToCode)
-    
+
     // render the highlighted areas after loading all the images
     window.onload = function() {
         renderHighlightedAreas();
@@ -98,6 +98,16 @@ $(document).ready(function () {
 
 });
 
+function addCloseAreaBehaviors(){
+    if (pageData.allowedToCode) {
+        $(".ha-close-icon").on("click",function() {
+            ha_id = $(this).parent('div').attr("id");
+            $('#' + ha_id).hide();
+            HighlightedAreas.removeOne(ha_id);
+        });
+    }
+}
+
 function setMissingImageInfoFromImg(imgElem){
     if(imgElem.attr('data-missing')=='true' || imgElem.attr('src')=="/assets/404.jpg"){
         $('#missing_image_id').val(imgElem.attr('data-id'));
@@ -107,7 +117,7 @@ function setMissingImageInfoFromImg(imgElem){
     }
 }
 
-function markAsNothingToCode(){ 
+function markAsNothingToCode(){
     var current_img = getCurrentImage();
     // Clear existing areas
     HighlightedAreas.removeAllForImage(getCurrentImageId());
@@ -175,6 +185,7 @@ function renderHighlightedAreas () {
         }
     }
     renderNothingToCode();
+    addCloseAreaBehaviors();
 }
 
 // API for tracking modified status
@@ -199,7 +210,7 @@ function nothingToCode (img_id) {
 }
 function hasNothingToCode (img_id) {
     var nothing_to_code = $('[name="nothing_to_code_' + img_id + '"]');
-    return (nothing_to_code.val() == '1');    
+    return (nothing_to_code.val() == '1');
 }
 
 function clearHighlightedAreas () {
@@ -216,6 +227,12 @@ function renderHighlightedArea(ha) {
     var ha_elt = $('#high_area_template').clone();
     var icon = $('<div class="user-id"><img class="avatar-icon" src="http://gravatar.com/avatar/' + ha.hash + '?s=20&d=identicon"/> <span class="ha-user-name">' +  ha.username + '</span></div>');
     icon.appendTo(ha_elt);
+
+    if (pageData.allowedToCode) {
+        var close_icon = $('<div id="close_' + ha.cssid + '" class="ha-close-icon"><img id="close_img_' + ha.cssid + '" src="/assets/icon-close.png" title="Remove area" alt="Remove area icon"/></div>');
+        close_icon.appendTo(ha_elt);
+    }
+
     ha_elt.attr('id', 'ha_' + ha.cssid);
     ha_elt.addClass('clone');
     $('#high_area_template').after(ha_elt);
@@ -286,12 +303,12 @@ function highlighting_done() {
     currentImgSelectArea.cancelSelection()
 };
 
-// calculate the percentage of progress bar 
+// calculate the percentage of progress bar
 function progressBarPercentage () {
     // set the total number of images
     $("#total").text( pageData.totalImageCount );
     var coded_count = 0;
-    
+
     // Go through each image div
     $("#images_section div.item").each(function () {
         img_id = $(this).find('img').attr('name');

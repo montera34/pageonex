@@ -33,7 +33,7 @@ h1 {
 }
 
 #aboveImageToolbar {
-  margin-bottom: 10px;  
+  margin-bottom: 10px;
 }
 
 .above-image-alert {
@@ -57,7 +57,7 @@ h1 {
 #topics {
 	padding-left:0px;
 }
-//Carrousel pointer 
+//Carrousel pointer
 #myCarousel{
 	cursor:crosshair;
 }
@@ -96,7 +96,7 @@ ul.thread-coposite-labels {
   list-style-type: none;
   margin: 0px;
   padding: 0px;
-  display: block;  
+  display: block;
 }
 ul.thread-coposite-labels li {
   display: block;
@@ -124,6 +124,13 @@ ul.thread-coposite-labels li.inactive {
 }
 .user-id img:hover + span {
   display: block !important;
+}
+.ha-close-icon {
+  cursor:pointer;
+  width: 20px;
+  position: absolute;
+  right: 0px;
+  top: 0px;
 }
 #embedded_footer{
 	position: absolute;
