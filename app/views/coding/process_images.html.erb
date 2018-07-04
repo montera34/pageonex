@@ -82,11 +82,11 @@
                 <div class="item <%= 'active' if ic==0%> ">
 
                     <% if use_local_images %>
-                        <%= image_tag @images[ic].local_path, 
-                                    :id => "image#{ic+1}", :style => "width: 670px", 
+                        <%= image_tag @images[ic].local_path,
+                                    :id => "image#{ic+1}", :style => "width: 670px",
                                     :media=>@images[ic].media.display_name, :name=>@images[ic].id,
                                     :image_size=>@images[ic].size, :pub_date=>@images[ic].publication_date,
-                                    :url=>@images[ic].source_url, :media_url=>@images[ic].media.url, 
+                                    :url=>@images[ic].source_url, :media_url=>@images[ic].media.url,
                                     'data-id'=>@images[ic].id , 'data-missing'=>@images[ic].missing
                         %>
                     <% else %>
@@ -111,7 +111,7 @@
 
         <div id="high_area_template" style="opacity: 0.5;position: absolute; overflow: hidden; z-index: 0; left: 0px; top: 0px; width: 0px; height: 0px; display: block; " class="high_area"></div>
 
-        
+
 
         <div class="modal hide" id="coding_topics" style="width: 265px;">
           <div class="modal-header">
@@ -165,14 +165,14 @@
             				<%= hidden_field_tag "deleted_ha_#{image.id}_#{index}" %>
         			    </div>
                         <% end %>
-                    </div> 
+                    </div>
                <% end %>
             </div>
             <%= hidden_field_tag "status", "0" %>
             <% if @allowed_to_code %>
                 <div class="form-actions" style="text-align:center">
                     <div class="pull-left btn-group">
-                        <a id="" class="btn  btn-danger clear_highlighting">Clear Highlighted Areas</a>
+                        <a id="" class="btn btn-danger clear_highlighting">Clear Highlighted Areas</a>
                         <a id="" class="btn btn-inverse skip_coding">Nothing to Code</a>
                     </div>
 
@@ -182,7 +182,7 @@
             		            <%= submit_tag "Save and Display", class: "save btn btn-info"%>
             			<a href="/" class="btn ">Cancel</a>
             			</div>
-                        
+
                     </div>
                 </div>
             <% else %>
@@ -193,13 +193,13 @@
             <% end %>
             <br>
         <% end %>
-        
+
     </div>
-    
+
     <div class="alert alert-info span2" style="margin-left: 78px;">
       <a id="close_help" type="button" class="close" data-dismiss="alert">×</a>
       <h3>How coding works</h3>
-      <br>    
+      <br>
       <h4>Steps</h4>
       <ol>
           <li>Drag the mouse over the related article.</li>
@@ -214,7 +214,7 @@
 	<li>If an image is missing, it might be because it was not available when we tried to scrape it. Try the button "try to download it".</li>
       </ul>
     </div>
-    
+
 </div>
 
 <%= hidden_field_tag "help_closed" %>
@@ -259,7 +259,7 @@ $(function() {
 
 // make sure the user doesn't lose their work by making sure they want to close the page
 window.onbeforeunload = function(e,s) {
-    if (isModified()) { 
+    if (isModified()) {
         return "If you leave this page without saving you will lose your work";
     };
 }
