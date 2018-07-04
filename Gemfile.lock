@@ -114,7 +114,7 @@ GEM
     method_source (0.8.1)
     mime-types (1.22)
     multi_json (1.7.2)
-    mysql2 (0.3.11)
+    mysql2 (0.3.21)
     nokogiri (1.5.9)
     orm_adapter (0.4.0)
     pg (0.15.0)
@@ -232,7 +232,7 @@ DEPENDENCIES
   jquery-ui-rails
   launchy
   less-rails
-  mysql2
+  mysql2 (~> 0.3.21)
   pg
   piwik_analytics
   rails (= 3.2.13)

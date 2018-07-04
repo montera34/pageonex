@@ -39,7 +39,7 @@ group :test do
   gem 'launchy'
 end
 
-gem 'mysql2'
+gem 'mysql2', '~> 0.3.21'
 
 # ODF generation for exporting results
 gem 'rodf'
