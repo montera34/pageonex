@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20180705090755) do
+ActiveRecord::Schema.define(:version => 20180705090834) do
 
   create_table "areas", :force => true do |t|
     t.integer  "x1"
@@ -84,6 +84,13 @@ ActiveRecord::Schema.define(:version => 20180705090755) do
     t.string   "name"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+  end
+
+  create_table "taxonomy_options", :force => true do |t|
+    t.string   "value"
+    t.integer  "taxonomy_id"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
   end
 
   create_table "threadx_collaborators", :force => true do |t|
