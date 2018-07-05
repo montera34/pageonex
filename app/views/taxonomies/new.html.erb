@@ -1,0 +1,22 @@
+<% @title = "New taxonomy - PageOneX" %>
+<div class="page-header">
+  <h1>New taxonomy</h1>
+</div>
+<%= form_for @taxonomy do |f| %>
+  <div class="control-group">
+    <%= f.label :name, class: "control-label" %>
+    <div class="controls">
+      <%= f.text_field :name %>
+    </div>
+
+    <% if @taxonomy.errors.messages[:name].present? %>
+      <small class="text-error">Error: <%= @taxonomy.errors.messages[:name].first %></small>
+    <% end %>
+
+  </div>
+
+  <div class="form-actions">
+    <%= f.submit "Create taxonomy", class: 'btn btn-primary' %>
+    <%= link_to "Cancel", taxonomies_path, class: 'btn' %>
+  </div>
+<% end %>

@@ -1,0 +1,45 @@
+<% @title = "Taxonomies list - PageOneX" %>
+<div class="page-header">
+  <h1>Taxonomies</h1>
+</div>
+
+<%= form_for @taxonomy do |f| %>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Options</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @taxonomies.each do |taxonomy| %>
+        <% if taxonomy == @taxonomy %>
+          <tr>
+            <td><%= link_to taxonomy.id, taxonomy_taxonomy_options_path(taxonomy) %></td>
+            <td>
+              <%= f.text_field :name, class: 'input-medium' %>
+              <% if @taxonomy.errors.messages[:name].present? %>
+                <small class="text-error">Error: <%= @taxonomy.errors.messages[:name].first %></small>
+              <% end %>
+            </td>
+            <td><%= link_to taxonomy.taxonomy_options.map(&:value)*' | ', taxonomy_taxonomy_options_path(taxonomy) %></td>
+            <td>
+                <%= f.submit "Change name", class: 'btn btn-primary btn-mini' %>
+                <%= link_to "Cancel", taxonomies_path, class: 'btn btn-mini' %>
+            </td>
+          </tr>
+
+        <% else %>
+          <tr>
+            <td><%= taxonomy.id %></td>
+            <td><%= taxonomy.name %></td>
+            <td><%= taxonomy.taxonomy_options.map(&:value)*' | ' %></td>
+            <td> </td>
+          </tr>
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>

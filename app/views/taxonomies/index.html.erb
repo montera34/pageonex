@@ -1,0 +1,40 @@
+<% @title = "Taxonomies list - PageOneX" %>
+<div class="page-header">
+  <h1>Taxonomies</h1>
+</div>
+
+<% if @taxonomies.present? %>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Options</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @taxonomies.each do |taxonomy| %>
+        <tr>
+          <td><%= link_to taxonomy.id, taxonomy_taxonomy_options_path(taxonomy) %></td>
+          <td><%= link_to taxonomy.name, taxonomy_taxonomy_options_path(taxonomy) %></td>
+          <td><%= link_to taxonomy.taxonomy_options.map(&:value)*' | ', taxonomy_taxonomy_options_path(taxonomy) %></td>
+          <td>
+            <%= link_to "Change name", edit_taxonomy_path(taxonomy), class: 'btn btn-mini' %>
+            <%= link_to "Destroy", taxonomy_path(taxonomy),
+                        method: :delete,
+                        data: { confirm: 'Are you sure?' },
+                        class: 'btn btn-mini btn-danger' %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <%= link_to "New", new_taxonomy_path, class: 'btn btn-primary' %>
+<% else %>
+  <h3>There are not taxonomies yet</h3>
+  <%= link_to "Create the first one", new_taxonomy_path, class: 'btn btn-primary' %>
+<% end %>
+
+
