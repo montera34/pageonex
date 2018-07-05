@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20180703105721) do
+ActiveRecord::Schema.define(:version => 20180705090755) do
 
   create_table "areas", :force => true do |t|
     t.integer  "x1"
@@ -76,6 +76,12 @@ ActiveRecord::Schema.define(:version => 20180703105721) do
   create_table "media_threadxes", :force => true do |t|
     t.integer  "threadx_id"
     t.integer  "media_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "taxonomies", :force => true do |t|
+    t.string   "name"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
