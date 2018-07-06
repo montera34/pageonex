@@ -50,13 +50,14 @@ class Threadx < ActiveRecord::Base
 	end
 
 	def starts_before_ends
-		if end_date < start_date
+		if [start_date,end_date].any? {|d| d.blank?} || end_date < start_date
 			errors.add(:end_date, 'must be after start date')
 		end
 	end
 
 	# workaround for bug #59: too big threads
 	def not_too_many_images
+		return false if [start_date,end_date].any? {|d| d.blank?}
 		media_count = media.length
 		days = end_date - start_date
 		number_of_images = media_count * days
