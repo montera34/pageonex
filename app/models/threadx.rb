@@ -19,6 +19,9 @@ class Threadx < ActiveRecord::Base
 	has_many :codes
 	has_many :highlighted_areas, :through => :codes
 
+	has_many :threadx_taxonomies
+	has_many :taxonomies, through: :threadx_taxonomies
+
 	has_many :coded_pages
 
 	validates :thread_name, :thread_display_name, :start_date, :end_date, :description , :category, :presence => true

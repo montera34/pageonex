@@ -1,6 +1,7 @@
 class TaxonomyOptionsController < ApplicationController
 
   before_filter :authenticate_admin!
+
   before_filter :load_taxonomy, only: [:index, :destroy, :create, :edit, :update]
   before_filter :load_taxonomy_option, only: [:destroy, :edit, :update]
   before_filter :load_taxonomy_options, only: [:index, :edit]

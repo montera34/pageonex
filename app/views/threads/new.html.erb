@@ -133,6 +133,19 @@
     </div>
 
 
+  <% if @taxonomies.present? %>
+    <h3>Advanced features</h3>
+    <p>Use extra taxonomies when classifing areas.</p>
+
+    <% @taxonomies.each do |taxonomy| %>
+      <label class="checkbox">
+        <%= check_box_tag "taxonomies[]", taxonomy.id %>
+        <strong><%= taxonomy.name %>:</strong>
+        <%= taxonomy.taxonomy_options.map(&:value).join(' | ') %>
+      </label>
+    <% end %>
+  <% end %>
+
   <div class="form-actions control-group">
        <%= f.submit "Submit and Start Coding »", :class => "btn btn-primary btn-large", id: "start_coding" %>
       <a class="btn btn-large" href="/">Cancel</a>

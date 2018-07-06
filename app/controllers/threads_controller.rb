@@ -57,6 +57,7 @@ class ThreadsController < ApplicationController
 		@users = User.hashes
 		@usernames = User.pluck(:username)
  		@collaborators = @thread.collaborators.pluck(:username)
+ 		@taxonomies = Taxonomy.includes(:taxonomy_options).all
 	end
 
 	# create action is responsible of processing the submited new form, and create the thread object in the database and handle the validation
@@ -76,6 +77,8 @@ class ThreadsController < ApplicationController
 
 		# formatting the newspapers_names hash as mentioned above
 		@thread.media = Media.where(:id=>params[:media])
+
+		@thread.taxonomies = Taxonomy.where(id: params[:taxonomies])
 
 		# For any submitted new thread, it should pass the following conditons to be saved to the db
 		# (@thread.valid?) this conditions is used to check if the instantiated thread, is passing the validations in the threadx model class
@@ -155,6 +158,7 @@ class ThreadsController < ApplicationController
 		@users = User.hashes
 		@usernames = User.pluck(:username)
 		@collaborators = @thread.collaborators.pluck(:username)
+		@taxonomies = Taxonomy.includes(:taxonomy_options).all
 	end
 
 
@@ -169,6 +173,8 @@ class ThreadsController < ApplicationController
 		@thread.remove_composite_images # make sure to flush the generated composite images (because the update event handler won't catch topic changes)
 
 		@thread.media = Media.where(:id=>params[:media])
+
+		@thread.taxonomies = Taxonomy.where(id: params[:taxonomies])
 
 		#@thread.codes = params[:codes]
 
