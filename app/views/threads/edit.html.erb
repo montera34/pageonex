@@ -136,7 +136,7 @@
 
     <% @taxonomies.each do |taxonomy| %>
       <label class="checkbox">
-        <%= check_box_tag "taxonomies[]", taxonomy.id, @thread.taxonomy_ids.include?(taxonomy.id) %>
+        <%= check_box_tag "taxonomies[]", taxonomy.id, @thread.taxonomy_ids.include?(taxonomy.id), id: "taxonomy_#{taxonomy.id}" %>
         <strong><%= taxonomy.name %>:</strong>
         <%= taxonomy.taxonomy_options.map(&:value).join(' | ') %>
       </label>
