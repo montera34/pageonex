@@ -1,29 +1,31 @@
 class HighlightedArea < ActiveRecord::Base
 	has_many :areas
+	has_many :taxonomy_classifications, dependent: :destroy
+	has_many :taxonomy_options, through: :taxonomy_classifications
 	belongs_to :code
 	belongs_to :user
 	belongs_to :image
-	
+
 	def threadx
-		code.threadx if not code.nil?
+		code.threadx unless code.nil?
 	end
-	
+
 	def self.by_image(image)
 		where(:image_id => image.id)
 	end
-	
+
 	def self.by_threadx(threadx)
 		where(:code_id => threadx.code_ids)
 	end
-	
+
 	def self.by_code(code)
 		where(:code_id => code.id)
 	end
-	
+
 	def area
 		areas.first.width * areas.first.height
 	end
- 
+
 	def scaled_areas scale
 		areas.collect { |a| a.scaled_copy scale }
 	end

@@ -3,10 +3,11 @@ class CodingController < ApplicationController
 
   # render the coding view
   def process_images
-    @thread = Threadx.find_by_thread_name params[:thread_name]
+    @thread = Threadx.includes(taxonomies: :taxonomy_options).find_by_thread_name params[:thread_name]
     @highlighted_areas = @thread.highlighted_areas
     @allowed_to_code = @thread.allowed_to_code? current_user
     @images = @thread.images_by_date  # while coding we want to go day by day, NOT media by media
+    @taxonomies = @thread.taxonomies
   end
 
   # process the submitted highlighted area from the coding view, and redirect to the display
@@ -38,6 +39,7 @@ class CodingController < ApplicationController
           y1: params["y1_#{ha_name}"].to_i, x2: params["x2_#{ha_name}"].to_i,
           y2: params["y2_#{ha_name}"].to_i, width: params["width_#{ha_name}"].to_i,
           height: params["height_#{ha_name}"].to_i)
+        ha.taxonomy_options = TaxonomyOption.where(id: params["taxonomy_options_#{ha_name}"]) if params["taxonomy_options_#{ha_name}"].present?
       else
       	# Updating an existing area
       	ha = @thread.highlighted_areas.find(params["id_#{ha_name}"])
@@ -52,6 +54,7 @@ class CodingController < ApplicationController
             y1: params["y1_#{ha_name}"].to_i, x2: params["x2_#{ha_name}"].to_i,
             y2: params["y2_#{ha_name}"].to_i, width: params["width_#{ha_name}"].to_i,
             height: params["height_#{ha_name}"].to_i)
+          ha.taxonomy_options = TaxonomyOption.where(id: params["taxonomy_options_#{ha_name}"]) if params["taxonomy_options_#{ha_name}"].present?
       	end
       end
     end

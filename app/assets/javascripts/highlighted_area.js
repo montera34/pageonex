@@ -36,6 +36,13 @@ var HighlightedAreas = {
         $(tag).attr('name', 'img_id_'+cssid).val(img_id).appendTo(ha_elt);
         $(tag).attr('name', 'id_'+cssid).val(0).appendTo(ha_elt);
         $(tag).attr('name', 'code_id_'+cssid).val(code_id).appendTo(ha_elt);
+        taxonomy_list = $(".js-taxonomy-classification")
+        for (i = 0; i < taxonomy_list.length; i++) {
+            taxonomy_id = taxonomy_list[i].getAttribute('data-taxonomy');
+            $(tag).attr({ 'name': 'taxonomy_options_' + cssid + '[]',
+                          'id': 'taxonomy_options_' + cssid + '_' + taxonomy_id,
+                          'data-taxonomy': taxonomy_id }).val('').appendTo(ha_elt);
+        }
         $(tag).attr('name', 'username_'+cssid).val(username).appendTo(ha_elt);
         $(tag).attr('name', 'hash_'+cssid).val(hash).appendTo(ha_elt);
         $(tag).attr('name', 'x1_'+cssid).val(roundedSelection.x1).appendTo(ha_elt);
@@ -62,6 +69,12 @@ var HighlightedAreas = {
         $("[name='width_"+cssid+"']").val(ha.width);
         $("[name='height_"+cssid+"']").val(ha.height);
         $("[name='deleted_"+cssid+"']").val(ha.deleted);
+
+        for (i = 0; i < ha.taxonomy_ids.length; i++) {
+            taxonomy_id = taxonomy_list[i].getAttribute('data-taxonomy');
+            $("#taxonomy_options_" + cssid + "_" + ha.taxonomy_ids[i]).val(ha.taxonomy_option_ids[i]);
+        }
+
         setModified();
     },
 
@@ -99,6 +112,13 @@ var HighlightedAreas = {
         ha.img_width = $("[name='img_width_"+cssid+"']").val();
         ha.img_height = $("[name='img_height_"+cssid+"']").val();
         ha.deleted = $("[name='deleted_"+cssid+"']").val();
+        ha.taxonomy_ids = []
+        ha.taxonomy_option_ids = []
+        taxonomy_options_list = $("[name='taxonomy_options__"+cssid+"']")
+        for (i = 0; i < taxonomy_options_list.length; i++) {
+            ha.taxonomy_ids.push(taxonomy_options_list[i].getAttribute('data-taxonomy'));
+            ha.taxonomy_option_ids.push(taxonomy_options_list[i].val());
+        }
         return ha;
     },
 

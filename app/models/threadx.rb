@@ -19,7 +19,7 @@ class Threadx < ActiveRecord::Base
 	has_many :codes
 	has_many :highlighted_areas, :through => :codes
 
-	has_many :threadx_taxonomies
+	has_many :threadx_taxonomies, dependent: :destroy
 	has_many :taxonomies, through: :threadx_taxonomies
 
 	has_many :coded_pages

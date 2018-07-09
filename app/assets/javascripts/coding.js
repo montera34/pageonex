@@ -129,6 +129,16 @@ function markAsNothingToCode(){
 function setCodeOnHighlightedArea(highlightedAreaCssId) {
     ha = HighlightedAreas.getByCssId(highlightedAreaCssId);
     ha.code_id = $("#codes").val();
+
+    ha.taxonomy_ids = []
+    ha.taxonomy_option_ids = []
+    taxonomy_list = $(".js-taxonomy-classification")
+    for (i = 0; i < taxonomy_list.length; i++) {
+        taxonomy_id = taxonomy_list[i].getAttribute('data-taxonomy')
+        ha.taxonomy_ids.push(taxonomy_id);
+        ha.taxonomy_option_ids.push($("#taxonomy_" + taxonomy_id).val());
+    }
+
     HighlightedAreas.save(ha);
     renderHighlightedAreas();
 }

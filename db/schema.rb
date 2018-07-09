@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20180706092346) do
+ActiveRecord::Schema.define(:version => 20180706092525) do
 
   create_table "areas", :force => true do |t|
     t.integer  "x1"
@@ -84,6 +84,13 @@ ActiveRecord::Schema.define(:version => 20180706092346) do
     t.string   "name"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+  end
+
+  create_table "taxonomy_classifications", :force => true do |t|
+    t.integer  "highlighted_area_id"
+    t.integer  "taxonomy_option_id"
+    t.datetime "created_at",          :null => false
+    t.datetime "updated_at",          :null => false
   end
 
   create_table "taxonomy_options", :force => true do |t|
