@@ -1,0 +1,51 @@
+version: '2'
+services:
+  mysql:
+    image: mysql:5.6.40
+    ports:
+      - "13306:13306"
+    volumes_from:
+      - dbdata
+    volumes:
+      - ./docker-files/pageonex.cnf:/etc/mysql/conf.d/pageonex.cnf
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=dev
+
+  dbdata:
+    image: tianon/true
+    volumes:
+      - /var/lib/mysql
+
+  app:
+    build: .
+    environment:
+      - RAILS_ENV=development
+      - DATABASE_ADAPTER=mysql2
+      - DATABASE_USERNAME=root
+      - DATABASE_PASSWORD=root
+      - DATABASE_HOST=mysql
+      - DATABASE_PORT=13306
+      - DATABASE_NAME=dev
+    depends_on:
+      - "mysql"
+    ports:
+      - '3000:3000'
+    volumes_from:
+      - app_data
+    links:
+      - "mysql"
+    command:
+      - ./docker-files/cleanup-pid-file-and-wait-for-mysql.sh
+      - mysql
+      - root
+      - bundle
+      - exec
+      - puma
+      - -C
+      - "config/puma.rb"
+
+  app_data:
+    image: tianon/true
+    volumes:
+      - ".:/workspace"

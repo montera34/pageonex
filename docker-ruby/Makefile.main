@@ -1,0 +1,11 @@
+PROJECT = ruby-base
+DOCKER_REGISTRY = docker.io
+DOCKER_ORG = pageonex
+VERSION := $(shell echo `basename "$(PWD)"`.`cat REVISION`)
+DOCKER_IMAGE = $(DOCKER_REGISTRY)/$(DOCKER_ORG)/$(PROJECT):$(VERSION)
+
+docker-build:
+	docker build -t $(DOCKER_IMAGE) .
+
+docker-push: docker-build
+	docker push $(DOCKER_IMAGE)
