@@ -291,6 +291,34 @@ class Threadx < ActiveRecord::Base
 		return res
 	end
 
+  def raw_areas_data
+    areas = []
+    all_areas = self.highlighted_areas.includes(:image, :code, :user, :areas, taxonomy_options: :taxonomy).order(created_at: :asc)
+
+    all_areas.each do |ha|
+      area_data = { areas_id: ha.id,
+                    user_name: ha.user.username,
+                    code_text: ha.code.code_text,
+                    publication_date: ha.image.publication_date,
+                    media_name: ha.image.media.display_name,
+                    media_country: ha.image.media.country,
+                    area_x1: ha.areas.first.x1,
+                    area_y1: ha.areas.first.y1,
+                    area_x2: ha.areas.first.x2,
+                    area_y2: ha.areas.first.y2,
+                    area_width: ha.areas.first.width,
+                    area_height: ha.areas.first.height }
+
+      taxonomy_values_list = {}
+      ha.taxonomy_options.each { |to| taxonomy_values_list[to.taxonomy.name] = to.value }
+      area_data[:taxonomy_values] = taxonomy_values_list if taxonomy_values_list.present?
+
+      areas << area_data
+    end
+
+    return { areas: areas }
+  end
+
 	def composite_img_dir width=DEFAULT_COMPOSITE_IMAGE_WIDTH, create_dir=false
 		dir = File.join('app','assets','images','threads',self.owner.id.to_s,self.id.to_s, width.to_s)
 		if create_dir and not File.directory? dir

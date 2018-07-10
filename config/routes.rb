@@ -24,6 +24,7 @@ Pageonex::Application.routes.draw do
   end
 
   match ':username/:thread_name/export' => 'threads#export'
+  match ':username/:thread_name/raw' => 'threads#raw'
   match ':username/:thread_name/coding' => 'coding#process_images'
   match ':username/:thread_name/process_highlighted_areas' => 'coding#process_highlighted_areas'
   match ':username/:thread_name' => 'coding#display'

@@ -309,6 +309,14 @@ class ThreadsController < ApplicationController
 		end
 	end
 
+	def raw
+		@thread = Threadx.find_by_thread_name params[:thread_name]
+
+		respond_to do |format|
+			format.json { render :json => @thread.raw_areas_data.to_json }
+		end
+	end
+
 	#To export the results to a spreadsheet using the gem rODF
 	def results_to_ods(results)
 		spreadsheet = ODF::Spreadsheet.new
