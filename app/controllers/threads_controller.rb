@@ -92,7 +92,7 @@ class ThreadsController < ApplicationController
 			# iterating over the submitted topics, and create a code object for each one. Then add this object to the codes array to assign it to the thread
 			number_of_codes.times do |n|
 				code_name = params["topic_name_#{n}"]
-				unless code_name.empty?
+				unless code_name.blank?
 					codes << Code.create!({:code_text => code_name,
 										   :code_description => params["topic_description_#{n}"],
 										   :color => params["topic_color_#{n}"]})
@@ -124,6 +124,7 @@ class ThreadsController < ApplicationController
 			@users = User.hashes
 			@usernames = User.pluck(:username)
 			@collaborators = @thread.collaborators.pluck(:username)
+			@taxonomies = Taxonomy.includes(:taxonomy_options).all
 
 			# send some params back to the view, to tell the user about what is missing
 			if params["topic_name_1"] == ""
