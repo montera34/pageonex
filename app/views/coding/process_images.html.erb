@@ -158,10 +158,17 @@
             				<%= hidden_field_tag "img_id_#{ha_name}", "#{image.id}" %>
             				<%= hidden_field_tag "id_#{ha_name}", "#{ha.id}" %>
             				<%= hidden_field_tag "code_id_#{ha_name}", "#{ha.code_id}" %>
+                            <% assigned_taxonomy_ids = [] %>
                             <% ha.taxonomy_options.each do |taxonomy_option| %>
+                                <% assigned_taxonomy_ids << taxonomy_option.taxonomy_id %>
                                 <%= hidden_field_tag "taxonomy_options_#{ha_name}[]", taxonomy_option.id,
                                     id: "taxonomy_options_#{ha_name}_#{taxonomy_option.taxonomy_id}",
                                     data: { taxonomy: taxonomy_option.taxonomy_id } %>
+                            <% end %>
+                            <% (@thread.taxonomy_ids - assigned_taxonomy_ids).each do |taxonomy_id| %>
+                                <%= hidden_field_tag "taxonomy_options_#{ha_name}[]", nil,
+                                        id: "taxonomy_options_#{ha_name}_#{taxonomy_id}",
+                                        data: { taxonomy: taxonomy_id } %>
                             <% end %>
                             <% if ha.user.nil? %>
                                 <%= hidden_field_tag "username_#{ha_name}", "" %>

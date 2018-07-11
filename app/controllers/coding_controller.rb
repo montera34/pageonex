@@ -4,7 +4,7 @@ class CodingController < ApplicationController
   # render the coding view
   def process_images
     @thread = Threadx.includes(taxonomies: :taxonomy_options).find_by_thread_name params[:thread_name]
-    @highlighted_areas = @thread.highlighted_areas
+    @highlighted_areas = @thread.highlighted_areas.includes(:taxonomy_options)
     @allowed_to_code = @thread.allowed_to_code? current_user
     @images = @thread.images_by_date  # while coding we want to go day by day, NOT media by media
     @taxonomies = @thread.taxonomies

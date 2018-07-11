@@ -98,13 +98,28 @@ $(document).ready(function () {
 
 });
 
-function addCloseAreaBehaviors(){
+function addIconsAreaBehaviors(){
     if (pageData.allowedToCode) {
         $(".ha-close-icon").on("click",function() {
             ha_id = $(this).parent('div').attr("id");
             $('#' + ha_id).hide();
             HighlightedAreas.removeOne(ha_id);
         });
+
+        $(".ha-edit-icon").on("click",function() {
+            ha_id = $(this).parent('div').attr("id").replace("ha_", '');
+            pageData.currentHighlightedArea = ha_id; // remember the current highlighted area id
+            setModalValuesToHighlightedArea(ha_id)
+            $('#coding_topics').modal({backdrop:false});
+        });
+    }
+}
+
+function setModalValuesToHighlightedArea(cssId){
+    ha = HighlightedAreas.getByCssId(cssId);
+    $("#codes").val(ha.code_id);
+    for (i = 0; i < ha.taxonomy_ids.length; i++) {
+        $("#taxonomy_" + ha.taxonomy_ids[i]).val(ha.taxonomy_option_ids[i]);
     }
 }
 
@@ -195,7 +210,7 @@ function renderHighlightedAreas () {
         }
     }
     renderNothingToCode();
-    addCloseAreaBehaviors();
+    addIconsAreaBehaviors();
 }
 
 // API for tracking modified status
@@ -241,6 +256,9 @@ function renderHighlightedArea(ha) {
     if (pageData.allowedToCode) {
         var close_icon = $('<div id="close_' + ha.cssid + '" class="ha-close-icon"><img id="close_img_' + ha.cssid + '" src="/assets/icon-close.png" title="Remove area" alt="Remove area icon"/></div>');
         close_icon.appendTo(ha_elt);
+
+        var edit_icon = $('<div id="edit_' + ha.cssid + '" class="ha-edit-icon"><img id="edit_img_' + ha.cssid + '" src="/assets/icon-edit.png" title="Edit area classification" alt="Edit area icon"/></div>');
+        edit_icon.appendTo(ha_elt);
     }
 
     ha_elt.attr('id', 'ha_' + ha.cssid);
@@ -288,10 +306,10 @@ function highlightingArea(img, selection) {
     img_id = getCurrentImageId();
     code_id = '';
     ha = HighlightedAreas.add(current_user, current_user_hash, img_id, code_id, screenToNatural(selection));
-    if( $("#codes option").length == 1) {   // if only one topic, default to that one
+    if( $("#codes option").length == 1 && $('.js-taxonomy-classification').length == 0) {   // if only one topic with no taxonomies, default to that one
         setCodeOnHighlightedArea( ha.cssid );
     } else {
-        // display the coding box, to ask the user to choose a code
+        // display the coding box, to ask the user to choose a code and taxonomies
         pageData.currentHighlightedArea = ha.cssid; // remember the current highlighted area id
         $('#coding_topics').modal({backdrop:false});
     }

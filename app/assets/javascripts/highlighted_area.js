@@ -71,7 +71,6 @@ var HighlightedAreas = {
         $("[name='deleted_"+cssid+"']").val(ha.deleted);
 
         for (i = 0; i < ha.taxonomy_ids.length; i++) {
-            taxonomy_id = taxonomy_list[i].getAttribute('data-taxonomy');
             $("#taxonomy_options_" + cssid + "_" + ha.taxonomy_ids[i]).val(ha.taxonomy_option_ids[i]);
         }
 
@@ -114,10 +113,11 @@ var HighlightedAreas = {
         ha.deleted = $("[name='deleted_"+cssid+"']").val();
         ha.taxonomy_ids = []
         ha.taxonomy_option_ids = []
-        taxonomy_options_list = $("[name='taxonomy_options__"+cssid+"']")
-        for (i = 0; i < taxonomy_options_list.length; i++) {
-            ha.taxonomy_ids.push(taxonomy_options_list[i].getAttribute('data-taxonomy'));
-            ha.taxonomy_option_ids.push(taxonomy_options_list[i].val());
+        taxonomy_list = $(".js-taxonomy-classification")
+        for (i = 0; i < taxonomy_list.length; i++) {
+            taxonomy_id = taxonomy_list[i].getAttribute('data-taxonomy')
+            ha.taxonomy_ids.push(taxonomy_id);
+            ha.taxonomy_option_ids.push($("#taxonomy_options_"+cssid+"_" +taxonomy_id).val());
         }
         return ha;
     },
