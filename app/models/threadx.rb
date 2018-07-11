@@ -292,7 +292,8 @@ class Threadx < ActiveRecord::Base
 	end
 
   def raw_areas_data
-    areas = []
+    areas_data = []
+    images_data = []
     all_areas = self.highlighted_areas.includes(:image, :code, :user, :areas, taxonomy_options: :taxonomy).order(created_at: :asc)
 
     all_areas.each do |ha|
@@ -313,10 +314,22 @@ class Threadx < ActiveRecord::Base
       ha.taxonomy_options.each { |to| taxonomy_values_list[to.taxonomy.name] = to.value }
       area_data[:taxonomy_values] = taxonomy_values_list if taxonomy_values_list.present?
 
-      areas << area_data
+      areas_data << area_data
     end
 
-    return { areas: areas }
+
+    images.each do |img|
+	    image_data = { publication_date: img.publication_date,
+	    		           media_name: img.media.display_name,
+	    		           media_country: img.media.country,
+	    		           image_size: img.size,
+	    		           missing: img.missing }
+
+	    images_data << image_data
+	  end
+
+
+    return { areas: areas_data, images: images_data }
   end
 
 	def composite_img_dir width=DEFAULT_COMPOSITE_IMAGE_WIDTH, create_dir=false
