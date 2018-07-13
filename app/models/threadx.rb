@@ -323,6 +323,7 @@ class Threadx < ActiveRecord::Base
 	    		           media_name: img.media.display_name,
 	    		           media_country: img.media.country,
 	    		           image_size: img.size,
+	    		           source_url: img.source_url,
 	    		           missing: img.missing }
 
 	    images_data << image_data
