@@ -361,7 +361,10 @@ class Threadx < ActiveRecord::Base
 			                          owner_id: new_owner_id,
 			                          parent_id: id)
 		forked_thread.media = media
+		forked_thread.taxonomies = taxonomies
 		forked_thread.save!
+
+		clean_taxonomy_classifications
 
 		forked_thread.images << forked_thread.scrape_all_images
 
@@ -372,6 +375,7 @@ class Threadx < ActiveRecord::Base
 
 			code.highlighted_areas.each do |ha|
 				new_ha = new_code.highlighted_areas.create!({image_id: ha.image_id, name: ha.name, user_id: ha.user_id})
+				new_ha.taxonomy_options = ha.taxonomy_options
 
 				ha.areas.each do |area|
 					new_area = area.dup
