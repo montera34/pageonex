@@ -177,8 +177,6 @@ class ThreadsController < ApplicationController
 
 		@thread.taxonomies = Taxonomy.where(id: params[:taxonomies])
 
-		#@thread.codes = params[:codes]
-
 		if @thread.update_attributes(params[:threadx])
 
 			@thread.status = params[:status]

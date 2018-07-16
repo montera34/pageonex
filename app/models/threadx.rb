@@ -43,6 +43,7 @@ class Threadx < ActiveRecord::Base
 	# remove the generated composite images when a thread is changed
 	after_save { |t|
 		t.remove_composite_images
+		t.clean_taxonomy_classifications
 	}
 
 	# for now, default to sort by most recent first
@@ -221,6 +222,11 @@ class Threadx < ActiveRecord::Base
 		area_count = HighlightedArea.by_threadx(self).by_image(image).length
 		skipped = coded_pages.for_image(image).length
 		area_count > 0 or skipped > 0
+	end
+
+	def clean_taxonomy_classifications
+		::TaxonomyClassification.where("highlighted_area_id IN (?) AND taxonomy_option_id NOT IN (?)",
+														 highlighted_area_ids, taxonomies.map(&:taxonomy_option_ids).flatten).destroy_all
 	end
 
 	def results(type = :tree)
