@@ -1,0 +1,38 @@
+<% @title = "Taxonomy: #{@taxonomy.name} - PageOneX" %>
+<div class='page-header'>
+  <h1>Taxonomy: <%= @taxonomy.name %></h1>
+</div>
+
+<%= form_for [@taxonomy, @taxonomy_option] do |f| %>
+  <table class='table table-striped'>
+    <thead>
+      <tr>
+        <th>Option Id</th>
+        <th>Value</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @taxonomy_options.each do |option| %>
+        <tr>
+          <td><%= option.id %></td>
+          <% if option == @taxonomy_option %>
+            <td>
+              <%= f.text_field :value, class: 'input-medium' %>
+              <% if @taxonomy_option.errors.messages[:value].present? %>
+                <small class="text-error">Error: <%= @taxonomy_option.errors.messages[:value].first %></small>
+              <% end %>
+            </td>
+            <td>
+              <%= f.submit "Change value", class: 'btn btn-primary btn-mini' %>
+              <%= link_to "Cancel", taxonomy_taxonomy_options_path(@taxonomy), class: 'btn btn-mini' %>
+            <td>
+          <% else %>
+            <td><%= option.value %></td>
+            <td> </td>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>

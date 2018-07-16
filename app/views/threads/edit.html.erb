@@ -21,16 +21,16 @@
   <div class="control-group">
   <%= f.label :thread_display_name, "Thread Name", :class => "control-label" %>
     <div class="controls">
-    <%= f.text_field :thread_display_name %> 
+    <%= f.text_field :thread_display_name %>
     </div>
   </div>
   <div class="control-group">
   <%= f.label :thread_name, "URL-Safe Name (slug)", :class => "control-label" %>
     <div class="controls">
-    <%= f.text_field :thread_name, :rel=>"popover", 'data-content'=>"This will be used to create the URL this Thread. If you include any letters or symbols that don't work in URLs, we will automatically substitute them. This field will generate: pageonex.com/your_thread_name from 'Your Thread Name'" %> 
+    <%= f.text_field :thread_name, :rel=>"popover", 'data-content'=>"This will be used to create the URL this Thread. If you include any letters or symbols that don't work in URLs, we will automatically substitute them. This field will generate: pageonex.com/your_thread_name from 'Your Thread Name'" %>
     </div>
   </div>
-<!--  
+<!--
   <div class="control-group">
   <%= f.label :status, :class => "control-label"  %>
     <div class="controls">
@@ -74,7 +74,7 @@
   <div class="control-group">
   <%= f.label :category, :class => "control-label"  %>
     <div class="controls">
-      <%= f.text_field :category, :rel=>"popover", 'data-content'=>"Separate the different categories by commas. Ex: social, politics, Brazil" %> 
+      <%= f.text_field :category, :rel=>"popover", 'data-content'=>"Separate the different categories by commas. Ex: social, politics, Brazil" %>
     </div>
   </div>
 
@@ -103,13 +103,13 @@
     </ul>
     <div id="collab-inputs"></div>
   </div>
-  
+
   <h3>Coding information</h3>
   <p>Create one or multiple categories you want to use in the analysis.</p>
 
   <div class="span6">
     <div id="topic-list">
-      <% 
+      <%
       @thread.codes.to_enum.with_index.each do |code,index| %>
         <%= render :partial => "topic_form", :locals => {
             :index => index, :id => code.id, :name => code.code_text , :color => code.color, :description => code.code_description
@@ -129,6 +129,19 @@
     <!-- <input id="clean_high_areas" type="checkbox">  -->
     <%= check_box_tag "clean_high_areas" %> Keep all highlighted areas that you have done, even the ones from newspapers that are not any more selected, or days that are not longer in this thread
   </label>
+
+  <% if @taxonomies.present? %>
+    <h3>Advanced features</h3>
+    <p>Use extra taxonomies when classifing areas.</p>
+
+    <% @taxonomies.each do |taxonomy| %>
+      <label class="checkbox">
+        <%= check_box_tag "taxonomies[]", taxonomy.id, @thread.taxonomy_ids.include?(taxonomy.id), id: "taxonomy_#{taxonomy.id}" %>
+        <strong><%= taxonomy.name %>:</strong>
+        <%= taxonomy.taxonomy_options.map(&:value).join(' | ') %>
+      </label>
+    <% end %>
+  <% end %>
 
   <hr>
   <div class="form-actions control-group">

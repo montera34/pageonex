@@ -1,0 +1,20 @@
+<div id="taxonomy-option-create-form" style="display:none">
+  <%= form_for [@taxonomy, @taxonomy_option || TaxonomyOption.new] do |f| %>
+    <table class='table table-striped'>
+      <tr>
+        <td>Value: </td>
+        <td>
+          <%= f.text_field :value %>
+          <% if @taxonomy_option && @taxonomy_option.errors.messages[:value].present? %>
+            <small class="text-error">Error: <%= @taxonomy_option.errors.messages[:value].first %></small>
+          <% end %>
+        </td>
+        <td>
+          <%= f.submit "Create taxonomy", class: 'btn btn-primary' %>
+          <%= content_tag :span, 'Cancel', class: 'btn js-toggle-elements',
+              data: { show: 'taxonomy-options-admin-add', hide: 'taxonomy-option-create-form' } %>
+        </td>
+      </tr>
+    </table>
+  <% end %>
+</div>

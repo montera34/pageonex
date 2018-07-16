@@ -44,10 +44,11 @@
 					<button class="btn btn-small dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
 					<ul class="dropdown-menu">
 					  <!-- <li><a href="#">Download as  .csv </a></li>-->
-						<li><a href="<%= thread_url(@thread)+"export.ods" %>">Download Data as .ods (spreadsheet)</a></li>
-						<li><a href="<%= thread_url(@thread)+"export.json" %>">Download Data as .json</a></li>
-						<li><a href="#chart-modal" data-toggle="modal">Download Bar Graph as .svg</a></li>
-						<li><a href="#image-export-modal" data-toggle="modal">Download as image(s) as .jpg</a></li>
+            <li><a href="<%= thread_url(@thread)+"export.ods" %>">Download Data as .ods (spreadsheet)</a></li>
+            <li><a href="<%= thread_url(@thread)+"export.json" %>">Download Data as .json</a></li>
+            <li><a href="<%= thread_url(@thread)+"raw.json" %>">Download Raw Areas Data as .json</a></li>
+            <li><a href="#chart-modal" data-toggle="modal">Download Bar Graph as .svg</a></li>
+            <li><a href="#image-export-modal" data-toggle="modal">Download as image(s) as .jpg</a></li>
 					  <!--
 					  <li class="divider"></li>
 					  <li><a href="#">Download as  .pdf </a></li>-->

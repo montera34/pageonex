@@ -68,6 +68,7 @@
 
 //= require spin.min
 
+//= require utils
 // require_tree .
 
 $(function() {

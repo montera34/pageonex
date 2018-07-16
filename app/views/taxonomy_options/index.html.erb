@@ -1,0 +1,47 @@
+<% @title = "Taxonomy: #{@taxonomy.name} - PageOneX" %>
+<div class='page-header'>
+  <h1>Taxonomy: <%= @taxonomy.name %></h1>
+</div>
+
+<% if @taxonomy_options.present? %>
+  <table class='table table-striped'>
+    <thead>
+      <tr>
+        <th>Option Id</th>
+        <th>Value</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @taxonomy_options.each do |option| %>
+        <tr>
+          <td><%= option.id %></td>
+          <td><%= option.value %></td>
+          <td>
+            <%= link_to "Change value", edit_taxonomy_taxonomy_option_path(@taxonomy, option), class: 'btn btn-mini' %>
+            <%= link_to 'Destroy', taxonomy_taxonomy_option_path(@taxonomy.id, option.id),
+                        method: :delete,
+                        data: { confirm: 'Are you sure?' },
+                        class: 'btn btn-mini btn-danger' %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>
+
+<%= render partial: 'form' %>
+
+<div id='taxonomy-options-admin-add'>
+  <% if @taxonomy_options.present? %>
+    <%= content_tag :span, 'Add new option', class: 'btn btn-primary js-toggle-elements',
+        data: { show: 'taxonomy-option-create-form', hide: 'taxonomy-options-admin-add' } %>
+  <% else %>
+    <table class='table table-striped'>
+      <thead><tr><th>There are not options for this taxonomy yet</th></tr></thead>
+    </table>
+    <%= content_tag :span, 'Create the first one', class: 'btn btn-primary js-toggle-elements',
+        data: { show: 'taxonomy-option-create-form', hide: 'taxonomy-options-admin-add' } %>
+  <% end %>
+  <%= link_to 'Back to taxonomies list', taxonomies_path, class: 'btn' %>
+</div>

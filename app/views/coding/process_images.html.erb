@@ -119,8 +119,16 @@
             <h3>Coding Topics</h3>
           </div>
           <div class="modal-body">
-            <p>Please select a topic:</p>
+            <p>Please select a <strong>topic</strong>:</p>
                 <%= select_tag :codes, options_from_collection_for_select(@thread.codes, "id", "code_text")%>
+
+            <% @taxonomies.each do |taxonomy| %>
+                <p>Please select a <%= taxonomy.name %>:</p>
+                <%= select_tag :taxonomy, options_from_collection_for_select(taxonomy.taxonomy_options, :id, :value),
+                   { id: "taxonomy_#{taxonomy.id}",
+                     class: "js-taxonomy-classification",
+                     data: { taxonomy: taxonomy.id } }%>
+            <% end %>
           </div>
           <div class="modal-footer">
             <a id="set_code" href="#" data-dismiss="modal" class="btn btn-primary">Okay</a>
@@ -144,25 +152,38 @@
                 <% @thread.images.each do |image| %>
                     <div id="ha_group_<%= image.id %>">
                         <% @thread.highlighted_areas_for_image(image).each_with_index do |ha, index| %>
-        			    <div id="<%= "ha_#{image.id}_#{index}" %>">
-            				<%= hidden_field_tag "ha_name[]", "ha_#{image.id}_#{index}" %>
-            				<%= hidden_field_tag "img_id_ha_#{image.id}_#{index}", "#{image.id}" %>
-            				<%= hidden_field_tag "id_ha_#{image.id}_#{index}", "#{ha.id}" %>
-            				<%= hidden_field_tag "code_id_ha_#{image.id}_#{index}", "#{ha.code_id}" %>
+                        <% ha_name =  "ha_#{image.id}_#{index}" %>
+        			    <div id="<%= ha_name %>">
+            				<%= hidden_field_tag "ha_name[]", ha_name %>
+            				<%= hidden_field_tag "img_id_#{ha_name}", "#{image.id}" %>
+            				<%= hidden_field_tag "id_#{ha_name}", "#{ha.id}" %>
+            				<%= hidden_field_tag "code_id_#{ha_name}", "#{ha.code_id}" %>
+                            <% assigned_taxonomy_ids = [] %>
+                            <% ha.taxonomy_options.each do |taxonomy_option| %>
+                                <% assigned_taxonomy_ids << taxonomy_option.taxonomy_id %>
+                                <%= hidden_field_tag "taxonomy_options_#{ha_name}[]", taxonomy_option.id,
+                                    id: "taxonomy_options_#{ha_name}_#{taxonomy_option.taxonomy_id}",
+                                    data: { taxonomy: taxonomy_option.taxonomy_id } %>
+                            <% end %>
+                            <% (@thread.taxonomy_ids - assigned_taxonomy_ids).each do |taxonomy_id| %>
+                                <%= hidden_field_tag "taxonomy_options_#{ha_name}[]", nil,
+                                        id: "taxonomy_options_#{ha_name}_#{taxonomy_id}",
+                                        data: { taxonomy: taxonomy_id } %>
+                            <% end %>
                             <% if ha.user.nil? %>
-                                <%= hidden_field_tag "username_ha_#{image.id}_#{index}", "" %>
-                                <%= hidden_field_tag "hash_ha_#{image.id}_#{index}", "" %>
+                                <%= hidden_field_tag "username_#{ha_name}", "" %>
+                                <%= hidden_field_tag "hash_#{ha_name}", "" %>
                             <% else %>
-                                <%= hidden_field_tag "username_ha_#{image.id}_#{index}", "#{ha.user.username}" %>
-					            <%= hidden_field_tag "hash_ha_#{image.id}_#{index}", "#{ha.user.email_hash}" %>
+                                <%= hidden_field_tag "username_#{ha_name}", "#{ha.user.username}" %>
+					            <%= hidden_field_tag "hash_#{ha_name}", "#{ha.user.email_hash}" %>
             				<% end %>
-                            <%= hidden_field_tag "x1_ha_#{image.id}_#{index}", "#{ha.areas.last.x1}" %>
-            				<%= hidden_field_tag "y1_ha_#{image.id}_#{index}", "#{ha.areas.last.y1}" %>
-            				<%= hidden_field_tag "x2_ha_#{image.id}_#{index}", "#{ha.areas.last.x2}" %>
-            				<%= hidden_field_tag "y2_ha_#{image.id}_#{index}", "#{ha.areas.last.y2}" %>
-            				<%= hidden_field_tag "width_ha_#{image.id}_#{index}", "#{ha.areas.last.width}" %>
-            				<%= hidden_field_tag "height_ha_#{image.id}_#{index}", "#{ha.areas.last.height}" %>
-            				<%= hidden_field_tag "deleted_ha_#{image.id}_#{index}" %>
+                            <%= hidden_field_tag "x1_#{ha_name}", "#{ha.areas.last.x1}" %>
+            				<%= hidden_field_tag "y1_#{ha_name}", "#{ha.areas.last.y1}" %>
+            				<%= hidden_field_tag "x2_#{ha_name}", "#{ha.areas.last.x2}" %>
+            				<%= hidden_field_tag "y2_#{ha_name}", "#{ha.areas.last.y2}" %>
+            				<%= hidden_field_tag "width_#{ha_name}", "#{ha.areas.last.width}" %>
+            				<%= hidden_field_tag "height_#{ha_name}", "#{ha.areas.last.height}" %>
+            				<%= hidden_field_tag "deleted_#{ha_name}" %>
         			    </div>
                         <% end %>
                     </div>

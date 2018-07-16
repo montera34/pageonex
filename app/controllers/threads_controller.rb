@@ -57,6 +57,7 @@ class ThreadsController < ApplicationController
 		@users = User.hashes
 		@usernames = User.pluck(:username)
  		@collaborators = @thread.collaborators.pluck(:username)
+ 		@taxonomies = Taxonomy.includes(:taxonomy_options).all
 	end
 
 	# create action is responsible of processing the submited new form, and create the thread object in the database and handle the validation
@@ -77,6 +78,8 @@ class ThreadsController < ApplicationController
 		# formatting the newspapers_names hash as mentioned above
 		@thread.media = Media.where(:id=>params[:media])
 
+		@thread.taxonomies = Taxonomy.where(id: params[:taxonomies])
+
 		# For any submitted new thread, it should pass the following conditons to be saved to the db
 		# (@thread.valid?) this conditions is used to check if the instantiated thread, is passing the validations in the threadx model class
 		# (params[:media] != nil) and this condtions to be sure that the thread is submitted with more than one newspaper selected
@@ -89,7 +92,7 @@ class ThreadsController < ApplicationController
 			# iterating over the submitted topics, and create a code object for each one. Then add this object to the codes array to assign it to the thread
 			number_of_codes.times do |n|
 				code_name = params["topic_name_#{n}"]
-				unless code_name.empty?
+				unless code_name.blank?
 					codes << Code.create!({:code_text => code_name,
 										   :code_description => params["topic_description_#{n}"],
 										   :color => params["topic_color_#{n}"]})
@@ -121,6 +124,7 @@ class ThreadsController < ApplicationController
 			@users = User.hashes
 			@usernames = User.pluck(:username)
 			@collaborators = @thread.collaborators.pluck(:username)
+			@taxonomies = Taxonomy.includes(:taxonomy_options).all
 
 			# send some params back to the view, to tell the user about what is missing
 			if params["topic_name_1"] == ""
@@ -155,6 +159,7 @@ class ThreadsController < ApplicationController
 		@users = User.hashes
 		@usernames = User.pluck(:username)
 		@collaborators = @thread.collaborators.pluck(:username)
+		@taxonomies = Taxonomy.includes(:taxonomy_options).all
 	end
 
 
@@ -170,7 +175,7 @@ class ThreadsController < ApplicationController
 
 		@thread.media = Media.where(:id=>params[:media])
 
-		#@thread.codes = params[:codes]
+		@thread.taxonomies = Taxonomy.where(id: params[:taxonomies])
 
 		if @thread.update_attributes(params[:threadx])
 
@@ -300,6 +305,14 @@ class ThreadsController < ApplicationController
 						:disposition=>'attachment'
 				end
 			end
+		end
+	end
+
+	def raw
+		@thread = Threadx.find_by_thread_name params[:thread_name]
+
+		respond_to do |format|
+			format.json { render :json => @thread.raw_areas_data.to_json }
 		end
 	end
 

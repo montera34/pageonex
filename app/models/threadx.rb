@@ -19,6 +19,9 @@ class Threadx < ActiveRecord::Base
 	has_many :codes
 	has_many :highlighted_areas, :through => :codes
 
+	has_many :threadx_taxonomies, dependent: :destroy
+	has_many :taxonomies, through: :threadx_taxonomies
+
 	has_many :coded_pages
 
 	validates :thread_name, :thread_display_name, :start_date, :end_date, :description , :category, :presence => true
@@ -40,6 +43,7 @@ class Threadx < ActiveRecord::Base
 	# remove the generated composite images when a thread is changed
 	after_save { |t|
 		t.remove_composite_images
+		t.clean_taxonomy_classifications
 	}
 
 	# for now, default to sort by most recent first
@@ -50,13 +54,14 @@ class Threadx < ActiveRecord::Base
 	end
 
 	def starts_before_ends
-		if end_date < start_date
+		if [start_date,end_date].any? {|d| d.blank?} || end_date < start_date
 			errors.add(:end_date, 'must be after start date')
 		end
 	end
 
 	# workaround for bug #59: too big threads
 	def not_too_many_images
+		return false if [start_date,end_date].any? {|d| d.blank?}
 		media_count = media.length
 		days = end_date - start_date
 		number_of_images = media_count * days
@@ -219,6 +224,11 @@ class Threadx < ActiveRecord::Base
 		area_count > 0 or skipped > 0
 	end
 
+	def clean_taxonomy_classifications
+		::TaxonomyClassification.where("highlighted_area_id IN (?) AND taxonomy_option_id NOT IN (?)",
+														 highlighted_area_ids, taxonomies.map(&:taxonomy_option_ids).flatten).destroy_all
+	end
+
 	def results(type = :tree)
 		# Create an ordered list of newspapers, codes, dates
 		res = {
@@ -287,6 +297,48 @@ class Threadx < ActiveRecord::Base
 		return res
 	end
 
+  def raw_areas_data
+    areas_data = []
+    images_data = []
+    all_areas = self.highlighted_areas.includes(:image, :code, :user, :areas, taxonomy_options: :taxonomy).order(created_at: :asc)
+
+    all_areas.each do |ha|
+      area_data = { areas_id: ha.id,
+                    user_name: ha.user.username,
+                    code_text: ha.code.code_text,
+                    publication_date: ha.image.publication_date,
+                    media_name: ha.image.media.display_name,
+                    media_country: ha.image.media.country,
+                    area_x1: ha.areas.first.x1,
+                    area_y1: ha.areas.first.y1,
+                    area_x2: ha.areas.first.x2,
+                    area_y2: ha.areas.first.y2,
+                    area_width: ha.areas.first.width,
+                    area_height: ha.areas.first.height }
+
+      taxonomy_values_list = {}
+      ha.taxonomy_options.each { |to| taxonomy_values_list[to.taxonomy.name] = to.value }
+      area_data[:taxonomy_values] = taxonomy_values_list if taxonomy_values_list.present?
+
+      areas_data << area_data
+    end
+
+
+    images.each do |img|
+	    image_data = { publication_date: img.publication_date,
+	    		           media_name: img.media.display_name,
+	    		           media_country: img.media.country,
+	    		           image_size: img.size,
+	    		           source_url: img.source_url,
+	    		           missing: img.missing }
+
+	    images_data << image_data
+	  end
+
+
+    return { areas: areas_data, images: images_data }
+  end
+
 	def composite_img_dir width=DEFAULT_COMPOSITE_IMAGE_WIDTH, create_dir=false
 		dir = File.join('app','assets','images','threads',self.owner.id.to_s,self.id.to_s, width.to_s)
 		if create_dir and not File.directory? dir
@@ -309,7 +361,10 @@ class Threadx < ActiveRecord::Base
 			                          owner_id: new_owner_id,
 			                          parent_id: id)
 		forked_thread.media = media
+		forked_thread.taxonomies = taxonomies
 		forked_thread.save!
+
+		clean_taxonomy_classifications
 
 		forked_thread.images << forked_thread.scrape_all_images
 
@@ -320,6 +375,7 @@ class Threadx < ActiveRecord::Base
 
 			code.highlighted_areas.each do |ha|
 				new_ha = new_code.highlighted_areas.create!({image_id: ha.image_id, name: ha.name, user_id: ha.user_id})
+				new_ha.taxonomy_options = ha.taxonomy_options
 
 				ha.areas.each do |area|
 					new_area = area.dup
