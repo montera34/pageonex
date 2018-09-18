@@ -77,6 +77,7 @@ GEM
       i18n (~> 0.5)
     ffi (1.6.0)
     formatador (0.2.4)
+    get_process_mem (0.2.2)
     guard (1.7.0)
       formatador (>= 0.2.4)
       listen (>= 0.6.0)
@@ -117,7 +118,7 @@ GEM
     mysql2 (0.3.21)
     nokogiri (1.5.9)
     orm_adapter (0.4.0)
-    pg (0.15.0)
+    pg (0.18.4)
     piwik_analytics (1.0.2)
       actionpack
       activesupport
@@ -127,6 +128,10 @@ GEM
       coderay (~> 1.0.5)
       method_source (~> 0.8)
       slop (~> 3.4)
+    puma (3.11.4)
+    puma_worker_killer (0.1.0)
+      get_process_mem (~> 0.2)
+      puma (>= 2.7, < 4)
     rack (1.4.5)
     rack-cache (1.2)
       rack (>= 0.4)
@@ -235,6 +240,8 @@ DEPENDENCIES
   mysql2 (~> 0.3.21)
   pg
   piwik_analytics
+  puma (~> 3.11.4)
+  puma_worker_killer
   rails (= 3.2.13)
   rmagick
   rodf
@@ -252,4 +259,4 @@ RUBY VERSION
    ruby 1.9.3p551
 
 BUNDLED WITH
-   1.16.2
+   1.16.4

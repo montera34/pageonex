@@ -65,3 +65,6 @@ gem 'piwik_analytics'
 
 # for downloading zipped archives
 gem 'rubyzip'
+
+gem 'puma', '~> 3.11.4'
+gem 'puma_worker_killer'
