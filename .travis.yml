@@ -1,0 +1,31 @@
+dist: trusty
+
+language: ruby
+
+rvm:
+  - 1.9.3-p551
+
+bundler_args: --without heroku
+
+sudo: required
+
+services:
+  - mysql
+
+stages:
+  - name: release
+    if: tag IS present
+
+before_install:
+  - sudo apt-get update
+  - sudo apt-get install -y libxml2-dev
+  - gem update --system
+  - gem install --force bundler
+  - gem install debugger-ruby_core_source
+
+jobs:
+  include:
+    - name: 'Push image to Docker Hub'
+      stage: release
+      script:
+        - make docker-push
