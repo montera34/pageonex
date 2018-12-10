@@ -1,33 +1,31 @@
 version: '3'
 volumes:
-  db_data:
-  app_kiosko_images:
-  app_threads_images:
-  app_tmp_dir:
+  build_db_data:
+  build_app_data:
 
 services:
-  mysql:
-    image: "mysql:5.6.40"
-    restart: always
+  mysql_build:
+    image: mysql:5.6.40
+    restart: Always
     ports:
       - "13306:13306"
     volumes:
-      - db_data:/var/lib/mysql
+      - build_db_data:/var/lib/mysql
       - ./docker-compose-files/pageonex.cnf:/etc/mysql/conf.d/pageonex.cnf
     environment:
       - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_DATABASE=dc-prod
+      - MYSQL_DATABASE=dc-dev
 
-  app:
-    image: pageonex/pageonex:latest
+  app_build:
+    build: .
     environment:
-      - RAILS_ENV=production
+      - RAILS_ENV=development
       - DATABASE_ADAPTER=mysql2
       - DATABASE_USERNAME=root
       - DATABASE_PASSWORD=root
       - DATABASE_HOST=mysql
       - DATABASE_PORT=13306
-      - DATABASE_NAME=dc-prod
+      - DATABASE_NAME=dc-dev
     depends_on:
       - "mysql"
     ports:
@@ -35,12 +33,10 @@ services:
     links:
       - "mysql"
     volumes:
-      - app_tmp_dir:/workspace/tmp
-      - app_kiosko_images:/workspace/app/assets/images/kiosko
-      - app_threads_images:/workspace/app/assets/images/threads
+      - build_app_data:/workspace
       - ./docker-compose-files/wrap-start-app.sh:/usr/local/bin/wrap-start-app.sh
     command:
       - wrap-start-app.sh
       - mysql
       - root
-      - "bundle exec rake db:migrate --trace && bundle exec rake scraping:update_media && bundle exec rake assets:precompile --trace && bundle exec puma -C config/puma.rb"
+      - "bundle exec puma -C config/puma.rb"
