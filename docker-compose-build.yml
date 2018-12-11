@@ -6,7 +6,7 @@ volumes:
 services:
   mysql_build:
     image: mysql:5.6.40
-    restart: Always
+    restart: always
     ports:
       - "13306:13306"
     volumes:
@@ -23,20 +23,20 @@ services:
       - DATABASE_ADAPTER=mysql2
       - DATABASE_USERNAME=root
       - DATABASE_PASSWORD=root
-      - DATABASE_HOST=mysql
+      - DATABASE_HOST=mysql_build
       - DATABASE_PORT=13306
       - DATABASE_NAME=dc-dev
     depends_on:
-      - "mysql"
+      - "mysql_build"
     ports:
       - '3000:3000'
     links:
-      - "mysql"
+      - "mysql_build"
     volumes:
       - build_app_data:/workspace
       - ./docker-compose-files/wrap-start-app.sh:/usr/local/bin/wrap-start-app.sh
     command:
       - wrap-start-app.sh
-      - mysql
+      - mysql_build
       - root
       - "bundle exec puma -C config/puma.rb"
