@@ -45,6 +45,13 @@ In case you want to further inspect the database, you can run
 docker-compose exec mysql mysql -u root -h localhost --password=root dc-prod
 ```
 
+### How to shut it down
+
+If you want to shut down everything, keeping volumes and images for a quick start
+```
+docker-compose stop
+```
+
 ### How to delete everything and start from scratch
 
 You may want to start fresh. You have to make sure that all related images, containers are both stopped and deleted and volumes are deleted
