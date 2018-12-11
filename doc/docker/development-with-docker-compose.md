@@ -1,6 +1,6 @@
 # Developing pageonex with docker-compose
 
-If you need to do development in pageonex without the hassle of installind all the dependencies you can use our [docker-compose-build file](/docker-compose-build.yml) which build the application from scratch.
+If you need to do development in pageonex without the hassle of installing all the dependencies you can use our [docker-compose-build file](/docker-compose-build.yml) which builds the application from scratch.
 
 * In order to start the pageonex and mysql containers, run from the root of this repository:
 ```
