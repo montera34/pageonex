@@ -13,7 +13,7 @@ you will get
 * A pageonex server running [the lastest pageonex image](https://hub.docker.com/r/pageonex/pageonex)
 * All data stored in separate volumes that will remain even if you delete your application's containers
 
-Once everything is running correctly, you can access the application from your browser in http:/localhost/3000
+Once everything is running correctly, you can access the application from your browser in http://localhost:3000
 
 ## Tasks
 
