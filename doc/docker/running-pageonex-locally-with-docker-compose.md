@@ -28,7 +28,7 @@ docker-compose up -d
 
 Logs are not shown in the screen in detached mode, you can inspect them using
 ```
-docker-compose up -d
+docker-compose logs
 ```
 
 ### How to access the rails console
