@@ -14,7 +14,7 @@ docker-compose -f docker-compose-build.yml exec app_build rake db:migrate --trac
 
 * To get a the rails console (See [INSTALL.md](/doc/INSTALL.md) for instructions on creating an admin user)
 ```
-docker-compose -f docker-compose-build.yml exe app_build rails console
+docker-compose -f docker-compose-build.yml exec app_build rails console
 ```
 
 * If you make changes in the app and you want to rebuild your container
