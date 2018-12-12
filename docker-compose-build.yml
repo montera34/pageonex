@@ -33,8 +33,9 @@ services:
     links:
       - "mysql_build"
     volumes:
-      - build_app_data:/workspace
+      - .:/workspace
       - ./docker-compose-files/wrap-start-app.sh:/usr/local/bin/wrap-start-app.sh
+    working_dir: /workspace
     command:
       - wrap-start-app.sh
       - mysql_build
