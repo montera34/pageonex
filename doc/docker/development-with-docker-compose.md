@@ -18,7 +18,9 @@ docker-compose -f docker-compose-build.yml exec app_build rails console
 ```
 
 * To load the list of newspapers into the data baserun:
-`docker-compose -f docker-compose-build.yml exec app_build rake scraping:update_media --trace`
+```
+docker-compose -f docker-compose-build.yml exec app_build rake scraping:update_media --trace
+```
 
 * If you make changes in the app and you want to rebuild your container
 ```
