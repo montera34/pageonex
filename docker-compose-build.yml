@@ -1,17 +1,16 @@
 version: '3'
 volumes:
   build_db_data:
-  build_app_data:
 
 services:
   mysql_build:
     image: mysql:5.6.40
     restart: always
     ports:
-      - "13306:13306"
+      - "23306:23306"
     volumes:
       - build_db_data:/var/lib/mysql
-      - ./docker-compose-files/pageonex.cnf:/etc/mysql/conf.d/pageonex.cnf
+      - ./docker-compose-files/pageonex-build.cnf:/etc/mysql/conf.d/pageonex-build.cnf
     environment:
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_DATABASE=dc-dev
@@ -24,7 +23,7 @@ services:
       - DATABASE_USERNAME=root
       - DATABASE_PASSWORD=root
       - DATABASE_HOST=mysql_build
-      - DATABASE_PORT=13306
+      - DATABASE_PORT=23306
       - DATABASE_NAME=dc-dev
     depends_on:
       - "mysql_build"
