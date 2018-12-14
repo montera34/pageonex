@@ -1,0 +1,42 @@
+version: '3'
+volumes:
+  build_db_data:
+
+services:
+  mysql_build:
+    image: mysql:5.6.40
+    restart: always
+    ports:
+      - "23306:23306"
+    volumes:
+      - build_db_data:/var/lib/mysql
+      - ./docker-compose-files/pageonex-build.cnf:/etc/mysql/conf.d/pageonex-build.cnf
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=dc-dev
+
+  app_build:
+    build: .
+    environment:
+      - RAILS_ENV=development
+      - DATABASE_ADAPTER=mysql2
+      - DATABASE_USERNAME=root
+      - DATABASE_PASSWORD=root
+      - DATABASE_HOST=mysql_build
+      - DATABASE_PORT=23306
+      - DATABASE_NAME=dc-dev
+    depends_on:
+      - "mysql_build"
+    ports:
+      - '3000:3000'
+    links:
+      - "mysql_build"
+    volumes:
+      - .:/workspace
+      - ./docker-compose-files/wrap-start-app.sh:/usr/local/bin/wrap-start-app.sh
+    working_dir: /workspace
+    command:
+      - wrap-start-app.sh
+      - mysql_build
+      - root
+      - "bundle exec puma -C config/puma.rb"
