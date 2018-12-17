@@ -16,7 +16,7 @@ Running pageonex
 
 Pageonex is an open-source project. If you don't want to use the hosted version of pageonex at http://pageonex.com you have a few options to run it yourself.
 
-* [You can run pageonex locally using docker-compose and our generated images](docs/docker/running-pageonex-locally-with-docker-compose.md). This is the easiest way.
+* [You can run pageonex locally using docker-compose and our generated images](doc/docker/running-pageonex-locally-with-docker-compose.md). This is the easiest way.
 * [You can run pageonex locally using docker-compose and building locally the docker images](doc/docker/development-with-docker-compose.md). This is recommended if you want to do some development.
 * [You can install pageonex locally compiling in your system all the needed files](doc/local-install.md). This option is more advanced and it is only recommended if you're doing heavy development.
 * [You can use our Docker images to deploy pageonex against your mysql database](doc/docker/running-pageonex-in-your-environment.md). This is an advanced setup that it is useful if you're planning to maintain your own pageonex production environment.
