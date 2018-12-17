@@ -12,12 +12,12 @@ docker-compose -f docker-compose-build.yml up -d --build
 docker-compose -f docker-compose-build.yml exec app_build rake db:migrate --trace
 ```
 
-* To get a the rails console (See [INSTALL.md](/doc/INSTALL.md) for instructions on creating an admin user)
+* To get a the rails console (See [doc/local-install.md](/doc/local-install.md#process) for instructions on creating an admin user)
 ```
 docker-compose -f docker-compose-build.yml exec app_build rails console
 ```
 
-* To load the list of newspapers into the data baserun:
+* To load the list of newspapers into the data base run:
 ```
 docker-compose -f docker-compose-build.yml exec app_build rake scraping:update_media --trace
 ```
