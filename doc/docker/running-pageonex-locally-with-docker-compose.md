@@ -13,7 +13,7 @@ you will get
 * A pageonex server running [the lastest pageonex image](https://hub.docker.com/r/pageonex/pageonex)
 * All data stored in separate volumes that will remain even if you delete your application's containers
 
-Once everything is running correctly, you can access the application from your browser in http://localhost:3000
+Once everything is running correctly, you can access the application from your browser at http://localhost:3000 or http://0.0.0.0:3000
 
 ## Tasks
 
@@ -33,7 +33,7 @@ docker-compose logs
 
 ### How to access the rails console
 
-In case you want to further inspect the application, you can run
+To get a the rails console (See [doc/local-install.md](/doc/local-install.md#process) for instructions on creating an admin user) run
 ```
 docker-compose exec app rails console
 ```
