@@ -1,0 +1,9 @@
+{
+  "name": "PageOneX",
+  "description": "",
+  "scripts": {
+    "dokku": {
+      "predepploy": "./release-tasks.sh"
+    }
+  }
+}
