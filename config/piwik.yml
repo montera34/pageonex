@@ -11,8 +11,8 @@
 #
 production:
   piwik:
-    id_site: 1
-    url: piwik-production.example.com
+    id_site: <%= ENV['PIWIK_ID_SITE'].blank? ? '1' : ENV['PIWIK_ID_SITE'] %>
+    url: <%= ENV['PIWIK_URL'].blank? ? 'piwik-production.example.com' : ENV['PIWIK_URL'] %>
     use_async: false
     disabled: false
 
