@@ -4,9 +4,9 @@ Download the files from https://github.com/numeroteca/pageonex
 
 ### Needs
 PageOnex runs in Ruby on Rails, so you'll ned to install:
-+ [Ruby v1.9.3](http://www.ruby-lang.org/en/downloads/) - We highly recommend using [RVM](http://rvm.io/) and gemsets to mange ruby (ie. `rvm use 1.9.3@pageonex`)
-+ [RubyGems](http://docs.rubygems.org/)
-+ [Rails](http://rubyonrails.org/download) (you might also want to install [RVM (Ruby Version Manager)](https://rvm.io/)
++ [Ruby v1.9.3](http://www.ruby-lang.org/en/downloads/) - We highly recommend using [RVM](http://rvm.io/) and gemsets to manage ruby (ie. `rvm use 1.9.3@pageonex`)
++ [RubyGems](https://rubygems.org/)
++ [Rails](https://rubyonrails.org/) (you might also want to install [RVM (Ruby Version Manager)](https://rvm.io/)
 
 Process
 -------

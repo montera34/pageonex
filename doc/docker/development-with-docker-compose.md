@@ -7,6 +7,25 @@ If you need to do development in pageonex without the hassle of installing all t
 docker-compose -f docker-compose-build.yml up -d --build
 ```
 
+You might get this error `Couldn’t connect to Docker daemon at http+docker://localhost – is it running?`, it is possible to fix [with this solution](https://techoverflow.net/2019/03/16/how-to-fix-error-couldnt-connect-to-docker-daemon-at-httpdocker-localhost-is-it-running/):
+
+> There are two possible reasons for this error message.
+
+> The common reason is that the user you are running the command as does not have the permissions to access docker.
+
+> You can fix this either by running the command as root using sudo (since root has the permission to access docker) or adding your user to the docker group:
+```
+sudo usermod -a -G docker $USER
+```
+
+> and then logging out and logging back in completely (or restarting the system/server).
+> The other reason is that you have not started docker. On Ubuntu, you can start it using
+
+```
+sudo systemctl enable docker # Auto-start on boot
+sudo systemctl start docker # Start right now
+```
+
 2. To create the initial database:
 ```
 docker-compose -f docker-compose-build.yml exec app_build rake db:migrate --trace
