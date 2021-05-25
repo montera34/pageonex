@@ -47,6 +47,14 @@ To get a the rails console (See [doc/local-install.md](/doc/local-install.md#pro
 docker-compose -f docker-compose-build.yml exec app_build rails console
 ```
 
+Once you have entered the rails console you can make one user admin with this command:
+
+```
+User.find_by_email('user@domain.com').update_attribute :admin, true
+```
+
+Admin users are able to use the taxonomies feature.
+
 ### How to access the database
 
 If you want to log in the mysql database
