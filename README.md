@@ -14,12 +14,21 @@ You can find more information and examples at http://pageonex.com or at [the blo
 Running pageonex
 ----------------
 
-Pageonex is a Free/Libre and Open Source Software (F/LOSS) project. If you don't want to use the hosted version of pageonex at http://pageonex.com you have a few options to run it yourself.
+Pageonex is a Free/Libre and Open Source Software (F/LOSS) project. If you don't want to use the hosted version of pageonex at http://pageonex.com you have a few options to run it yourself. We've prepared a set of soltuions that use [docker](http://docker.com/), a containerized version of the tools that allows you to use the tool without the need to handle all the dependencies of Ruby on Rails.
+
+1. For any of the following options with you need to download or clone [this repository](https://github.com/montera34/pageonex). If you are familiar with git you can clone it git clone with `git clone https://github.com/montera34/pageonex.git`. Otherwise you can [download the entire code in a .zip](https://github.com/montera34/pageonex/archive/refs/heads/master.zip).
+2. [Install Docker](https://www.docker.com/get-started).
+
+You have various options:
 
 * [You can run pageonex locally using docker-compose and our generated images](doc/docker/running-pageonex-locally-with-docker-compose.md). This is the easiest way.
 * [You can run pageonex locally using docker-compose and building locally the docker images](doc/docker/development-with-docker-compose.md). This is recommended if you want to do some development.
 * [You can install pageonex locally compiling in your system all the needed files](doc/local-install.md). This option is more advanced and it is only recommended if you're doing heavy development.
-* [You can use our Docker images to deploy pageonex against your mysql database](doc/docker/running-pageonex-in-your-environment.md). This is an advanced setup that it is useful if you're planning to maintain your own pageonex production environment.
+* [You can use our Docker images to deploy pageonex against your mysql database](doc/docker/running-pageonex-in-your-environment.md). This is an advanced setup that it is useful if you're planning to maintain your own pageonex production environment. YOu can read this tutorial as well: [How to install Pageonex with Docker against and external database](https://github.com/montera34/pageonex/wiki/How-to-install-Pageonex-with-Docker-against-and-external-database)
+
+
+If you want to install it from scratch, please use the manual in the wiki: https://github.com/montera34/pageonex/wiki#pageonex-for-developers
+
 
 Collaborators
 -------------

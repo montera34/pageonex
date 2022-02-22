@@ -55,6 +55,8 @@ User.find_by_email('user@domain.com').update_attribute :admin, true
 
 Admin users are able to use the taxonomies feature.
 
+To quit the console type `quit`.
+
 ### How to access the database
 
 If you want to log in the mysql database
