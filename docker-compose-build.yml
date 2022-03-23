@@ -14,6 +14,8 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_DATABASE=dc-dev
+    command: |
+      bash -c "chmod 644 /etc/mysql/conf.d/pageonex-build.cnf && /entrypoint.sh mysqld"
 
   app_build:
     build: .
