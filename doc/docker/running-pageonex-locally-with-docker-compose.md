@@ -1,19 +1,28 @@
 # Running pageonex locally with docker compose
 
-You can test locally pageonex using [docker compose](https://docs.docker.com/compose/). Just running
+You can test locally pageonex using [docker compose](https://docs.docker.com/compose/). 
+
+From the command line go to the direcrtory where you have cloned (or downloaded) the Pageonex repository and type:
 
 ```
 docker-compose up
 ```
 
-you will get
+It will take a few minutes to complet the install.
+You need Internet access because it needs to download the PageOneX docker image.
 
-* A mysql database running [the official mysql image](https://hub.docker.com/_/mysql/)
-* All the migration and admin tasks run
-* A pageonex server running [the lastest pageonex image](https://hub.docker.com/r/pageonex/pageonex)
-* All data stored in separate volumes that will remain even if you delete your application's containers
+Once it works you will get:
+
+* A mysql database running [the official mysql image](https://hub.docker.com/_/mysql/).
+* All the migration and admin tasks run.
+* A pageonex server running [the lastest pageonex image](https://hub.docker.com/r/pageonex/pageonex).
+* All data stored in separate volumes that will remain even if you delete your application's containers.
 
 Once everything is running correctly, you can access the application from your browser at http://localhost:3000 or http://0.0.0.0:3000
+
+**For Windows users**
+
+You need to enable virtualization to allow docker work. See the example for Windows 11: https://support.microsoft.com/en-us/windows/enable-virtualization-on-windows-11-pcs-c5578302-6e43-4b4b-a449-8ced115f58e1
 
 ## Tasks
 
