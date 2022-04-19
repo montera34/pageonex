@@ -10,21 +10,14 @@ docker-compose -f docker-compose-build.yml up -d --build
 You might get this error `Couldn’t connect to Docker daemon at http+docker://localhost – is it running?`, it is possible to fix [with this solution](https://techoverflow.net/2019/03/16/how-to-fix-error-couldnt-connect-to-docker-daemon-at-httpdocker-localhost-is-it-running/):
 
 > There are two possible reasons for this error message.
-
 > The common reason is that the user you are running the command as does not have the permissions to access docker.
-
-> You can fix this either by running the command as root using sudo (since root has the permission to access docker) or adding your user to the docker group:
-```
-sudo usermod -a -G docker $USER
-```
-
+> You can fix this either by running the command as root using sudo (since root has the permission to access docker) or adding your user to the docker group: `sudo usermod -a -G docker $USER`
 > and then logging out and logging back in completely (or restarting the system/server).
-> The other reason is that you have not started docker. On Ubuntu, you can start it using
+> The other reason is that you have not started docker. On Ubuntu, you can start it using `sudo systemctl enable docker` (Auto-start on boot) and `sudo systemctl start docker` (Start right now).
 
-```
-sudo systemctl enable docker # Auto-start on boot
-sudo systemctl start docker # Start right now
-```
+> You can also get this message: `Creating pageonex_mysql_build_1 ... error ERROR: for pageonex_mysql_build_1  Cannot start service mysql_build: driver failed programming external connectivity on endpoint pageonex_mysql_build_1 (34af946d85db80f663a8d71e550bef50128a3fd4f41593bdc9ef722a7c2f5b54): Bind for 0.0.0.0:23306 failed: port is already allocated` this is because you have another docker container running using that port.
+> Use `docker ps` to see which other containers you have and stop them by using the `CONTAINER ID`. If container id is `03be2d8e8337` use `docker stop 03be2d8e8337`
+ 
 
 2. To create the initial database:
 ```
