@@ -33,7 +33,7 @@ If you want to install it from scratch, please use the manual in the wiki: https
 Collaborators
 -------------
 
-The project has many collaborators. The coders have been/are [Ahmd Refat](https://github.com/ahmdrefat), [Edward L Platt](https://github.com/elplatt), [Rahul Bhargava](https://github.com/rahulbot), [Rafael Porres](https://github.com/rporres) and [Pablo Rey Mazón](https://github.com/numeroteca). Sasha Costanza-Chock is giving advice and support from the Center for Civic Media; [Alfonso Sánchez Uzábal](http://skotperez.net/) is providing tecnical support and [Montera34](http://montera34.com/) the server. Thanks to Jeff Warren for his advice and Rogelio López for his testing.
+The project has many collaborators. The coders have been/are [Ahmd Refat](https://github.com/ahmdrefat), [Edward L Platt](https://github.com/elplatt), [Rahul Bhargava](https://github.com/rahulbot), [Rafael Porres](https://github.com/rporres) and [Pablo Rey Mazón](https://github.com/numeroteca). Sasha Costanza-Chock is giving advice and support from the Center for Civic Media; [Alfonso Sánchez Uzábal](http://skotperez.net/) is providing technical support and [Montera34](http://montera34.com/) the server. Thanks to Jeff Warren for his advice and Rogelio López for his testing.
 
 
 Join the project
